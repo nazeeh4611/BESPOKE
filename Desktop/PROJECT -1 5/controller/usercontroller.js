@@ -261,6 +261,8 @@ const lostpasswordVerify = async (req, res) => {
   }
 };
 
+
+// load MyAccount----------------------
 const MyAccount = async (req, res) => {
   try {
     res.render("user/profile");

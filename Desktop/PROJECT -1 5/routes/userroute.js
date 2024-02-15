@@ -20,5 +20,7 @@ userRoute.get("/login",userAuth.isLogout,userController.userLogin);
 userRoute.post("/login", userController.verifylogin);
 // userRoute.get("/home",userAuth.isLogin,userController.afterlogin);
 userRoute.get("/profile",userAuth.isLogin,userController.MyAccount);
+userRoute.get("/forgetpass",userController.lostpassword);
+userRoute.post("/forgetpass",userController.lostpasswordVerify);
 
 module.exports = userRoute;
