@@ -4,6 +4,7 @@ require("dotenv").config();
 const randomstrings = require("randomstring");
 const { sendOtpVerificationMail } = require("../utils/sentotp");
 const userOtpVerification = require("../model/userOtpVerification");
+const { name } = require("ejs");
 
 //  homepage
 
@@ -231,6 +232,37 @@ const lostpassword = async (req, res) => {
   }
 };
 
+
+// for reset password send email
+
+const sendforgetemail = async(name,email,token)=>{
+  try {
+    let transporter = nodemailer.createTransport({
+      service:"gmail",
+      auth:{
+        user: process.env.Email_USERNAME,
+        pass: process.env.Email_Password,
+      },
+    });
+    const mailoption = {
+      from:process.env.Email_USERNAME,
+      to:email,
+      subject:"For reset password",
+      html: '<p>Hello'+name+',please click here to <a href="http://127.0.0.1:3009/forgetpasswod?token='+token+'">Reset </a> your password.',
+    }
+    transporter.sendMail(mailoption, function(error,info){
+      if(error){
+        console.log(error);
+      }else{
+        console.log("Email has been sent:-",info.response);
+      }
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+} 
+  
+
 // lost password verify
 
 const lostpasswordVerify = async (req, res) => {
@@ -244,12 +276,9 @@ const lostpasswordVerify = async (req, res) => {
         });
       } else {
         const randomstring = randomstrings.generate();
-        const updatedetail = await User.updateOne(
-          { email: email },
-          { $set: { token: randomstring } }
-        );
+        const updateData = await User.updateOne({email:email},{$set:{token:randomstring}})  
         sendforgetemail(Details.name, Details.email, randomstring);
-        res.render("user/forgetpassword", {
+        res.render("user/forgetpassword",  {
           message: "please check your email",
         });
       }
@@ -260,6 +289,34 @@ const lostpasswordVerify = async (req, res) => {
     console.log(error.message);
   }
 };
+
+const newPasswordLoad = async(req,res)=>{
+  try {
+    const token = req.query.token;
+    const tokenData = await User.findOne({token:token})
+    if(tokenData){
+         res.render('user/passwordforget',{message:"",tokenData:tokenData})
+    }else{
+      res.redirect('/forgetpass')
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+// const resetPass = async(req,res)=>{
+//   try {
+//     const password = req.body.password;
+//     const user_id = req.body.user
+//   } catch (error) {
+//     console.log(error.message)
+//   }
+// }
+
+
+
+
 
 
 // load MyAccount----------------------
@@ -286,5 +343,6 @@ module.exports = {
   afterlogin,
   lostpassword,
   lostpasswordVerify,
+  newPasswordLoad,
   MyAccount,
 };

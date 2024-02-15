@@ -24,7 +24,7 @@ const sendOtpVerificationMail = async ({ email }, res) => {
     // mail options_______
 
     const mailoption = {
-      from: "nazeehnahaban09@gmail.com",
+      from: "bespokeshopping07@gmail.com",
       to: email,
       subject: "Welcome, verify your email",
       html: `<P> Enter OTP <b> ${otp}</b> in the above to verify email`,
