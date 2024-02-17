@@ -119,7 +119,7 @@
               <div class="product-card mb-3 mb-md-4 mb-xxl-5">
                 <div class="pc__img-wrapper">
                   <a href="./product1_simple.html">
-                    <img loading="lazy" src="/images/product-1-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
+                    <img loading="lazy" src="/images/product-1-1" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                     <img loading="lazy" src="/images/product-1-2.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
                   </a>
                   <div class="anim_appear-bottom position-absolute w-100 text-center mb-3">
@@ -1793,16 +1793,14 @@
       </div>
 
     </section><!-- /.products-carousel container -->
-
     <section class="blog-carousel bg-yellow">
       <div class="container">
         <div class="mb-1 pb-4 mb-xl-5 pb-xl-5"></div>
-
+    
         <h2 class="section-title text-center fw-normal mb-1 mb-md-3 pb-xl-3 mb-xl-4">Latest in Blog</h2>
-
+    
         <div class="position-relative">
-          <div 14="" 20="" 24="" 30="" 5000="" class="swiper-container js-swiper-slider" data-settings="{
-              " autoplay":="" {="" "delay":="" },="" "slidesperview":="" 4,="" "slidespergroup":="" 1,="" "effect":="" "none",="" "loop":="" true,="" "pagination":="" "el":="" ".blog-pagination",="" "type":="" "bullets",="" "clickable":="" true="" "breakpoints":="" "320":="" "spacebetween":="" "768":="" 2,="" "992":="" 3,="" "1200":="" }="" }"="">
+          <div class="swiper-container js-swiper-slider" data-settings='{"autoplay":{"delay":5000},"slidesPerView":4,"slidesPerGroup":1,"effect":"none","loop":true,"pagination":{"el":".blog-pagination","type":"bullets","clickable":true},"breakpoints":{"320":{"spaceBetween":14},"768":{"spaceBetween":20},"992":{"spaceBetween":24},"1200":{"spaceBetween":30}}}'>
             <div class="swiper-wrapper blog-grid row-cols-xl-3">
               <div class="swiper-slide blog-grid__item bg-white">
                 <div class="blog-grid__item-image">
@@ -1811,7 +1809,7 @@
                 <div class="blog-grid__item-detail text-center px-3 px-xl-5 pb-4">
                   <div class="blog-grid__item-meta justify-content-center">
                     <span class="blog-grid__item-meta__author">By Admin</span>
-                    <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
+                    <span class="blog-grid__item-meta__date">April 05, 2023</span>
                   </div>
                   <div class="blog-grid__item-title mb-0">
                     <a href="./blog_single.html">Woman with good shoes is never be ugly place</a>
@@ -1825,7 +1823,7 @@
                 <div class="blog-grid__item-detail text-center px-3 px-xl-5 pb-4">
                   <div class="blog-grid__item-meta justify-content-center">
                     <span class="blog-grid__item-meta__author">By Admin</span>
-                    <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
+                    <span class="blog-grid__item-meta__date">April 05, 2023</span>
                   </div>
                   <div class="blog-grid__item-title mb-0">
                     <a href="./blog_single.html">What Freud Can Teach Us About Furniture</a>
@@ -1839,7 +1837,7 @@
                 <div class="blog-grid__item-detail text-center px-3 px-xl-5 pb-4">
                   <div class="blog-grid__item-meta justify-content-center">
                     <span class="blog-grid__item-meta__author">By Admin</span>
-                    <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
+                    <span class="blog-grid__item-meta__date">April 05, 2023</span>
                   </div>
                   <div class="blog-grid__item-title mb-0">
                     <a href="./blog_single.html">Habitant morbi tristique senectus</a>
@@ -1853,7 +1851,7 @@
                 <div class="blog-grid__item-detail text-center px-3 px-xl-5 pb-4">
                   <div class="blog-grid__item-meta justify-content-center">
                     <span class="blog-grid__item-meta__author">By Admin</span>
-                    <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
+                    <span class="blog-grid__item-meta__date">April 05, 2023</span>
                   </div>
                   <div class="blog-grid__item-title mb-0">
                     <a href="./blog_single.html">Woman with good shoes is never be ugly place</a>
@@ -1862,18 +1860,46 @@
               </div>
             </div><!-- /.swiper-wrapper -->
           </div><!-- /.swiper-container js-swiper-slider -->
-      
           <div class="blog-pagination type2 mt-4 d-flex align-items-center justify-content-center"></div>
           <!-- /.products-pagination -->
         </div><!-- /.position-relative -->
-
-        <div class="mt-1 pt-4 mt-xl-5 pt-xl-5"></div>
-      </div>
-    </section>
+      </div><!-- /.container -->
+    </section><!-- /.blog-carousel -->
+    <script>
+      // Wait for the DOM to be ready
+      document.addEventListener("DOMContentLoaded", function(event) {
+        // Initialize Swiper slider
+        var mySwiper = new Swiper('.blog-carousel .js-swiper-slider', {
+          autoplay: {
+            delay: 5000
+          },
+          slidesPerView: 4,
+          slidesPerGroup: 1,
+          effect: 'none',
+          loop: true,
+          pagination: {
+            el: '.blog-pagination',
+            type: 'bullets',
+            clickable: true
+          },
+          breakpoints: {
+            320: {
+              spaceBetween: 14
+            },
+            768: {
+              spaceBetween: 20
+            },
+            992: {
+              spaceBetween: 24
+            },
+            1200: {
+              spaceBetween: 30
+            }
+          }
+        });
+      });
+    </script>
   </main>
-
-
-
   <!-- Customer Login Form -->
   <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
     <div class="customer-forms__wrapper d-flex position-relative">
@@ -2306,7 +2332,7 @@
                   </div>
                   <div class="swiper-slide product-single__image-item">
                     <img loading="lazy" src="/images/quickview_3.jpg" alt="">
-                  </div>
+                  </div>\
                   <div class="swiper-slide product-single__image-item">
                     <img loading="lazy" src="/images/quickview_4.jpg" alt="">
                   </div>
@@ -2385,8 +2411,8 @@
                   </div>
                 </details>
               </share-button>
-              <script src="js/details-disclosure.js" defer="defer"></script>
-              <script src="js/share.js" defer="defer"></script>
+              <script src="/public/js/details-disclosure.js" defer="defer"></script>
+              <script src="/public/js/share.js" defer="defer"></script>
             </div>
             <div class="product-single__meta-info mb-0">
               <div class="meta-item">

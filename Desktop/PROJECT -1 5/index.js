@@ -29,9 +29,14 @@ app.use(
   })
 );
 
+// routes------------------
 const userRoute = require("./routes/userroute");
 app.use("/", userRoute);
 
+const adminRoute = require("./routes/adminroute")
+app.use("/admin",adminRoute);
+
 app.listen(port, () => {
   console.log(`server running on http://localhost:${port}`);
+  console.log(`server running on http://localhost:${port}/admin`);
 });

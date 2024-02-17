@@ -5,6 +5,7 @@ const randomstrings = require("randomstring");
 const { sendOtpVerificationMail } = require("../utils/sentotp");
 const userOtpVerification = require("../model/userOtpVerification");
 const { name } = require("ejs");
+const nodemailer = require('nodemailer'); 
 
 //  homepage
 
@@ -233,36 +234,6 @@ const lostpassword = async (req, res) => {
 };
 
 
-// for reset password send email
-
-const sendforgetemail = async(name,email,token)=>{
-  try {
-    let transporter = nodemailer.createTransport({
-      service:"gmail",
-      auth:{
-        user: process.env.Email_USERNAME,
-        pass: process.env.Email_Password,
-      },
-    });
-    const mailoption = {
-      from:process.env.Email_USERNAME,
-      to:email,
-      subject:"For reset password",
-      html: '<p>Hello'+name+',please click here to <a href="http://127.0.0.1:3009/forgetpasswod?token='+token+'">Reset </a> your password.',
-    }
-    transporter.sendMail(mailoption, function(error,info){
-      if(error){
-        console.log(error);
-      }else{
-        console.log("Email has been sent:-",info.response);
-      }
-    })
-  } catch (error) {
-    console.log(error.message);
-  }
-} 
-  
-
 // lost password verify
 
 const lostpasswordVerify = async (req, res) => {
@@ -277,7 +248,7 @@ const lostpasswordVerify = async (req, res) => {
       } else {
         const randomstring = randomstrings.generate();
         const updateData = await User.updateOne({email:email},{$set:{token:randomstring}})  
-        sendforgetemail(Details.name, Details.email, randomstring);
+        sendForgetEmail(Details.name, Details.email, randomstring);
         res.render("user/forgetpassword",  {
           message: "please check your email",
         });
@@ -290,10 +261,45 @@ const lostpasswordVerify = async (req, res) => {
   }
 };
 
+// for reset password send email
+
+const sendForgetEmail = async (name, email, token) => {
+  try {
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.Email_USERNAME,
+        pass: process.env.Email_Password,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.Email_USERNAME,
+      to: email,
+      subject: "Password Reset",
+      html: `<p>Hello ${name}, please click <a href="http://127.0.0.1:3009/resetpass?token=${token}">here</a> to reset your password.</p>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error); 
+      } else {
+        console.log("Email has been sent:", info.response); 
+      }
+    });
+  } catch (error) {
+    console.log(error.message); 
+  }
+}
+
+
+  
+
 const newPasswordLoad = async(req,res)=>{
   try {
     const token = req.query.token;
     const tokenData = await User.findOne({token:token})
+    console.log("the token data is here",tokenData)
     if(tokenData){
          res.render('user/passwordforget',{message:"",tokenData:tokenData})
     }else{
@@ -305,14 +311,26 @@ const newPasswordLoad = async(req,res)=>{
 }
 
 
-// const resetPass = async(req,res)=>{
-//   try {
-//     const password = req.body.password;
-//     const user_id = req.body.user
-//   } catch (error) {
-//     console.log(error.message)
-//   }
-// }
+const resetPass = async(req,res)=>{
+  try {
+    
+    const password = req.body.password;
+    console.log(" the password of password",password)
+    const confirmpassword = req.body.confirmpassword;
+    const user_id = req.body.user_id
+    console.log("userd",user_id);
+    if(password == confirmpassword && user_id){
+      const securepassword = await securePassword(password);
+      const updatedData = await User.findByIdAndUpdate({_id:user_id},{$set:{password:securepassword, token:''} });
+      res.redirect('/login')
+    }else{
+      res.render('user/passwordforget',{message:"password does not match"})
+    }
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 
 
@@ -342,7 +360,9 @@ module.exports = {
   verifylogin,
   afterlogin,
   lostpassword,
+  sendForgetEmail,
   lostpasswordVerify,
   newPasswordLoad,
   MyAccount,
+  resetPass,
 };
