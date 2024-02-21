@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const mongoose = require("mongoose");
+const { log } = require("console");
 
 // load products page
 const loadProduct = async(req,res)=>{
@@ -26,54 +27,65 @@ const loadAddProduct = async(req,res)=>{
 }
 
 
+
 // adding product
 const addProduct = async(req,res)=>{
     try {
         const productDatas = await products.find({name:req.body.productName});
         if(productDatas.length > 0){
-            return res.status(404).send("Not found");
+            return res.status(404).send("Product already exists");
         }
-            const { productName,description,quantity,categories,price} = req.body;
-            const filenames = [];
-            const existcategory = await Category.findOne({name:categories})
-            const Datas = await Category.find({is_Listed: 1 });
 
-            if(!req.files || req.files.length !==4){
-                return res.render("admin/addproduct",
-                {message:"you need to add four photos",
+        const { productName,description,quantity,categories,price} = req.body;
+        console.log("hello",req.body.categories);
+        const filenames = [];
+        const existcategory = await Category.findOne({name:categories})
+        console.log("hii,",existcategory);
+        const Datas = await Category.find({is_Listed: 1 });
+
+        if(!req.files || req.files.length !==4){
+            return res.render("admin/addproduct", {
+                message:"you need to add four photos",
                 productData:Datas,
             });
-            }
-            for(let i = 0;i<req.files.length;i++){
-                const imgpath = path.join(
-                    __dirname,"../public/productImage",
-                    req.files[i].filename
-                );
-                await sharp(req.files[i].path).resize(800,1200,{fit:"fill"})
-                .toFile(imgpath);
-                filenames.push(req.files[i].filename);
-            }
-            const newProduct = new products({
-                name:productName,
-                description,
-                quantity,
-                price,
-                Image:filenames,
-                category:existcategory._id,
-                date: new Date(),
-            });
+        }
 
-            await newProduct.save();
-            res.redirect('/admin/products')
+        for(let i = 0; i < req.files.length; i++){
+            const imgpath = path.join(
+                __dirname, "../public/productImage",
+                req.files[i].filename
+            );
+            await sharp(req.files[i].path).resize(800,1200,{fit:"fill"})
+            .toFile(imgpath);
+            filenames.push(req.files[i].filename);
+        }
+
+        const newProduct = new products({
+            name: productName,
+            description,
+            quantity,
+            price,
+            Image: filenames,
+            categories:existcategory._id,
+            date: new Date(),
+        });
+
+        await newProduct.save();
+        
+        // Render the products page directly after adding the product
+        const productData = await Category.find({is_Listed:1});
+        return res.render("admin/products", { productData }); // Assuming this is the correct view name
+
     } catch (error) {
         console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 };
 
+
 const editProduct = async(req,res)=>{
     try {
-        const id = req.body.id;
+        const id = req.body._id;
         const {productName,description,quantity,categories,price} = req.body;
 
         const Datas = await products.findOne({_id:id});
@@ -115,7 +127,7 @@ const editProduct = async(req,res)=>{
                 description,
                 quantity:quantity,
                 price,
-                category:selectcategory._id,
+                categories:selectcategory._id,
                 $push:{Image:{$each:imageData}},
             },
             {
@@ -129,6 +141,27 @@ const editProduct = async(req,res)=>{
 }
 
 
+const productListed = async(req,res)=>{
+    try {
+        const productId = req.body.id;
+        await products.updateOne({_id:productId},{$set:{is_Listed:true}});
+        res.redirect("/admin/products");
+    } catch (error) {
+        console.log("Error in list product ",error.message);
+        res.status(500).send("Internal server error")
+    }
+}
+
+const productUnlist = async(req,res)=>{
+    try {
+        const productId = req.body.id;
+        await products.updateOne({_id:productId},{$set:{is_Listed:false}})
+    } catch (error) {
+        console.log("Error in unlist product",error.message);
+        res.status(500).send("Internal server error")
+    }
+}
+
 
 
 module.exports = {
@@ -136,6 +169,8 @@ module.exports = {
     loadAddProduct,
     addProduct,
     editProduct,
+    productListed,
+    productUnlist,
 }
 
 

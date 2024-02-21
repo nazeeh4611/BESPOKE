@@ -367,11 +367,10 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleInputCity1">Category</label>
-                        <input type="text" class="form-control" name="category" id="exampleInputEmail3"
-                        placeholder="category">
                         <select class="form-control" name="categories" id="exampleInputCity1">
+                          <option value="">Select Category</option>
                             <% productData.forEach(productData=>{ %>
-                                <option>
+                                <option value="<%= productData.name %>">
                                     <%= productData.name %>
                                 </option>
                                 <% }) %>
