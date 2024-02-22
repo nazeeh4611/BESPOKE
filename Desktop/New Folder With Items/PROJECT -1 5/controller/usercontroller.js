@@ -368,7 +368,22 @@ const loadshop = async(req,res)=>{
 
     const categories = await Category.find({});
 
-    res.render("user/shop");
+    res.render("user/shop",{products,categories,user:req.session.userId});
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const ProductDetail = async(req,res)=>{
+  try {
+    const productId = req.query.id;
+    console.log("suii",productId);
+    const product =  await Product.findById({_id:productId}).populate("category");
+    console.log("lol",product);
+    res.render("user/productdetail",{data:product,user:req.session.userId});
+  
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -394,4 +409,5 @@ module.exports = {
   MyAccount,
   resetPass,
   loadshop,
+  ProductDetail,
 };

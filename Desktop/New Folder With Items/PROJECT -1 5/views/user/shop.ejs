@@ -63,13 +63,15 @@
         <div class="product-card-wrapper">
           <div class="product-card mb-3 mb-md-4 mb-xxl-5">
             <div class="pc__img-wrapper">
-              <div class="swiper-container background-img js-swiper-slider" data-settings="{" resizeobserver":="" true}"="">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <a href="./product1_simple.html"><img loading="lazy" src="/images/product-17-1.jpg" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+              <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                <div class="swiper-wrapper" class="swiper-wrapper" id="swiper-wrapper-132407eab9111881" aria-live="polite" style="transition-duration: Oms; transform: translate3d(-350px, 0px, 0px);">
+                  <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="2 / 4" style="width: 350px;">
+                    <% if(products.length > 0) { %>
+                      <% for(let i=0;i < products.length;i++) { %> 
+                    <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
                   </div><!-- /.pc__img-wrapper -->
-                  <div class="swiper-slide">
-                    <a href="./product1_simple.html"><img loading="lazy" src="/images/product-17-2.jpg" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                  <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="2 / 4" style="width: 350px;">
+                    <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy" src="uploadImg/<%= products[i].Image[1] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
                   </div><!-- /.pc__img-wrapper -->
                 </div>
                 <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg></span>
@@ -78,13 +80,19 @@
               <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
             </div>
 
-            <!-- <div class="pc__info position-relative">
+            <div class="pc__info position-relative">
               <p class="pc__category">Dresses</p>
-              <h6 class="pc__title"><a href="./product1_simple.html">Cropped Faux Leather Jacket</a></h6>
+              <h6 class="pc__title"><a href="./product1_simple.html"><%= products[i].name %></a></h6>
               <div class="product-card__price d-flex">
-                <span class="money price">$29</span>
-              </div> -->
-              <!-- <div class="product-card__review d-flex align-items-center">
+                <span class="money price">$<%= products[i].price %></span>
+              </div>
+              <% if((i+1)%3 ==0) {%>
+                <% } %>
+                <% } %>
+                <% }else{ %>
+                  <h3>Product not found</h3> 
+                  <% } %>  
+              <div class="product-card__review d-flex align-items-center">
                 <div class="reviews-group d-flex">
                   <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
                   <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
@@ -93,26 +101,16 @@
                   <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
                 </div>
                 <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
-              </div> -->
+              </div>
 
-              <!-- <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
+              <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-              </button> -->
+              </button>
             </div>
           </div>
         </div>
-
-        
-       
-             
-            
-       
-
-        
-
-       
-        
-      </div><!-- /.products-grid row -->
+        </div>
+<!-- /.products-grid row -->
 
       <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
         <a href="#" class="btn-link d-inline-flex align-items-center">
@@ -134,5 +132,23 @@
   </main>
 
   <div class="mb-5 pb-xl-5"></div>
+
+    <!-- Go To Top -->
+    <div id="scrollTop" class="visually-hidden end-0"></div>
+
+    <!-- Page Overlay -->
+    <div class="page-overlay"></div>
+
+  <script src="/public/js/jquery.min.js"></script>
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/js/bootstrap-slider.min.js"></script>
+  
+  <script src="/public/js/swiper.min.js"></script>
+  <script src="/public/js/countdown.js"></script>
+  <script src="/public/js/details-disclosure.js" defer="defer"></script>
+  <script src="/public/js/share.js" defer="defer"></script>
+
+  <!-- Footer Scripts -->
+  <script src="/public/js/theme.js"></script>
 
 <%- include("../layouts/userpartials/footer.ejs") %>

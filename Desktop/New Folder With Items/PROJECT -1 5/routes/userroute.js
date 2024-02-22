@@ -40,7 +40,10 @@ userRoute.post('/resetpass',userController.resetPass)
 
 
 // load shop
-userRoute.get("/shop",userAuth.isLogin,userController.loadshop);
+userRoute.get("/shop",userController.loadshop);
+
+// load productDetail
+userRoute.get("/productdetail",userController.ProductDetail)
 
 // load My Account
 userRoute.get("/profile",userAuth.isLogin,userController.MyAccount);
