@@ -33,7 +33,7 @@ const productsModel = new mongoose.Schema({
     },
     is_Listed:{
         type:Boolean,
-        required:true,
+        default:true,
     },
 });
 

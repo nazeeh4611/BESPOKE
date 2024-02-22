@@ -38,7 +38,11 @@ userRoute.post("/forgetpass",userController.lostpasswordVerify);
 userRoute.get("/resetpass",userAuth.isLogout,userController.newPasswordLoad)
 userRoute.post('/resetpass',userController.resetPass)
 
-// load My
+
+// load shop
+userRoute.get("/shop",userAuth.isLogin,userController.loadshop);
+
+// load My Account
 userRoute.get("/profile",userAuth.isLogin,userController.MyAccount);
 
 module.exports = userRoute;

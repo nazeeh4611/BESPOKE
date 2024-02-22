@@ -329,65 +329,58 @@
                   <h4 class="card-title"></h4>
                   <p class="card-description"> Basic form elements </p>
                   <form class="forms-sample" method="post" enctype="multipart/form-data">
-                      <div class="form-group">
-                          <label for="exampleInputName1">Product Name</label>
-                          <input type="text" class="form-control" name="productName" id="exampleInputName1"
-                              placeholder="Product Name">
-                          <div id="productError" class="text-danger"></div>
-                      </div>
-                      <div class="form-group">
-                          <label for="exampleInputEmail3">Description</label>
-                          <input type="text" class="form-control" name="description" id="exampleInputEmail3"
-                              placeholder="Description">
-                          <div id="productDescriptionError" class="text-danger"></div>
-                      </div>
-                      <div class="form-group">
-                          <label for="quantity">Quantity</label>
-                          <input type="number" class="form-control" name="quantity" id="product_qty"
-                              placeholder="Quantity">
-                          <div id="quantityError" class="text-danger"></div>
-                      </div>
-                      <div class="form-group">
-                          <label for="price">Price</label>
-                          <input type="number" class="form-control" name="price" id="product_price"
-                              placeholder="Price">
-                          <div id="priceError" class="text-danger"></div>
-                      </div>
-                      <div class="form-group">
-                          <label>File upload</label>
-                          <div class="input-group col-xs-12">
-                              <div class="mb-3">
-                                  <label for="Imageproduct" class="form-label mb-10  "></label>
-                                  <span id="imagePreview" class="mt-2 "></span>
-                                  <input type="file" name="image" id="Imageproduct"
-                                      class="form-control bg-dark text-white file-upload-info"
-                                      placeholder="Upload Image" style="margin-top: 5%;" multiple>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputCity1">Category</label>
-                        <select class="form-control" name="categories" id="exampleInputCity1">
-                          <option value="">Select Category</option>
-                            <% productData.forEach(productData=>{ %>
-                                <option value="<%= productData.name %>">
-                                    <%= productData.name %>
-                                </option>
-                                <% }) %>
-                        </select>
-                    </div>
-                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
-                  </form>
+    <div class="form-group">
+        <label for="exampleInputName1">Product Name</label>
+        <input type="text" class="form-control" name="productName" id="exampleInputName1" placeholder="Product Name">
+        <div id="productError" class="text-danger"></div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail3">Description</label>
+        <input type="text" class="form-control" name="description" id="exampleInputEmail3" placeholder="Description">
+        <div id="productDescriptionError" class="text-danger"></div>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" class="form-control" name="quantity" id="product_qty" placeholder="Quantity">
+        <div id="quantityError" class="text-danger"></div>
+    </div>
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control" name="price" id="product_price" placeholder="Price">
+        <div id="priceError" class="text-danger"></div>
+    </div>
+    <div class="form-group">
+        <label>File upload</label>
+        <div class="input-group col-xs-12">
+            <div class="mb-3">
+                <label for="productImage" class="form-label mb-10"></label>
+                <span id="imagePreview" class="mt-2"></span>
+                <input type="file" name="image" id="productImage" class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image" style="margin-top: 5%;" multiple>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputCity1">Category</label>
+        <select class="form-control" name="categories" id="exampleInputCity1">
+            <option value="">Select Category</option>
+            <% productData.forEach(productData => { %>
+            <option value="<%= productData.name %>"><%= productData.name %></option>
+            <% }) %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+    <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
+</form>
+
+                
             </div>
            
         </div>
-      </div>
 
       <script>
 
         document.addEventListener('DOMContentLoaded',function() {
-         const fileInput = document.getElementById('Imageproduct');
+         const fileInput = document.getElementById('productImage');
          const imagePreviwContainer = document.getElementById('imagePreview');
          fileInput.addEventListener('change',function (){
           imagePreviwContainer.innerHTML = "";

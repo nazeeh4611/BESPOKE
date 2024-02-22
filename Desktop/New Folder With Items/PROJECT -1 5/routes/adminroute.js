@@ -33,6 +33,9 @@ adminRoute.post("/addproduct",upload.upload.array('image',4),productController.a
 adminRoute.post("/editproduct",upload.upload.array('image',4),productController.editProduct);
 adminRoute.post("/listproduct",productController.productListed);
 adminRoute.post("/unlistproduct",productController.productUnlist);
+adminRoute.get("/deleteproduct",productController.deleteProduct);
+adminRoute.delete("/deleteimage",productController.ImageDelete)
+
 
 
 

@@ -24,93 +24,71 @@
 
   </head>
   <style>
+    /* Table styles */
     table {
-  border-collapse: collapse;
-  width: 100%;
-}
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid white; /* Set table border color to white */
+    }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
+    th, td {
+        padding: 8px;
+        border: 1px solid white; /* Set cell border color to white */
+        text-align: left;
+        color: white; /* Set text color to white */
+    }
 
-th {
-  background-color: #4CAF50;
-  color: white;
-}
+    th {
+        background-color: #000000;
+    }
 
-tr:nth-child(even) {
-  background-color:transparent}
+    /* Button styles */
+    .btn-1,
+    .btn-2,
+    .btn-3,
+    .btn-4,
+    .moveaside { /* Added .moveaside to target Add Category button */
+        padding: 6px 10px;
+        margin: 4px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        color: white; /* Set button text color to white */
+    }
 
-.moveaside, .btn {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: auto; /* Set width to auto */
-}
+    .btn-1 {
+        background-color: #007bff; /* Blue for Edit button */
+    }
 
-.moveaside:hover, .btn:hover {
-  background-color: #45a049;
-}
+    .btn-2 {
+        background-color: #dc3545; /* Red for Delete button */
+    }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+    .btn-3 {
+        background-color: #28a745; /* Green for List button */
+    }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
+    .btn-4 {
+        background-color: #dc3545; /* Red for Unlist button */
+    }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+    .moveaside {
+        background-color: #28a745; /* Green for Add Category button */
+        float: left; /* Move the button to the left */
+        margin-right: 20px; /* Add margin to create space between the button and the heading */
+    }
 
-/* Responsive layout - adjust columns to fit different screen sizes */
-@media screen and (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
+    h2 {
+        text-align: right; /* Align the heading to the right */
+    }
+</style>
 
-  th, td {
-    padding: 6px;
-    font-size: 14px;
-  }
 
-  th {
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
 
-  .text-end {
-    text-align: center;
-  }
 
-  .moveaside, .btn {
-    width: 100%;
-  }
-}
-  </style>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
@@ -403,45 +381,44 @@ tr:nth-child(even) {
               <span class="mdi mdi-format-line-spacing"></span>
             </button>
           </div>
-          <table>
+          <table class="table table-bordered table-contextual" id="cati">
+            <a href="/admin/addcategory"><button class="moveaside">AddCategory</button></a>
             <h2>Categories</h2>
-            <a href="/admin/addcategory"><button class="moveaside">Add Category</button></a>
             <thead>
                 <tr>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
-                    <th>Action</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th class="text-end">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <% if(Data.length > 0) { %>
-                <% for(let i=0; i<Data.length; i++) { %>
-                <tr> <!-- Open the <tr> tag here -->
-                    <td><%= Data[i].name %></td>
-                    <td><%= Data[i].description %></td>
-                    <td><a href="/admin/editcategory?id=<%= Data[i]._id %>" class="btn"><i class="md"></i>Edit</a></td>
-                    <td><a href="/admin/deletecategory?id=<%= Data[i]._id %>" class="btn"><i class="md-1"></i>Delete</a></td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <% if(Data[i].is_Listed == 1) { %>
-                            <a href="/admin/unlist?id=<%= Data[i]._id %>"><i>UnList</i></a>
-                            <% } else { %>
-                            <a href="/admin/list?id=<%= Data[i]._id %>"><i>List</i></a>
-                            <% } %>
-                        </div>
-                    </td>
-                </tr>
-                <% } %>
+                <% if (Data.length > 0) { %>
+                    <% for (let i = 0; i < Data.length; i++) { %>
+                        <tr>
+                            <td><%= Data[i].name %></td>
+                            <td><%= Data[i].description %></td>
+                            <td><a href="/admin/edit?id=<%= Data[i]._id %>" class="btn btn-sm font-sm rounded btn-edit"> <i class="material-icons md-edit"></i> Edit </a></td>
+                            <td><a href="/admin/delete?id=<%= Data[i]._id %>" class="btn btn-sm font-sm btn-delete rounded"> <i class="material-icons md-delete_forever"></i> Delete </a></td>
+                            <td class="text-end">
+                                <div class="dropdown">
+                                    <% if (Data[i].is_Listed == 1) { %>
+                                        <a href="/admin/UnList?id=<%= Data[i]._id %>" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm" style="background-color: #3bb77e;"> <i>UnList</i> </a>
+                                    <% } else { %>
+                                        <a href="/admin/List?id=<%= Data[i]._id %>" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm" style="background-color: red;"> <i>List</i> </a>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
                 <% } else { %>
-                <tr>
-                    <td colspan="5">Category Not Found</td>
-                </tr>
+                    <tr>
+                        <td colspan="5">Category not Found</td>
+                    </tr>
                 <% } %>
             </tbody>
         </table>
-        
         </nav>
         <!-- partial -->
      

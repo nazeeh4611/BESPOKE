@@ -1,4 +1,6 @@
 const User = require("../model/userModel");
+const Product = require("../model/productModel");
+const Category = require("../model/catagoryModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const randomstrings = require("randomstring");
@@ -346,6 +348,32 @@ const MyAccount = async (req, res) => {
   }
 };
 
+
+// load shop----------------------------
+
+const loadshop = async(req,res)=>{
+  try {
+    let query = { is_Listed:true};
+    if(req.query.category){
+      query.category = req.query.category;
+    }
+    const productDetailes = await Product.find(query).populate("category");
+    const products = productDetailes.filter(product =>{
+      if(product.category && product.category.is_Listed == 1 ){
+        return product;
+      }
+    })
+
+    // fetch the categories for dropdown 
+
+    const categories = await Category.find({});
+
+    res.render("user/shop");
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   loadHome,
   userRegister,
@@ -365,4 +393,5 @@ module.exports = {
   newPasswordLoad,
   MyAccount,
   resetPass,
+  loadshop,
 };

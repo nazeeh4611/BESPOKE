@@ -21,7 +21,93 @@
     <link rel="stylesheet" href="/public/admin/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="/admin/images/favicon.png" />
+
   </head>
+<style>
+
+    /* Table styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        border: 1px solid #505050;
+        text-align: left;
+    }
+
+    th {
+        background-color: #000000;
+        color: rgb(157, 157, 157);
+    }
+
+    /* Button styles */
+    .btn-1,
+    .btn-2,
+    .btn-3,
+    .btn-4 {
+        padding: 2px 8px;
+        margin: 2px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-1 a,
+    .btn-2 a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-1 {
+        background-color: #2f971a; /* Blue for Edit button */
+    }
+
+    .btn-2 {
+        background-color: #dc3545; /* Red for Delete button */
+    }
+
+    .btn-3 {
+        background-color: #28a745; /* Green for List button */
+    }
+
+    .btn-4 {
+        background-color: #dc3545; /* Red for Unlist button */
+    }
+    .btn-7 {
+        padding: 3px 6px;
+        margin-right: 20px; /* Add margin to create space between the button and the heading */
+        background-color:  #28a745; /* Green background color */
+        color: white; /* White text color */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-7:hover {
+        background-color:  #076e1f; /* Darker green on hover */
+    }
+  
+
+h2 {
+    display: inline-block; /* Keep the heading and button on the same line */
+    margin-bottom: 10px; /* Add some space below the heading */
+    margin-right: 20px; /* Add some space between the heading and the table */
+}
+
+/* Table styles */
+table {
+    margin-top: 20px; /* Add some space between the button and the table */
+}
+</style>
+
+
+</style>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
@@ -96,16 +182,10 @@
               <span class="menu-icon">
                 <i class="mdi mdi-laptop"></i>
               </span>
-              <span class="menu-title">Basic UI Elements</span>
+              <span class="menu-title">Users</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
-              </ul>
-            </div>
+            
           </li>
           <li class="nav-item menu-items">
             <a class="nav-link" href="pages/forms/basic_elements.html">
@@ -186,6 +266,7 @@
               </li>
             </ul>
             <ul class="navbar-nav navbar-nav-right">
+              <li class="nav-item nav-settings d-none d-lg-block">
                 <a class="nav-link" href="#">
                   <i class="mdi mdi-view-grid"></i>
                 </a>
@@ -319,72 +400,72 @@
               <span class="mdi mdi-format-line-spacing"></span>
             </button>
           </div>
+
+       
+            <a href="/admin/addproduct"><button class="btn-7">Add Product</button></a>
+           <h2>Product List</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+                <th>Action </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if(Products.length>0) { %>
+                <% for(let i=0;i<Products.length;i++) {%>
+                  <tr>
+                    <td>
+                      <img src="/productImage/<%= Products[i].Image[0] %>" width="50px" height="35px" alt="">
+                    </td>
+                    <td><%= Products[i].name %></td>
+                    <td><%= Products[i].price %></td>
+                    <td><%= Products[i].quantity %></td>
+                    <td>
+                      <button class="btn-1"><a href="/admin/editproduct?productId=<%= Products[i]._id %>"></a>Edit</a></button>
+                      <button class="btn-2"><a href="/admin/deleteproduct?id=<%= Products[i]._id %>">Delete</a></button>
+                    </td>
+                    <td>
+                      <% if(Products[i].is_Listed == false) { %>
+                        <form action="/admin/Listproduct" method="post">
+                          <input type="hidden" name="id" value="<%= Products[i]._id %>">
+                          <button type="submit" class="btn-3">
+                            <i>List</i>
+                          </button>
+                        </form>
+                        <% }else{ %>
+                          <form action="/admin/Unlistproduct" method="post">
+                            <input type="hidden" name="id" value="<%= Products[i]._id%>">
+                            <button type="submit" class="btn-4">
+                              <i>Unlist</i>
+                            </button>
+                          </form>
+                          <% } %>
+                    </td>
+                 </tr>
+                 <% } %>
+                   <% }else{ %>
+                    <tr>
+                      <td colspan="5">Product is not found</td>
+                    </tr>
+                    <% } %>
+            </tbody>
+           </table>
+
+        
         </nav>
         <!-- partial -->
-       <div class="main-panel">
-        <!-- add product button -->
-        <a href="/admin/addproduct"><button>Add Product</button></a>
-       </div>
-       <h2>Product List</h2>
-       
-       <table>
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th></th>
-            <th>Action </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if(Products.length>0) { %>
-            <% for(let i=0;i<products.length;i++) {%>
-              <tr>
-                <td>
-                  <img src="" alt="">
-                </td>
-                <td><%= Products[i].name %></td>
-                <td><%= Products[i].price %></td>
-                <td><%= Products[i].quantity %></td>
-                <td>
-                  <button class="btn-1"><a href="/admin/editproduct?productId=<%= Products[i]._id %>"></a>>Edit</a></button>
-                  <button class="btn-2"><a href="/admin/deleteproduct?productId=<%= Products[i]._id %>">Delete</a></button>
-                </td>
-                <td>
-                  <% if(Products[i].is_Listed == false) { %>
-                    <form action="/admin/Listproduct" method="post">
-                      <input type="hidden" name="id" value="<%= Products[i]._id %>">
-                      <button type="submit" class="btn-3">
-                        <i>List</i>
-                      </button>
-                    </form>
-                    <% }else{ %>
-                      <form action="/admin/Unlistproduct" method="post">
-                        <input type="hidden" name="id" value="<%= Products[i]._id%>">
-                        <button type="submit" class="btn-4">
-                          <i>Unlist</i>
-                        </button>
-                      </form>
-                      <% } %>
-                </td>
-             </tr>
-             <% } %>
-               <% }else{ %>
-                <tr>
-                  <td colspan="5">Product is not found</td>
-                </tr>
-                <% } %>
-        </tbody>
-       </table>
-       
+     
           <!-- partial -->
-        </div>
+       
         <!-- main-panel ends -->
-      </div>
+      
       <!-- page-body-wrapper ends -->
-    </div>
+
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
