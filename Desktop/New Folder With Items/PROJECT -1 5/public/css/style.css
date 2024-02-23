@@ -8230,9 +8230,9 @@
     visibility: hidden;
     z-index: 1040; }
   
-  .page-overlay_visible {
+  /* .page-overlay_visible {
     opacity: 1;
-    visibility: visible; }
+    visibility: visible; } */
   
   #scrollTop {
     position: fixed !important;
@@ -12317,7 +12317,7 @@
           padding: 0 3.75rem; } }
   
   .logo__image {
-    max-width: 100%;
+    max-width: 75%;
     max-height: 50px; }
   
   .header-tools {

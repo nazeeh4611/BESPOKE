@@ -14,6 +14,7 @@ const nodemailer = require('nodemailer');
 const loadHome = async (req, res) => {
   try {
     const userIn = req.session.userId;
+   
 
     res.render("user/home", { userIn });
   } catch (error) {
@@ -366,9 +367,10 @@ const loadshop = async(req,res)=>{
 
     // fetch the categories for dropdown 
 
-    const categories = await Category.find({});
 
-    res.render("user/shop",{products,categories,user:req.session.userId});
+    const categories = await Category.find({});
+    const userIn = req.session.userId;
+    res.render("user/shop",{products,categories,user:req.session.userId,userIn});
   } catch (error) {
     console.log(error.message);
   }
@@ -380,8 +382,9 @@ const ProductDetail = async(req,res)=>{
     const productId = req.query.id;
     console.log("suii",productId);
     const product =  await Product.findById({_id:productId}).populate("category");
-    console.log("lol",product);
-    res.render("user/productdetail",{data:product,user:req.session.userId});
+    const userIn = req.session.userId;
+
+    res.render("user/productdetail",{data:product,user:req.session.userId,userIn});
   
     
   } catch (error) {

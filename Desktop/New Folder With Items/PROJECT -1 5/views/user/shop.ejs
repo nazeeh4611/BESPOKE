@@ -2,6 +2,47 @@
 
 
   <main>
+
+  <!-- Customer Login Form -->
+  <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
+    <div class="customer-forms__wrapper d-flex position-relative">
+      <div class="customer__login">
+        <div class="aside-header d-flex align-items-center">
+          <h3 class="text-uppercase fs-6 mb-0">Login</h3>
+          <button class="btn-close-lg js-close-aside ms-auto"></button>
+        </div><!-- /.aside-header -->
+
+        <form action="/login" method="post" class="aside-content">
+          <div class="form-floating mb-3">
+            <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput" placeholder="name@example.com">
+            <label for="customerNameEmailInput">Username or email address *</label>
+          </div>
+
+          <div class="pb-3"></div>
+
+          <div class="form-label-fixed mb-3">
+            <label for="customerPasswordInput" class="form-label">Password *</label>
+            <input name="password" id="customerPasswordInput" class="form-control form-control_gray" type="password" placeholder="********">
+          </div>
+
+          <div class="d-flex align-items-center mb-3 pb-2">
+            <div class="form-check mb-0">
+            </div>
+            <a href="/forgetpass" class="btn-text ms-auto">Lost password?</a>
+          </div>
+
+          <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+
+          <div class="customer-option mt-4 text-center">
+            <span class="text-secondary">No account yet?</span>
+            <a href="/register" class="btn-text js-show-register">Create Account</a>
+          </div>
+        </form>
+      </div><!-- /.customer__login -->
+    </div><!-- /.customer-forms__wrapper -->
+  </div><!-- /.aside aside_right -->
+
+
     <section class="full-width_padding">
       <div class="full-width_border border-2" style="border-color: #eeeeee;">
         <div class="shop-banner position-relative ">
@@ -60,14 +101,15 @@
       </div><!-- /.d-flex justify-content-between -->
 
       <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
+        <% if(products.length > 0) { %>
+          <% for(let i=0;i < products.length;i++) { %> 
         <div class="product-card-wrapper">
           <div class="product-card mb-3 mb-md-4 mb-xxl-5">
             <div class="pc__img-wrapper">
               <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                 <div class="swiper-wrapper" class="swiper-wrapper" id="swiper-wrapper-132407eab9111881" aria-live="polite" style="transition-duration: Oms; transform: translate3d(-350px, 0px, 0px);">
-                  <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="2 / 4" style="width: 350px;">
-                    <% if(products.length > 0) { %>
-                      <% for(let i=0;i < products.length;i++) { %> 
+                  <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="" style="width: 350px;">
+               
                     <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
                   </div><!-- /.pc__img-wrapper -->
                   <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="2 / 4" style="width: 350px;">
@@ -79,19 +121,12 @@
               </div>
               <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
             </div>
-
             <div class="pc__info position-relative">
               <p class="pc__category">Dresses</p>
               <h6 class="pc__title"><a href="./product1_simple.html"><%= products[i].name %></a></h6>
               <div class="product-card__price d-flex">
                 <span class="money price">$<%= products[i].price %></span>
               </div>
-              <% if((i+1)%3 ==0) {%>
-                <% } %>
-                <% } %>
-                <% }else{ %>
-                  <h3>Product not found</h3> 
-                  <% } %>  
               <div class="product-card__review d-flex align-items-center">
                 <div class="reviews-group d-flex">
                   <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
@@ -102,17 +137,22 @@
                 </div>
                 <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
               </div>
-
               <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
               </button>
             </div>
-          </div>
+          </div> 
         </div>
+        <% if((i+1)%3 ==0) {%>
+          <% } %>
+          <% } %>
+          <% }else{ %>
+            <h3>Product not found</h3> 
+            <% } %>  
         </div>
 <!-- /.products-grid row -->
 
-      <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
+      <!-- <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
         <a href="#" class="btn-link d-inline-flex align-items-center">
           <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
           <span class="fw-medium">PREV</span>
@@ -127,7 +167,7 @@
           <span class="fw-medium me-1">NEXT</span>
           <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
         </a>
-      </nav>
+      </nav> -->
     </section><!-- /.shop-main container -->
   </main>
 

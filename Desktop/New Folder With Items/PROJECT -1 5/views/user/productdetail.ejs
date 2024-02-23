@@ -1,54 +1,98 @@
+
 <%- include("../layouts/userpartials/header.ejs") %>
 
+
 <main>
+
+ 
+    <!-- Customer Login Form -->
+    <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
+      <div class="customer-forms__wrapper d-flex position-relative">
+        <div class="customer__login">
+          <div class="aside-header d-flex align-items-center">
+            <h3 class="text-uppercase fs-6 mb-0">Login</h3>
+            <button class="btn-close-lg js-close-aside ms-auto"></button>
+          </div><!-- /.aside-header -->
+  
+          <form action="/login" method="post" class="aside-content">
+            <div class="form-floating mb-3">
+              <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput" placeholder="name@example.com">
+              <label for="customerNameEmailInput">Username or email address *</label>
+            </div>
+  
+            <div class="pb-3"></div>
+  
+            <div class="form-label-fixed mb-3">
+              <label for="customerPasswordInput" class="form-label">Password *</label>
+              <input name="password" id="customerPasswordInput" class="form-control form-control_gray" type="password" placeholder="********">
+            </div>
+  
+            <div class="d-flex align-items-center mb-3 pb-2">
+              <div class="form-check mb-0">
+              </div>
+              <a href="/forgetpass" class="btn-text ms-auto">Lost password?</a>
+            </div>
+  
+            <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+  
+            <div class="customer-option mt-4 text-center">
+              <span class="text-secondary">No account yet?</span>
+              <a href="/register" class="btn-text js-show-register">Create Account</a>
+            </div>
+          </form>
+        </div><!-- /.customer__login -->
+      </div><!-- /.customer-forms__wrapper -->
+    </div><!-- /.aside aside_right -->
+
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
       <div class="row">
         <div class="col-lg-7">
           <div class="product-single__media" data-media-type="vertical-thumbnail">
-            <div class="product-single__image">
-              <div class="swiper-container swiper-container-initialized  swiper-container-horizontal swiper-container-pointer-events" style="cursor: grab;" >
-                <div class="swiper-wrapper" id="swiper-wrapper-abla6348223fa135" aria-live="polite" style="transform: translate3d(-1698px, Opx, 0px); transition-duration:0ms;" >
-                  <div class="swiper-slide product-single__image-item" role="group" aria-label="" style="width: 534px; margin-right: 32px;">
-                    <img loading="lazy" class="h-auto" src="/public/uploadImg/1708588711621_product_0-1.jpg" width="674" height="674" alt="">
-                   
-                  </div>
+            
+            <div class="col-lg-6 col-md-9">
+                <div class="tab-content" style="margin-top: 50px;">
+                    <% for (let i=0; i < data.Image.length; i++) { %>
+                    <div class="tab-pane <% if (i === 0) { %>active<% } %>" id="tabs-<%= i + 1 %>" role="tabpanel">
+                        <div class="product__details__pic__item zoom-in">
+                            <img loading="lazy" class="h-auto" src="/public/uploadImg/<%= data.Image[i] %>" width="674" height="674" alt="">
+                        </div>
+                    </div>
+                    <% } %>
                 </div>
-                <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg></div>
-                <div class="swiper-button-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg></div>
-              </div>
             </div>
-           <div class="product-single__thumbnail" style="float: left;">
-              <div class="swiper-container swiper-container-initialized swiper-container-vertical swiper-container-pointer-events swiper-container-free-mode swiper-container-thumbs">
-                <div class="swiper-wrapper"  id="swiper-wrapper-fd32bcad128b258b" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); height: 78.9219px; transition-duration: 0ms;">
-                  <div  class="swiper-slide product-single_image-item swiper-slide-active" role="group" aria-label="" style="height: 89px;" >
-                    <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="/public/uploadImg/1708588711621_product_0-1.jpg" width="104" height="104" alt=""></div>
-                  </div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="images/product_0-1.jpg" width="104" height="104" alt=""></div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="images/product_0-2.jpg" width="104" height="104" alt=""></div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="images/product_0-3.jpg" width="104" height="104" alt=""></div>
-                </div>
-              </div>
+            <div class="col-lg-3 col-md-3">
+                <ul class="nav nav-tabs" role="tablist">
+                    <% for (let i=0; i < data.Image.length; i++) { %>
+                    <li class="nav-item">
+                        <a class="nav-link <% if (i === 0) { %>active<% } %>" data-toggle="tab"
+                            href="#tabs-<%= i + 1 %>" role="tab">
+                            <div class="product__thumb__pic">
+                                <!-- Use a different image source for thumbnails, if available -->
+                                <img src="/public/uploadImg/<%= data.Thumbnail && data.Thumbnail[i] ? data.Thumbnail[i] : data.Image[i] %>"
+                                    alt="<%= data.name %>" class="thumbnail-image">
+                            </div>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
             </div>
-            <div class="product-label sale-label">
-              <span>On Sale!</span>
-            </div>
+           
           </div>
         </div>
         <div class="col-lg-5">
           <div class="d-flex justify-content-between mb-4 pb-md-2">
             <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-              <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
+              <a href="/" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
               <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-              <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
+              <a href="/shop" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
             </div><!-- /.breadcrumb -->
     
             <div class="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-              <a href="./product4_grouped.html" class="text-uppercase fw-medium"><svg class="mb-1px" width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_md"></use></svg><span class="menu-link menu-link_us-s">Prev</span></a>
-              <a href="./product6_outofstock.html" class="text-uppercase fw-medium"><span class="menu-link menu-link_us-s">Next</span><svg class="mb-1px" width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_md"></use></svg></a>
+             
             </div><!-- /.shop-acs -->
           </div>
-          <h1 class="product-single__name">Lightweight Puffer Jacket With a Hood</h1>
+          <h1 class="product-single__name"><%= data.name %></h1>
           <div class="product-single__rating">
             <div class="reviews-group d-flex">
               <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
@@ -60,11 +104,11 @@
             <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
           </div>
           <div class="product-single__price">
-            <span class="old-price">$769</span>
-            <span class="special-price">$249</span>
+            <!-- <span class="old-price">$769</span> -->
+            <span class="special-price">$<%= data.price %></span>
           </div>
           <div class="product-single__short-desc">
-            <p>Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida nec dui. Aenean aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra nunc, ut aliquet magna posuere eget.</p>
+            <p><%= data.escription %></p>
           </div>
           <form name="addtocart-form" method="post">
             <div class="product-single__addtocart">
@@ -73,7 +117,13 @@
                 <div class="qty-control__reduce">-</div>
                 <div class="qty-control__increase">+</div>
               </div><!-- .qty-control -->
+              <% if(data.quantity > 0) { %> 
               <button type="submit" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Add to Cart</button>
+              <% }else{ %>
+                <div class="product-single__addtocart" style="padding-top: 34px;">
+                    <button type="submit" class="btn btn-primary btn-addtocart btn-outofstock">Out of Stock</button>
+                  </div>
+                  <% } %>
             </div>
           </form>
           <div class="product-single__addtolinks">
@@ -103,18 +153,18 @@
             <script src="js/share.js" defer="defer"></script>
           </div>
           <div class="product-single__meta-info">
-            <div class="meta-item">
+            <!-- <div class="meta-item">
               <label>SKU:</label>
               <span>N/A</span>
-            </div>
+            </div> -->
             <div class="meta-item">
               <label>Categories:</label>
-              <span>Casual &amp; Urban Wear, Jackets, Men</span>
+              <span><%= data.category.name %></span>
             </div>
-            <div class="meta-item">
+            <!-- <div class="meta-item">
               <label>Tags:</label>
               <span>biker, black, bomber, leather</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -123,42 +173,42 @@
           <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab" href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a>
           </li>
-          <li class="nav-item" role="presentation">
+          <!-- <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore" id="tab-additional-info-tab" data-bs-toggle="tab" href="#tab-additional-info" role="tab" aria-controls="tab-additional-info" aria-selected="false">Additional Information</a>
           </li>
           <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab" href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews (2)</a>
-          </li>
+          </li> -->
         </ul>
         <div class="tab-content">
-          <div class="tab-pane fade show active" id="tab-description" role="tabpanel" aria-labelledby="tab-description-tab">
-            <div class="product-single__description">
-              <h3 class="block-title mb-4">Sed do eiusmod tempor incididunt ut labore</h3>
-              <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-              <div class="row">
-                <div class="col-lg-6">
+          <!-- <div class="tab-pane fade show active" id="tab-description" role="tabpanel" aria-labelledby="tab-description-tab">
+            <div class="product-single__description"> -->
+              <h3 class="block-title mb-4"><%= data.description %></h3>
+              <!-- <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p> -->
+              <!-- <div class="row"> -->
+                <!-- <div class="col-lg-6">
                   <h3 class="block-title">Why choose product?</h3>
                   <ul class="list text-list">
                     <li>Creat by cotton fibric with soft and smooth</li>
                     <li>Simple, Configurable (e.g. size, color, etc.), bundled</li>
                     <li>Downloadable/Digital Products, Virtual Products</li>
                   </ul>
-                </div>
-                <div class="col-lg-6">
+                </div> -->
+                <!-- <div class="col-lg-6">
                   <h3 class="block-title">Sample Number List</h3>
                   <ol class="list text-list">
                     <li>Create Store-specific attrittbutes on the fly</li>
                     <li>Simple, Configurable (e.g. size, color, etc.), bundled</li>
                     <li>Downloadable/Digital Products, Virtual Products</li>
                   </ol>
-                </div>
-              </div>
-              <h3 class="block-title mb-0">Lining</h3>
-              <p class="content">100% Polyester, Main: 100% Polyester.</p>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="tab-additional-info" role="tabpanel" aria-labelledby="tab-additional-info-tab">
-            <div class="product-single__addtional-info">
+                </div> -->
+              <!-- </div> -->
+              <!-- <h3 class="block-title mb-0">Lining</h3>
+              <p class="content">100% Polyester, Main: 100% Polyester.</p> -->
+            <!-- </div>
+          </div> -->
+          <!-- <div class="tab-pane fade" id="tab-additional-info" role="tabpanel" aria-labelledby="tab-additional-info-tab"> -->
+            <!-- <div class="product-single__addtional-info">
               <div class="item">
                 <label class="h6">Weight</label>
                 <span>1.25 kg</span>
@@ -180,7 +230,7 @@
                 <span>Relaxed fit shirt-style dress with a rugged</span>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
             <h2 class="product-single__reviews-title">Reviews</h2>
             <div class="product-single__reviews-list">
@@ -488,7 +538,223 @@
   
     </section><!-- /.products-carousel container -->
   </main>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Image Zoom functions go here
+        function zoomIn(event, zoomFactor) {
+            const image = event.target;
+            image.style.transform = `scale(${zoomFactor})`;
+        }
+
+        function resetZoom(event) {
+            const image = event.target;
+            image.style.transform = 'scale(1)';
+        }
+
+        const productImages = document.querySelectorAll('.zoom-in img');
+
+        productImages.forEach(img => {
+            img.addEventListener('mouseover', function () {
+                img.style.transform = 'scale(2.0)';
+                img.style.transition = 'transform 0.3s ease';
+            });
+
+            img.addEventListener('mousemove', function (e) {
+                const boundingBox = img.getBoundingClientRect();
+                const offsetX = (e.clientX - boundingBox.left) / boundingBox.width;
+                const offsetY = (e.clientY - boundingBox.top) / boundingBox.height;
+
+                img.style.transformOrigin = `${offsetX * 100}% ${offsetY * 100}%`;
+            });
+
+            img.addEventListener('mouseleave', function () {
+                img.style.transform = 'scale(1)';
+            });
+
+            img.addEventListener('mousemove', function (e) {
+                zoomIn(e, 1.5);
+            });
+
+            img.addEventListener('mouseout', resetZoom);
+        });
+    });
+</script>
+  <!-- Include jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Include Elevate Zoom -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+
+
+  <style>
+    .hero-area {
+    background: url("/path/to/hero-image.jpg") no-repeat center;
+    background-size: cover;
+    padding: 200px 0;
+    color: #b43333;
+    text-align: center;
+    background: #e0e0e0;
+}
+
+.hero-content h2 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.breadcrumb-area {
+    padding: 20px 0;
+    background-color: #e6e6e6;
+}
+
+.breadcrumb-content h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.breadcrumb-content nav {
+    font-size: 16px;
+}
+
+.single-product-area {
+    margin-top: 50px;
+}
+
+.product-carousel .single-product-item img {
+    max-width: 100%;
+}
+
+.product-info h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.product-info h2 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #092399;
+    margin-bottom: 15px;
+}
+
+.product-info ul.list {
+    margin-bottom: 20px;
+}
+
+.product-info ul.list li {
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.product-info p {
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.quantity {
+    flex-direction: column;
+    display: flex;
+    padding: 20px;
+}
+
+.input-number {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-controls button {
+    padding: 7px 10px;
+    border: none;
+    background-color: #000000;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.quantity-controls button:hover {
+    background-color: #616161;
+}
+
+.product-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.fa-heart {
+    color: #ff0000;
+    margin: 20px;
+    font-size: 32px;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.fa-heart:hover {
+    color: #59ec14;
+}
+
+.fa-heart:active {
+    transform: scale(1.2);
+}
+
+.zoom-in {
+    overflow: hidden;
+    /* Hide overflow content outside the image section */
+}
+
+.thumbnail-image {
+    width: 100px;
+    /* Set the desired width for the thumbnails */
+    height: auto;
+    /* Maintain the aspect ratio */
+    cursor: pointer;
+    /* Show pointer cursor on hover for interaction */
+    margin: 0;
+    /* Remove margin to minimize the spacing */
+    border: 1px solid #ddd;
+    /* Add a border for better visibility */
+    border-radius: 5px;
+    /* Optional: Add rounded corners */
+}
+
+.thumbnail-image:hover {
+    border-color: #333;
+    /* Change border color on hover for a highlight effect */
+}
+
+/* Zoom on hover */
+.zoom-image {
+    transition: transform 0.9s ease-in-out;
+}
+
+.zoom-image:hover {
+    transform: scale(1.05);
+}
+
+.product__thumb__pic img,
+.product__details__pic__item img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    /* or object-fit: cover; depending on your design */
+}
+
+  </style>
 
 <%- include("../layouts/userpartials/footer.ejs") %>

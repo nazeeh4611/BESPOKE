@@ -75,6 +75,7 @@ const loadAddProduct = async(req,res)=>{
             category: existcategory._id,
             date: new Date(),
           });
+
       
           await newproduct.save();
           res.redirect("/admin/products");
@@ -85,9 +86,34 @@ const loadAddProduct = async(req,res)=>{
       };
 
 
+      const loadeditproduct = async(req,res)=>{
+        try {
+            const id = req.query.productId;
+            if(!id || !mongoose.Types.ObjectId.isValid(id)){
+                res.status(400).send("Invalid productId")
+            }
+            const productData = await category.find({is_Listed:1});
+            const Datas = await products.findOne({_id:id})
+            
+
+            
+            if(!Datas){
+                res.status(404).send("Product not found");
+            }
+
+            const messages = {};
+            res.render("admin/editproduct",{productData,Datas,messages})
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send("Internal server error")
+        }
+      }
+
+
 const editProduct = async(req,res)=>{
     try {
-        const id = req.body._id;
+        const id = req.body.id;
+        console.log("id",id)
         const {productName,description,quantity,categories,price} = req.body;
 
         const Datas = await products.findOne({_id:id});
@@ -95,6 +121,7 @@ const editProduct = async(req,res)=>{
         const imageData =[];
         if(req.files){
             const existedImagecount = (await products.findById(id)).Image.length;
+            console.log("suii",existedImagecount);
             if(existedImagecount + req.files.length !== 4){
                 return res.render('admin/editproduct',{
                     message:"4 images is enough",
@@ -205,6 +232,7 @@ module.exports = {
     loadProduct,
     loadAddProduct,
     addProduct,
+    loadeditproduct,
     editProduct,
     productListed,
     productUnlist,
