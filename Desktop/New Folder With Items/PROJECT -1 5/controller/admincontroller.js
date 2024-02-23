@@ -21,7 +21,7 @@ const verifyAdminLogin = async (req, res) => {
             const passwordMatch = await bcrypt.compare(req.body.password, userData.password);
 
             if (passwordMatch) {
-                req.session.adminId = userData.adminId;
+                req.session.adminId = userData._id;
                 res.redirect('/admin/dashboard');
             } else {
                 messages.message = "Incorrect password"; // Assign error message to messages.message
@@ -51,7 +51,8 @@ const adminDashboard = async(req,res)=>{
 
 const adminLogout = async(req,res)=>{
    try {
-    res.render("admin/adminlogin")
+    req.session.destroy();
+    res.redirect("/admin/")
    } catch (error) {
     console.log(error.message);
    }

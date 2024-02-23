@@ -204,7 +204,7 @@ const deleteProduct = async(req,res)=>{
 }
 
 
-const ImageDelete = async(req,res)=>{
+const deleteimage = async(req,res)=>{
     try {
         const {img,prdtid} = req.body;
         if(!prdtid){
@@ -237,7 +237,7 @@ module.exports = {
     productListed,
     productUnlist,
     deleteProduct,
-    ImageDelete,
+    deleteimage,
 }
 
 
