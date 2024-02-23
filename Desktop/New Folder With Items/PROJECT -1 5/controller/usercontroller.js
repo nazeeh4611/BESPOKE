@@ -46,7 +46,7 @@ const securePassword = async (password) => {
 const verifyRegister = async (req, res) => {
   try {
     const existUser = await User.findOne({ email: req.body.email });
-    if (existUser && !existUser.is_Verified) {
+    if (existUser && existUser.is_Verified) {
       const message = "Email already Registered ";
       res.render("user/register", { message });
     } else if (existUser && !existUser.is_Verified) {
@@ -55,17 +55,21 @@ const verifyRegister = async (req, res) => {
       res.render("user/register", { message });
     } else {
       const confirmPassword = req.body.confirmPassword;
-      console.log(confirmPassword);
+
       const spassword = await securePassword(req.body.password);
-      console.log("the spassword", spassword);
+
 
       const user = new User({
         name: req.body.name,
-        email: req.body.email,
+        email:req.body.email,
         mobile: req.body.mobile,
         password: spassword,
         confirmpassword: confirmPassword,
+       
       });
+     
+ 
+
 
       if (req.body.password !== confirmPassword) {
         return res.render("user/register", {
@@ -350,6 +354,15 @@ const MyAccount = async (req, res) => {
 };
 
 
+const userLogout = async(req,res)=>{
+  try {
+    req.session.userId = null;
+    res.redirect("/login")
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 // load shop----------------------------
 
 const loadshop = async(req,res)=>{
@@ -410,6 +423,7 @@ module.exports = {
   lostpasswordVerify,
   newPasswordLoad,
   MyAccount,
+  userLogout,
   resetPass,
   loadshop,
   ProductDetail,

@@ -378,25 +378,25 @@
         </div>
 
       <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const fileInput = document.getElementById('productImage');
-    const imagePreviewContainer = document.getElementById('imagePreview');
+// document.addEventListener('DOMContentLoaded', function () {
+//     const fileInput = document.getElementById('productImage');
+//     const imagePreviewContainer = document.getElementById('imagePreview');
 
-    fileInput.addEventListener('change', function () {
-        imagePreviewContainer.innerHTML = "";
+//     fileInput.addEventListener('change', function () {
+//         imagePreviewContainer.innerHTML = "";
 
-        for (const file of fileInput.files) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = "img-sm img-thumbnail mr-2";
-            img.alt = "preview";
-            img.style.width = '80px'; // Set a fixed width
-            img.style.height = '80px'; // Set a fixed height
-            img.style.objectFit = 'cover'; // Ensures the image fills the container without stretching
-            imagePreviewContainer.appendChild(img);
-        }
-    });
-});
+//         for (const file of fileInput.files) {
+//             const img = document.createElement('img');
+//             img.src = URL.createObjectURL(file);
+//             img.className = "img-sm img-thumbnail mr-2";
+//             img.alt = "preview";
+//             img.style.width = '80px';
+//             img.style.height = '80px'; 
+//             img.style.objectFit = 'cover'; 
+//             imagePreviewContainer.appendChild(img);
+//         }
+//     });
+// });
 
   
       </script>
