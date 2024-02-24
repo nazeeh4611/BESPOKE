@@ -399,8 +399,8 @@
                         <tr>
                             <td><%= Data[i].name %></td>
                             <td><%= Data[i].description %></td>
-                            <td><a href="/admin/edit?id=<%= Data[i]._id %>" class="btn btn-sm font-sm rounded btn-edit"> <i class="material-icons md-edit"></i> Edit </a></td>
-                            <td><a href="/admin/delete?id=<%= Data[i]._id %>" class="btn btn-sm font-sm btn-delete rounded"> <i class="material-icons md-delete_forever"></i> Delete </a></td>
+                            <td><a href="/admin/editcategory?id=<%= Data[i]._id %>" class="btn btn-sm font-sm rounded btn-edit"> <i class="material-icons md-edit"></i> Edit </a></td>
+                            <td><a href="/admin/deletecategory?id=<%= Data[i]._id %>" class="btn btn-sm font-sm btn-delete rounded"> <i class="material-icons md-delete_forever"></i> Delete </a></td>
                             <td class="text-end">
                                 <div class="dropdown">
                                     <% if (Data[i].is_Listed == 1) { %>

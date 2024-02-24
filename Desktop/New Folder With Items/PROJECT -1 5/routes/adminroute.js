@@ -20,10 +20,10 @@ adminRoute.get("/users",adminAuth.isLogin,adminController.userManagement);
 adminRoute.get("/block",adminAuth.isLogin,adminController.BlockUser);
 
 adminRoute.get("/category",adminAuth.isLogin,categoryController.loadCategory);
-adminRoute.get("/addcategory",adminAuth.isLogin,categoryController.addCategory);
-adminRoute.post("/addcategory",adminAuth.isLogin,categoryController.newCategory);
-adminRoute.get("/editcategory",adminAuth.isLogin,categoryController.editCategory);
-adminRoute.post("/editcategory",adminAuth.isLogin,categoryController.editedCategory);
+adminRoute.get("/addcategory",categoryController.addCategory);
+adminRoute.post("/addcategory",categoryController.newCategory);
+adminRoute.get("/editcategory",categoryController.editCategory);
+adminRoute.post("/editcategory",categoryController.editedCategory);
 adminRoute.get("/deletecategory",adminAuth.isLogin,categoryController.deleteCategory);
 adminRoute.get("/list",adminAuth.isLogin,categoryController.Listed);
 adminRoute.get("/unlist",adminAuth.isLogin,categoryController.UnListed);
@@ -35,7 +35,7 @@ adminRoute.get("/editproduct",adminAuth.isLogin,productController.loadeditproduc
 adminRoute.post("/editproduct",adminAuth.isLogin,upload.upload.array('image',4),productController.editProduct);
 adminRoute.post("/listproduct",adminAuth.isLogin,productController.productListed);
 adminRoute.post("/unlistproduct",adminAuth.isLogin,productController.productUnlist);
-adminRoute.get("/deleteproduct",adminAuth.isLogin,productController.deleteProduct);
+adminRoute.delete("/deleteproduct",adminAuth.isLogin,productController.deleteProduct);
 adminRoute.delete("/deleteimage",adminAuth.isLogin,productController.deleteimage)
 
 

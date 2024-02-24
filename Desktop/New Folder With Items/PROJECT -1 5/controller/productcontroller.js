@@ -159,10 +159,12 @@ const editProduct = async(req,res)=>{
                 categories:selectcategory._id,
                 $push:{Image:{$each:imageData}},
             },
+         
             {
                 new:true,
             }
         );
+    
         res.redirect("/admin/products")
     } catch (error) {
         console.log((error.message));

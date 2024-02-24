@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Make a fetch request to resend OTP
         try {
-            const response = await fetch('/resend-otp', {
+            const response = await fetch('/sentotp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
