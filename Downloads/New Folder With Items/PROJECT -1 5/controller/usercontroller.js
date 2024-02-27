@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const Product = require("../model/productModel");
+const Cart = require("../model/cartModel");
 const Category = require("../model/catagoryModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -15,9 +16,8 @@ const nodemailer = require('nodemailer');
 const loadHome = async (req, res) => {
   try {
     const userIn = req.session.userId;
-   
 
-    res.render("user/home", { userIn });
+    res.render("user/home", { userIn});
   } catch (error) {
     console.log(error.message);
   }

@@ -112,16 +112,16 @@
               <p><%= data.description %></p>
              
               <% if(data.quantity >0){ %>
-              <form name="addtocart-form" method="post">
-                <div class="product-single__addtocart">
-                  <div class="qty-control position-relative">
-                    <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
-                    <div class="qty-control__reduce">-</div>
-                    <div class="qty-control__increase">+</div>
-                  </div><!-- .qty-control -->
-                  <button type="submit" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Add to Cart</button>
-                </div>
-              </form>
+                <form name="addtocart-form" method="post">
+                  <div class="product-single__addtocart">
+                    <div class="qty-control position-relative">
+                      <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
+                      <div class="qty-control__reduce">-</div>
+                      <div class="qty-control__increase">+</div>
+                    </div><!-- .qty-control -->
+                    <button type="button" onclick="addToCart('<%= data._id %>')" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Add to Cart</button>
+                  </div>
+                </form>
               <% }else{ %>
                 <form name="addtocart-form" method="post">
                   <div class="product-single__addtocart">
@@ -340,9 +340,7 @@
                 <a href="./product1_simple.html">
                   <img loading="lazy" src="/public/images/product-3-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                   <img loading="lazy" src="/public/images/product-3-2.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
+                </a><button onclick="addToCart(productId)" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>  </div>
     
               <div class="pc__info position-relative">
                 <p class="pc__category">Dresses</p>
@@ -473,6 +471,70 @@ function slideImage(){
 
 window.addEventListener('resize', slideImage);
 </script>
+
+
+
+<script>
+function openCartDrawer() {
+  updateCartDrawer(); // Call the function to update the cart drawer
+  // Add code to open the cart drawer if it's not already open
+}
+
+
+  function addToCart(id){
+    $.ajax({
+      url:"/cart",
+      method:"post",
+      dataType:"json",
+      data:{
+        productId:id,
+      },
+    })
+    .done((data)=>{
+      if(data.success){
+        Swal.fire({
+          position:"center",
+          icon: "success",
+          title:"product added to cart",
+          showConfirmButton:false,
+          timer:1500,
+        });
+        // Update aside content here
+        updateCartDrawer();
+      } else {
+        if(data.redirectTologin){
+         
+        } else {
+          console.error("failed add to cart",data.error);
+        }
+      }
+    })
+    .fail((xhr,status,error)=>{
+      console.error("an error occurred",error)
+    });
+  }
+
+  function updateCartDrawer() {
+    $.ajax({
+      url: "/cart", // Update the URL to fetch cart items
+      method: "get", // Use GET method to fetch cart items
+      dataType: "html", // Expect HTML response
+    })
+    .done((data) => {
+      $(".cart-drawer-items-list").html(data); // Replace cart drawer content with fetched HTML
+    })
+    .fail((xhr, status, error) => {
+      console.error("an error occurred while updating cart drawer", error);
+    });
+  }
+</script>
+
+
+
+
+
+
+
   <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
@@ -678,6 +740,8 @@ img{
     }
 }
   </style>
+
+  
 
   
 

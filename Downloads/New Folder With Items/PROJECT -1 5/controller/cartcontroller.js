@@ -12,7 +12,7 @@ const cartopen = async(req,res)=>{
         const userId = req.session.userId
         if(userId){
             const cartdata = await Cart.findOne({user:userId}).populate({
-                path:"product,productId",
+                path:"product.productId",
                 model:"Product",
             });
             const subtotal = cartdata?.product.reduce(
@@ -42,19 +42,19 @@ const AddToCart = async(req,res)=>{
        if(!userdata){
         res.json({session:false,error:"user not found"});
        }
-       const productId = req.body.productId;
-       const productdata = await Product.findById(productId)
+       const productid = req.body.productId;
+       const productdata = await Product.findById(productid)
 
        if(!productdata || productdata.quantity === 0){
         res.json({quantity:false,error:"Product is not found or Out of Stock"});
        }
-       const existProduct = await Cart({user:userId,"product.productId":productId})
+       const existProduct = await Cart({user:userId,"product.productId":productid})
 
        if(existProduct){
         const UpdatedCart = await Cart.findByIdAndUpdate(
             {
             user:userId,
-            "product.productId":productId,
+            "product.productId":productid,
         },
         {
             $inc:{"product.$.quantity":1}
@@ -71,7 +71,7 @@ const AddToCart = async(req,res)=>{
             $set:{user:userId},
             $push:{
             product:{
-            product:productId,
+            product:productid,
             price:productdata.price,
             quantity:1,
             total:productdata.price,

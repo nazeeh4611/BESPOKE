@@ -29,6 +29,7 @@
                 <th></th>
               </tr>
             </thead>
+            <% cartdata.product.forEach(product =>{ %>
             <tbody>
               <tr>
                 <td>
@@ -70,6 +71,7 @@
             </tr>
             </tbody>
           </table>
+          <% }) %>
           <% }else{ %>
             <h3>Cart is empty</h3>
             <%}%>
