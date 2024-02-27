@@ -1,37 +1,34 @@
 const mongoose = require("mongoose");
-const {ObjectId} = require("mongodb")
 
-const cartmodel = new mongoose.Schema({
-  user:{
-    type:ObjectId,
-    ref:"User",
-    required:true,
+const cartModel = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
-  product:[
+  product: [
     {
-        productId:{
-            type:ObjectId,
-            ref:"Product",
-            required:true,
-        },
-        price:{
-            type:Number,
-            required:true,
-        },
-        quantity:{
-            type:Number,
-            required:true,
-        },
-        total:{
-            type:Number,
-            required:true,
-        }
-        
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+      price: {
+        type: Number,
+        default: 0,
+      },
+      quantity: {
+        type: Number,
+        default: 0,
+      },
+      total: {
+        type: Number,
+        default: 0,
+      }
     }
   ]
-})
+});
 
+// Middleware to convert string values to ObjectId
 
-const Cart = mongoose.model("Cart",cartmodel);
-module.exports = Cart
-
+module.exports = mongoose.model("Cart", cartModel);

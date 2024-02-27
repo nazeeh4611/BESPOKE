@@ -44,6 +44,11 @@
       </div><!-- /.customer-forms__wrapper -->
     </div><!-- /.aside aside_right -->
 
+     <!-- Cart Drawer -->
+
+
+
+    
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
       
@@ -119,7 +124,7 @@
                       <div class="qty-control__reduce">-</div>
                       <div class="qty-control__increase">+</div>
                     </div><!-- .qty-control -->
-                    <button type="button" onclick="addToCart('<%= data._id %>')" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Add to Cart</button>
+                    <button type="button" onclick="addToCart('<%= data._id %>')" class="btn btn-primary btn-addtocart">Add to Cart</button>
                   </div>
                 </form>
               <% }else{ %>
@@ -482,10 +487,10 @@ function openCartDrawer() {
 
 
   function addToCart(id){
+    console.log("vutuyvj",id);
     $.ajax({
       url:"/cart",
       method:"post",
-      dataType:"json",
       data:{
         productId:id,
       },

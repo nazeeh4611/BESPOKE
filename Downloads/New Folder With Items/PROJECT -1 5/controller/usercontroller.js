@@ -17,7 +17,10 @@ const loadHome = async (req, res) => {
   try {
     const userIn = req.session.userId;
 
-    res.render("user/home", { userIn});
+ 
+   
+
+    res.render("user/home", { userIn,user: req.session.userId});
   } catch (error) {
     console.log(error.message);
   }
@@ -406,6 +409,7 @@ const ProductDetail = async(req,res)=>{
     console.log("suii",productId);
     const product =  await Product.findById({_id:productId}).populate("category");
     const userIn = req.session.userId;
+    console.log("nmnm",userIn);
 
     res.render("user/productdetail",{data:product,user:req.session.userId,userIn});
   

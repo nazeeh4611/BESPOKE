@@ -1,4 +1,4 @@
-const Cart = require("../model/cartModel");
+const Cart = require("../model/cartModel")
 const Category = require("../model/catagoryModel");
 const User = require("../model/userModel");
 const Product = require("../model/productModel");
@@ -10,16 +10,26 @@ const { session } = require("passport");
 const cartopen = async(req,res)=>{
     try {
         const userId = req.session.userId
+
         if(userId){
-            const cartdata = await Cart.findOne({user:userId}).populate({
-                path:"product.productId",
-                model:"Product",
+            const cartdata = await Cart.findOne({ user: userId }).populate({
+                path: "product.productId",
+                model: "Product"
             });
+
+          
+         
+            console.log("nmnm",cartdata);
+
+        
+         
             const subtotal = cartdata?.product.reduce(
-                (acc,value)=>{
-                    acc+val.total,0
-                }
-            )
+                (acc, val) => acc + val.total,
+                0
+            );
+            
+
+          console.log("subtotal",subtotal);
             res.render("user/cart",{cartdata,subtotal,user: req.session.userId});
         }else{
             res.redirect("/login");
@@ -29,63 +39,68 @@ const cartopen = async(req,res)=>{
     }
 }
 
-
-const AddToCart = async(req,res)=>{
+const AddToCart = async (req, res) => {
     try {
-       const {userId} = req.session;
-       if(!userId){
-        return res.json({session:false,error:"please login"})
-       } 
+        const { userId } = req.session;
+        if (!userId) {
+            return res.json({ session: false, error: "Please login" });
+        }
 
-       const userdata = await User.findOne({_id:userId});
+        const userdata = await User.findOne({ _id: userId });
+        if (!userdata) {
+            return res.json({ session: false, error: "User not found" });
+        }
 
-       if(!userdata){
-        res.json({session:false,error:"user not found"});
-       }
-       const productid = req.body.productId;
-       const productdata = await Product.findById(productid)
+        const productId = req.body.productId; // Corrected variable name
+        const productdata = await Product.findById(productId);
+        if (!productdata || productdata.quantity === 0) {
+            return res.json({ success: false, error: "Product is not found or out of stock" });
+        }
 
-       if(!productdata || productdata.quantity === 0){
-        res.json({quantity:false,error:"Product is not found or Out of Stock"});
-       }
-       const existProduct = await Cart({user:userId,"product.productId":productid})
+        // Find if the product already exists in the user's cart
+        const existProduct = await Cart.findOne({
+            user: userId,
+            "product.productId": productId // Ensure correct property name
+        });
 
-       if(existProduct){
-        const UpdatedCart = await Cart.findByIdAndUpdate(
-            {
-            user:userId,
-            "product.productId":productid,
-        },
-        {
-            $inc:{"product.$.quantity":1}
-        },
-        {new:true},
-        
-        );
-        return res.json({success:true,stock:true,UpdatedCart});
-       }else{
-        const cartdata = await Cart.findByIdAndUpdate({
-            user:userId,
-        },
-        {
-            $set:{user:userId},
-            $push:{
-            product:{
-            product:productid,
-            price:productdata.price,
-            quantity:1,
-            total:productdata.price,
-        },
-        },
-       },
-       {upsert:true,new:true}
-        );
-       }
+        if (existProduct) {
+            // If the product exists, increment its quantity
+            const updatedCart = await Cart.findOneAndUpdate(
+                {
+                    user: userId,
+                    "product.productId": productId
+                },
+                {
+                    $inc: { "product.$.quantity": 1 }
+                },
+                { new: true }
+            );
+            return res.json({ success: true, stock: true, updatedCart });
+        } else {
+            // If the product doesn't exist, add it to the cart
+            const cartData = await Cart.findOneAndUpdate(
+                { user: userId },
+                {
+                    $set: { user: userId },
+                    $push: {
+                        product: {
+                            productId: productId, // Ensure correct property name
+                            price: productdata.price,
+                            quantity: 1,
+                            total: productdata.price
+                        }
+                    }
+                },
+                { upsert: true, new: true } // Upsert ensures insertion if document doesn't exist
+            );
+            return res.json({ success: true, stock: true, cartData });
+        }
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({success:false,error:"Internal server error"})
-}
-}
+        res.status(500).json({ success: false, error: "Internal server error" });
+    }
+};
+
 
 
 module.exports = {
