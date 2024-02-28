@@ -19,7 +19,7 @@ const cartopen = async(req,res)=>{
 
           
          
-            console.log("nmnm",cartdata);
+          
 
         
          
@@ -102,8 +102,89 @@ const AddToCart = async (req, res) => {
 };
 
 
+const updateCart = async(req,res)=>{
+    try {
+        const product_id = req.body.productId;
+        const user_id = req.session.userId;
+        const count = req.body.count;
+
+        const product = await Product.findOne({_id:product_id});
+        const cartData = await Cart.findOne({user:user_id});
+
+        console.log("lklk",cartData);
+        if(count == -1){
+            const currentquantity = cartData.product.find(
+                (p)=>p.productId == product_id
+            ).quantity;
+            if(currentquantity <= 1){
+                return res.json({
+                    success:false,
+                    error:"quantity cannot be decrease than 1"
+                });
+            }
+        }
+
+        if(count ==1 ){
+            const currentquantity = cartData.find(
+                (p)=>product == product_id
+            ).quantity;
+            if(currentquantity+count > product.quantity){
+                return res.json({
+                    success:false,
+                    error:"Cannot be add more than quantity"
+                })
+            }
+
+        }
+
+        const cartDetail = await Cart.findByIdAndUpdate(
+            {
+                user:user_id,
+                'product.productId':product_id,
+            },
+            {
+            $inc:{
+                'product.$quantity':count,
+                'product.$total':
+                count * cartData.product.find((p)=>p.productId).equals(product_id).price,
+               
+            },
+        }
+        )
+        res.json({success:true})
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const removecart = async (req, res) => {
+    try {
+        const product_id = req.body.productId;
+        const user_id = req.session.userId;
+
+        const result = await Cart.findOneAndUpdate(
+            { user: user_id },
+            { $pull: { product:{ productId:product_id }} },
+            { new: true }
+        );
+
+        if (result) {
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ success: false, message: "Product not found in cart." });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
+}
+
 
 module.exports = {
     cartopen,
     AddToCart,
+    updateCart,
+    removecart
 }

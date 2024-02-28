@@ -56,4 +56,6 @@ userRoute.get("/profile",userAuth.isLogin,userController.MyAccount);
 //  cart
 userRoute.get("/cart",cartcontroller.cartopen);
 userRoute.post("/cart",cartcontroller.AddToCart);
+userRoute.post("/updatecart",cartcontroller.updateCart);
+userRoute.delete("/removecart",cartcontroller.removecart);
 module.exports = userRoute;

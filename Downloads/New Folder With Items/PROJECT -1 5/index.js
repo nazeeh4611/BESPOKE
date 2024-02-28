@@ -30,18 +30,16 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/',
+    successRedirect: '/auth/google',
     failureRedirect: '/auth/google'
   })
 );
 
 app.get("/auth/protected", (req, res) => {
   if (req.isAuthenticated()) {
-    
-  } else {
-    const name = req.user;
-    console.log("jjsn",name);
+    const name = req.user.displayName;
     res.send(`hello ${name}`);
+  } else {
     res.redirect("/login"); // Redirect to login page if not authenticated
   }
 });
@@ -71,8 +69,7 @@ app.use(nocache());
 const userRoute = require("./routes/userroute");
 app.use("/", userRoute);
 
-const adminRoute = require("./routes/adminroute");
-const { profile } = require("console");
+const adminRoute = require("./routes/adminroute")
 app.use("/admin", adminRoute);
 
 const port = 3009;
@@ -80,4 +77,3 @@ app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Server running on http://localhost:${port}/admin/`);
 });
-

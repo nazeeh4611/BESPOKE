@@ -201,14 +201,14 @@ const userLogin = async (req, res) => {
 const verifylogin = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log("usr data nguy", user);
+
 
     if (user) {
       const passwordMatch = await bcrypt.compare(
         req.body.password,
         user.password
       );
-      console.log("hiii");
+  
       if (passwordMatch) {
         if (user.is_Verified === 1) {
           req.session.userId = user._id;
@@ -410,6 +410,7 @@ const ProductDetail = async(req,res)=>{
     const product =  await Product.findById({_id:productId}).populate("category");
     const userIn = req.session.userId;
     const userId = req.session.userId
+    console.log("jk",userId);
 
     const cartdata = await Cart.findOne({ user: userId }).populate({
       path: "product.productId",

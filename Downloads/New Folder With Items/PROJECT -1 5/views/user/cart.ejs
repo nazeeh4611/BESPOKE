@@ -2,6 +2,8 @@
 
 <main>
   <div class="mb-4 pb-4"></div>
+  <div class="mb-4 pb-4"></div>
+  
   <section class="shop-checkout container">
       <h2 class="page-title">Cart</h2>
       <div class="checkout-steps">
@@ -16,6 +18,7 @@
       <div class="shopping-cart">
           <div class="cart-table__wrapper">
               <% if (cartdata && cartdata.product.length > 0) { %>
+                <div class="mb-5 pb-xl-5" id="reload">
               <table class="cart-table">
                   <thead>
                       <tr>
@@ -49,27 +52,27 @@
                           </td>
                           <td>
                               <div class="qty-control position-relative">
-                                  <input type="number" name="quantity" value="3" min="1" class="qty-control__number text-center">
-                                  <div class="qty-control__reduce">-</div>
-                                  <div class="qty-control__increase">+</div>
+                                  <input type="number" name="quantity" value="" min="1" class="qty-control__number text-center">
+                                  <div class="qty-control__reduce"  onclick="updatecount('<%= product.productId._id %>',-1) ">-</div>
+                                  <div class="qty-control__increase" onclick="updatecount('<%= product.productId._id %>',+1) ">+</div>
                               </div><!-- .qty-control -->
                           </td>
                           <td>
-                              <span class="shopping-cart__subtotal">$297</span>
+                              <span class="shopping-cart__subtotal">$<%= product.price * product.quantity %></span>
                           </td>
                           <td>
-                              <a href="#" class="remove-cart">
-                                  <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z"></path>
-                                      <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z"></path>
-                                  </svg>
-                              </a>
+                            <a href="#" onclick="removecart('<%= product.productId._id %>')" class="remove-cart">
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z"></path>
+                                    <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z"></path>
+                                </svg>
+                            </a>
                           </td>
                       </tr>
                   </tbody>
                   <% }) %>
               </table>
-            
+            </div>
      
          
               <div class="cart-table-footer">
@@ -82,7 +85,7 @@
           </div>
           <div class="shopping-cart__totals-wrapper">
               <div class="sticky-content">
-                  <div class="shopping-cart__totals">
+                  <div class="shopping-cart__totals" id="subtotal">
                       <h3>Cart Totals</h3>
                       <table class="cart-totals">
                        
@@ -120,8 +123,94 @@
       </div>
   </section>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+    function updatecount(productId,count){
+     const data = {productId,count};
+     fetch('/updatecart',{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(data)
+     })
+     .then(response=>response.json)
+
+     .then(response=>{
+        if(response.success){
+        $('#reload').load('/cart  #reload')
+        $('#subtotal').load('/cart  subtotal')
+        }else{
+            console.log(suii);
+        }
+     })
+    }
+</script>
+
+<script>
+    // function removecart(productId){
+    //     fetch('/removecart',{
+    //         method:'post',
+    //         headers:{
+    //             'Content-Type':'application/json'
+    //         },
+            
+    //         body:JSON.stringify(productId)
+    //     })
+
+    //     .then(response=>response.json())
+
+    //     .then(response=>{
+    //         if(response.success){
+    //             console.log(response.success);
+    //             $('#reload').load('/cart #reload')
+    //             $('#subtotal').load('/cart  #subtotal');
+            
+    //                 swal.fire({
+    //                     title: "Item Removed!",
+    //                     text: "The item has been successfully removed from your cart.",
+    //                     icon: "success",
+    //                     showConfirmButton: false,
+    //                     timer: 5000,
+    //                 })
+    //             }
+    //         else{
+    //              console.log(error);
+    //         }
+    //     })
+    // }
+
+function removecart(id) {
+    $.ajax({
+        url: "/removecart",
+        method: 'DELETE',
+        data: {
+            productId: id,
+        },
+        success: (response) => {
+            if (response.success) {
+                Swal.fire({
+                    title: "Item Removed!",
+                    text: "The item has been successfully removed from your cart.",
+                    icon: "success",
+                    showConfirmButton: false,
+                });
+                $('#reload').load('/cart #reload')
+                // Optionally, you can add logic here to update the UI after successful removal
+            } else {
+                console.error("Failed to remove item from cart.");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error("Error occurred:", error);
+        }
+    });
+}
+
+ 
+</script>
 
   <div class="mb-5 pb-xl-5"></div>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <%- include("../layouts/userpartials/footer.ejs") %>
