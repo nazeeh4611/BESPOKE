@@ -409,9 +409,26 @@ const ProductDetail = async(req,res)=>{
     console.log("suii",productId);
     const product =  await Product.findById({_id:productId}).populate("category");
     const userIn = req.session.userId;
+    const userId = req.session.userId
+
+    const cartdata = await Cart.findOne({ user: userId }).populate({
+      path: "product.productId",
+      model: "Product"
+  });
+
+  console.log("nmnm",cartdata);
+
+        
+         
+  const subtotal = cartdata?.product.reduce(
+      (acc, val) => acc + val.total,
+      0
+  );
+
+
     console.log("nmnm",userIn);
 
-    res.render("user/productdetail",{data:product,user:req.session.userId,userIn});
+    res.render("user/productdetail",{data:product,user:req.session.userId,userIn,cartdata,subtotal,user: req.session.userId});
   
     
   } catch (error) {
