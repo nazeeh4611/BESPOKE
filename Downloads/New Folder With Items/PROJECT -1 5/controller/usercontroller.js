@@ -360,7 +360,11 @@ const resetPass = async(req,res)=>{
 // load MyAccount----------------------
 const MyAccount = async (req, res) => {
   try {
-    res.render("user/profile");
+    const userId = req.session.userId
+    const userid = await User.findOne({_id:userId})
+
+    console.log("the userdata may here",userid);
+    res.render("user/userdashboard",{userid});
   } catch (error) {
     console.log(error.message);
   }

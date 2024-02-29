@@ -121,7 +121,7 @@ const editProduct = async(req,res)=>{
         const imageData =[];
         if(req.files){
             const existedImagecount = (await products.findById(id)).Image.length;
-            console.log("suii",existedImagecount);
+      
             if(existedImagecount + req.files.length !== 4){
                 return res.render('admin/editproduct',{
                     message:"4 images is enough",

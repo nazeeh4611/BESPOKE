@@ -38,6 +38,12 @@ const userSchema = new mongoose.Schema({
   is_Blocked:{
     type:Number,
     default:0,
+  },
+  google:{
+  type:Boolean,
+  },
+  facebook:{
+    type:Boolean,
   }
   
 });

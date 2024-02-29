@@ -14,46 +14,17 @@ const passport = require("passport");
 app.use(
   session({
     secret: process.env.SECRET,
-    saveUninitialized: false,
+    saveUninitialized: true,
     resave: false,
   })
 );
 
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
-// Google Authentication Routes
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] })
-);
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', {
-    successRedirect: '/auth/google',
-    failureRedirect: '/auth/google'
-  })
-);
-
-app.get("/auth/protected", (req, res) => {
-  if (req.isAuthenticated()) {
-    const name = req.user.displayName;
-    res.send(`hello ${name}`);
-  } else {
-    res.redirect("/login"); // Redirect to login page if not authenticated
-  }
-});
 
 // facebook Authentication Routes
-app.get('/auth/facebook',
-  passport.authenticate('facebook', {}));
 
-  app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/register' }),
-  function(req, res) {
-    res.redirect('/');
-  });
 
+ 
 
 
 

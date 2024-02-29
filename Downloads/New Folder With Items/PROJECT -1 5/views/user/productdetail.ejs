@@ -602,7 +602,7 @@ function updateCartDrawer() {
   .done((drawerData) => {
     
     $(".cart-drawer").html(drawerData); // Replace entire cart drawer content with fetched HTML
-    $('#cartDrawer').load('/productdetail #cartDrawer')
+   
 
   })
   .fail((xhr, status, error) => {

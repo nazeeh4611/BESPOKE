@@ -31,17 +31,7 @@ passport.deserializeUser((user,done)=>{
 
 const FacebookStrategy = require("passport-facebook").Strategy;
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3009/auth/facebook/callback",
-    profileFields: ['id', 'displayName', 'photos', 'email']
-  },
-  function(accessToken, refreshToken, profile,done) {
-   console.log(profile);
-   return done(null,profile)
-  }
-));
+
 
 module.exports = {
     GoogleStrategy,
