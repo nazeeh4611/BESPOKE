@@ -1,17 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const UserotpverificationSchema = new mongoose.Schema({
+  email: String,
 
-    email:String,
+  otp: String,
 
-    otp:String,
+  createdAt: Date,
 
-    createdAt:Date,
-
-    expiresAt:Date,
+  expiresAt: Date,
 });
 
 module.exports = mongoose.model(
-    'UserotpverificationSchema',
-    UserotpverificationSchema
+  "UserotpverificationSchema",
+  UserotpverificationSchema
 );

@@ -1,7 +1,7 @@
 <%- include("../layouts/userpartials/header.ejs") %>
 
 
-<main>
+  <main>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">
       <h2 class="page-title">My Account</h2>
@@ -18,8 +18,14 @@
         </div>
         <div class="col-lg-9">
           <div class="page-content my-account__dashboard">
-            <h4>Hello <strong><%= userid.name %></strong> (not <strong>alitfn58?</strong> <a href="/login">Log out</a>)</p>
-            <p>From your account dashboard you can view your <a class="unerline-link" href="./account_orders.html">recent orders</a>, manage your <a class="unerline-link" href="./account_edit_address.html">shipping and billing addresses</a>, and <a class="unerline-link" href="./account_edit.html">edit your password and account details.</a></h4>
+            <h4>Hello <strong>
+                <%= userid.name %>
+              </strong> (not <strong>alitfn58?</strong> <a href="/login">Log out</a>)</p>
+              <p>From your account dashboard you can view your <a class="unerline-link"
+                  href="./account_orders.html">recent orders</a>, manage your <a class="unerline-link"
+                  href="./account_edit_address.html">shipping and billing addresses</a>, and <a class="unerline-link"
+                  href="./account_edit.html">edit your password and account details.</a>
+            </h4>
           </div>
         </div>
       </div>
@@ -28,4 +34,4 @@
 
   <div class="mb-5 pb-xl-5"></div>
 
-    <%- include("../layouts/userpartials/footer.ejs") %>
+  <%- include("../layouts/userpartials/footer.ejs") %>

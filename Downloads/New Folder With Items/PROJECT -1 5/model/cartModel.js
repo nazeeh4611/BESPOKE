@@ -24,9 +24,9 @@ const cartModel = new mongoose.Schema({
       total: {
         type: Number,
         default: 0,
-      }
-    }
-  ]
+      },
+    },
+  ],
 });
 
 // Middleware to convert string values to ObjectId

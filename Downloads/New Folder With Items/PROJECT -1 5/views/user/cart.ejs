@@ -1,216 +1,235 @@
 <%- include("../layouts/userpartials/header.ejs") %>
 
-<main>
-  <div class="mb-4 pb-4"></div>
-  <div class="mb-4 pb-4"></div>
-  
-  <section class="shop-checkout container">
-      <h2 class="page-title">Cart</h2>
-      <div class="checkout-steps">
-          <a href="./shop_cart.html" class="checkout-steps__item active">
-              <span class="checkout-steps__item-number"></span>
-              <span class="checkout-steps__item-title">
-                  <span>Shopping Bag</span>
-                  <em>Manage Your Items List</em>
-              </span>
-          </a>
-      </div>
-      <div class="shopping-cart">
-          <div class="cart-table__wrapper">
-              <% if (cartdata && cartdata.product.length > 0) { %>
-                <div class="mb-5 pb-xl-5" id="reload">
-              <table class="cart-table">
-                  <thead>
-                      <tr>
-                          <th>Product</th>
-                          <th></th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Subtotal</th>
-                          <th></th>
-                      </tr>
-                  </thead>
-                  <% cartdata.product.forEach(product => { %>
-                  <tbody>
-                      <tr>
-                          <td>
-                              <div class="shopping-cart__product-item">
-                                  <img loading="lazy" src="/public/uploadImg/<%= product.productId.Image[0] %>" width="120" height="120" alt="product imege">
-                              </div>
-                          </td>
-                          <td>
-                              <div class="shopping-cart__product-item__detail">
-                                  <h4><%= product.productId.name %></h4>
-                                  <ul class="shopping-cart__product-item__options">
-                                      <!-- <li>Color: Yellow</li>
-                    <li>Size: L</li> -->
-                                  </ul>
-                              </div>
-                          </td>
-                          <td>
-                              <span class="shopping-cart__product-price">$<%= product.productId.price %></span>
-                          </td>
-                          <td>
-                              <div class="qty-control position-relative">
-                                  <input type="number" name="quantity" value="" min="1" class="qty-control__number text-center">
-                                  <div class="qty-control__reduce"  onclick="updatecount('<%= product.productId._id %>',-1) ">-</div>
-                                  <div class="qty-control__increase" onclick="updatecount('<%= product.productId._id %>',+1) ">+</div>
-                              </div><!-- .qty-control -->
-                          </td>
-                          <td>
-                              <span class="shopping-cart__subtotal">$<%= product.price * product.quantity %></span>
-                          </td>
-                          <td>
-                            <a href="#" onclick="removecart('<%= product.productId._id %>')" class="remove-cart">
-                                <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z"></path>
-                                    <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z"></path>
-                                </svg>
-                            </a>
-                          </td>
-                      </tr>
-                  </tbody>
-                  <% }) %>
-              </table>
+    <main>
+        <div class="mb-4 pb-4"></div>
+        <div class="mb-4 pb-4"></div>
+
+        <section class="shop-checkout container">
+            <h2 class="page-title">Cart</h2>
+            <div class="checkout-steps">
+                <a href="./shop_cart.html" class="checkout-steps__item active">
+                    <span class="checkout-steps__item-number"></span>
+                    <span class="checkout-steps__item-title">
+                        <span>Shopping Bag</span>
+                        <em>Manage Your Items List</em>
+                    </span>
+                </a>
             </div>
-     
-         
-              <div class="cart-table-footer">
-                  <form action="./" class="position-relative bg-body">
-                      <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                      <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
-                  </form>
-                  <button class="btn btn-light">UPDATE CART</button>
-              </div>
-          </div>
-          <div class="shopping-cart__totals-wrapper">
-              <div class="sticky-content">
-                  <div class="shopping-cart__totals" id="subtotal">
-                      <h3>Cart Totals</h3>
-                      <table class="cart-totals">
-                       
-                          <tbody>
-                              <tr>
-                                  <th>Subtotal</th>
-                                  <td>$<%= subtotal %></td> <!-- Use subtotal variable here -->
-                              </tr>
-                              <tr>
-                                  <th>Shipping</th>
-                                  <!-- Your shipping options -->
-                              </tr>
-                              <tr>
-                                  <th>VAT</th>
-                                  <!-- VAT amount -->
-                              </tr>
-                              <tr>
-                                  <th>Total</th>
-                                  <!-- Total amount -->
-                              </tr>
-                          </tbody>
-                      
-                      </table>
-                  </div>
-                  <div class="mobile_fixed-btn_wrapper">
-                      <div class="button-wrapper container">
-                          <button class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</button>
-                      </div>
-                      <% } else { %>
-                        <h3>Cart is empty</h3>
-                      <% } %>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
-</main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <div class="shopping-cart">
+                <div class="cart-table__wrapper">
+                    <% if (cartdata && cartdata.product.length> 0) { %>
+                        <div class="mb-5 pb-xl-5" id="reload">
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th></th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <% cartdata.product.forEach(product=> { %>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="shopping-cart__product-item">
+                                                    <img loading="lazy"
+                                                        src="/public/uploadImg/<%= product.productId.Image[0] %>"
+                                                        width="120" height="120" alt="product imege">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="shopping-cart__product-item__detail">
+                                                    <h4>
+                                                        <%= product.productId.name %>
+                                                    </h4>
+                                                    <ul class="shopping-cart__product-item__options">
+                                                        <!-- <li>Color: Yellow</li>
+                    <li>Size: L</li> -->
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="shopping-cart__product-price">$<%= product.productId.price
+                                                        %></span>
+                                            </td>
+                                            <td>
+                                                <div class="qty-control position-relative">
+                                                    <input type="number" name="quantity" value="" min="1"
+                                                        class="qty-control__number text-center">
+                                                    <div class="qty-control__reduce"
+                                                        onclick="updatecount('<%= product.productId._id %>',-1) ">-
+                                                    </div>
+                                                    <div class="qty-control__increase"
+                                                        onclick="updatecount('<%= product.productId._id %>',+1) ">+
+                                                    </div>
+                                                </div><!-- .qty-control -->
+                                            </td>
+                                            <td>
+                                                <span class="shopping-cart__subtotal">$<%= product.price *
+                                                        product.quantity %></span>
+                                            </td>
+                                            <td>
+                                                <a href="#" onclick="removecart('<%= product.productId._id %>')"
+                                                    class="remove-cart">
+                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z">
+                                                        </path>
+                                                        <path
+                                                            d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <% }) %>
+                            </table>
+                        </div>
 
-<script>
-    function updatecount(productId,count){
-     const data = {productId,count};
-     fetch('/updatecart',{
-        method:'post',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify(data)
-     })
-     .then(response=>response.json)
 
-     .then(response=>{
-        if(response.success){
-        $('#reload').load('/cart  #reload')
-        $('#subtotal').load('/cart  subtotal')
-        }else{
-            console.log(suii);
+                        <div class="cart-table-footer">
+                            <form action="./" class="position-relative bg-body">
+                                <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
+                                <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
+                                    value="APPLY COUPON">
+                            </form>
+                            <button class="btn btn-light">UPDATE CART</button>
+                        </div>
+                </div>
+                <div class="shopping-cart__totals-wrapper">
+                    <div class="sticky-content">
+                        <div class="shopping-cart__totals" id="subtotal">
+                            <h3>Cart Totals</h3>
+                            <table class="cart-totals">
+
+                                <tbody>
+                                    <tr>
+                                        <th>Subtotal</th>
+                                        <td>$<%= subtotal %>
+                                        </td> <!-- Use subtotal variable here -->
+                                    </tr>
+                                    <tr>
+                                        <th>Shipping</th>
+                                        <!-- Your shipping options -->
+                                    </tr>
+                                    <tr>
+                                        <th>VAT</th>
+                                        <!-- VAT amount -->
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <!-- Total amount -->
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="mobile_fixed-btn_wrapper">
+                            <div class="button-wrapper container">
+                                <button class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</button>
+                            </div>
+                            <% } else { %>
+                                <h3>Cart is empty</h3>
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function updatecount(productId, count) {
+            const data = { productId, count };
+            fetch('/updatecart', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json)
+
+                .then(response => {
+                    if (response.success) {
+                        $('#reload').load('/cart  #reload')
+                        $('#subtotal').load('/cart  subtotal')
+                    } else {
+                        console.log(suii);
+                    }
+                })
         }
-     })
-    }
-</script>
+    </script>
 
-<script>
-    // function removecart(productId){
-    //     fetch('/removecart',{
-    //         method:'post',
-    //         headers:{
-    //             'Content-Type':'application/json'
-    //         },
-            
-    //         body:JSON.stringify(productId)
-    //     })
+    <script>
+        // function removecart(productId){
+        //     fetch('/removecart',{
+        //         method:'post',
+        //         headers:{
+        //             'Content-Type':'application/json'
+        //         },
 
-    //     .then(response=>response.json())
+        //         body:JSON.stringify(productId)
+        //     })
 
-    //     .then(response=>{
-    //         if(response.success){
-    //             console.log(response.success);
-    //             $('#reload').load('/cart #reload')
-    //             $('#subtotal').load('/cart  #subtotal');
-            
-    //                 swal.fire({
-    //                     title: "Item Removed!",
-    //                     text: "The item has been successfully removed from your cart.",
-    //                     icon: "success",
-    //                     showConfirmButton: false,
-    //                     timer: 5000,
-    //                 })
-    //             }
-    //         else{
-    //              console.log(error);
-    //         }
-    //     })
-    // }
+        //     .then(response=>response.json())
 
-function removecart(id) {
-    $.ajax({
-        url: "/removecart",
-        method: 'DELETE',
-        data: {
-            productId: id,
-        },
-        success: (response) => {
-            if (response.success) {
-                Swal.fire({
-                    title: "Item Removed!",
-                    text: "The item has been successfully removed from your cart.",
-                    icon: "success",
-                    showConfirmButton: false,
-                });
-                $('#reload').load('/cart #reload')
-                // Optionally, you can add logic here to update the UI after successful removal
-            } else {
-                console.error("Failed to remove item from cart.");
-            }
-        },
-        error: (xhr, status, error) => {
-            console.error("Error occurred:", error);
+        //     .then(response=>{
+        //         if(response.success){
+        //             console.log(response.success);
+        //             $('#reload').load('/cart #reload')
+        //             $('#subtotal').load('/cart  #subtotal');
+
+        //                 swal.fire({
+        //                     title: "Item Removed!",
+        //                     text: "The item has been successfully removed from your cart.",
+        //                     icon: "success",
+        //                     showConfirmButton: false,
+        //                     timer: 5000,
+        //                 })
+        //             }
+        //         else{
+        //              console.log(error);
+        //         }
+        //     })
+        // }
+
+        function removecart(id) {
+            $.ajax({
+                url: "/removecart",
+                method: 'DELETE',
+                data: {
+                    productId: id,
+                },
+                success: (response) => {
+                    if (response.success) {
+                        Swal.fire({
+                            title: "Item Removed!",
+                            text: "The item has been successfully removed from your cart.",
+                            icon: "success",
+                            showConfirmButton: false,
+                        });
+                        $('#reload').load('/cart #reload')
+                        // Optionally, you can add logic here to update the UI after successful removal
+                    } else {
+                        console.error("Failed to remove item from cart.");
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error("Error occurred:", error);
+                }
+            });
         }
-    });
-}
 
- 
-</script>
 
-  <div class="mb-5 pb-xl-5"></div>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<%- include("../layouts/userpartials/footer.ejs") %>
+    </script>
+
+    <div class="mb-5 pb-xl-5"></div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <%- include("../layouts/userpartials/footer.ejs") %>

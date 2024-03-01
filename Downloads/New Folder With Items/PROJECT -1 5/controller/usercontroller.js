@@ -6,10 +6,9 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const randomstrings = require("randomstring");
 const { sendOtpVerificationMail } = require("../utils/sentotp");
-const {GoogleStrategy,FacebookStrategy} =require("../auth")
 const userOtpVerification = require("../model/userOtpVerification");
 const { name } = require("ejs");
-const nodemailer = require('nodemailer'); 
+const nodemailer = require("nodemailer");
 
 //  homepage
 
@@ -17,10 +16,7 @@ const loadHome = async (req, res) => {
   try {
     const userIn = req.session.userId;
 
- 
-   
-
-    res.render("user/home", { userIn,user: req.session.userId});
+    res.render("user/home", { userIn, user: req.session.userId });
   } catch (error) {
     console.log(error.message);
   }
@@ -62,18 +58,13 @@ const verifyRegister = async (req, res) => {
 
       const spassword = await securePassword(req.body.password);
 
-
       const user = new User({
         name: req.body.name,
-        email:req.body.email,
+        email: req.body.email,
         mobile: req.body.mobile,
         password: spassword,
         confirmpassword: confirmPassword,
-       
       });
-     
- 
-
 
       if (req.body.password !== confirmPassword) {
         return res.render("user/register", {
@@ -90,14 +81,13 @@ const verifyRegister = async (req, res) => {
   }
 };
 
-
 // const Google = async(req,res)=>{
 //   try {
 //     await GoogleStrategy({profile:})
 //     console.log("jbdhgdvgfdwg",profile);
 //   } catch (error) {
-    
-//   } 
+
+//   }
 // }
 // import from utils
 
@@ -202,13 +192,12 @@ const verifylogin = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-
     if (user) {
       const passwordMatch = await bcrypt.compare(
         req.body.password,
         user.password
       );
-  
+
       if (passwordMatch) {
         if (user.is_Verified === 1) {
           req.session.userId = user._id;
@@ -253,7 +242,6 @@ const lostpassword = async (req, res) => {
   }
 };
 
-
 // lost password verify
 
 const lostpasswordVerify = async (req, res) => {
@@ -267,9 +255,12 @@ const lostpasswordVerify = async (req, res) => {
         });
       } else {
         const randomstring = randomstrings.generate();
-        const updateData = await User.updateOne({email:email},{$set:{token:randomstring}})  
+        const updateData = await User.updateOne(
+          { email: email },
+          { $set: { token: randomstring } }
+        );
         sendForgetEmail(Details.name, Details.email, randomstring);
-        res.render("user/forgetpassword",  {
+        res.render("user/forgetpassword", {
           message: "please check your email",
         });
       }
@@ -302,147 +293,139 @@ const sendForgetEmail = async (name, email, token) => {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error); 
+        console.log(error);
       } else {
-        console.log("Email has been sent:", info.response); 
+        console.log("Email has been sent:", info.response);
       }
     });
-  } catch (error) {
-    console.log(error.message); 
-  }
-}
-
-
-  
-
-const newPasswordLoad = async(req,res)=>{
-  try {
-    const token = req.query.token;
-    const tokenData = await User.findOne({token:token})
-    console.log("the token data is here",tokenData)
-    if(tokenData){
-         res.render('user/passwordforget',{message:"",tokenData:tokenData})
-    }else{
-      res.redirect('/forgetpass')
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-const resetPass = async(req,res)=>{
-  try {
-    
-    const password = req.body.password;
-    console.log(" the password of password",password)
-    const confirmpassword = req.body.confirmpassword;
-    const user_id = req.body.user_id
-    console.log("userd",user_id);
-    if(password == confirmpassword && user_id){
-      const securepassword = await securePassword(password);
-      const updatedData = await User.findByIdAndUpdate({_id:user_id},{$set:{password:securepassword, token:''} });
-      res.redirect('/login')
-    }else{
-      res.render('user/passwordforget',{message:"password does not match"})
-    }
-
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-
-
-
-
-
-// load MyAccount----------------------
-const MyAccount = async (req, res) => {
-  try {
-    const userId = req.session.userId
-    const userid = await User.findOne({_id:userId})
-
-    console.log("the userdata may here",userid);
-    res.render("user/userdashboard",{userid});
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-const userLogout = async(req,res)=>{
+const newPasswordLoad = async (req, res) => {
   try {
-    req.session.userId = null;
-    res.redirect("/login")
+    const token = req.query.token;
+    const tokenData = await User.findOne({ token: token });
+    console.log("the token data is here", tokenData);
+    if (tokenData) {
+      res.render("user/passwordforget", { message: "", tokenData: tokenData });
+    } else {
+      res.redirect("/forgetpass");
+    }
   } catch (error) {
     console.log(error.message);
   }
-}
+};
+
+const resetPass = async (req, res) => {
+  try {
+    const password = req.body.password;
+    console.log(" the password of password", password);
+    const confirmpassword = req.body.confirmpassword;
+    const user_id = req.body.user_id;
+    console.log("userd", user_id);
+    if (password == confirmpassword && user_id) {
+      const securepassword = await securePassword(password);
+      const updatedData = await User.findByIdAndUpdate(
+        { _id: user_id },
+        { $set: { password: securepassword, token: "" } }
+      );
+      res.redirect("/login");
+    } else {
+      res.render("user/passwordforget", { message: "password does not match" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// load MyAccount----------------------
+const MyAccount = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const userid = await User.findOne({ _id: userId });
+
+    console.log("the userdata may here", userid);
+    res.render("user/userdashboard", { userid });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const userLogout = async (req, res) => {
+  try {
+    req.session.userId = null;
+    res.redirect("/login");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 // load shop----------------------------
 
-const loadshop = async(req,res)=>{
+const loadshop = async (req, res) => {
   try {
-    let query = { is_Listed:true};
-    if(req.query.category){
+    let query = { is_Listed: true };
+    if (req.query.category) {
       query.category = req.query.category;
     }
     const productDetailes = await Product.find(query).populate("category");
-    const products = productDetailes.filter(product =>{
-      if(product.category && product.category.is_Listed == 1 ){
+    const products = productDetailes.filter((product) => {
+      if (product.category && product.category.is_Listed == 1) {
         return product;
       }
-    })
+    });
 
-    // fetch the categories for dropdown 
-
+    // fetch the categories for dropdown
 
     const categories = await Category.find({});
     const userIn = req.session.userId;
-    res.render("user/shop",{products,categories,user:req.session.userId,userIn});
+    res.render("user/shop", {
+      products,
+      categories,
+      user: req.session.userId,
+      userIn,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-
-const ProductDetail = async(req,res)=>{
+const ProductDetail = async (req, res) => {
   try {
     const productId = req.query.id;
-    console.log("suii",productId);
-    const product =  await Product.findById({_id:productId}).populate("category");
+    console.log("suii", productId);
+    const product = await Product.findById({ _id: productId }).populate(
+      "category"
+    );
     const userIn = req.session.userId;
-    const userId = req.session.userId
-    console.log("jk",userId);
+    const userId = req.session.userId;
+    console.log("jk", userId);
 
     const cartdata = await Cart.findOne({ user: userId }).populate({
       path: "product.productId",
-      model: "Product"
-  });
+      model: "Product",
+    });
 
-  console.log("nmnm",cartdata);
+    console.log("nmnm", cartdata);
 
-        
-         
-  const subtotal = cartdata?.product.reduce(
-      (acc, val) => acc + val.total,
-      0
-  );
+    const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
 
+    console.log("nmnm", userIn);
 
-    console.log("nmnm",userIn);
-
-    res.render("user/productdetail",{data:product,user:req.session.userId,userIn,cartdata,subtotal,user: req.session.userId});
-  
-    
+    res.render("user/productdetail", {
+      data: product,
+      user: req.session.userId,
+      userIn,
+      cartdata,
+      subtotal,
+      user: req.session.userId,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
-
-
-
+};
 
 module.exports = {
   loadHome,

@@ -23,29 +23,28 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  is_Verified:{
-    type:Number,
-    default:0,
+  is_Verified: {
+    type: Number,
+    default: 0,
   },
-  token:{
-    type:String,
-    default:"",
+  token: {
+    type: String,
+    default: "",
   },
-  is_Admin:{
-    type:Number,
-    default:0,
+  is_Admin: {
+    type: Number,
+    default: 0,
   },
-  is_Blocked:{
-    type:Number,
-    default:0,
+  is_Blocked: {
+    type: Number,
+    default: 0,
   },
-  google:{
-  type:Boolean,
+  google: {
+    type: Boolean,
   },
-  facebook:{
-    type:Boolean,
-  }
-  
+  facebook: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

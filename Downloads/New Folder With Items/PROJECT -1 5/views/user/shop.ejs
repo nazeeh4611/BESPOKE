@@ -3,57 +3,61 @@
 
   <main>
 
-  <!-- Customer Login Form -->
-  <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
-    <div class="customer-forms__wrapper d-flex position-relative">
-      <div class="customer__login">
-        <div class="aside-header d-flex align-items-center">
-          <h3 class="text-uppercase fs-6 mb-0">Login</h3>
-          <button class="btn-close-lg js-close-aside ms-auto"></button>
-        </div><!-- /.aside-header -->
+    <!-- Customer Login Form -->
+    <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
+      <div class="customer-forms__wrapper d-flex position-relative">
+        <div class="customer__login">
+          <div class="aside-header d-flex align-items-center">
+            <h3 class="text-uppercase fs-6 mb-0">Login</h3>
+            <button class="btn-close-lg js-close-aside ms-auto"></button>
+          </div><!-- /.aside-header -->
 
-        <form action="/login" method="post" class="aside-content">
-          <div class="form-floating mb-3">
-            <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput" placeholder="name@example.com">
-            <label for="customerNameEmailInput">Username or email address *</label>
-          </div>
-
-          <div class="pb-3"></div>
-
-          <div class="form-label-fixed mb-3">
-            <label for="customerPasswordInput" class="form-label">Password *</label>
-            <input name="password" id="customerPasswordInput" class="form-control form-control_gray" type="password" placeholder="********">
-          </div>
-
-          <div class="d-flex align-items-center mb-3 pb-2">
-            <div class="form-check mb-0">
+          <form action="/login" method="post" class="aside-content">
+            <div class="form-floating mb-3">
+              <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput"
+                placeholder="name@example.com">
+              <label for="customerNameEmailInput">Username or email address *</label>
             </div>
-            <a href="/forgetpass" class="btn-text ms-auto">Lost password?</a>
-          </div>
 
-          <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+            <div class="pb-3"></div>
 
-          <div class="customer-option mt-4 text-center">
-            <span class="text-secondary">No account yet?</span>
-            <a href="/register" class="btn-text js-show-register">Create Account</a>
-          </div>
-        </form>
-      </div><!-- /.customer__login -->
-    </div><!-- /.customer-forms__wrapper -->
-  </div><!-- /.aside aside_right -->
+            <div class="form-label-fixed mb-3">
+              <label for="customerPasswordInput" class="form-label">Password *</label>
+              <input name="password" id="customerPasswordInput" class="form-control form-control_gray" type="password"
+                placeholder="********">
+            </div>
+
+            <div class="d-flex align-items-center mb-3 pb-2">
+              <div class="form-check mb-0">
+              </div>
+              <a href="/forgetpass" class="btn-text ms-auto">Lost password?</a>
+            </div>
+
+            <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+
+            <div class="customer-option mt-4 text-center">
+              <span class="text-secondary">No account yet?</span>
+              <a href="/register" class="btn-text js-show-register">Create Account</a>
+            </div>
+          </form>
+        </div><!-- /.customer__login -->
+      </div><!-- /.customer-forms__wrapper -->
+    </div><!-- /.aside aside_right -->
 
 
     <section class="full-width_padding">
       <div class="full-width_border border-2" style="border-color: #eeeeee;">
         <div class="shop-banner position-relative ">
           <div class="background-img" style="background-color: #eeeeee;">
-            <img loading="lazy" src="/images/shop_banner_character1.png" width="1759" height="420" alt="Pattern" class="slideshow-bg__img object-fit-cover">
+            <img loading="lazy" src="/images/shop_banner_character1.png" width="1759" height="420" alt="Pattern"
+              class="slideshow-bg__img object-fit-cover">
           </div>
 
           <div class="shop-banner__content container position-absolute start-50 top-50 translate-middle">
             <h2 class="h1 stroke-text smooth-16 text-uppercase fw-bold mb-3 mb-xl-4 mb-xl-5">WOMEN</h2>
             <ul class="d-flex flex-wrap list-unstyled text-uppercase h6">
-              <li class="me-3 me-xl-4 pe-1"><a href="#" class="menu-link menu-link_us-s menu-link_active">StayHome</a></li>
+              <li class="me-3 me-xl-4 pe-1"><a href="#" class="menu-link menu-link_us-s menu-link_active">StayHome</a>
+              </li>
               <li class="me-3 me-xl-4 pe-1"><a href="#" class="menu-link menu-link_us-s">New In</a></li>
               <li class="me-3 me-xl-4 pe-1"><a href="#" class="menu-link menu-link_us-s">Jackets</a></li>
               <li class="me-3 me-xl-4 pe-1"><a href="#" class="menu-link menu-link_us-s">Hoodies</a></li>
@@ -77,7 +81,8 @@
         </div><!-- /.breadcrumb -->
 
         <div class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-          <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0" aria-label="Sort Items" name="total-number">
+          <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0" aria-label="Sort Items"
+            name="total-number">
             <option selected="">Default Sorting</option>
             <option value="1">Featured</option>
             <option value="2">Best selling</option>
@@ -90,7 +95,7 @@
           </select>
 
           <div class="shop-asc__seprator mx-3 bg-light d-none d-lg-block"></div>
-<!-- 
+          <!-- 
           <div class="col-size align-items-center order-1 d-none d-lg-flex">
             <span class="text-uppercase fw-medium me-2">View</span>
             <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid" data-cols="2">2</button>
@@ -101,59 +106,91 @@
       </div><!-- /.d-flex justify-content-between -->
 
       <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
-        <% if(products.length > 0) { %>
-          <% for(let i=0;i < products.length;i++) { %> 
-        <div class="product-card-wrapper">
-          <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-            <div class="pc__img-wrapper">
-              <div class="swiper-container background-img js-swiper-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" data-settings="{&quot;resizeObserver&quot;: true}">
-                <div class="swiper-wrapper" id="swiper-wrapper-703a5cef79bef969" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(-350px, 0px, 0px);">
-                  <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1" role="group" aria-label="1 / 4" style="width: 350px;">
-               
-                    <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                  </div><!-- /.pc__img-wrapper -->
-                  <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1" role="group" aria-label="1 / 4" style="width: 350px;">
-                    <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                  </div><!-- /.pc__img-wrapper -->
+        <% if(products.length> 0) { %>
+          <% for(let i=0;i < products.length;i++) { %>
+            <div class="product-card-wrapper">
+              <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                <div class="pc__img-wrapper">
+                  <div
+                    class="swiper-container background-img js-swiper-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events"
+                    data-settings="{&quot;resizeObserver&quot;: true}">
+                    <div class="swiper-wrapper" id="swiper-wrapper-703a5cef79bef969" aria-live="polite"
+                      style="transition-duration: 0ms; transform: translate3d(-350px, 0px, 0px);">
+                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next"
+                        data-swiper-slide-index="1" role="group" aria-label="1 / 4" style="width: 350px;">
+
+                        <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy"
+                            src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545"
+                            alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                      </div><!-- /.pc__img-wrapper -->
+                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next"
+                        data-swiper-slide-index="1" role="group" aria-label="1 / 4" style="width: 350px;">
+                        <a href="/productdetail?id=<%= products[i]._id %>"><img loading="lazy"
+                            src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545"
+                            alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                      </div><!-- /.pc__img-wrapper -->
+                    </div>
+                    <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_prev_sm"></use>
+                      </svg></span>
+                    <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_next_sm"></use>
+                      </svg></span>
+                  </div>
+                  <button
+                    class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
+                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
                 </div>
-                <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg></span>
-                <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg></span>
-              </div>
-              <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-            </div>
-            <div class="pc__info position-relative">
-              <p class="pc__category">Dresses</p>
-              <h6 class="pc__title"><a href="./product1_simple.html"><%= products[i].name %></a></h6>
-              <div class="product-card__price d-flex">
-                <span class="money price">$<%= products[i].price %></span>
-              </div>
-              <div class="product-card__review d-flex align-items-center">
-                <div class="reviews-group d-flex">
-                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
+                <div class="pc__info position-relative">
+                  <p class="pc__category">Dresses</p>
+                  <h6 class="pc__title"><a href="./product1_simple.html">
+                      <%= products[i].name %>
+                    </a></h6>
+                  <div class="product-card__price d-flex">
+                    <span class="money price">$<%= products[i].price %></span>
+                  </div>
+                  <div class="product-card__review d-flex align-items-center">
+                    <div class="reviews-group d-flex">
+                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_star"></use>
+                      </svg>
+                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_star"></use>
+                      </svg>
+                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_star"></use>
+                      </svg>
+                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_star"></use>
+                      </svg>
+                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_star"></use>
+                      </svg>
+                    </div>
+                    <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
+                  </div>
+                  <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                    title="Add To Wishlist">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <use href="#icon_heart"></use>
+                    </svg>
+                  </button>
                 </div>
-                <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
               </div>
-              <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-              </button>
             </div>
-          </div> 
-        </div>
-        <script>
- 
-        </script>
-        <% if((i+1)%3 ==0) {%>
-          <% } %>
-          <% } %>
-          <% }else{ %>
-            <h3>Product not found</h3> 
-            <% } %>  
-        </div>
-<!-- /.products-grid row -->
+            <script>
+
+            </script>
+            <% if((i+1)%3==0) {%>
+              <% } %>
+                <% } %>
+                  <% }else{ %>
+                    <h3>Product not found</h3>
+                    <% } %>
+      </div>
+      <!-- /.products-grid row -->
 
       <!-- <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
         <a href="#" class="btn-link d-inline-flex align-items-center">
@@ -176,16 +213,16 @@
 
   <div class="mb-5 pb-xl-5"></div>
 
-    <!-- Go To Top -->
-    <div id="scrollTop" class="visually-hidden end-0"></div>
+  <!-- Go To Top -->
+  <div id="scrollTop" class="visually-hidden end-0"></div>
 
-    <!-- Page Overlay -->
-    <div class="page-overlay"></div>
+  <!-- Page Overlay -->
+  <div class="page-overlay"></div>
 
   <script src="/public/js/jquery.min.js"></script>
   <script src="/public/js/bootstrap.bundle.min.js"></script>
   <script src="/public/js/bootstrap-slider.min.js"></script>
-  
+
   <script src="/public/js/swiper.min.js"></script>
   <script src="/public/js/countdown.js"></script>
   <script src="/public/js/details-disclosure.js" defer="defer"></script>
@@ -194,4 +231,4 @@
   <!-- Footer Scripts -->
   <script src="/public/js/theme.js"></script>
 
-<%- include("../layouts/userpartials/footer.ejs") %>
+  <%- include("../layouts/userpartials/footer.ejs") %>
