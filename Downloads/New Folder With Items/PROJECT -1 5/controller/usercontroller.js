@@ -369,6 +369,7 @@ const loadshop = async (req, res) => {
     let query = { is_Listed: true };
     if (req.query.category) {
       query.category = req.query.category;
+      console.log("lo",req.query.category);
     }
     const productDetailes = await Product.find(query).populate("category");
     const products = productDetailes.filter((product) => {
