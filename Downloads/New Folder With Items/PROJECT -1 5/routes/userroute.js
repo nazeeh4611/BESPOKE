@@ -5,6 +5,7 @@ const userRoute = express.Router(); //
 const userController = require("../controller/usercontroller");
 const cartcontroller = require("../controller/cartcontroller");
 const authController = require("../controller/authController");
+const addresscontroller = require('../controller/addresscontroller')
 const userAuth = require("../middlewares/userAuth");
 const session = require("express-session");
 // Middleware
@@ -105,3 +106,14 @@ userRoute.post("/cart", cartcontroller.AddToCart);
 userRoute.post("/updatecart", cartcontroller.updateCart);
 userRoute.delete("/removecart", cartcontroller.removecart);
 module.exports = userRoute;
+
+// load address & add address
+
+userRoute.get('/address',addresscontroller.addresses);
+userRoute.get('/addaddress',addresscontroller.NewAddress);
+userRoute.post('/addaddress',addresscontroller.postAddress);
+
+
+// load checkout page and address
+
+userRoute.get('/checkout',cartcontroller.Loadcheckout)

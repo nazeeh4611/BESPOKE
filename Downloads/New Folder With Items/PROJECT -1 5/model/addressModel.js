@@ -39,3 +39,5 @@ const addressModel = new mongoose.Schema({
     
 }]
 })
+
+module.exports = mongoose.model('Address',addressModel)

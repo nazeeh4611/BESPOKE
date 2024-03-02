@@ -7173,6 +7173,24 @@
     margin-top: calc(var(--bs-gutter-y) * -1);
     margin-right: calc(var(--bs-gutter-x) / -2);
     margin-left: calc(var(--bs-gutter-x) / -2); }
+    .rrow {
+      justify-content: center;
+      --bs-gutter-x: 1.875rem;
+      --bs-gutter-y: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: calc(var(--bs-gutter-y) * -1);
+      margin-right: calc(var(--bs-gutter-x) / -2);
+      margin-left: calc(var(--bs-gutter-x) / -2); }
+      .rrow > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) / 2);
+        padding-left: calc(var(--bs-gutter-x) / 2);
+        margin-top: var(--bs-gutter-y); }
+    
+      
     .row > * {
       flex-shrink: 0;
       width: 100%;
@@ -14868,12 +14886,40 @@
       text-transform: uppercase;
       margin-bottom: 0.875rem;
       font-weight: 500; }
+      .my-account__address-item__titl {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        line-height: 1.5rem;
+        text-transform: uppercase;
+        margin-bottom: 0.875rem;
+        font-weight: 500;
+        color: blue; }
       .my-account__address-item__title h5, .my-account__address-item__title .h5 {
         font-size: 1.125rem;
         margin: 0; }
       .my-account__address-item__title a {
         font-size: 0.8125rem;
         border-bottom: 2px solid; }
+        .my-account__address-item__titl {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1.5rem;
+          line-height: 1.5rem;
+          text-transform: uppercase;
+          margin-bottom: 0.875rem;
+          font-weight: 500;
+           }
+        .my-account__address-item__titl h5, .my-account__address-item__titl .h5 {
+          font-size: 1.125rem;
+          margin: 0;
+        }
+        .my-account__address-item__titl a {
+          font-size: 0.8125rem;
+          border-bottom: 2px solid;
+        color: #1d588c; }
     .my-account__address-item__detail {
       line-height: 1.5rem; }
       .my-account__address-item__detail p {
