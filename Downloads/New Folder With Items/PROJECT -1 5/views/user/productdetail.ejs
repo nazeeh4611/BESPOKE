@@ -701,7 +701,126 @@
 
 
 
+<script>
+      $(document).ready(function() {
+      if (($("#add_new_address").is(":checked"))) {
+        $('#addAddress').css('display', 'block');
+        $('#check_add').collapse('show');
+        $('#check_existing_address').css('display', 'none');
 
+      }
+    })
+    let addressId, deliveryType, deliveryCharge, paymentMethod, selectedCouponCode, selectedCouponVal, finalAmountPay;
+
+    addressId = $('#existing_address_1').val()
+    finalAmountPay = $('#netPayable').data('net');
+    if ($("#with_ship").is(":checked")) {
+      deliveryType = 'express';
+      deliveryCharge = 300;
+    } else {
+      deliveryType = 'Normal';
+      deliveryCharge = 100;
+    }
+    function handleAddressSelection(id) {
+      if (id) {
+        $('#addAddress').css('display', 'none');
+        addressId = id;
+      } else {
+        addressId = null;
+        $('#addAddress').css('display', 'block');
+        $('#check_add').collapse('show');
+        $('#check_existing_address').collapse('hide');
+      }
+    }
+
+    $('#saveAndProceedBtn').on('click', async function(e) {
+      e.preventDefault();
+
+      $('#add1').css('display', 'none');
+      $('#add2').css('display', 'none');
+      $('#add3').css('display', 'none');
+      $('#add4').css('display', 'none');
+      $('#add5').css('display', 'none');
+      $('#add6').css('display', 'none');
+      $('#add7').css('display', 'none');
+
+      const name = $('#addName').val();
+      const address = $('#addAddress1').val();
+      const city = $('#addCity').val();
+      const state = $('#addState').val();
+      const country = $('#addCountry').val();
+      const postCode = $('#addPost').val();
+      const number = $('#addNumber').val();
+
+      if (!validateAdd()) return;
+
+      const response = await fetch('/addAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: name,
+          addressLine1: address,
+          city,
+          state,
+          country,
+          postCode,
+          mobileNumber: number
+        })
+      })
+      const x = await response.json();
+      addressId = x.addedId;
+
+      console.log(addressId);
+      $('#saveAndProceedBtn').attr('disabled', true);
+      $('#addForm :input').attr('disabled', true);
+      $('#check_add').collapse('hide');
+      $('#check_ship').collapse('show');
+      $('#check_existing_address').css('display', 'none');
+    });
+
+
+    function validateAdd() {
+      const name = $('#addName').val();
+      const address = $('#addAddress1').val();
+      const city = $('#addCity').val();
+      const state = $('#addState').val();
+      const country = $('#addCountry').val();
+      const postCode = $('#addPost').val();
+      const number = $('#addNumber').val();
+      isValid = true;
+      if (!name.trim()) {
+        isValid = false;
+        $('#add1').css('display', 'block');
+      }
+      if (!address.trim()) {
+        isValid = false;
+        $('#add2').css('display', 'block');
+      }
+      if (!city.trim()) {
+        isValid = false;
+        $('#add3').css('display', 'block');
+      }
+      if (!state.trim()) {
+        isValid = false;
+        $('#add4').css('display', 'block');
+      }
+      if (!country.trim()) {
+        isValid = false;
+        $('#add7').css('display', 'block');
+      }
+      if (!postCode.trim() || postCode.length !== 6) {
+        isValid = false;
+        $('#add5').css('display', 'block');
+      }
+      if (!number.trim() || number.length !== 10) {
+        isValid = false;
+        $('#add6').css('display', 'block');
+      }
+      return isValid;
+    }
+</script>
 
 
 

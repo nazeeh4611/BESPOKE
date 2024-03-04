@@ -1,0 +1,23 @@
+<% if(Array.isArray(addresses) && addresses.length > 0) { %>
+    <% addresses.forEach((value,index)=>{ %>
+
+      <%if(value && typeof value === 'object') { %>
+        <div class="col-md-4">
+          <div class="address">
+           <h5>Shipping Address <%=index+1 %></h5>
+            <p><%= value.fname %> <%= value.lname %><br>
+            Default<br>
+            <%= value.address%><br>
+          <%= value.city%><br>
+           <%=value.pin %><br>
+           <%= value.email %><br>
+            Phone :<%= value.mobile%></p>
+
+
+            <% }else{ %>
+                <h3>ioio</h3>
+                <% } %>
+              <% }) %>
+              <% }else{ %>
+                <h4>Address Not Found</h4>
+                <% } %>
