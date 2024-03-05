@@ -112,7 +112,8 @@ module.exports = userRoute;
 userRoute.get('/address',addresscontroller.addresses);
 userRoute.get('/addaddress',addresscontroller.NewAddress);
 userRoute.post('/addaddress',addresscontroller.postAddress);
-
+userRoute.patch('/editaddress',addresscontroller.editAddress);
+userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 
 // load checkout page and address
 

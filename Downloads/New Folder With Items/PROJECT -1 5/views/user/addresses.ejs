@@ -26,30 +26,55 @@
             <h5></h5>
             <a href="/addaddress">Add New Address</a>
           </div>
-          <div class="page-content my-account__address">
+          <div class="page-content my-account__address" id="addressSec">
             <p class="notice">The following addresses will be used on the checkout page by default.</p>
             <div class="my-account__address-list">
+              <div id = "user-delete-address" class="user-message text-dark" style="display: none;">Address Deleted Successfully</div>
               <%if(useraddress&&useraddress.address.length > 0){%>
                 <% useraddress.address.forEach((address,index)=> { %>
               <div class="my-account__address-item">
-                <div class="my-account__address-item__title">
+            
+                  <div class="card mb-3" id="address-card-<%= index %>">
+                    <div class="card-body address-card">
+                      <!-- Address Details -->
+                      <h5 class="card-title text-success">Shipping Address <%=index+1%></h5>
+                      <div id="user-edit-address" class="user-message text-dark" style="display: none;">Address Updated Successfully</div>
+                      <!-- Editable Input Fields -->
+                      <div class="row mb-2">
+                        <div class="col">
+                          <input type="text" id="addressFname" class="form-control input-border input-small" placeholder="First Name" value="<%=address.fname%>" disabled>
+                        </div>
+                        <div class="col">
+                          <input type="text" id="addressLname" class="form-control input-border input-small" placeholder="Last Name" value="<%=address.lname%>" disabled>
+                        </div>
+                        <div class="col">
+                          <input type="text" id="addressValue" class="form-control input-border input-small" placeholder="Street Address" value="<%=address.address%>" disabled>
+                        </div>
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col">
+                          <input type="text" id="addressCity" class="form-control input-border input-small" placeholder="City" value="<%=address.city %>" disabled>
+                        </div>
+                        <div class="col">
+                          <input type="text" id="addressEmail" class="form-control input-border input-small" placeholder="Email" value="<%=address.email %>" disabled>
+                        </div>
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col">
+                          <input type="text" id="addressPost" class="form-control input-border input-small" placeholder="Postal Code" value="<%=address.phone %>" disabled>
+                        </div>
+                        <div class="col">
+                          <input type="tel" id="addressNumber" class="form-control input-border input-small" placeholder="Mobile Number" value="<%=address.pin %>" disabled>
+                        </div>
+                      </div>
+                      <div class="mt-auto text-end">
+                        <!-- Buttons for Address Actions -->
+                        <button class="btn btn-primary btn-sm text-white" id="address-btn" onclick="editAddress('address-card-<%= index %>','<%=address._id%>')">Edit Address</button>
+                        <button class="btn delete-address-button btn-danger float-right btn-sm text-white" onclick="deleteAddress('<%=address._id%>')">Delete</button>
+                      </div>
+                    </div>
+                  </div>
               
-                  <h5>Billing Address <%= index+1 %></h5>
-                  <a href="#">Edit</a>
-                  <a href="#">Delete</a>
-                </div>
-                <div class="my-account__address-item__detail">
-                
-
-                  <p><%= address.fname %> <% address.lname %></p>
-                  <p><%= address.address %></p>
-                  <p><%= address.city %></p>
-                  <p><%= address.pin %></p>
-                 
-                  <p><%= address.email %></p>
-                  <p><%= address.mobile %></p>
-                  <br>
-                </div>
                 <%})%>
                 <% }else{%>
                   <h4>Address Not Found</h4>
@@ -92,6 +117,76 @@
 
   <!-- Footer Scripts -->
   <script src="js/theme.js"></script>
+
+
+  <script>
+    function editAddress(card,id){
+      $(`#${card} #user-edit-address`).css('display', 'none');
+      if($(`#${card} #address-btn`).text()==='Edit Address'){
+        $(`#${card} #address-btn`).text('Save Changes');
+        $(`#${card}`).find('*').prop('disabled',false);
+        $( `#${card}`).find('*').prop('color','#67865')
+      }else{
+        const addressFname = $(`#${card} #addressFname`).val();
+        const addressLname = $(`#${card} #addressLname`).val();
+        const addressValue = $(`#${card} #addressValue`).val();
+        const addressCity = $(`#${card} #addressCity`).val();
+        const addressEmail = $(`#${card} #addressEmail`).val();
+        const addressPost = $(`#${card} #addressPost`).val();
+        const addressNumber = $(`#${card} #addressNumber`).val();
+
+        $fetch('/editaddress',{
+          method:'PATCH',
+          headers:{
+            'Content-Type' : 'application/json'
+          },
+          body:JSON.stringify({
+            id,
+            addressFname,
+            addressLname,
+            addressValue,
+            addressCity,
+            addressEmail,
+            addressNumber,
+            addressPost
+          })
+
+        }).then((response) => {
+          if(response.status == 200){
+            $(`#${card} #user-edit-address`).css('display' ,'block');
+            $(`#${card}`).find('*').prop('disabled','true');
+            $(`#${card} #address-btn`).text('Edit Address');
+            setTimeout(()=>{
+              $('#addressSec').load('/address  #addressSec') 
+            },1000)
+          }
+        }).catch((err) => {
+          console.log(error);
+        });
+      }
+    }
+
+    function deleteAddress(id){
+      $(`#user-delete-address`).css('display','none');
+      $(`#addressModal`).modal('show');
+      $(`#addressModal`).click(()=>{
+        fetch('/deleteaddress',{
+        method:'DELETE',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({id:id}),
+      }).then((response)=>{
+        $(`#addressModal`).modal('hide');
+        $(`#user-delete-address`).css('display','block');
+        $('#addressModal').off('click');
+        setTimeout(()=>{
+          $(`#addressSec`).load(`/address #addressSec`);
+        },1000)
+      })
+      })
+    }
+  </script>
 
 
 </body>

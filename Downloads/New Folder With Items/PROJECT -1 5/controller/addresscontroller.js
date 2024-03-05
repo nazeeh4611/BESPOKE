@@ -60,10 +60,47 @@ const postAddress = async (req,res)=>{
     }
 }
 
+const editAddress = async(req,res)=>{
+    try {
+        const {id,addressFname,addressLname,addressValue,addressCity,addressEmail,addressPost,addressNumber}= req.body
+        const userId = await User.findOne({_id:req.session.userId})
+        const address=  await Address.find(address=>
+            address._id.toString()===id
+        );
+        address.fname = addressFname;
+        address.lname = addressLname;
+        address.address = addressValue;
+        address.email = addressEmail;
+        address.city = addressCity;
+        address.pin = addressPost;
+        address.mobile = addressNumber;
+        await userId.save();
+        res.status(200).json({success:true});
+
+    } catch (error) {
+        res.status(500).json({error:'internal server error'})
+    }
+}
+
+const deleteAddress = async(req,res)=>{
+    try {
+       const {id}=req.body;
+       const address = await Address.findByIdAndUpdate(
+        {userId:req.session.userId},
+        {$pull:{address:{_id:id}}},
+        {new:true},
+       );
+       res.status(200).json({success:true}) 
+    } catch (error) {
+       res.status(500).json({error:"Internak server error"}) 
+    }
+}
 
 
 module.exports = {
     NewAddress,
     addresses,
     postAddress,
+    editAddress,
+    deleteAddress
 }
