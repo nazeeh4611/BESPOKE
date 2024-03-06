@@ -346,7 +346,7 @@ const MyAccount = async (req, res) => {
     const userId = req.session.userId;
     const userid = await User.findOne({ _id: userId });
 
-    console.log("the userdata may here", userid);
+
     res.render("user/userdashboard", { userid });
   } catch (error) {
     console.log(error.message);
@@ -427,6 +427,8 @@ const ProductDetail = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 module.exports = {
   loadHome,

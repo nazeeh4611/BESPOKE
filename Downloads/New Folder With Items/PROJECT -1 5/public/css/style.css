@@ -331,7 +331,7 @@
   [type="reset"],
   [type="submit"] {
     -webkit-appearance: button; }
-    button:not(:disabled),
+    button:n,
     [type="button"]:not(:disabled),
     [type="reset"]:not(:disabled),
     [type="submit"]:not(:disabled) {
@@ -9107,18 +9107,18 @@
   
   .btn-danger {
     color: #000;
-    background-color: #ecc8c5;
-    border-color: #ecc8c5;
+    background-color: red;
+    border-color: red;
     box-shadow: none; }
     .btn-danger:hover {
       color: #000;
-      background-color: #efd0ce;
-      border-color: #eececb; }
+      background-color: red;
+      border-color: red; }
     .btn-check:focus + .btn-danger, .btn-danger:focus {
       color: #000;
-      background-color: #efd0ce;
-      border-color: #eececb;
-      box-shadow: 0 0 0 0 rgba(201, 170, 167, 0.5); }
+      background-color: red;
+      border-color: red;
+      box-shadow: red }
     .btn-check:checked + .btn-danger, .btn-check:active + .btn-danger, .btn-danger:active, .btn-danger.active, .show > .btn-danger.dropdown-toggle {
       color: #000;
       background-color: #f0d3d1;

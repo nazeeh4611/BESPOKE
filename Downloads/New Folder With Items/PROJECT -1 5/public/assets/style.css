@@ -303,7 +303,7 @@ select {
 #eye_model .primary.btn.btn-primary {
     height: 45px;
     width: 100%;
-    background-color: #6ea820;
+    background-color: #000000;
     border: none;
     padding: 0px;
     line-height: 43px;
@@ -890,7 +890,7 @@ a.shop-now {
     background-color:#000000;
     border-radius: 5px;
     color: #fff;
-    background-color:@6ea820; 
+    background-color:#6ea820; 
     cursor: pointer;
     text-transform: uppercase;
     transition: all 0.5s;
@@ -3029,7 +3029,7 @@ del {
     margin-right: 10px;
 }
 
-. deatil span {
+.deatils span {
     margin-left: 10px;
     font-size: 14px;
     color: #707070;

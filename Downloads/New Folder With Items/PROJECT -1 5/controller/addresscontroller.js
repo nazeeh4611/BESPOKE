@@ -60,41 +60,61 @@ const postAddress = async (req,res)=>{
     }
 }
 
-const editAddress = async(req,res)=>{
+// editAddress function
+const editAddress = async (req, res) => {
     try {
-        const {id,addressFname,addressLname,addressValue,addressCity,addressEmail,addressPost,addressNumber}= req.body
-        const userId = await User.findOne({_id:req.session.userId})
-        const address=  await Address.find(address=>
-            address._id.toString()===id
+        const { id, addressFname, addressLname, addressValue, addressCity, addressEmail, addressPost, addressNumber } = req.body;
+
+        // Find the address by its id
+        const user = await Address.findOne({ user: req.session.userId });
+
+        const address = user.address.find(
+            address => address._id.toString() === id
+          );
+
+        // Update address fields
+
+                address.fname = addressFname;
+                address.lname = addressLname;
+                address.address = addressValue;
+                address.city = addressCity;
+                address.email = addressEmail;
+                address.mobile = addressNumber;
+                address.pin = addressPost;
+
+        // Save the changes
+        await user.save();
+
+        // Send success response
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+const deleteAddress = async (req, res) => {
+    try {
+        const { id } = req.body;
+        console.log("Deleting address with id:", id);
+        
+
+        const userAddress = await Address.updateOne(
+            { user: req.session.userId },
+            { $pull: { address: { _id: id } } },
+            { new: true }
         );
-        address.fname = addressFname;
-        address.lname = addressLname;
-        address.address = addressValue;
-        address.email = addressEmail;
-        address.city = addressCity;
-        address.pin = addressPost;
-        address.mobile = addressNumber;
-        await userId.save();
-        res.status(200).json({success:true});
 
+        // Send success response
+        res.status(200).json({ success: true });
     } catch (error) {
-        res.status(500).json({error:'internal server error'})
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
-const deleteAddress = async(req,res)=>{
-    try {
-       const {id}=req.body;
-       const address = await Address.findByIdAndUpdate(
-        {userId:req.session.userId},
-        {$pull:{address:{_id:id}}},
-        {new:true},
-       );
-       res.status(200).json({success:true}) 
-    } catch (error) {
-       res.status(500).json({error:"Internak server error"}) 
-    }
-}
 
 
 module.exports = {

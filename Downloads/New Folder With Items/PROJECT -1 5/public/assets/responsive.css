@@ -915,7 +915,7 @@
 	}
 	.title_outer h5 {
 		margin-bottom: 15px;
-	} {
+	} dd{
 		margin-top: 0;
 	}
 	.mr-jhon p {
@@ -1395,7 +1395,7 @@
 	    height: 30px;
 	    line-height: 30px;
 	    width: 90px;
-	}	 {
+	}	.aklkl {
 	    width: 116px;
 	    height: 40px;
 	    line-height: 40px;
@@ -1793,7 +1793,7 @@
 	/*----------- footer -----------*/
 	.first_footer .input-group {
 	    margin: 10px auto;
-	}
+	},
 	/*----------- footer -----------*/
 }
 
