@@ -83,6 +83,7 @@ userRoute.get("/auth/facebook/failure", (req, res) => {
 // load and verify login page
 userRoute.get("/login", userAuth.isLogout, userController.userLogin);
 userRoute.post("/login", userController.verifylogin);
+userRoute.get("/logout",userController.userLogout)
 
 //  load and verify forget password
 userRoute.get("/forgetpass", userController.lostpassword);
@@ -118,8 +119,10 @@ userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 
 
 //  load orders 
-
+userRoute.post("/checkout",ordercontroller.OrderPlace)
+userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
 userRoute.get('/orders',ordercontroller.orderlist);
+
 // load checkout page and address
 
 userRoute.get('/checkout',cartcontroller.Loadcheckout)

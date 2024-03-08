@@ -28,7 +28,7 @@ const NewAddress = async(req,res)=>{
 const postAddress = async (req,res)=>{
     try {
     const userData = await User.findOne({_id:req.session.userId});
-    const {fname,lname,mobile,email,address,city,pin}=req.body;
+    const {firstName,lastName,mobileNumber,email,address,city,postCode,isDefault}=req.body;
     const userIn = req.session.userId;
 
     if(userData){
@@ -37,13 +37,14 @@ const postAddress = async (req,res)=>{
             {
               $push:{
                 address:{
-                fname:fname,
-                lname:lname,
+                fname:firstName,
+                lname:lastName,
                 city:city,
-                mobile:mobile,
+                mobile:mobileNumber,
                 email:email,
                 address:address,
-                pin:pin,
+                pin:postCode,
+                isdifault:isDefault,
             },
         }
     },

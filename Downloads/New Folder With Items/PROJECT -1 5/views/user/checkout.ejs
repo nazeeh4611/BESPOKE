@@ -33,7 +33,7 @@
       <link rel="stylesheet" type="text/css" href="/public/assets/responsive.css">
       <!-- googleapis -->
       <link rel="preconnect" href="../../../fonts.gstatic.com/index.html">
-      <link href="../../../fonts.googleapis.com/css238f0.css?family=Rubik:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"> 
+  
   <!-- Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
@@ -725,28 +725,24 @@
   <main>
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
+      <div class="mb-4 pb-4"></div>
       <h2 class="page-title">Shipping and Checkout</h2>
       <div class="checkout-steps">
         
         
           
         
-        <a href="./shop_checkout.html" class="checkout-steps__item active">
+        <a href="/checkout" class="checkout-steps__item active">
           <span class="checkout-steps__item-number">02</span>
           <span class="checkout-steps__item-title">
+            <br>
             <span>Shipping and Checkout</span>
             <em>Checkout Your Items List</em>
           </span>
         </a>
-        <a href="./shop_order_complete.html" class="checkout-steps__item">
-          <span class="checkout-steps__item-number">03</span>
-          <span class="checkout-steps__item-title">
-            <span>Confirmation</span>
-            <em>Review And Submit Your Order</em>
-          </span>
-        </a>
+        
       </div>
-      <form name="checkout-form" action="./shop_order_complete.html">
+      <form name="checkout-form" id="orderplace" action="">
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <h4>BILLING DETAILS</h4>
@@ -755,7 +751,9 @@
               
               <div class="container custom_container">
                  <div class="row">
-                    <div class="col-lg-8 col-12">
+                 
+                    <div class="col-lg-8 col-12" id="check_existing_address">
+                     
                       <div class="card rounded mb-2 ">
                         <div class="card-header bg-white" id="chechout_existing_address">
                           <h2 class="mb-0">
@@ -770,18 +768,30 @@
                               <!-- Add code to display existing addresses here -->
                               <!-- You can use radio buttons or another form of selection -->
                               <label>Select an existing address:</label>
-                              <%for(let i = 0; i < addresses.length;i++){%>
+                              <% addresses.forEach((value, index)=> { %>
+                                <% if (value && typeof value==='object' ) { %>
                               <div>
-                                <input type="radio" id="existing_address_1" name="existing_address" value="<%= addresses[i]._id%>" onclick="handleAddressSelection('<%= addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
-                                                <label for="existing_address_1"><%=addresses[i].name%> , <%= addresses[i].address%> ....</label>
+                                <input type="radio" id="existing_address_1" name="existing_address" value="<%= value._id%>" onclick="handleAddressSelection('<%= value._id%>')" <%if(value.isDefault){%>checked<%}%>>
+                                                <label for="existing_address_1"><%=value.fname%> , <%= value.address%> <%= value.mobile %> ....</label>
+                                                <input type="hidden" name="firstName" value="<%= value.fname %>">
+                                                <input type="hidden" name="lastName" value="<%= value.lname %>">
+                                                <input type="hidden" name="mobileNumber" value="<%= value.mobile %>">
+                                                <input type="hidden" name="email" value="<%= value.email %>">
+                                                <input type="hidden" name="address" value="<%= value.address %>">
+                                                <input type="hidden" name="city" value="<%= value.city %>">
+                                                <input type="hidden" name="postCode" value="<%= value.pin %>">
+                                                <input type="hidden" name="addressId" value="<%= value._id %>">
+                                               
                               </div>
+                           
                               <%}%>
+                              <% }) %>
                                             <!-- Add New Address Option -->
                                             <div>
-                                                <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()" <%if(addresses.length===0){%>Checked<%}%>>
+                                                <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()"  <%if(addresses.length===0){%>Checked<%}%>>
                                                 <label for="add_new_address">Add a new address</label>
                                             </div>
-                                            <button type="button" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToShipping()">Proceed</button>
+                                            <button type="" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToShipping()">Proceed</button>
                                         </div>
                                     </div>
                                 </div>
@@ -789,7 +799,7 @@
                        <div class="accordion" id="check_out_toggle">
                         
                           <!-- card -->
-                          <div class="card rounded mb-2 ">
+                          <div class="card rounded mb-2 " id="addAddress" style="display: none;">
                              <div class="card-header bg-white" id="chechout_add">
                                 <h2 class="mb-0">
                                    <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_add" aria-expanded="false" aria-controls="check_add">
@@ -800,45 +810,48 @@
                              <div id="check_add" class="collapse" aria-labelledby="chechout_add" data-parent="#check_out_toggle">
                                 <div class="card-body">
                                    <div id="c_address" class="page-content">
-                                      <form class="needs-validation " method="post" novalidate>
-                                         <div class="form-group" >
-                                            <label for="f_name" class="font-weight-bolder">First Name</label>
-                                            <input type="text" class="form-control"  placeholder="First Name "  required>
-                                            <div class="invalid-feedback">Please Enter your First Name.</div>
-                                         </div>
-                                         <div class="form-group" >
-                                            <label for="l_name" class="font-weight-bolder">Last Name</label>
-                                            <input type="text" class="form-control"  placeholder="Last Name"  required>
-                                            <div class="invalid-feedback">Please Enter your Second Name.</div>
-                                         </div>
-                                         <div class="form-group">
-                                          <label for="r_password" class="font-weight-bolder">Mobie</label>
-                                          <input type="number" class="form-control"  placeholder="Mobile Number"  required>
-                                          <div class="invalid-feedback">Please Enter your Mobile Number.</div>
-                                       </div>
-                                         <div class="form-group">
-                                            <label for="r_email" class="font-weight-bolder">Email</label>
-                                            <input type="email" class="form-control"  placeholder="Email"  required>
-                                            <div class="invalid-feedback">Please Enter your Email.</div>
-                                         </div>
-                                         <div class="form-group">
-                                            <label for="r_password" class="font-weight-bolder">Address</label>
-                                            <textarea class="form-control form-control_gray" placeholder="Address" cols="30" rows="4" required></textarea>
-                                            <div class="invalid-feedback">Please Enter your Address.</div>
-                                         </div>
-                                         <div class="form-group">
-                                          <label for="r_password" class="font-weight-bolder">Town/City</label>
-                                          <input type="text" class="form-control"  placeholder="Town/City"  required>
-                                          <div class="invalid-feedback">Please Enter your Town/City.</div>
-                                       </div>
-                                         <div class="form-group">
-                                            <label for="r_password" class="font-weight-bolder">post code</label>
-                                            <input type="text" class="form-control"  placeholder="Post Code"  required>
-                                            <div class="invalid-feedback">Please Enter your post code.</div>
-                                         </div>
-                                        
-                                         <div><button id="clearButton" type="reset" class=" f_13 btn btn-primary rese mt-3">reset</button><input type="submit" name="submit" class="f_13 btn btn-primary mt-3 float-right" value="save"></div>
-                                      </form>
+                                    <form id="addForm" class="needs-validation" method="post" novalidate >
+                                      <div class="form-group">
+                                          <label for="AddFname" class="font-weight-bolder" id="AddFname">First Name</label>
+                                          <input type="text" class="form-control" name="firstName" placeholder="First Name" >
+                                          <div class="invalid-feedback" id="add1">Please Enter your First Name.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddLname" class="font-weight-bolder" id="AddLname">Last Name</label>
+                                          <input type="text" class="form-control" name="lastName" placeholder="Last Name" >
+                                          <div class="invalid-feedback" id="add2">Please Enter your Last Name.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddMobile" class="font-weight-bolder">Mobile</label>
+                                          <input type="number" class="form-control" name="mobileNumber" placeholder="Mobile Number" id="AddMobile" >
+                                          <div class="invalid-feedback" id="add3">Please Enter your Mobile Number.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddEmail" class="font-weight-bolder">Email</label>
+                                          <input type="email" class="form-control" name="email" placeholder="Email" id="AddEmail" >
+                                          <div class="invalid-feedback" id="add4">Please Enter your Email.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddAddress" class="font-weight-bolder">Address</label>
+                                          <textarea class="form-control form-control_gray" name="address" placeholder="Address" cols="30" rows="4" id="AddAddress"></textarea>
+                                          <div class="invalid-feedback" id="add5">Please Enter your Address.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddCity" class="font-weight-bolder">Town/City</label>
+                                          <input type="text" class="form-control" name="city" placeholder="Town/City" id="AddCity" >
+                                          <div class="invalid-feedback" id="add6"> Please Enter your Town/City.</div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="AddPost" class="font-weight-bolder">Post Code</label>
+                                          <input type="text" class="form-control" name="postCode" placeholder="Post Code" id="AddPost">
+                                          <div class="invalid-feedback" id="add7">Please Enter your Post Code.</div>
+                                      </div>
+                                      <div>
+                                          <span class="text-danger">Make sure you have the right address, you can edit it only on the profile after you save and proceed!!!!!!!!!</span>
+                                          <button type="submit" name="submit" id="saveAndProceedBtn" class="f_13 btn btn-primary mt-3 mb-2 float-right" value="save" data-target="#check_add">Save And Proceed</button>
+                                      </div>
+                                  </form>
+                                  
                                    </div>
                                 </div>
                              </div>
@@ -861,14 +874,14 @@
                                             <span class="form-check d-inline-block">
                                             <input class="form-check-input" type="radio" name="gridRadios" id="free_ship" checked>
                                             <label class="form-check-label" for="free_ship">
-                                            Free shipping
+                                            Normal shipping
                                             </label>
                                             </span>
                                             <span class="form-check d-inline-block ml-2">
                                             <input class="form-check-input" type="radio" name="gridRadios" id="with_ship">
-                                            <label class="form-check-label" for="with_ship">
-                                            shipping
-                                            </label>
+                                            <label class="form-check-label" for="free_ship">
+                                              Express shipping  with one day delivery (An additional Rs. 200 will be included in the delivery charge)
+                                          </label>
                                             </span>
                                          </div>
                                       </form>
@@ -888,30 +901,26 @@
                              <div id="check_payment" class="collapse" aria-labelledby="checkout_payment" data-parent="#check_out_toggle">
                                 <div class="card-body">
                                    <div id="pay_check" class="page-content">
-                                      <form >
+                                      <form">
                                          <div class="form-group text-left">
                                             <label class="font-weight-bolder">payment Method</label><br>
-                                            <span class="form-check d-inline-block">
-                                            <input class="form-check-input" type="radio" name="gridRadios" id="pay_by_check" checked>
-                                            <label class="form-check-label" for="pay_by_check">
-                                            pay by check
-                                            </label>
-                                            </span>
                                             <span class="form-check d-inline-block ml-2">
-                                            <input class="form-check-input" type="radio" name="gridRadios" id="pay_by_bank">
-                                            <label class="form-check-label" for="pay_by_bank">
-                                            pay by bank 
-                                            </label>
-                                            </span>
-                                         </div>
-                                         <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="user_pay_check" >
-                                            <label class="form-check-label" for="user_pay_check">I accept the Terms of Use & Privacy Policy</label>
+                                              <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" checked>
+                                              <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
+                                          </span>
+                                          <span class="form-check d-inline-block ml-2">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment">
+                                            <label class="form-check-label" for="upi_payment">Online Payment</label>
+                                        </span>
+                                        <span class="form-check d-inline-block ml-2">
+                                          <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment">
+                                          <label class="form-check-label" for="upi_payment">Pay with Wallet</label>
+                                      </span>
                                          </div>
                                          <div class="text-center">
-                                            <button type="submit" class="btn btn-primary f_13">
-                                            Order with an obligation to pay
-                                            </button>
+                                            <!-- <button type="submit" class="btn btn-primary f_13">
+                                            save
+                                            </button> -->
                                          </div>
                                       </form>
                                    </div>
@@ -938,29 +947,34 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <% cartdata.product.forEach((product)=>{ %>
                     <tr>
                       <td>
-                        Zessi Dresses x 2
+                        <%= product.name %> X   <%=product.quantity %>
+                
                       </td>
                       <td>
-                        $32.50
+                        <%=product.total %>
                       </td>
                     </tr>
                     <tr>
+                    
                       <td>
-                        Kirby T-Shirt
-                      </td>
+                    
+                       </td>
                       <td>
                         $29.90
                       </td>
                     </tr>
                   </tbody>
+                  <% }) %>
                 </table>
                 <table class="checkout-totals">
+                 
                   <tbody>
                     <tr>
                       <th>SUBTOTAL</th>
-                      <td>$62.40</td>
+                      <td><%= subtotal%></td>
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
@@ -968,16 +982,18 @@
                     </tr>
                     <tr>
                       <th>VAT</th>
-                      <td>$19</td>
+                      <td>$0</td>
                     </tr>
                     <tr>
                       <th>TOTAL</th>
-                      <td>$81.40</td>
+                      <td> <%= subtotal%></td>
+                      <input type="hidden" value="<%= subtotal%>" name="subtotal">
                     </tr>
+                 
                   </tbody>
                 </table>
-
-              <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
+                <!-- <button class="btn btn-primary btn-checkout">PLACE ORDER</button> -->
+                <button style="color: yellow; background-color: brown;" >SUIII</button>
             </div>
           </div>
         </div>
@@ -1033,9 +1049,181 @@
            }, false);
          })();
       </script>
+<script>
+
+
+function proceedToPayment() {
+      if ($("#with_ship").is(":checked")) {
+        $('#normalDelivery').css('display', 'none');
+        $('#normalPay').css('display', 'none');
+        $('#expressDelivery').css('display', 'block');
+        $('#expressPay').css('display', 'block');
+        deliveryType = 'express';
+        deliveryCharge = 300;
+        const amount = $('#totalValue').val();
+        finalAmountPay = +amount + +deliveryCharge;
+        $('#netPayable').text(+amount + deliveryCharge);
+        $('#totalAmount').text(+amount + deliveryCharge);
+        const selectedCouponVal = $('#coupon-select').val();
+        if (selectedCouponVal !== 'default') {
+          const finalAmount = amount - Math.round((selectedCouponVal / 100) * amount) + deliveryCharge;
+          finalAmountPay = finalAmount;
+          $('#netPayable').text(finalAmount);
+        }
+
+      } else {
+        $('#expressDelivery').css('display', 'none');
+        $('#expressPay').css('display', 'none');
+        $('#normalDelivery').css('display', 'block');
+        $('#normalPay').css('display', 'block');
+
+        deliveryType = 'Normal';
+        deliveryCharge = 100;
+        const amount = $('#totalValue').val();
+        finalAmountPay = +amount + +deliveryCharge;
+        $('#netPayable').text(+amount + deliveryCharge);
+        $('#totalAmount').text(+amount + deliveryCharge);
+        const selectedCouponVal = $('#coupon-select').val();
+        if (selectedCouponVal !== 'default') {
+          const finalAmount = amount - Math.round((selectedCouponVal / 100) * amount) + deliveryCharge;
+          finalAmountPay = finalAmount;
+          $('#netPayable').text(finalAmount);
+        }
+      }
+      $('#check_payment').collapse('show');
+      $('#check_ship').collapse('hide');
+    }
+
+</script>
+
+<script>
+    $(document).ready(function() {
+      if (($("#add_new_address").is(":checked"))) {
+        $('#addAddress').css('display', 'block');
+        $('#check_add').collapse('show');
+        $('#check_existing_address').css('display', 'none');
+
+      }
+    })
+    let addressId;
+    addressId = $('#existing_address_1').val();
+
+  function handleAddressSelection(id){
+  if(id){
+  $('#addAddress').css('display','none');
+  addressId = id;
+  }else{
+    addressId = null;
+    $('#addAddress').css('display','block');
+    $('#check_add').collapse('show');
+    $('#check_existing_address').collapse('hide');
+  }
+}
+
+function proceedToShipping() {
+      $('#check_existing').collapse('hide');
+      $('#check_ship').collapse('show');
+    }
+
+   $('#saveAndProceedBtn').on('click',async function(e){
+    e.preventDefault()
+
+    $('#add1').css('display','none')
+    $('#add1').css('display','none')
+    $('#add3').css('display','none')
+    $('#add4').css('display','none')
+    $('#add5').css('display','none')
+    $('#add6').css('display','none')
+    $('#add7').css('display','none')
+
+
+    const fname = $('AddFname').val()
+    const lname = $('AddLname').val();
+    const mobile = $('#AddMobile').val();
+    const email = $('#AddEmail').val();
+    const address = $('#AddAddress').val();
+    const city = $('#AddCity').val();
+    const post = $('#AddPost').val();
+     
+    if(!validateAdd()) return;
+
+    const response = await fetch('/addaddress',{
+      method:'POST',
+      headers:{
+        'Content-Type' : 'application/json'
+      },
+      body:JSON.stringify({
+        fname,
+        lname,
+        mobile,
+        email,
+        address,
+        city,
+        post,
+      })
+    })
+    const x = await response.json();
+    addressId = x.addedId;
+    console.log("addressId here",addressId);
+
+  $('#saveAndProceedBtn').attr('disabled',true);
+  $('$addForm').attr('disabled',true);
+  $('#check_add').collapse('hide');
+  $('#check_ship').collapse('show');
+  $('#check_existing_address').css('display','none');
+
+   })
+
+   
+
+</script>
+
+
+<script>
+
+  const formdata = $('#orderplace').serialize();
+  console.log("formdata ",formdata);
+
+  $.ajax
+  ({
+    url:'/checkout',
+    method:'POST',
+    data:formdata,
+  })
+
+  .then(response=>{
+     console.log("Form submitted successfully",response);
+     if(response && response.success){
+      const orderId = response.orderId;
+     
+     Swal.fire({
+      icon: 'success',
+      title: 'Order Placed!',
+      text: 'Your order has been placed successfully.'
+    }).then(()=>{
+      window.location.href=`/ordercomplete=${orderId}`;
+    })
+
+    
+  }else{
+    console.error("form submission failed",response);
+  
+  }
+  })
+  .catch(error =>{
+    console.error("Error Occured Try again later",error.message);
+   
+  })
+</script>
+
    </body>
 
 <!-- Mirrored from dostguru.com/HTML/plantly/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 10 Nov 2023 08:19:00 GMT -->
 </html>
 
 <%- include("../layouts/userpartials/footer.ejs") %>
+
+
+<script>
+
+</script>

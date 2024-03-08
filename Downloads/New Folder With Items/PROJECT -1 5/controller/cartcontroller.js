@@ -20,8 +20,6 @@ const cartopen = async (req, res) => {
         (acc, val) => acc + val.total,
         0
       );
-
-      console.log("subtotal", subtotal);
       res.render("user/cart", { cartdata, subtotal, user: req.session.userId });
     } else {
       res.redirect("/login");
@@ -45,6 +43,7 @@ const AddToCart = async (req, res) => {
 
     const productId = req.body.productId; // Corrected variable name
     const productdata = await Product.findById(productId);
+    console.log("product data",productdata.name); 
     if (!productdata || productdata.quantity === 0) {
       return res.json({
         success: false,
@@ -79,7 +78,8 @@ const AddToCart = async (req, res) => {
           $set: { user: userId },
           $push: {
             product: {
-              productId: productId, // Ensure correct property name
+              productId: productId, 
+              name:productdata.name,// Ensure correct property name
               price: productdata.price,
               quantity: 1,
               total: productdata.price,
@@ -102,51 +102,54 @@ const updateCart = async (req, res) => {
     const user_id = req.session.userId;
     const count = req.body.count;
 
+    // Fetch the product and user's cart data
     const product = await Product.findOne({ _id: product_id });
     const cartData = await Cart.findOne({ user: user_id });
 
-    console.log("lklk", cartData);
+    // Handle decrease in quantity
     if (count == -1) {
-      const currentquantity = cartData.product.find(
+      const currentQuantity = cartData.product.find(
         (p) => p.productId == product_id
       ).quantity;
-      if (currentquantity <= 1) {
+      if (currentQuantity <= 1) {
         return res.json({
           success: false,
-          error: "quantity cannot be decrease than 1",
+          error: "Quantity cannot be decreased below 1",
         });
       }
     }
 
+    // Handle increase in quantity
     if (count == 1) {
-      const currentquantity = cartData.find(
-        (p) => product == product_id
+      const currentQuantity = cartData.product.find(
+        (p) => p.productId == product_id
       ).quantity;
-      if (currentquantity + count > product.quantity) {
+      if (currentQuantity + count > product.quantity) {
         return res.json({
           success: false,
-          error: "Cannot be add more than quantity",
+          error: "Cannot add more than available quantity",
         });
       }
     }
 
-    const cartDetail = await Cart.findByIdAndUpdate(
+    // Update the cart in the database
+    const cartDetail = await Cart.findOneAndUpdate(
       {
         user: user_id,
         "product.productId": product_id,
       },
       {
         $inc: {
-          "product.$quantity": count,
-          "product.$total":
-            count *
-            cartData.product.find((p) => p.productId).equals(product_id).price,
+          "product.$.quantity": count, // Use $ to identify the correct element to update in the array
+          "product.$.total": count * product.price, // Calculate the total based on the product's price
         },
-      }
+      },
+      { new: true } // Return the updated document
     );
     res.json({ success: true });
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
@@ -184,12 +187,25 @@ const Loadcheckout = async(req,res)=>{
     path:'product.productId',
     model:'Product'
   })
+  
+
   const addresses = address.address;
 
-  const subtotal = cartdata?.product.reduce(
-    (acc, val) => acc + val.total,
-    0
-  );
+  if (cartdata && cartdata.product) {
+    subtotal = cartdata.product?.reduce(
+      (acc, val) => acc + val.total,
+       0
+    );
+  }
+ 
+  const productId = req.body.productId; // Corrected variable name
+  const productdata = await Product.findById(productId);
+
+
+  const existProduct = await Cart.findOne({
+    user: req.session.userId,
+    "product.productId": productId, // Ensure correct property name
+  });
     res.render("user/checkout",{cartdata,addresses,subtotal})
   } catch (error) {
     console.log(error.message);

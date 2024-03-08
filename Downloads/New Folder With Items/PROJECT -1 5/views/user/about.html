@@ -646,3 +646,83 @@
    return isValid;
  }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const formData = {
+  
+   firstName:document.getElementById('AddFname').value,
+   lastName :document.getElementById('AddLname').value,
+   mobileNum:document.getElementById('AddMobile').value,
+       email:document.getElementById('AddEmail').value,
+     address:document.getElementById('AddAddress').value,
+        city:document.getElementById('AddCity').value,
+    postCode:document.getElementById('AddPost').value,
+          id:document.getElementById('addressId').value,
+}
+console.log("ghdhdhhdsdhfh",formData);
+
+
+
+
+function validateAdd() {
+   const fname = $('#AddFname').val().trim()
+   const lname = $('#AddLname').val().trim();
+   const mobile = $('#AddMobile').val().trim();
+   const email = $('#AddEmail').val().trim();
+   const address = $('#AddAddress').val().trim();
+   const city = $('#AddCity').val().trim();
+   const post = $('#AddPost').val().trim();
+   let isValid = true;
+
+   if (!fname) {
+       isValid = false;
+       $('#add1').css('display', 'block');
+   }
+   if (!lname) {
+       isValid = false;
+       $('#add2').css('display', 'block');
+   }
+   if (!mobile) {
+       isValid = false;
+       $('#add3').css('display', 'block');
+   }
+   if (!email) {
+       isValid = false;
+       $('#add4').css('display', 'block');
+   }
+   if (!address) {
+       isValid = false;
+       $('#add5').css('display', 'block');
+   }
+   if (!city) {
+       isValid = false;
+       $('#add6').css('display', 'block');
+   }
+   if (!post) {
+       isValid = false;
+       $('#add7').css('display', 'block');
+   }
+
+   return isValid;
+}

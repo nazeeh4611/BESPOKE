@@ -40,7 +40,7 @@ const success = async (req, res) => {
   try {
     // Checking if the email already exists in the database
     const existUser = await User.findOne({ email: req.user.email });
-    console.log("emai;", existUser);
+   
 
     if (existUser) {
       req.session.userId = existUser._id;
@@ -96,7 +96,6 @@ const successfb = async (req, res) => {
   try {
     // Checking if the email already exists in the database
     const existUser = await User.findOne({ email: req.user.email });
-    console.log("emai;", existUser);
 
     if (existUser) {
       req.session.userId = existUser._id;

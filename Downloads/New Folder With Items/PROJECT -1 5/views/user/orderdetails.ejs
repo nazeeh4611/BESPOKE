@@ -1,0 +1,145 @@
+<%- include("../layouts/userpartials/header.ejs") %>
+
+<main>
+    <div class="mb-4 pb-4"></div>
+    <section class="shop-checkout container">
+        <h2 class="page-title">Order Details</h2>
+        <div class="checkout-steps"></div>
+        <form name="checkout-form" action="./shop_order_complete.html">
+            <div class="checkout-form">
+                <div class="billing-info__wrapper">
+                    <h4>BILLING DETAILS</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <h6>Shipment 1/1 - 1 item</h6>
+
+                                <div class="return-details" class="col-md-12">
+                                    <img src="/images/cart-item-1.jpg" width="150" height="150" alt="">
+                                    <p>Delivery Unsuccessful - Return Complete</p>
+                                    <p>Return ID : <span>#RT93017509</span></p>
+                                    <h2>Refund Amount</h2>
+                                    <p>Puma BMW M Motorsport Graphic Leadcat Sliders</p>
+                                    <p>Size: UK 8</p>
+                                    <h6>Total Refund Amount</h6>
+                                    <p><span>€</span>1200</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout__totals-wrapper">
+                    <div class="sticky-content">
+                        <div class="checkout__totals">
+                            <h3>Your Order</h3>
+                            <table class="checkout-cart-items">
+                                <thead>
+                                    <p>Order placed on 7th December 2022</p>
+                                    <p>Paid by Cash on Delivery</p>
+                                    <div class="payment-details">
+                                        <p>Order Amount: ₹ 8,397</p>
+                                        <p>Coupon savings: - * 779</p>
+                                        <p>Order Total: * € 4,548</p>
+                                    </div>
+                                    <p>Payment Mode: Cash on Delivery</p>
+                                    <div class="delivery-details">
+                                        <p>Deliver to:</p>
+                                        <p>Nazeeh WORK</p>
+                                        <p>Ayurcare clinic, kodakkad, koottumuchi,</p>
+                                        <p>ayurcare clinic,</p>
+                                        <p>MALAPPURAM, KERALA India - 676303</p>
+                                        <p>Phone : 9207904611</p>
+                                    </div>
+                                </div>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+    </section>
+</main>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1, h2, h3 {
+  margin-bottom: 0.5rem;
+}
+
+.return-details {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.return-details p {
+  margin-bottom: 0.5rem;
+}
+
+.return-details h3 {
+  margin-bottom: 0.3rem;
+}
+
+.return-details span {
+  font-weight: bold;
+}
+    body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.order-details {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.payment-details {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.delivery-details {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.return-information {
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.order-details p {
+  margin-bottom: 0.3rem;
+}
+
+.payment-details p,
+.delivery-details p {
+  margin-bottom: 0.5rem;
+}
+  </style>
+
+<%- include("../layouts/userpartials/footer.ejs") %>

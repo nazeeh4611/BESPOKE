@@ -38,7 +38,7 @@
             <li><a href="./login_register.html" class="menu-link menu-link_us-s">Logout</a></li>
           </ul>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9" id="relod">
          <div class="my-account__address-item">
           <div class="my-account__address-item__title">
             <h5></h5>
@@ -225,7 +225,7 @@ function deleteAddress(id) {
             $('#addressModal').modal('hide');
             $('#user-delete-address').css('display', 'block');
             setTimeout(() => {
-                $('#addressSec').load(`/address #addressSec`);
+                $('#relod').load(`/address #relod`);
             }, 1000);
         })
         .catch(error => {

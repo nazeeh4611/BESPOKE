@@ -1,0 +1,70 @@
+<%- include("../layouts/userpartials/header.ejs") %>
+
+<main>
+    <div class="mb-4 pb-4"></div>
+    <section class="my-account container">
+      <h2 class="page-title">Orders</h2>
+      <div class="row">
+        <div class="col-lg-3">
+          <ul class="account-nav">
+            <li><a href="./account_dashboard.html" class="menu-link menu-link_us-s">Dashboard</a></li>
+            <li><a href="./account_orders.html" class="menu-link menu-link_us-s menu-link_active">Orders</a></li>
+            <li><a href="./account_edit_address.html" class="menu-link menu-link_us-s">Addresses</a></li>
+            <li><a href="./account_edit.html" class="menu-link menu-link_us-s">Account Details</a></li>
+            <li><a href="./account_wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
+            <li><a href="./login_register.html" class="menu-link menu-link_us-s">Logout</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-9">
+          <div class="page-content my-account__orders-list">
+            <% if(Orders && Orders.length >0 ){ %>
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>OrderID</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+             
+                  <% Orders.forEach((oredr,index)=>{ %>
+                    <tr>
+                    <td><%= index + 1 %></td> 
+                  
+                    
+                        <td><%= order.id %></td>
+                        <% if(order.Date) { %>
+                          <td><%= order.Date.toISOString().substring(0, 10) %></td>
+                          <% }else{ %>
+                            <td>N/A</td>
+                            <%} %>
+                        <td><%= order.status %></td>
+                        <td><%= order.subtotal %></td>
+                        <td><%= order.paymentmethod %></td>
+                        <td>
+                          <% if(order.status !== "cancelled" && order.status !== "delivered" && order.status !== "Return Approved" && order.status !== "pending" && order.status !== "waiting for approval") { %>
+                            <td><button class="btn btn-primary">cancel</button></td>
+                            <% } %>
+                            <% if(order.status == "delivered") { %>
+                              <td><button class="btn btn-primary">return</button></td>
+                              <% } %>
+                        </td>
+                      </tr>
+                      <% }) %>
+                      <% }else { %>
+                        <h3>ORDERS NOT FOUND</h3>
+                        <% } %>    
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <%- include("../layouts/userpartials/footer.ejs") %>
