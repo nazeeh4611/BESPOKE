@@ -27,7 +27,7 @@ const newCategory = async (req, res) => {
 
     if (category) {
       res.render("admin/addcatagory", {
-        messages: { message: "this category allready exist" },
+        messages: { message: "This category already exists" },
       });
     } else {
       const newData = new Categories({

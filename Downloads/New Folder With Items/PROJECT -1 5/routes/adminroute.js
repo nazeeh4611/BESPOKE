@@ -10,68 +10,68 @@ const adminAuth = require("../middlewares/adminAuth");
 adminRoute.use(express.json());
 adminRoute.use(express.urlencoded({ extended: true }));
 
-adminRoute.get("/", adminAuth.isLogout, adminController.adminLogin);
-adminRoute.post("/", adminAuth.isLogout, adminController.verifyAdminLogin);
-adminRoute.get("/adminLogout", adminAuth.isLogout, adminController.adminLogout);
-adminRoute.get("/dashboard", adminAuth.isLogin, adminController.adminDashboard);
+adminRoute.get("/",adminController.adminLogin);
+adminRoute.post("/",adminController.verifyAdminLogin);
+adminRoute.get("/adminLogout",  adminController.adminLogout);
+adminRoute.get("/dashboard",  adminController.adminDashboard);
 adminRoute.get("/adminlogout", adminController.adminLogout);
-adminRoute.get("/users", adminAuth.isLogin, adminController.userManagement);
-adminRoute.get("/block", adminAuth.isLogin, adminController.BlockUser);
+adminRoute.get("/users",  adminController.userManagement);
+adminRoute.get("/block",  adminController.BlockUser);
 
-adminRoute.get("/category", adminAuth.isLogin, categoryController.loadCategory);
+adminRoute.get("/category", categoryController.loadCategory);
 adminRoute.get("/addcategory", categoryController.addCategory);
 adminRoute.post("/addcategory", categoryController.newCategory);
 adminRoute.get("/editcategory", categoryController.editCategory);
 adminRoute.post("/editcategory", categoryController.editedCategory);
 adminRoute.get(
   "/deletecategory",
-  adminAuth.isLogin,
+ 
   categoryController.deleteCategory
 );
-adminRoute.get("/list", adminAuth.isLogin, categoryController.Listed);
-adminRoute.get("/unlist", adminAuth.isLogin, categoryController.UnListed);
-adminRoute.get("/products", adminAuth.isLogin, productController.loadProduct);
+adminRoute.get("/list",  categoryController.Listed);
+adminRoute.get("/unlist",  categoryController.UnListed);
+adminRoute.get("/products", productController.loadProduct);
 adminRoute.get(
   "/addproduct",
-  adminAuth.isLogin,
+ 
   productController.loadAddProduct
 );
 
 adminRoute.post(
   "/addproduct",
-  adminAuth.isLogin,
+
   upload.upload.array("image", 4),
   productController.addProduct
 );
 adminRoute.get(
   "/editproduct",
-  adminAuth.isLogin,
+
   productController.loadeditproduct
 );
 adminRoute.post(
   "/editproduct",
-  adminAuth.isLogin,
+
   upload.upload.array("image", 4),
   productController.editProduct
 );
 adminRoute.post(
   "/listproduct",
-  adminAuth.isLogin,
+
   productController.productListed
 );
 adminRoute.post(
   "/unlistproduct",
-  adminAuth.isLogin,
+
   productController.productUnlist
 );
 adminRoute.get(
   "/deleteproduct",
-  adminAuth.isLogin,
+
   productController.deleteProduct
 );
 adminRoute.delete(
   "/deleteimage",
-  adminAuth.isLogin,
+
   productController.deleteimage
 );
 

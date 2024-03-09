@@ -134,79 +134,12 @@ const orderlist = async(req,res)=>{
 }
 
 
-const CancelOrder = async(req,res)=>{
-    try {
-        const userId = req.session.userId;
-        const OrderId = req.body.orderId;
-
-        const oredrs = await Order.findOne({_id:OrderId});
-
-        const data = await Order.findOneAndUpdate(
-            {id:OrderId},
-            {$set:{status:'cancelled'}},
-            {new:true},
-        )
-        if(data){
-        res.json({
-            success:true,
-        })
-    }else{
-        res.json({
-            success:false,
-            message:"Order not found"
-        })
-    }
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const ReturnOrder = async(req,res)=>{
-    try {
-        const userId = req.session.userId;
-        const OrderId = req.body.orderId;
-
-        const orders = await Order.findOne({_id:OrderId});
-
-        if(Date.now() > orders.expiredate){
-        res.json({datalimit:true});
-
-        }else{
-            const data = await Order.findOneAndUpdate(
-                {id:OrderId},
-                {$set:{status:'waiting for approval'}},
-                {new:true},
-            )
-        }
-        res.json({status:true});
-    } catch (error) {
-        res.status(500).send("Internal Server Error")
-    }
-}
-
-const OrderView = async(req,res)=>{
-    try {
-        const userId = req.session.userId;
-        const id = req.query.id;
-
-        const userData = await User.findOne({_id:userId});
-        const orderData = await Order.findOne({_id:id}).populate(
-            'product.productId'
-        );
-
-        res.render("user")
-    } catch (error) {
-        
-    }
-}
 
 
 module.exports = {
  OrderPlace,
  OrderPlaced,
  orderlist,
- CancelOrder,
- ReturnOrder,
+
 
 }

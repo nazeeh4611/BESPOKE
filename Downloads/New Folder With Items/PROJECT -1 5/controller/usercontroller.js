@@ -22,7 +22,7 @@ const loadHome = async (req, res) => {
       model: "Product",
     });
 
-    console.log("nmnm", cartdata);
+
 
     const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
 
@@ -448,11 +448,10 @@ const ProductDetail = async (req, res) => {
       model: "Product",
     });
 
-    console.log("nmnm", cartdata);
+
 
     const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
 
-    console.log("nmnm", userIn);
 
     res.render("user/productdetail", {
       data: product,

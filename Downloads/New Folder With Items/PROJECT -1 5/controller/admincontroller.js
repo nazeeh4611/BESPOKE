@@ -1,11 +1,16 @@
 const User = require("../model/userModel");
 const bcrypt = require("bcrypt");
+const Product = require('../model/productModel');
+const Order = require('../model/orderModel');
+const Category = require('../model/catagoryModel')
 
 // admin login page
 
 const adminLogin = async (req, res) => {
   try {
-    res.render("admin/adminlogin");
+    res.render("admin/adminlogin",{
+     
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -16,22 +21,23 @@ const adminLogin = async (req, res) => {
 const verifyAdminLogin = async (req, res) => {
   try {
     const userData = await User.findOne({ email: req.body.email });
+   
 
     if (userData) {
       const passwordMatch = await bcrypt.compare(
         req.body.password,
-        userData.password
+        userData.password,
       );
 
       if (passwordMatch) {
         req.session.adminId = userData._id;
         res.redirect("/admin/dashboard");
       } else {
-        messages.message = "Incorrect password"; // Assign error message to messages.message
+        messages.message = "Incorrect password"; 
         res.render("admin/adminlogin", { messages });
       }
     } else {
-      messages.message = "Incorrect email"; // Assign error message to messages.message
+      messages.message = "Incorrect email"; 
       res.render("admin/adminlogin", { messages });
     }
   } catch (error) {

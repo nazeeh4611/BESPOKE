@@ -3,6 +3,18 @@
 
   <main>
 
+    <style>
+      #zoom-in {
+    overflow: hidden;
+}
+.zoom-image {
+    transition: transform 0.9s ease-in-out;
+}
+.zoom-image:hover {
+    transform: scale(1.05);
+}
+    </style>
+
 
     <!-- Customer Login Form -->
     <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
@@ -115,13 +127,12 @@
           <div class="card">
             <!-- card left -->
             <div class="product-imgs">
-              <div class="img-display">
+              <div class="img-display" id="zoom-in">
                 <div class="img-showcase">
                   <% for (let i=0; i < data.Image.length; i++) { %>
+                  
                     <img src="/public/uploadImg/<%= data.Image[i] %> " alt="shoe image">
-                    <!-- <img src = "/public/images/shoe_2.jpg" alt = "shoe image">
-                <img src = "/public/images/shoe_3.jpg" alt = "shoe image">
-                <img src = "/public/images/shoe_4.jpg" alt = "shoe image"> -->
+                 
                     <% }%>
                 </div>
               </div>
@@ -546,50 +557,56 @@
       }
     </style>
   </main>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
   <script>
+    
+
+
     document.addEventListener('DOMContentLoaded', function () {
-      // Image Zoom functions go here
-      function zoomIn(event, zoomFactor) {
-        const image = event.target;
-        image.style.transform = `scale(${zoomFactor})`;
-      }
+        // Image Zoom functions go here
+        function zoomIn(event, zoomFactor) {
+            const image = event.target;
+            image.style.transform = `scale(${zoomFactor})`;
+        }
 
-      function resetZoom(event) {
-        const image = event.target;
-        image.style.transform = 'scale(1)';
-      }
+        function resetZoom(event) {
+            const image = event.target;
+            image.style.transform = 'scale(1)';
+        }
 
-      const productImages = document.querySelectorAll('.zoom-in img');
+        const productImages = document.querySelectorAll('#zoom-in img');
 
-      productImages.forEach(img => {
-        img.addEventListener('mouseover', function () {
-          img.style.transform = 'scale(2.0)';
-          img.style.transition = 'transform 0.3s ease';
+        productImages.forEach(img => {
+            img.addEventListener('mouseover', function () {
+                img.style.transform = 'scale(2.0)';
+                img.style.transition = 'transform 0.3s ease';
+            });
+
+            img.addEventListener('mousemove', function (e) {
+                const boundingBox = img.getBoundingClientRect();
+                const offsetX = (e.clientX - boundingBox.left) / boundingBox.width;
+                const offsetY = (e.clientY - boundingBox.top) / boundingBox.height;
+
+                img.style.transformOrigin = `${offsetX * 100}% ${offsetY * 100}%`;
+            });
+
+            img.addEventListener('mouseleave', function () {
+                img.style.transform = 'scale(1)';
+            });
+
+            img.addEventListener('mousemove', function (e) {
+                zoomIn(e, 1.5);
+            });
+
+            img.addEventListener('mouseout', resetZoom);
         });
-
-        img.addEventListener('mousemove', function (e) {
-          const boundingBox = img.getBoundingClientRect();
-          const offsetX = (e.clientX - boundingBox.left) / boundingBox.width;
-          const offsetY = (e.clientY - boundingBox.top) / boundingBox.height;
-
-          img.style.transformOrigin = `${offsetX * 100}% ${offsetY * 100}%`;
-        });
-
-        img.addEventListener('mouseleave', function () {
-          img.style.transform = 'scale(1)';
-        });
-
-        img.addEventListener('mousemove', function (e) {
-          zoomIn(e, 1.5);
-        });
-
-        img.addEventListener('mouseout', resetZoom);
-      });
     });
+
+
   </script>
   <!-- Include jQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

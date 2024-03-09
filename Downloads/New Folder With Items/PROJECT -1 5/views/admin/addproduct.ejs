@@ -339,11 +339,10 @@
           <div class="card-body">
             <h4 class="card-title"></h4>
             <p class="card-description"> Basic form elements </p>
-            <form class="forms-sample" method="post" enctype="multipart/form-data">
+            <form class="forms-sample" method="post" enctype="multipart/form-data" name="productForm" onsubmit="return validateForm()">              
               <div class="form-group">
                 <label for="exampleInputName1">Product Name</label>
-                <input type="text" class="form-control" name="productName" id="exampleInputName1"
-                  placeholder="Product Name">
+                <input type="text" class="form-control" name="productName" id="exampleInputName1" placeholder="Product Name">
                 <div id="productError" class="text-danger"></div>
               </div>
               <div class="form-group">
@@ -365,15 +364,16 @@
               <div class="form-group">
                 <label>File upload</label>
                 <div class="input-group col-xs-12">
-                  <div class="mb-3">
-                    <label for="productImage" class="form-label mb-10"></label>
-                    <span id="imagePreview" class="mt-2"></span>
-                    <input type="file" name="image" id="productImage"
-                      class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image"
-                      style="margin-top: 5%;" multiple>
-                  </div>
+                    <div class="mb-3">
+                        <label for="productImage" class="form-label mb-10"></label>
+                        <div id="imagePreview" class="mt-2"></div>
+                        <input type="file" name="image" id="productImage"
+                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image"
+                            style="margin-top: 5%;" multiple onchange="previewImages(event)">
+                        <div id="ImageError" class="text-danger"></div>
+                    </div>
                 </div>
-              </div>
+            </div>
               <div class="form-group">
                 <label for="exampleInputCity1">Category</label>
                 <select class="form-control" name="categories" id="exampleInputCity1">
@@ -382,49 +382,147 @@
                     <option value="<%= productData.name %>">
                       <%= productData.name %>
                     </option>
+                    <div id="CategoryError" class="text-danger"></div>
                     <% }) %>
                 </select>
+                <div id="CategoryError" class="text-danger"></div>
               </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
             </form>
-
-
-          </div>
-
+             </div>
         </div>
-
-        <script>
-          // document.addEventListener('DOMContentLoaded', function () {
-          //     const fileInput = document.getElementById('productImage');
-          //     const imagePreviewContainer = document.getElementById('imagePreview');
-
-          //     fileInput.addEventListener('change', function () {
-          //         imagePreviewContainer.innerHTML = "";
-
-          //         for (const file of fileInput.files) {
-          //             const img = document.createElement('img');
-          //             img.src = URL.createObjectURL(file);
-          //             img.className = "img-sm img-thumbnail mr-2";
-          //             img.alt = "preview";
-          //             img.style.width = '80px';
-          //             img.style.height = '80px'; 
-          //             img.style.objectFit = 'cover'; 
-          //             imagePreviewContainer.appendChild(img);
-          //         }
-          //     });
-          // });
-
-
-        </script>
-        <!-- partial -->
       </div>
-      <!-- main-panel ends -->
-
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+<script>
+  function previewImages(event) {
+      var files = event.target.files;
+      var imagePreview = document.getElementById('imagePreview');
+      imagePreview.innerHTML = ''; // Clear previous previews
+      
+      for (var i = 0; i < files.length; i++) {
+          (function(file) {
+              var reader = new FileReader();
+              reader.onload = function() {
+                  var img = document.createElement('img');
+                  img.src = reader.result;
+                  img.alt = 'Image Preview';
+                  img.style.maxWidth = '100px';
+                  img.style.maxHeight = '100px';
+                  imagePreview.appendChild(img);
+              };
+              reader.readAsDataURL(file);
+          })(files[i]);
+      }
+  }
+</script>
+<!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <script>
+      function validateForm() {
+        // Reset error messages
+        document.getElementById("productError").innerHTML = "";
+        document.getElementById("productDescriptionError").innerHTML = "";
+        document.getElementById("quantityError").innerHTML = "";
+        document.getElementById("priceError").innerHTML = "";
+        document.getElementById("ImageError").innerHTML = "";
+        document.getElementById("CategoryError").innerHTML = "";
+    
+        // Get form inputs
+        var productName = document.forms["productForm"]["productName"].value.trim();
+        var description = document.forms["productForm"]["description"].value.trim();
+        var quantity = document.forms["productForm"]["quantity"].value.trim();
+        var price = document.forms["productForm"]["price"].value.trim();
+        var image = document.forms["productForm"]["image"].value.trim();
+        var category = document.forms["productForm"]["categories"].value.trim();
+    
+        // Flag to track if there are any errors
+        var hasError = false;
+    
+        // Validate product name
+        if (productName === "") {
+          document.getElementById("productError").innerHTML = "Product name is required";
+          hasError = true;
+        }
+    
+        // Validate description
+        if (description === "") {
+          document.getElementById("productDescriptionError").innerHTML = "Description is required";
+          hasError = true;
+        }
+    
+        // Validate quantity
+        if (quantity === "") {
+          document.getElementById("quantityError").innerHTML = "Quantity is required";
+          hasError = true;
+        } else if (isNaN(quantity) || quantity <= 0) {
+          document.getElementById("quantityError").innerHTML = "Quantity must be a positive number";
+          hasError = true;
+        }
+    
+        // Validate price
+        if (price === "") {
+          document.getElementById("priceError").innerHTML = "Price is required";
+          hasError = true;
+        } else if (isNaN(price) || price <= 0) {
+          document.getElementById("priceError").innerHTML = "Price must be a positive number";
+          hasError = true;
+        }
+    
+        // Validate image
+        if (image === "") {
+          document.getElementById("ImageError").innerHTML = "Image is required";
+          hasError = true;
+        }
+    
+        // Validate category
+        if (category === "") {
+          document.getElementById("CategoryError").innerHTML = "Select Category";
+          hasError = true;
+        }
+    
+        // If there are errors, prevent form submission
+        if (hasError) {
+          return false;
+        }
+        return true;
+      }
+
+    </script>
+
+
+
+      
+
+            <!-- <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const fileInput = document.getElementById('productImage');
+              const imagePreviewContainer = document.getElementById('imagePreview');
+
+              fileInput.addEventListener('change', function () {
+                  imagePreviewContainer.innerHTML = "";
+
+                  for (const file of fileInput.files) {
+                      const img = document.createElement('img');
+                      img.src = URL.createObjectURL(file);
+                      img.className = "img-sm img-thumbnail mr-2";
+                      img.alt = "preview";
+                      img.style.width = '80px';
+                      img.style.height = '80px'; 
+                      img.style.objectFit = 'cover'; 
+                      imagePreviewContainer.appendChild(img);
+                  }
+              });
+          });
+
+
+        </script> -->
+
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

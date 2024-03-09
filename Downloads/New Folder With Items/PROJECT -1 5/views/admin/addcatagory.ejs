@@ -403,6 +403,7 @@
           <label for="categoryName" class="form-label">Category Name</label>
           <input type="text" class="form-control" id="categoryName" name="categoryName" required>
           <div id="categoryNameError" class="text-danger"></div>
+          <div class="text-danger" id="duplicateError"></div>
         </div>
         <div class="mb-3">
           <label for="categoryDescription" class="form-label">Category Description</label>
@@ -411,6 +412,11 @@
           <div id="categoryDescriptionError" class="text-danger"></div>
         </div>
         <button type="submit" class="btn btn-primary">Add Category</button>
+        <% if (typeof messages !== 'undefined' && messages.message) { %>
+          <h5 style="color: red;">
+            <%= messages.message %>
+          </h5>
+        <% } %>
       </form>
 
 
