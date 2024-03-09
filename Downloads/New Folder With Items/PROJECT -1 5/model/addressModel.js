@@ -35,11 +35,7 @@ const addressModel = new mongoose.Schema({
             pin: {
                  type: String, 
                  required: true 
-                },
-            isdifault:{
-                type:Boolean,
-                required:true
-            }    
+                },  
         }],
 
     }

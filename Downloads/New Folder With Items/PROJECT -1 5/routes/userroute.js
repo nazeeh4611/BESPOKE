@@ -101,18 +101,20 @@ userRoute.get("/productdetail", userController.ProductDetail);
 
 // load My Account
 userRoute.get("/dashboard", userAuth.isLogin, userController.MyAccount);
+userRoute.get("/profile",userAuth.isLogin,userController.myprofile)
+userRoute.patch("/editprofile",userAuth.isLogin,userController.editprofile);
 
 //  cart
-userRoute.get("/cart", cartcontroller.cartopen);
-userRoute.post("/cart", cartcontroller.AddToCart);
-userRoute.post("/updatecart", cartcontroller.updateCart);
-userRoute.delete("/removecart", cartcontroller.removecart);
+userRoute.get("/cart",userAuth.isLogin,cartcontroller.cartopen);
+userRoute.post("/cart",userAuth.isLogin,cartcontroller.AddToCart);
+userRoute.post("/updatecart",cartcontroller.updateCart);
+userRoute.delete("/removecart",cartcontroller.removecart);
 module.exports = userRoute;
 
 // load address & add address
 
-userRoute.get('/address',addresscontroller.addresses);
-userRoute.get('/addaddress',addresscontroller.NewAddress);
+userRoute.get('/address',userAuth.isLogin,addresscontroller.addresses);
+userRoute.get('/addaddress',userAuth.isLogin,addresscontroller.NewAddress);
 userRoute.post('/addaddress',addresscontroller.postAddress);
 userRoute.patch('/editAddress',addresscontroller.editAddress);
 userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);

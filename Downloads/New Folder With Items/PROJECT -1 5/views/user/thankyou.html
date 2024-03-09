@@ -942,3 +942,28 @@ img{
    
 
     <%- include("../layouts/userpartials/footer.ejs") %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <% cartdata.product.forEach(product=> { %>
+      <form name="addtocart-form" method="post">
+        <div class="product-single__addtocart">
+          <div class="qty-control position-relative">
+            <input type="number" name="quantity" value="<%= product.quantity %>" min="1"
+            class="qty-control__number text-center" onchange="Total(this,'<%=product.productId._id %>', '<%=product.productId.price %>')">
+            <div class="qty-control__reduce"   onclick="updatecount('<%= product.productId._id %>',-1) ">-</div>
+            <div class="qty-control__increase" onclick="updatecount('<%= product.productId._id %>',+1) ">+</div>
+          </div><!-- .qty-control -->
+          <%})%>
+    

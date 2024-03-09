@@ -61,10 +61,10 @@
                     <div id="PostMessage" style="color: red;"></div>
                   </div>
 
-                  <div class="form-check">
+                  <!-- <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="default_address" name="default_address" value="false">
                     <label class="form-check-label" for="default_address">Set as Default Address</label>
-                </div>
+                </div> -->
 
                   <button class="btn btn-primary w-100 text-uppercase" type="submit" >Add</button>
 
@@ -166,71 +166,7 @@
     }
 </script>
 
-  <!-- <script>
-    $(document).ready(function() {
-        $('#checkout-form').submit(function(event) {
-            event.preventDefault();
 
-            $('#user-message-address').css('display', 'none');
-            $('.invalid-feedback').css('display', 'none');
-
-            const firstName = $('#AddFname').val().trim();
-            const lastName = $('#AddLname').val().trim();
-            const address = $('#AddAddress').val().trim();
-            const city = $('#AddCity').val().trim();
-            const postCode = $('#AddPost').val().trim();
-            const mobileNumber = $('#AddMobile').val().trim();
-            const isDefault = $('#default_address').is(':checked');
-
-            let isValid = true;
-
-            if (!firstName) {
-                $('#AddFname').addClass('is-invalid'); // Adding Bootstrap's 'is-invalid' class for styling
-                $('#AddFname + .invalid-feedback').css('display', 'block'); // Displaying error message
-                isValid = false;
-            }
-            if (!lastName) {
-                $('#AddLname').addClass('is-invalid');
-                $('#AddLname + .invalid-feedback').css('display', 'block');
-                isValid = false;
-            }
-
-            if (!address) {
-                $('#AddAddress').addClass('is-invalid');
-                $('#AddAddress + .invalid-feedback').css('display', 'block');
-                isValid = false;
-            }
-
-            if (!city) {
-                $('#AddCity').addClass('is-invalid');
-                $('#AddCity + .invalid-feedback').css('display', 'block');
-                isValid = false;
-            }
-
-            if (!postCode || !/^\d{6}$/.test(postCode)) {
-                $('#AddPost').addClass('is-invalid');
-                $('#AddPost + .invalid-feedback').css('display', 'block');
-                isValid = false;
-            }
-
-            if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
-                $('#AddMobile').addClass('is-invalid');
-                $('#AddMobile + .invalid-feedback').css('display', 'block');
-                isValid = false;
-            }
-
-            if (isValid) {
-                // Proceed with form submission or API call
-                // Optionally, you may remove the 'is-invalid' class and hide the error messages here
-                $('.is-invalid').removeClass('is-invalid');
-                $('.invalid-feedback').css('display', 'none');
-                return true;
-            } else {
-                return false; // Prevent form submission if validation fails
-            }
-        });
-    });
-</script> -->
 
 
 <script src="/public/assets/js/jquery-3.4.1.min.js"></script>

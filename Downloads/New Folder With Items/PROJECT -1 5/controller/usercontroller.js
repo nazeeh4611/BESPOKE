@@ -16,7 +16,19 @@ const loadHome = async (req, res) => {
   try {
     const userIn = req.session.userId;
 
-    res.render("user/home", { userIn, user: req.session.userId });
+
+    const cartdata = await Cart.findOne({ user: userIn }).populate({
+      path: "product.productId",
+      model: "Product",
+    });
+
+    console.log("nmnm", cartdata);
+
+    const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
+
+   
+
+    res.render("user/home", { userIn, user: req.session.userId,cartdata,subtotal });
   } catch (error) {
     console.log(error.message);
   }
@@ -81,15 +93,7 @@ const verifyRegister = async (req, res) => {
   }
 };
 
-// const Google = async(req,res)=>{
-//   try {
-//     await GoogleStrategy({profile:})
-//     console.log("jbdhgdvgfdwg",profile);
-//   } catch (error) {
 
-//   }
-// }
-// import from utils
 
 const getsendOtp = async (req, res) => {
   try {
@@ -114,7 +118,7 @@ const loadotp = async (req, res) => {
 
 const verifyotp = async (req, res) => {
   try {
-    console.log("hii", req.body);
+   
     const email = req.body.email;
     const enteredOTP =
       req.body.one + req.body.two + req.body.three + req.body.four;
@@ -132,7 +136,7 @@ const verifyotp = async (req, res) => {
 
     const { otp: hashedOTP } = userOtpRecord;
     const validOTP = await bcrypt.compare(enteredOTP, hashedOTP);
-    console.log(validOTP);
+  
     if (validOTP) {
       const userData = await User.findOne({ email: email });
 
@@ -150,7 +154,7 @@ const verifyotp = async (req, res) => {
 
       await userOtpVerification.deleteOne({ email: email });
 
-      console.log("hell");
+    
 
       res.json({ success: true });
     } else {
@@ -353,6 +357,41 @@ const MyAccount = async (req, res) => {
   }
 };
 
+
+const myprofile = async(req,res)=>{
+  try {
+    const userId = req.session.userId;
+    const profiledata = [await User.findById({_id:userId})];
+    res.render("user/profile",{userId,profiledata})
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const editprofile = async(req,res)=>{
+  try {
+    const name = req.body.Fullname;
+    const number = req.body.Mobile;
+    const email = req.body.Email;
+   console.log("all date here",name,number,email);
+
+     const userId = req.session.userId;
+
+     const extemail = await User.findOne({email:email});
+     if(extemail){
+      await User.updateOne({_id:userId},{$set:{
+        name:name,
+        mobile:number,
+        email:email,
+      }})
+     }
+
+     res.json({status:true  })
+  } catch (error) {
+    
+  }
+}
+
 const userLogout = async (req, res) => {
   try {
     req.session.userId = null;
@@ -448,6 +487,8 @@ module.exports = {
   lostpasswordVerify,
   newPasswordLoad,
   MyAccount,
+  myprofile,
+  editprofile,
   userLogout,
   resetPass,
   loadshop,
