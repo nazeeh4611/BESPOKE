@@ -37,12 +37,7 @@ adminRoute.get(
   productController.loadAddProduct
 );
 
-adminRoute.post(
-  "/addproduct",
-
-  upload.upload.array("image", 4),
-  productController.addProduct
-);
+adminRoute.post('/addproduct', upload.upload.array('image[]', 4), productController.addProduct);
 adminRoute.get(
   "/editproduct",
 
