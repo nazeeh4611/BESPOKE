@@ -22,7 +22,7 @@ const OrderPlace = async (req, res) => {
           });
       }
 
-      const userAddress = await Address.find({
+      const userAddress = await Address.findOne({
           "address._id": addressId,
       });
       console.log("user",);
@@ -36,7 +36,7 @@ const OrderPlace = async (req, res) => {
       }
 
       // Since userAddress is an array, use userAddress[0] if it exists
-      const addressObject = userAddress[0].address;
+      const addressObject = userAddress.address[0];
       console.log(addressObject,"obhdhjg");
 
       const userdata = await User.findOne({ _id: req.session.userId });
@@ -66,7 +66,7 @@ const OrderPlace = async (req, res) => {
               productId: product.productId,
               name: product.name,
               price: product.price,
-              // category:product.category,
+              category:product.category,
               quantity: product.quantity,
           })),
           subtotal: subtotal,
@@ -74,15 +74,6 @@ const OrderPlace = async (req, res) => {
           Date: Date.now(),
           expiredate: expireDate,
 
-
-          // 'deliveryDetails.pin': "444",
-          //  // You should replace this with the actual pin
-          //   'deliveryDetails.city': "wew", // You should replace this with the actual city
-          //   'deliveryDetails.address': "wwe", // You should replace this with the actual address
-          //   'deliveryDetails.email': "weew", // You should replace this with the actual email
-          //   'deliveryDetails.mobile':"111", // You should replace this with the actual mobile number
-          //   'deliveryDetails.lname':' ', // You should replace this with the actual last name
-          //   'deliveryDetails.fname': "dewqd", // You should replace this with the actual first name
       });
 
       const saveOrder = await NewOrder.save();
@@ -118,15 +109,14 @@ const OrderPlace = async (req, res) => {
 
 const OrderPlaced = async(req,res)=>{
     try {
-        const id =req.query.id;
-        console.log(req.query.firstName,"klklkllkl");
+        const id =req.query._id;
         console.log("id here",id);
 
         const userId = req.session.userId;
 
         const userData = await User.findOne({_id:userId});
-        const OrderDta = await Order.findOne({_id:id});
-        res.render("user/ordercomplete")
+        const order = await Order.findOne({_id:id});
+        res.render("user/ordercomplete" ,{order:order})
     } catch (error) {
         console.log(error);
     }
