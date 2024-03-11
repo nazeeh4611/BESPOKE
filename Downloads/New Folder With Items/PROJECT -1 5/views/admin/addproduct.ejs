@@ -365,35 +365,12 @@
                 <label>File upload</label>
                 <div class="input-group col-xs-12">
                     <div class="mb-3">
-                        <label for="productImage1" class="form-label mb-10">Image 1</label>
-                        <input type="file" name="image[]" id="productImage1"
-                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image 1"
-                            style="margin-top: 5%;">
-                        <div id="imagePreview1" class="mt-2"></div>
-                    </div>
-                    <!-- Repeat for Image 2, 3, and 4 -->
-                    <div class="mb-3">
-                        <label for="productImage2" class="form-label mb-10">Image 2</label>
-                        <input type="file" name="image[]" id="productImage2"
-                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image 2"
-                            style="margin-top: 5%;">
-                        <div id="imagePreview2" class="mt-2"></div>
-                    </div>
-                    <!-- Repeat for Image 3 and 4 -->
-                    <div class="mb-3">
-                        <label for="productImage3" class="form-label mb-10">Image 3</label>
-                        <input type="file" name="image[]" id="productImage3"
-                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image 3"
-                            style="margin-top: 5%;">
-                        <div id="imagePreview3" class="mt-2"></div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="productImage4" class="form-label mb-10">Image 4</label>
-                        <input type="file" name="image[]" id="productImage4"
-                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image 4"
-                            style="margin-top: 5%;">
-                        <div id="imagePreview4" class="mt-2"></div>
+                        <label for="productImage" class="form-label mb-10"></label>
+                        <div id="imagePreview" class="mt-2"></div>
+                        <input type="file" name="image" id="productImage"
+                            class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image"
+                            style="margin-top: 5%;" multiple onchange="previewImages(event)">
+                        <div id="ImageError" class="text-danger"></div>
                     </div>
                 </div>
             </div>
@@ -416,6 +393,7 @@
              </div>
         </div>
       </div>
+    
     </div>
 
 
@@ -423,13 +401,35 @@
 
 <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 <script>
-  function previewImage(event, previewId) {
-      var reader = new FileReader();
-      reader.onload = function() {
-          var imagePreview = document.getElementById(previewId);
-          imagePreview.innerHTML = '<img src="' + reader.result + '" alt="Image Preview" style="max-width: 100px; max-height: 100px;">';
-      };
-      reader.readAsDataURL(event.target.files[0]);
+  function previewImages(event) {
+      var files = event.target.files;
+      var imagePreview = document.getElementById('imagePreview');
+      var maxAllowed = 4; // Maximum allowed images
+      var errorMessage = document.getElementById('ImageError');
+      errorMessage.innerHTML = ''; // Clear previous error message
+      
+      if (files.length > maxAllowed) {
+          errorMessage.textContent = 'You can only select up to ' + maxAllowed + ' images.';
+          event.target.value = ''; // Clear the file input
+          return; // Exit function
+      }
+      
+      imagePreview.innerHTML = ''; // Clear previous previews
+      
+      for (var i = 0; i < files.length; i++) {
+          (function(file) {
+              var reader = new FileReader();
+              reader.onload = function() {
+                  var img = document.createElement('img');
+                  img.src = reader.result;
+                  img.alt = 'Image Preview';
+                  img.style.maxWidth = '100px';
+                  img.style.maxHeight = '100px';
+                  imagePreview.appendChild(img);
+              };
+              reader.readAsDataURL(file);
+          })(files[i]);
+      }
   }
 </script>
 <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->

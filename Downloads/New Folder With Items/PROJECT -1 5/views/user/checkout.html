@@ -1,0 +1,64 @@
+<% if(Array.isArray(addresses) && addresses.length > 0) { %>
+    <% addresses.forEach((value,index)=>{ %>
+
+      <%if(value && typeof value === 'object') { %>
+        <div class="col-md-4">
+          <div class="address">
+           <h5>Shipping Address <%=index+1 %></h5>
+            <p><%= value.fname %> <%= value.lname %><br>
+            Default<br>
+            <%= value.address%><br>
+          <%= value.city%><br>
+           <%=value.pin %><br>
+           <%= value.email %><br>
+            Phone :<%= value.mobile%></p>
+
+
+            <% }else{ %>
+                <h3>ioio</h3>
+                <% } %>
+              <% }) %>
+              <% }else{ %>
+                <h4>Address Not Found</h4>
+                <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <tr>
+                  <td>#2416</td>
+                  <td>October 1, 2023</td>
+                  <td>On hold</td>
+                  <td>$1,200.65 for 3 items</td>
+                  <td><button class="btn btn-primary">VIEW</button></td>
+                </tr>
+                <tr>
+                  <td>#2417</td>
+                  <td>October 2, 2023</td>
+                  <td>On hold</td>
+                  <td>$1,200.65 for 3 items</td>
+                  <td><button class="btn btn-primary">VIEW</button></td>
+                </tr>
+                <tr>
+                  <td>#2418</td>
+                  <td>October 3, 2023</td>
+                  <td>On hold</td>
+                  <td>$1,200.65 for 3 items</td>
+                  <td><button class="btn btn-primary">VIEW</button></td>
+                </tr>
+                <tr>
+                  <td>#2419</td>
+                  <td>October 4, 2023</td>
+                  <td>On hold</td>
+                  <td>$1,200.65 for 3 items</td>
+                  <td><button class="btn btn-primary">VIEW</button></td>
+                </tr>

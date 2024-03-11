@@ -365,25 +365,29 @@
                   value="<%= Datas.price %>">
                 <div id="priceError" class="text-danger"></div>
               </div>
+
+
               <div class="form-group">
                 <label>File upload</label>
-                <% if(Datas.Image && Array.isArray(Datas.Image) && Datas.Image.length>0) { %>
-                  <% for(let i=0;i < Datas.Image.length;i++) { %>
-                    <div class="image-container" id="pdtImage_<%= i %>">
-                      <img src="/productImage/<%= Datas.Image[i] %>" alt="product Image" width="100" height="100">
-                      <button style="background-color: red;"
-                        onclick="deleteImage(event,'<%= Datas.Image[i] %>', '<%= Datas._id %>', '<%= i %>')">Delete</button>
-                    </div>
+                <% if(Datas.Image && Array.isArray(Datas.Image) && Datas.Image.length > 0) { %>
+                    <% for(let i=0;i < Datas.Image.length;i++) { %>
+                        <div class="image-container" id="pdtImage_<%= i %>">
+                            <img src="/productImage/<%= Datas.Image[i] %>" alt="product Image" width="100" height="100">
+                            <button style="background-color: red;" onclick="deleteImage(event,'<%= Datas.Image[i] %>', '<%= Datas._id %>', '<%= i %>')">Delete</button>
+                        </div>
                     <% } %>
-                      <% } else { %>
-                        <p>No Images Available</p>
-                        <% } %>
-                          <div class="mb-3">
-                            <input type="file" name="image" id="productImage"
-                              class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image"
-                              style="margin-top: 5%;" multiple>
-                          </div>
-              </div>
+                <% } else { %>
+                    <p>No Images Available</p>
+                <% } %>
+                <div id="inputBoxContainer" style="display: none;">
+                    <!-- Hidden input box to be cloned -->
+                    <div class="mb-3" id="hiddenInputBox" style="display: none;">
+                        <input type="file" name="image" class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image" style="margin-top: 5%;" multiple>
+                    </div>
+                </div>
+            </div>
+            
+            
               <div class="form-group">
                 <label for="exampleInputCity1">Category</label>
                 <select class="form-control" name="categories" id="exampleInputCity1">
@@ -406,125 +410,47 @@
           </div>
         </div>
       </div>
-      <script>
-        document.querySelector('.forms-sample').addEventListener('submit', async function (event) {
-          const imagesInput = document.getElementById('productImage');
-          const imagesCount = imagesInput.files.length;
-          const maxImages = 4;
+<script>
+  async function deleteImage(event, img, prdtid, index) {
+    event.preventDefault();
 
-          if (imagesCount > maxImages) {
-            event.preventDefault();
-            const errorDiv = document.createElement('div');
-            errorDiv.textContent = 'You can only upload a maximum of 4 images.';
-            errorDiv.style.color = 'red';
-            const fileUploadInfo = document.querySelector('.file-upload-info');
-            fileUploadInfo.parentNode.insertBefore(errorDiv, fileUploadInfo.nextSibling);
-          }
+    try {
+        await fetch("/admin/deleteimage", {
+            method: "DELETE",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ img, prdtid }),
         });
 
-        window.addEventListener('DOMContentLoaded', function () {
-          const images = document.querySelectorAll('.image-container');
-          const imagesCount = images.length;
-          const maxImages = 4;
-          const fileInput = document.getElementById('productImage');
-
-          if (imagesCount >= maxImages) {
-            fileInput.disabled = true;
-          }
-        });
-
-        async function deleteImage(event, img, prdtid, index) {
-          event.preventDefault();
-
-          try {
-            await fetch("/admin/deleteimage", {
-              method: "DELETE",
-              headers: { 'Content-Type': "application/json" },
-              body: JSON.stringify({ img, prdtid }),
-            });
-
-            // Remove the image container from the DOM
-            const imageContainer = document.getElementById(`pdtImage_${index}`);
-            if (imageContainer) {
-              imageContainer.remove();
-            }
-
-            // Enable the file input box if less than 4 images after deletion
-            const images = document.querySelectorAll('.image-container');
-            const imagesCount = images.length;
-            const maxImages = 4;
-            const fileInput = document.getElementById('productImage');
-
-            if (imagesCount < maxImages) {
-              fileInput.disabled = false;
-            }
-          } catch (error) {
-            console.log("Error", error);
-          }
+        // Remove the image container from the DOM
+        const imageContainer = document.getElementById(`pdtImage_${index}`);
+        if (imageContainer) {
+            imageContainer.remove();
         }
-      </script>
+
+        // Show the input box container if all images are deleted
+        const images = document.querySelectorAll('.image-container');
+        if (images.length === 0) {
+            document.getElementById('inputBoxContainer').style.display = 'block';
+        }
+        
+        // Clone the hidden input box and append it to the container
+        const hiddenInputBox = document.getElementById('hiddenInputBox');
+        const clonedInputBox = hiddenInputBox.cloneNode(true);
+        clonedInputBox.style.display = 'block';
+        document.getElementById('inputBoxContainer').appendChild(clonedInputBox);
+    } catch (error) {
+        console.log("Error", error);
+    }
+}
+
+</script>
+
+    
 
 
 
 
-      <div class="card-body">
-        <h4 class="card-title"></h4>
-        <p class="card-description"> Basic form elements </p>
-        <form class="forms-sample" method="post" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="exampleInputName1">Product Name</label>
-            <input type="hidden" class="form-control" name="id" value="<%=Datas.id %>">
-            <input type="text" class="form-control" name="productName" id="exampleInputName1" placeholder="Product Name"
-              value="<%= Datas.name %>">
-            <div id="productError" class="text-danger"></div>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail3">Description</label>
-            <input type="text" class="form-control" name="description" id="exampleInputEmail3" placeholder="Description"
-              value="<%= Datas.description %>">
-            <div id="productDescriptionError" class="text-danger"></div>
-          </div>
-          <div class="form-group">
-            <label>File upload</label>
-            <% if(Datas.Image && Array.isArray(Datas.Image) && Datas.Image.length>0) { %>
-              <% for(let i=0;i < Datas.Image.length;i++) { %>
-                <div class="image-container" id="pdtImage_<%= i %>">
-                  <img src="/productImage/<%= Datas.Image[i] %>" alt="product Image" width="100" height="100">
-                  <button style="background-color: red;"
-                    onclick="deleteImage(event,'<%= Datas.Image[i] %>', '<%= Datas._id %>', '<%= i %>')">Delete</button>
-                </div>
-                <% } %>
-                  <% } else { %>
-                    <p>No Images Available</p>
-                    <% } %>
-                      <div class="mb-3">
-                        <input type="file" name="image" id="productImage"
-                          class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image"
-                          style="margin-top: 5%;" multiple>
-                      </div>
-          </div>
-
-          <script>
-            async function deleteImage(event, img, prdtid, index) {
-              event.preventDefault();
-
-              try {
-                await fetch("/admin/deleteimage", {
-                  method: "DELETE",
-                  headers: { 'Content-Type': "application/json" },
-                  body: JSON.stringify({ img, prdtid }),
-                });
-
-                // Remove the image container from the DOM
-                const imageContainer = document.getElementById(`pdtImage_${index}`);
-                if (imageContainer) {
-                  imageContainer.remove();
-                }
-              } catch (error) {
-                console.log("Error", error);
-              }
-            }
-          </script>
+     
 
           <!-- partial -->
       </div>
