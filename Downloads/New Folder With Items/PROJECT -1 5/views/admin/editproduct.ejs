@@ -339,7 +339,7 @@
           <div class="card-body">
             <h4 class="card-title"></h4>
             <p class="card-description"> Basic form elements </p>
-            <form class="forms-sample" method="post" enctype="multipart/form-data">
+            <form class="forms-sample" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
               <div class="form-group">
                 <label for="exampleInputName1">Product Name</label>
                 <input type="hidden" class="form-control" name="id" value="<%=Datas.id %>">
@@ -380,7 +380,7 @@
                     <p>No Images Available</p>
                 <% } %>
                 <div id="inputBoxContainer" style="display: none;">
-                    <!-- Hidden input box to be cloned -->
+                  
                     <div class="mb-3" id="hiddenInputBox" style="display: none;">
                         <input type="file" name="image" class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image" style="margin-top: 5%;" multiple>
                     </div>
@@ -410,6 +410,7 @@
           </div>
         </div>
       </div>
+
 <script>
  async function deleteImage(event, img, prdtid, index) {
     event.preventDefault();
@@ -421,16 +422,16 @@
             body: JSON.stringify({ img, prdtid }),
         });
 
-        // Remove the image container from the DOM
+     
         const imageContainer = document.getElementById(`pdtImage_${index}`);
         if (imageContainer) {
             imageContainer.remove();
         }
 
-        // Show the input box container after each image deletion
+      
         document.getElementById('inputBoxContainer').style.display = 'block';
         
-        // Clone the hidden input box and append it to the container
+      
         const hiddenInputBox = document.getElementById('hiddenInputBox');
         const clonedInputBox = hiddenInputBox.cloneNode(true);
         clonedInputBox.style.display = 'block';
@@ -441,8 +442,58 @@
 }
 </script>
 
-    
+           
 
+    
+       <script>
+          function validateForm() {
+            const productName = document.getElementById('exampleInputName1').value.trim();
+            const description = document.getElementById('exampleInputEmail3').value.trim();
+            const quantity = document.getElementById('product_qty').value.trim();
+            const price = document.getElementById('product_price').value.trim();
+            const image = document.querySelector('input[name="image"]').value.trim();
+            const category = document.getElementById('exampleInputCity1').value;
+        
+            let isValid = true;
+        
+        
+            if (productName === '') {
+              document.getElementById('productError').innerText = 'Product Name is required';
+              isValid = false;
+            } else {
+              document.getElementById('productError').innerText = '';
+            }
+        
+        
+            if (description === '') {
+              document.getElementById('productDescriptionError').innerText = 'Description is required';
+              isValid = false;
+            } else {
+              document.getElementById('productDescriptionError').innerText = '';
+            }
+        
+        
+            if (quantity === '') {
+              document.getElementById('quantityError').innerText = 'Quantity is required';
+              isValid = false;
+            } else {
+              document.getElementById('quantityError').innerText = '';
+            }
+        
+            
+            if (price === '') {
+              document.getElementById('priceError').innerText = 'Price is required';
+              isValid = false;
+            } else {
+              document.getElementById('priceError').innerText = '';
+            }
+        
+   
+           
+           
+            return isValid;
+          }
+        </script>
 
 
 

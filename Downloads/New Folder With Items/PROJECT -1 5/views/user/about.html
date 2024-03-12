@@ -726,3 +726,30 @@ function validateAdd() {
 
    return isValid;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window.onload = function() {
+   // Get the count of input boxes from Local Storage
+   const inputBoxCount = localStorage.getItem('inputBoxCount');
+
+   // Hide the input box container initially if there are images
+   const imageContainers = document.querySelectorAll('.image-container');
+   if (imageContainers.length === 0) {
+       document.getElementById('inputBoxContainer').style.display = '';
+   }
+}

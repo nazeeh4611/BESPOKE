@@ -7,74 +7,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Corona Admin</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="/admin/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="/admin/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="/admin/vendors/jvectormap/jquery-jvectormap.css">
-  <link rel="stylesheet" href="/admin/vendors/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="/admiin/vendors/flag-icon-css/css/flag-icon.min.css">
   <link rel="stylesheet" href="/admin/vendors/owl-carousel-2/owl.carousel.min.css">
   <link rel="stylesheet" href="/admin/vendors/owl-carousel-2/owl.theme.default.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <!-- endinject -->
   <!-- Layout styles -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <link rel="stylesheet" href="/admin/css/style.css">
+  <link rel="stylesheet" href="/public/admin/css/style.css">
+  <!-- End layout styles -->
   <link rel="shortcut icon" href="/admin/images/favicon.png" />
-
-  <style>
-    .container {
-      max-width: 1260px;
-      margin: auto;
-      margin-top: 20px;
-    }
-
-    .d-flex.justify-content-end {
-      /* Align items to the right */
-      justify-content: flex-end;
-    }
-
-    .add_product {
-      /* Green color for the Add Product button */
-      background-color: #28a745;
-      color: #fff;
-      /* White text color */
-      margin-top: 10px;
-      /* Optional: Add some top margin */
-    }
-
-    .table thead th {
-      background-color: #f2f2f2;
-      text-align: center;
-    }
-
-    .table tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    .table tbody td:first-child {
-      width: 100px;
-    }
-
-    .table tbody td {
-      text-align: center;
-      padding: 10px;
-    }
-
-    .table tbody .btn {
-      margin: 2px;
-    }
-
-    h2 {
-      color: #333;
-      /* Dark text color */
-    }
-  </style>
-
 </head>
 
 <body>
@@ -82,8 +29,8 @@
     <!-- partial:partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="index.html"><img src="/admin/images/logo.svg" alt="logo" /></a>
-        <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="/admin/images/logo-mini.svg"
+        <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
+        <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg"
             alt="logo" /></a>
       </div>
       <ul class="nav">
@@ -91,7 +38,7 @@
           <div class="profile-desc">
             <div class="profile-pic">
               <div class="count-indicator">
-                <img class="img-xs rounded-circle " src="/admin/images/faces/face15.jpg" alt="">
+                <img class="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt="">
                 <span class="count bg-success"></span>
               </div>
               <div class="profile-name">
@@ -141,7 +88,7 @@
           <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/dashboard">
+          <a class="nav-link" href="index.html">
             <span class="menu-icon">
               <i class="mdi mdi-speedometer"></i>
             </span>
@@ -149,31 +96,31 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/Users">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
             <span class="menu-icon">
               <i class="mdi mdi-laptop"></i>
             </span>
-            <span class="menu-title">Users</span>
-            <!-- <i class="menu-arrow"></i> -->
+            <span class="menu-title">Basic UI Elements</span>
+            <i class="menu-arrow"></i>
           </a>
           <!-- <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/public//admin/pages/ui-features/buttons.html">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/public/admin/pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/public/admin/pages/ui-features/typography.html">Typography</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
               </ul>
             </div> -->
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/category">
+          <a class="nav-link" href="pages/forms/basic_elements.html">
             <span class="menu-icon">
               <i class="mdi mdi-playlist-play"></i>
             </span>
-            <span class="menu-title">Catogories</span>
+            <span class="menu-title">Category</span>
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/product">
+          <a class="nav-link" href="pages/tables/basic-table.html">
             <span class="menu-icon">
               <i class="mdi mdi-table-large"></i>
             </span>
@@ -181,7 +128,7 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/orderDetail">
+          <a class="nav-link" href="pages/charts/chartjs.html">
             <span class="menu-icon">
               <i class="mdi mdi-chart-bar"></i>
             </span>
@@ -189,39 +136,38 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="/admin/coupon">
+          <a class="nav-link" href="pages/icons/mdi.html">
             <span class="menu-icon">
               <i class="mdi mdi-contacts"></i>
             </span>
-            <span class="menu-title">Coupon</span>
+            <span class="menu-title">Icons</span>
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link"  href="/admin/salesreport" >
+          <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
             <span class="menu-icon">
-              <i class=" mdi-security"></i>
+              <i class="mdi mdi-security"></i>
             </span>
-            <span class="menu-title">Sales Report</span>
+            <span class="menu-title">User Pages</span>
             <i class="menu-arrow"></i>
           </a>
-          <!-- <div class="collapse" id="auth">
+          <div class="collapse" id="auth">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="/admin/pages/samples/blank-page.html"> Blank Page </a>
-              </li>
-              <li class="nav-item"> <a class="nav-link" href="/admin/pages/samples/error-404.html"> 404 </a></li>
-              <li class="nav-item"> <a class="nav-link" href="/admin/pages/samples/error-500.html"> 500 </a></li>
-              <li class="nav-item"> <a class="nav-link" href="/admin/pages/samples/login.html"> Login </a></li>
-              <li class="nav-item"> <a class="nav-link" href="/admin/pages/samples/register.html"> Register </a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
             </ul>
-          </div> -->
+          </div>
         </li>
         <li class="nav-item menu-items">
           <a class="nav-link"
-            href="/admin/offer">
+            href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
             <span class="menu-icon">
               <i class="mdi mdi-file-document-box"></i>
             </span>
-            <span class="menu-title">OFFER</span>
+            <span class="menu-title">Documentation</span>
           </a>
         </li>
       </ul>
@@ -231,7 +177,7 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/admin/images/logo-mini.svg"
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg"
               alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
@@ -246,49 +192,7 @@
             </li>
           </ul>
           <ul class="navbar-nav navbar-nav-right">
-            <!-- <li class="nav-item dropdown d-none d-lg-block">
-              <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown"
-                aria-expanded="false" href="#">+ Create New Project</a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                aria-labelledby="createbuttonDropdown">
-                <h6 class="p-3 mb-0">Projects</h6>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-file-outline text-primary"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1">Software Development</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-web text-info"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1">UI Development</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-layers text-danger"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1">Software Testing</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <p class="p-3 mb-0 text-center">See all projects</p>
-              </div>
-            </li> -->
+
             <li class="nav-item nav-settings d-none d-lg-block">
               <a class="nav-link" href="#">
                 <i class="mdi mdi-view-grid"></i>
@@ -306,7 +210,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="/admin/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
+                    <img src="assets/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
                   </div>
                   <div class="preview-item-content">
                     <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
@@ -316,7 +220,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="/admin/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
+                    <img src="assets/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
                   </div>
                   <div class="preview-item-content">
                     <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
@@ -326,7 +230,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="/admin/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
+                    <img src="assets/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
                   </div>
                   <div class="preview-item-content">
                     <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
@@ -389,310 +293,188 @@
             <li class="nav-item dropdown">
               <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                 <div class="navbar-profile">
-                  <img class="img-xs rounded-circle" src="/admin/images/faces/face15.jpg" alt="">
+                  <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
                   <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
                   <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                 </div>
               </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                aria-labelledby="profileDropdown">
-                <h6 class="p-3 mb-0">Profile</h6>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-settings text-success"></i>
+              <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                  <h6 class="p-3 mb-0">Profile</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-settings text-success"></i>
+                      </div>
                     </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject mb-1">Settings</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-logout text-danger"></i>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Settings</p>
                     </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject mb-1">Log out</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <p class="p-3 mb-0 text-center">Advanced settings</p>
-              </div>
-            </li>
-          </ul>
-          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-toggle="offcanvas">
-            <span class="mdi mdi-format-line-spacing"></span>
-          </button>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-logout text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Log out</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">Advanced settings</p>
+                </div>
+              </li>
+            </ul> -->
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="mdi mdi-format-line-spacing"></span>
+              </button>
         </div>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
-        <div class="container mt-4">
-          <div class="d-flex justify-content-end mb-3">
-            <!-- Move the Add Product button to the right -->
-            <a href="/admin/addproduct"> <button class="add_product btn btn-success">Add Product</button></a>
-          </div>
-          <h2>Product List</h2>
-
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>  
-                  <th>Offer</th>  
-                  <th></th>
-                  <th>Action</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                <% if(Products.length>0){%>
-                  <% for(let i=0;i<Products.length;i++){ %>
-                    <tr>
-                      <td>
-                        <img src="/proImage/<%= Products[i].Image[0] %>" alt="">
-                      </td>
-                      <td>
-                        <%= Products[i].name %>
-                      </td>
-                      <td>
-                        <%= Products[i].price %>
-                      </td>
-                      <td>
-                        <%= Products[i].quantity %>
-                      </td>
-                      <% if (Products[i].offers.length > 0) { %>
-                        <td>
-                          <button type="button" class="btn btn-danger" onclick="removeOffer('<%= Products[i].offers[0]._id %>')">Remove Offer</button>
-                          <br>
-                          <br>
-                          <% Products[i].offers.forEach(function(offer) { %>
-                            <p>OFF : <%= offer.discount %>%</p>
-                          <% }); %>
-                        </td>
-                      <%}else{ %>
-                      <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="background-color: rgb(35, 241, 128);" onclick="showModal('<%= Products[i]._id %>')">Select Offer</button>
-                    </td>
-                    <% } %>
-                      <td>
-                        <button class="btn btn-inverse-primary btn-sm"><a
-                            href="/admin/editProduct?productId=<%= Products[i]._id %>">Edit</a></button>
-                        <button class="btn btn-inverse-danger delete-btn btn-sm"
->
-                         <a href="/admin/deleteproduct?id=<%= Products[i]._id %>"> Delete</a> </button>
-                      </td>
-                      <td>
-                        <% if (Products[i].is_Listed == false) { %>
-                          <form action="/admin/Listproduct" method="post">
-                            <input type="hidden" name="id" value="<%= Products[i]._id %>">
-                            <button type="submit" class="btn btn-light rounded btn-sm font-sm" style="background-color: #3bff09;">
-                              <i>List</i>
-                            </button>
-                          </form>
-                        <% } else { %>
-                          <form action="/admin/Unlistproduct" method="post">
-                            <input type="hidden" name="id" value="<%= Products[i]._id %>">
-                            <button type="submit" class="btn btn-light rounded btn-sm font-sm" style="background-color: rgb(231, 14, 14);">
-                              <i>Unlist</i>
-                            </button>
-                          </form>
-                        <% } %>
-                        
-                    </td>
-                    
-                    </tr>
-                   <% } %>
-                    <%}else{%>
-                      <tr>
-                        <td colspan="5">Products not found</td>
-                    </tr>
-                   <% } %>
-
-              </tbody>
-            </table>
-          </div> 
-        </div>
-   <!-- Modal -->
-   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="card">
-            <% if(offerdata){ %>
-              <div class="card-body">
-                <% offerdata.forEach(function(offer) { %>
-                  <h5 class="card-title"><%= offer.name %></h5>
-                  <p class="card-text"><%= offer.activationdate.toLocaleDateString('en-US', { year:'numeric', month: 'short' , day: '2-digit' }).replace(/\//g, '-' ) %></p>
-                  <p class="card-text"><%= offer.expireddate.toLocaleDateString('en-US', { year:'numeric', month: 'short' , day: '2-digit' }).replace(/\//g, '-' ) %></p>
-                  <p class="card-text"><%= offer.discount %>%</p>
-                  <!-- Apply Offer button -->
-                  <button type="button" class="btn btn-primary apply-offer-btn" data-offerid="<%= offer._id %>">Apply Offer</button>
-                  <% }); %>
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title"></h4>
+            <p class="card-description"> Basic form elements </p>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="exampleInputName1">Product Name</label>
+                <input type="hidden" class="form-control" name="id" value="<%=Datas.id %>">
+                <input type="text" class="form-control" name="productName" id="exampleInputName1"
+                  placeholder="Product Name" value="<%= Datas.name %>">
+                <div id="productError" class="text-danger"></div>
               </div>
-            <% } else { %>
-              <p style="color: white;">No Offer Found</p>
-            <% } %>
+              <div class="form-group">
+                <label for="exampleInputEmail3">Description</label>
+                <input type="text" class="form-control" name="description" id="exampleInputEmail3"
+                  placeholder="Description" value="<%= Datas.description %>">
+                <div id="productDescriptionError" class="text-danger"></div>
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" name="quantity" id="product_qty" placeholder="Quantity"
+                  value="<%= Datas.quantity %>">
+                <div id="quantityError" class="text-danger"></div>
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" name="price" id="product_price" placeholder="Price"
+                  value="<%= Datas.price %>">
+                <div id="priceError" class="text-danger"></div>
+              </div>
+
+
+              <div class="form-group">
+                <label>File upload</label>
+                <% if(Datas.Image && Array.isArray(Datas.Image) && Datas.Image.length > 0) { %>
+                    <% for(let i=0;i < Datas.Image.length;i++) { %>
+                        <div class="image-container" id="pdtImage_<%= i %>">
+                            <img src="/productImage/<%= Datas.Image[i] %>" alt="product Image" width="100" height="100">
+                            <button style="background-color: red;" onclick="deleteImage(event,'<%= Datas.Image[i] %>', '<%= Datas._id %>', '<%= i %>')">Delete</button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p>No Images Available</p>
+                <% } %>
+                <div id="inputBoxContainer" style="display: none;">
+                    <!-- Hidden input box to be cloned -->
+                    <div class="mb-3" id="hiddenInputBox" style="display: none;">
+                        <input type="file" name="image" class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image" style="margin-top: 5%;" multiple>
+                    </div>
+                </div>
+            </div>
+            
+            
+              <div class="form-group">
+                <label for="exampleInputCity1">Category</label>
+                <select class="form-control" name="categories" id="exampleInputCity1">
+                  <option value="">Select Category</option>
+                  <% productData.forEach(product=> { %>
+                    <option value="<%= product.name %>">
+                      <%= product.name %>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
+            </form>
+            <% if(typeof message !="undefined" ) { %>
+              <p style="color: red;">
+                <%=message%>
+              </p>
+              <% } %>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
       </div>
-    </div>
-  </div>
+<script>
+ async function deleteImage(event, img, prdtid, index) {
+    event.preventDefault();
 
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-     
-      <!-- content-wrapper ends-------------------------------------------------------------------------------------- -->
-      <!-- partial:partials/_footer.html -->
-      <!-- <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-            </div>
-          </footer> -->
-      <!-- partial -->
-    </div>
-    <!-- main-panel ends -->
-  </div>
-  <!-- page-body-wrapper ends -->
-  </div>
- 
-
-    
-    
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="/admin/vendors/chart.js/Chart.min.js"></script>
-  <script src="/admin/vendors/progressbar.js/progressbar.min.js"></script>
-  <script src="/admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
-  <script src="/admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-  <script src="/admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
-
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="/admin/js/off-canvas.js"></script>
-  <script src="/admin/js/hoverable-collapse.js"></script>
-  <script src="/admin/js/misc.js"></script>
-  <script src="/admin/js/settings.js"></script>
-  <script src="/admin/js/todolist.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-  <!-- endinject -->
-  <!-- Custom js for this page -->
-  <script src="/admin/js/dashboard.js"></script>
-  <!-- End custom js for this page -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
-  <script>
-    function showModal(proid) {
-      console.log("product ID:", proid);
-      $("#staticBackdrop").modal("show");
-  
-      const applyOfferBtns = document.querySelectorAll('.apply-offer-btn');
-      applyOfferBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const offerId = this.dataset.offerid;
-          enterOffer(offerId, proid); // Pass both offerId and categoryId
+    try {
+        await fetch("/admin/deleteimage", {
+            method: "DELETE",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ img, prdtid }),
         });
-      });
-    }
-  
-    async function enterOffer(offerId, proid) {
-      $("#staticBackdrop").modal("hide");
-      try {
-        const response = await $.ajax({
-          url: '/admin/applyproductoffer',
-          method: 'POST',
-          data: JSON.stringify({ id: offerId, proid: proid }), // Correct keys for offerId and categoryId
-          contentType: 'application/json',
-          success: function(response) {
-            if (response.success) {
-              Swal.fire({
-                title: "Offer applied",
-                icon: "success",
-                confirmButtonText: "Ok"
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location = '/admin/product';
-                }
-              });
-            }
-          },
-          error: function(xhr, status, error) {
-            console.error('Error applying offer:', error);
-            Swal.fire({
-              title: 'Error',
-              text: 'Failed to apply offer. Please try again.',
-              icon: 'error',
-              confirmButtonText: 'OK'
-            });
-          }
-        });
-      } catch (error) {
-        console.error('Error applying offer:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'Failed to apply offer. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
-    }
-  </script>
-  <script>
-    function removeOffer(offerId) {
-      $.ajax({
-        url: '/admin/removeproductoffer',
-        method: 'DELETE',
-        data: {
-          id: offerId,
-        },
-        success: function(response) {
-          if (response.success) {
-            Swal.fire({
-              title: "Offer has been removed",
-              icon: "success",
-              confirmButtonText: "OK"
-            }).then(() => {
-              window.location.href = '/admin/product';
-            });
-          }
-        },
-        error: function(xhr, status, error) {
-          console.error('Error removing offer:', error);
-          Swal.fire({
-            title: 'Error',
-            text: 'Failed to remove offer. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
+
+        // Remove the image container from the DOM
+        const imageContainer = document.getElementById(`pdtImage_${index}`);
+        if (imageContainer) {
+            imageContainer.remove();
         }
-      });
+
+        // Show the input box container after each image deletion
+        document.getElementById('inputBoxContainer').style.display = 'block';
+        
+        // Clone the hidden input box and append it to the container
+        const hiddenInputBox = document.getElementById('hiddenInputBox');
+        const clonedInputBox = hiddenInputBox.cloneNode(true);
+        clonedInputBox.style.display = 'block';
+        document.getElementById('inputBoxContainer').appendChild(clonedInputBox);
+    } catch (error) {
+        console.log("Error", error);
     }
-    </script>
+}
+</script>
+
+    
+
+
+
+
+     
+
+          <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="/admin/vendors/chart.js/Chart.min.js"></script>
+    <script src="/admin/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="/admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="/admin/js/off-canvas.js"></script>
+    <script src="/admin/js/hoverable-collapse.js"></script>
+    <script src="/admin/js/misc.js"></script>
+    <script src="/admin/js/settings.js"></script>
+    <script src="/admin/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="/admin/js/dashboard.js"></script>
+    <!-- End custom js for this page -->
 </body>
 
 </html>

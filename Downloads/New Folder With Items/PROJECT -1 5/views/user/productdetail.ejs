@@ -61,6 +61,7 @@
     <!-- login ---------- -->
 
     <!-- Cart Drawer -->
+
     <div class="aside aside_right overflow-hidden cart-drawer" id="cartDrawer">
       <div class="aside-header d-flex align-items-center">
         <h3 class="text-uppercase fs-6 mb-0">SHOPPING BAG ( <span class="cart-amount js-cart-items-count">1</span> )
@@ -88,17 +89,17 @@
                   <span class="cart-drawer-item__price money price">$<%= product.productId.price %></span>
                 </div>
               </div>
-
+    
             </div><!-- /.cart-drawer-item d-flex -->
             <% }) %>
               <% } else { %>
                 <h3>Cart is empty</h3>
                 <% } %>
-
-
-
-
-
+    
+    
+    
+    
+    
         </div><!-- /.aside-content -->
         <% if (cartdata && cartdata.product.length> 0) { %>
           <div class="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
@@ -202,24 +203,18 @@
                  
                   <form name="addtocart-form" method="post">
                     <div class="product-single__addtocart">
-                      <div class="qty-control position-relative">
-                        <input type="number" name="quantity" value="1" min="1"  max="<%= data.quantity %>"
-                        class="qty-control__number text-center" >
-                        <div class="qty-control__reduce" >-</div>
-                        <div class="qty-control__increase">+</div>
-                      </div><!-- .qty-control -->
-        
+                     
                       <button type="button" onclick="addToCart('<%= data._id %>')"
                         class="btn btn-primary btn-addtocart js-open-aside">Add to Cart</button>
                     </div>
                   </form>
                   <% }else{ %>
-                    <form name="addtocart-form" method="post">
+                    
                       <div class="product-single__addtocart">
                         <button type="submit" class="btn btn-primary btn-addtocart btn-outofstock">Out of Stock</button>
                       </div>
 
-                    </form>
+                   
 
                     <% } %>
                       <div class="product-single__addtolinks">
@@ -654,15 +649,8 @@
       })
         .done((data) => {
 
-         
-
-
-
-
-
-
           if (data.success) {
-            Swal.fire({
+        Swal.fire({
         icon: "success",
         text: "Your product is added to the cart",
         confirmButtonColor: '#3085d6',
@@ -675,9 +663,13 @@
       });
          
           } else {
-            if (data.redirectTologin) {
-             
-            } else {
+
+            Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: "stock out",
+                  });
+        {
               console.error("Failed to add to cart", data.error);
             }
           }

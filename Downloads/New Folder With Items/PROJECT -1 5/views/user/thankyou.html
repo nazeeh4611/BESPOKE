@@ -1050,3 +1050,68 @@ img{
             }
         }
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <script>
+          function validateForm() {
+            const productName = document.getElementById('exampleInputName1').value.trim();
+            const description = document.getElementById('exampleInputEmail3').value.trim();
+            const quantity = document.getElementById('product_qty').value.trim();
+            const price = document.getElementById('product_price').value.trim();
+            const image = document.querySelector('input[name="image"]').value.trim();
+            const category = document.getElementById('exampleInputCity1').value;
+        
+            let isValid = true;
+        
+        
+            if (productName === '') {
+              document.getElementById('productError').innerText = 'Product Name is required';
+              isValid = false;
+            } else {
+              document.getElementById('productError').innerText = '';
+            }
+        
+        
+            if (description === '') {
+              document.getElementById('productDescriptionError').innerText = 'Description is required';
+              isValid = false;
+            } else {
+              document.getElementById('productDescriptionError').innerText = '';
+            }
+        
+        
+            if (quantity === '') {
+              document.getElementById('quantityError').innerText = 'Quantity is required';
+              isValid = false;
+            } else {
+              document.getElementById('quantityError').innerText = '';
+            }
+        
+            // Validate Price
+            if (price === '') {
+              document.getElementById('priceError').innerText = 'Price is required';
+              isValid = false;
+            } else {
+              document.getElementById('priceError').innerText = '';
+            }
+        
+            // Validate Image
+           
+           
+            return isValid;
+          }
+        </script>
