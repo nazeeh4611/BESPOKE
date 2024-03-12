@@ -411,7 +411,7 @@
         </div>
       </div>
 <script>
-  async function deleteImage(event, img, prdtid, index) {
+ async function deleteImage(event, img, prdtid, index) {
     event.preventDefault();
 
     try {
@@ -427,11 +427,8 @@
             imageContainer.remove();
         }
 
-        // Show the input box container if all images are deleted
-        const images = document.querySelectorAll('.image-container');
-        if (images.length === 0) {
-            document.getElementById('inputBoxContainer').style.display = 'block';
-        }
+        // Show the input box container after each image deletion
+        document.getElementById('inputBoxContainer').style.display = 'block';
         
         // Clone the hidden input box and append it to the container
         const hiddenInputBox = document.getElementById('hiddenInputBox');
@@ -442,7 +439,6 @@
         console.log("Error", error);
     }
 }
-
 </script>
 
     
