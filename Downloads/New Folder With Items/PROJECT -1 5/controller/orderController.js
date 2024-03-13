@@ -11,7 +11,6 @@ const OrderPlace = async (req, res) => {
       const userId = req.session.userId;
       const { addressId, subtotal, paymentMethod } = req.body;
 
-      console.log("all data here", req.body.addressId, subtotal, paymentMethod);
 
       const cartdata = await Cart.findOne({ user: userId });
 
@@ -26,7 +25,7 @@ const OrderPlace = async (req, res) => {
           "address._id": addressId,
       });
       console.log("user",);
-      console.log("delivery details here", userAddress);
+     
       // Check if userAddress is not empty and has at least one address
       if (!userAddress || userAddress.length === 0) {
           return res.json({
@@ -78,6 +77,7 @@ const OrderPlace = async (req, res) => {
 
       const saveOrder = await NewOrder.save();
       const orderId = saveOrder._id;
+      console.log("orderId here ",orderId);
       const totalamount = saveOrder.subtotal;
 
       if (paymentMethod === "COD") {

@@ -41,8 +41,11 @@ const success = async (req, res) => {
     // Checking if the email already exists in the database
     const existUser = await User.findOne({ email: req.user.email });
    
-
+   
     if (existUser) {
+      if(existUser.is_Blocked === 1){
+        return res.redirect("/login")
+      }
       req.session.userId = existUser._id;
       return res.redirect("/");
     } else {

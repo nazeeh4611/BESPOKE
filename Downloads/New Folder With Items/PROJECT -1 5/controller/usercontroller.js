@@ -201,7 +201,9 @@ const verifylogin = async (req, res) => {
         req.body.password,
         user.password
       );
-
+      if(user.is_Blocked == 1){
+        res.redirect("/login");
+      }
       if (passwordMatch) {
         if (user.is_Verified === 1) {
           req.session.userId = user._id;
@@ -373,7 +375,7 @@ const editprofile = async(req,res)=>{
     const name = req.body.Fullname;
     const number = req.body.Mobile;
     const email = req.body.Email;
-   console.log("all date here",name,number,email);
+
 
      const userId = req.session.userId;
 
@@ -435,13 +437,13 @@ const loadshop = async (req, res) => {
 const ProductDetail = async (req, res) => {
   try {
     const productId = req.query.id;
-    console.log("suii", productId);
+
     const product = await Product.findById({ _id: productId }).populate(
       "category"
     );
     const userIn = req.session.userId;
     const userId = req.session.userId;
-    console.log("jk", userId);
+
 
     const cartdata = await Cart.findOne({ user: userId }).populate({
       path: "product.productId",

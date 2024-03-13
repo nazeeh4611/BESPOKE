@@ -65,6 +65,12 @@ const AddToCart = async (req, res) => {
           error: "Cannot add more than available quantity",
         });
       }
+      if(currentQuantity+1 > 5){
+        return res.json({
+          success:false,
+          error:"Cannot add more than 5 units"
+        });
+      }
     }
     if (existProduct) {
       const updatedCart = await Cart.findOneAndUpdate(

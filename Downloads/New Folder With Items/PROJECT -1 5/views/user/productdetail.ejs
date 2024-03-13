@@ -203,7 +203,14 @@
                  
                   <form name="addtocart-form" method="post">
                     <div class="product-single__addtocart">
-                     
+                      <%if(data.quantity < 6){ %>
+                        <div class="meta-item">
+                          
+                          <span style="color: red; font-size: medium; font-weight: 600;">
+                              Hurry up only <%=data.quantity %> item left!
+                          </span>
+                        </div>
+                        <% } %>
                       <button type="button" onclick="addToCart('<%= data._id %>')"
                         class="btn btn-primary btn-addtocart js-open-aside">Add to Cart</button>
                     </div>
@@ -257,6 +264,7 @@
                         <script src="js/details-disclosure.js" defer="defer"></script>
                         <script src="js/share.js" defer="defer"></script>
                       </div>
+                     
                       <div class="meta-item">
                         <label>Category:</label>
                         <span>
@@ -662,12 +670,20 @@
           window.location.reload('/productdetail');
         }
       });
-    } else {
+    } else if(data.success == false){
       Swal.fire({
         icon: "info",
         title: "Info",
         text: data.error,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload('/productdetail');
+        }
       });
+    }else{
+      if (data) {
+        window.location.href = "/login"
+      }
     }
   } catch (error) {
     console.error("An error occurred:", error);

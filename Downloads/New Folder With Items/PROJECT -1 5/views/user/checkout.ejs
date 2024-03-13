@@ -791,7 +791,7 @@
                                                 <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()"  <%if(addresses.length===0){%>Checked<%}%>>
                                                 <label for="add_new_address">Add a new address</label>
                                             </div>
-                                            <button type="" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToShipping()">Proceed</button>
+                                            <button type="button" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToPayment()">Proceed</button>
                                         </div>
                                     </div>
                                 </div>
@@ -857,7 +857,7 @@
                              </div>
                           </div>
                           <!-- card -->
-                          <div class="card rounded mb-2">
+                          <!-- <div class="card rounded mb-2">
                              <div class="card-header bg-white" id="checkout_shipping">
                                 <h2 class="mb-0">
                                    <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_ship" aria-expanded="false" aria-controls="check_ship">
@@ -888,7 +888,7 @@
                                    </div>
                                 </div>
                              </div>
-                          </div>
+                          </div> -->
                           <!-- card -->
                           <div class="card rounded mb-2">
                              <div class="card-header bg-white" id="checkout_payment">
@@ -896,6 +896,7 @@
                                    <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_payment" aria-expanded="false" aria-controls="check_payment">
                                    Payment<span class="float-right"><i class="fas fa-angle-down"></i></span>
                                    </button>
+                                   
                                 </h2>
                              </div>
                              <div id="check_payment" class="collapse" aria-labelledby="checkout_payment" data-parent="#check_out_toggle">
@@ -912,10 +913,10 @@
                                             <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment">
                                             <label class="form-check-label" for="upi_payment">Online Payment</label>
                                         </span>
-                                        <span class="form-check d-inline-block ml-2">
+                                        <!-- <span class="form-check d-inline-block ml-2">
                                           <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment">
                                           <label class="form-check-label" for="upi_payment">Pay with Wallet</label>
-                                      </span>
+                                      </span> -->
                                          </div>
                                          <div class="text-center">
                                             <!-- <button type="submit" class="btn btn-primary f_13">
@@ -1068,52 +1069,7 @@
            }, false);
          })();
       </script>
-<script>
 
-
-function proceedToPayment() {
-      if ($("#with_ship").is(":checked")) {
-        $('#normalDelivery').css('display', 'none');
-        $('#normalPay').css('display', 'none');
-        $('#expressDelivery').css('display', 'block');
-        $('#expressPay').css('display', 'block');
-        deliveryType = 'express';
-        deliveryCharge = 300;
-        const amount = $('#totalValue').val();
-        finalAmountPay = +amount + +deliveryCharge;
-        $('#netPayable').text(+amount + deliveryCharge);
-        $('#totalAmount').text(+amount + deliveryCharge);
-        const selectedCouponVal = $('#coupon-select').val();
-        if (selectedCouponVal !== 'default') {
-          const finalAmount = amount - Math.round((selectedCouponVal / 100) * amount) + deliveryCharge;
-          finalAmountPay = finalAmount;
-          $('#netPayable').text(finalAmount);
-        }
-
-      } else {
-        $('#expressDelivery').css('display', 'none');
-        $('#expressPay').css('display', 'none');
-        $('#normalDelivery').css('display', 'block');
-        $('#normalPay').css('display', 'block');
-
-        deliveryType = 'Normal';
-        deliveryCharge = 100;
-        const amount = $('#totalValue').val();
-        finalAmountPay = +amount + +deliveryCharge;
-        $('#netPayable').text(+amount + deliveryCharge);
-        $('#totalAmount').text(+amount + deliveryCharge);
-        const selectedCouponVal = $('#coupon-select').val();
-        if (selectedCouponVal !== 'default') {
-          const finalAmount = amount - Math.round((selectedCouponVal / 100) * amount) + deliveryCharge;
-          finalAmountPay = finalAmount;
-          $('#netPayable').text(finalAmount);
-        }
-      }
-      $('#check_payment').collapse('show');
-      $('#check_ship').collapse('hide');
-    }
-
-</script>
 
 <script>
     $(document).ready(function() {
@@ -1161,6 +1117,7 @@ function proceedToPayment() {
     const post = $('#AddPost').val();
      
     if(!validateAdd()) return;
+
 
     const response = await fetch('/addaddress',{
       method:'POST',
@@ -1230,15 +1187,15 @@ function proceedToPayment() {
    return isValid;
 }
 
-function proceedToShipping() {
-      $('#check_existing').collapse('hide');
-      $('#check_ship').collapse('show');
-    }
 
 </script>
 <script>
 
   function proceedToPayment(){
+    $('#check_existing').collapse('hide');
+      $('#check_payment').collapse('show');
+    let paymentMethod;
+    console.log("address",addressId);
   if(!addressId){
     $('#errorModalHead').text('Invalid Address');
         $('#errorModalBody').text('Please select or add a valid address');
@@ -1249,7 +1206,8 @@ function proceedToShipping() {
           paymentMethod = 'Cash On Delivery'
   }
 }
-  };
+ 
+  console.log("paymnet mw=ethos is herw ",paymentMethod);
 
   $('#placeorder').click(async()=>{
     try{
@@ -1258,6 +1216,7 @@ function proceedToShipping() {
       headers:{
         'Content-Type' : 'application/json'
       },
+      
       body:JSON.stringify({
         address:addressId,
         paymentMethod,
@@ -1268,10 +1227,10 @@ function proceedToShipping() {
     }})
    
   
-
+  };
 </script>
 
-<script>
+<!-- <script>
 
   const formdata = $('#orderplace').serialize();
   console.log("formdata ",formdata);
@@ -1286,14 +1245,16 @@ function proceedToShipping() {
   .then(response=>{
      console.log("Form submitted successfully",response);
      if(response && response.success){
+      console.log(response.orderId);
       const orderId = response.orderId;
-     
+     console.log("lp",orderId);
      Swal.fire({
       icon: 'success',
       title: 'Order Placed!',
       text: 'Your order has been placed successfully.'
     }).then(()=>{
       window.location.href=`/ordercomplete=${orderId}`;
+      console.log(orderId);
     })
 
     
@@ -1306,12 +1267,13 @@ function proceedToShipping() {
     console.error("Error Occured Try again later",error.message);
    
   })
-</script>
+</script> -->
 
    </body>
 
 <!-- Mirrored from dostguru.com/HTML/plantly/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 10 Nov 2023 08:19:00 GMT -->
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
 <%- include("../layouts/userpartials/footer.ejs") %>
 
