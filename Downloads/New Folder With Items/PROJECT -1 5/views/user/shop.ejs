@@ -140,8 +140,8 @@
                       </svg></span>
                   </div>
                   <button
-                    class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                    class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium " onclick="addToCart('<%= products[i]._id %>')"
+                title="Add To Cart">Add To Cart</button>
                 </div>
                 <div class="pc__info position-relative">
                   <p class="pc__category">Dresses</p>
@@ -227,8 +227,92 @@
   <script src="/public/js/countdown.js"></script>
   <script src="/public/js/details-disclosure.js" defer="defer"></script>
   <script src="/public/js/share.js" defer="defer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
   <!-- Footer Scripts -->
   <script src="/public/js/theme.js"></script>
+
+  <script>
+  function openCartDrawer() {
+      updateCartDrawer(); // Call the function to update the cart drawer
+      // Add code to open the cart drawer if it's not already open
+    }
+    function addToCart(id) {
+      console.log("vutuyvj", id);
+      $.ajax({
+        url: "/cart",
+        method: "post",
+        data: {
+          productId: id,
+        },
+      })
+        .done((data) => {
+
+          if (data.success) {
+        Swal.fire({
+        icon: "success",
+        text: "Your product is added to the cart",
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'continue shopping',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If "Go to Cart" is clicked, redirect to /cart
+          window.location.reload('/productdetail');
+        } 
+      });
+         
+          } else {
+
+            Swal.fire({
+                    icon: 'info',
+                    title: 'Info',
+                    text: "stock out",
+                  });
+        {
+              console.error("Failed to add to cart", data.error);
+            }
+          }
+        })
+        .fail((xhr, status, error) => {
+          console.error("An error occurred", error);
+        });
+    }
+
+    function updateCart() {
+      console.log("the function isworkinh");
+      $.ajax({
+        url: "/cart",
+        method: "get",
+        dataType: "html",
+      })
+        .done((cartData) => {
+          $(".cart").html(cartData); // Replace entire cart content with fetched HTML
+          $(`#cartDrawer`).load(`/productdetail #cartDrawer`)
+          console.log("the srt");
+          // After updating cart, update the cart drawer
+        })
+        .fail((xhr, status, error) => {
+          console.error("An error occurred while updating cart", error);
+        });
+    }
+
+    function updateCartDrawer() {
+      $.ajax({
+        url: "/cart/drawer", // Assuming you have an endpoint to fetch the cart drawer content
+        method: "get",
+        dataType: "html",
+      })
+        .done((drawerData) => {
+
+          $(".cart-drawer").html(drawerData); // Replace entire cart drawer content with fetched HTML
+
+
+        })
+        .fail((xhr, status, error) => {
+          console.error("An error occurred while updating cart drawer", error);
+        });
+    }
+
+  </script>
 
   <%- include("../layouts/userpartials/footer.ejs") %>

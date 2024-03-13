@@ -45,7 +45,12 @@ const AddToCart = async (req, res) => {
     const productdata = await Product.findById(productId);
     console.log("product data",productdata.name); 
     console.log("quantity here",productdata.quantity);
- 
+    if (!productdata || productdata.quantity === 0) {
+      return res.json({
+        success: false,
+        error: "Product is not found or out of stock",
+      });
+    }
 
    
     // Find if the product already exists in the user's cart
@@ -53,12 +58,7 @@ const AddToCart = async (req, res) => {
       user: userId,
       "product.productId": productId, // Ensure correct property name
     });
-      let h = existProduct.quantity;
-    if (h<existProduct.quantity) {
-      return res.json({
-        success: false
-      });
-    }
+     
 
     if (existProduct) {
       // If the product exists, increment its quantity

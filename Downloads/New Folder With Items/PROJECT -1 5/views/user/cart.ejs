@@ -60,7 +60,7 @@
                                             </td>
                                             <td>
                                                 <div class="product-single__addtocart" >
-                                                    <button type="submit" class="btn btn-primary btn-addtocart btn-tofstock" id="out">Out of Stock</button>
+                                                    <button type="" class="btn btn-primary btn-addtocart btn-tofstock" id="out">Out of Stock</button>
                                                   </div>
                                             </td>
                                             <style>
@@ -68,7 +68,6 @@
                                                         border: none;
                                                         color: #D6001C;
                                                         background-color: #fff;
-                                                         cursor: default;
                                                            pointer-events: none;
                                                            width: 10px;
                                                            height: 10px;
@@ -99,6 +98,9 @@
                                     <tbody >
                                         <tr>
                                             <td>
+                                                <% if(product.productId.quantity < 5) { %>
+                                                    <p style="color: red;"><%=product.productId.quantity %> left!</p>
+                                                <%}%>
                                                 <div class="shopping-cart__product-item">
                                                     <img loading="lazy"
                                                         src="/public/uploadImg/<%= product.productId.Image[0] %>"
@@ -263,6 +265,7 @@
                             text: "The item has been successfully removed from your cart.",
                             icon: "success",
                             showConfirmButton: false,
+                            timer:1000,
                         });
                         $('#reload').load('/cart #reload')
                         // Optionally, you can add logic here to update the UI after successful removal
