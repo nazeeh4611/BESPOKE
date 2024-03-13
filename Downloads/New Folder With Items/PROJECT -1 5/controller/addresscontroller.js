@@ -48,7 +48,8 @@ const postAddress = async (req,res)=>{
             },
         }
     },
-    {new:true,upsert:true}
+    {new:true,upsert:true},
+    res.json({success:true})
  )
  console.log("address here",Data);
    res.redirect('/address')
