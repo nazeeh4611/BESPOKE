@@ -41,10 +41,8 @@ const AddToCart = async (req, res) => {
       return res.json({ session: false, error: "User not found" });
     }
 
-    const productId = req.body.productId; // Corrected variable name
+    const productId = req.body.productId;
     const productdata = await Product.findById(productId);
-    console.log("product data",productdata.name); 
-    console.log("quantity here",productdata.quantity);
     if (!productdata || productdata.quantity === 0) {
       return res.json({
         success: false,
@@ -52,16 +50,23 @@ const AddToCart = async (req, res) => {
       });
     }
 
-   
-    // Find if the product already exists in the user's cart
+    // Check if adding the product will exceed available stock
     const existProduct = await Cart.findOne({
       user: userId,
-      "product.productId": productId, // Ensure correct property name
+      "product.productId": productId,
     });
-     
-
     if (existProduct) {
-      // If the product exists, increment its quantity
+      const currentQuantity = existProduct.product.find(
+        (p) => p.productId == productId
+      ).quantity;
+      if (currentQuantity + 1 > productdata.quantity) {
+        return res.json({
+          success: false,
+          error: "Cannot add more than available quantity",
+        });
+      }
+    }
+    if (existProduct) {
       const updatedCart = await Cart.findOneAndUpdate(
         {
           user: userId,
@@ -74,7 +79,6 @@ const AddToCart = async (req, res) => {
       );
       return res.json({ success: true, stock: true, updatedCart });
     } else {
-      // If the product doesn't exist, add it to the cart
       const cartData = await Cart.findOneAndUpdate(
         { user: userId },
         {
@@ -82,14 +86,14 @@ const AddToCart = async (req, res) => {
           $push: {
             product: {
               productId: productId, 
-              name:productdata.name,// Ensure correct property name
+              name: productdata.name,
               price: productdata.price,
               quantity: 1,
               total: productdata.price,
             },
           },
         },
-        { upsert: true, new: true } // Upsert ensures insertion if document doesn't exist
+        { upsert: true, new: true }
       );
       return res.json({ success: true, stock: true, cartData });
     }
@@ -98,6 +102,7 @@ const AddToCart = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
+
 
 const updateCart = async (req, res) => {
   try {

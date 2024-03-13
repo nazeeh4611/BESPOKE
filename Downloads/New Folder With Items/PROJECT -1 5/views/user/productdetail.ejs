@@ -638,46 +638,42 @@
       // Add code to open the cart drawer if it's not already open
     }
 
-    function addToCart(id) {
-      console.log("vutuyvj", id);
-      $.ajax({
-        url: "/cart",
-        method: "post",
-        data: {
-          productId: id,
-        },
-      })
-        .done((data) => {
-
-          if (data.success) {
-        Swal.fire({
+    async function addToCart(id) {
+  console.log("Adding product with ID:", id);
+  try {
+    const response = await fetch("/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: id,
+      }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      Swal.fire({
         icon: "success",
         text: "Your product is added to the cart",
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'continue shopping',
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Continue shopping",
       }).then((result) => {
         if (result.isConfirmed) {
-          // If "Go to Cart" is clicked, redirect to /cart
           window.location.reload('/productdetail');
-        } 
+        }
       });
-         
-          } else {
-
-            Swal.fire({
-                    icon: 'info',
-                    title: 'Info',
-                    text: "stock out",
-                  });
-        {
-              console.error("Failed to add to cart", data.error);
-            }
-          }
-        })
-        .fail((xhr, status, error) => {
-          console.error("An error occurred", error);
-        });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Info",
+        text: data.error,
+      });
     }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+}
+
 
     function updateCart() {
       console.log("the function isworkinh");
