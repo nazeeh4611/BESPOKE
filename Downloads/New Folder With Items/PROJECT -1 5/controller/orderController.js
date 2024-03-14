@@ -9,13 +9,14 @@ const Cart = require("../model/cartModel");
 const OrderPlace = async (req, res) => {
   try {
       const userId = req.session.userId;
-      const { address, subtotal, paymentMethod } = req.body;
-console.log("address id from body may here",address);
-console.log("subtotal from body may here");
+      const { addressId, subtotal, paymentMethod } = req.body;
+console.log("address id from body may here",addressId);
+console.log("subtotal from body may here",subtotal);
+console.log("payment method from body here",paymentMethod);
 
       const cartdata = await Cart.findOne({ user: userId });
 
-      if (!address) {
+      if (!addressId) {
           return res.json({
               success: false,
               message: "Select the address and payment method before placing the order",
@@ -23,7 +24,7 @@ console.log("subtotal from body may here");
       }
 
       const userAddress = await Address.findOne({
-          "address._id": address,
+          "address._id": addressId,
       });
       console.log("user",);
      

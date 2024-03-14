@@ -745,7 +745,7 @@
         </a>
         
       </div>
-      <form name="checkout-form" id="orderplace" action="">
+      <form name="checkout-form" id="orderplace" action="/ordercomplete">
         <div class="checkout-form">
           <div class="col-lg-8 col-12">
             <!-- Select Existing Address Accordion -->
@@ -769,14 +769,15 @@
                         <input type="radio" id="existing_address_1" name="existing_address" value="<%=addresses[i]._id%>" onclick="handleAddressSelection('<%=addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
                                         <label for="existing_address_1"><%=addresses[i].fname%> , <%=addresses[i].address%>, <%=addresses[i].mobile%>....
                                         </label>
-                                        <input type="hidden" name="firstName" value="<%= addresses.fname %>">
-                                        <input type="hidden" name="lastName" value="<%= addresses.lname %>">
-                                        <input type="hidden" name="mobileNumber" value="<%= addresses.mobile %>">
-                                        <input type="hidden" name="email" value="<%= addresses.email %>">
-                                        <input type="hidden" name="address" value="<%= addresses.address %>">
-                                        <input type="hidden" name="city" value="<%= addresses.city %>">
-                                        <input type="hidden" name="postCode" value="<%= addresses.pin %>">
-                                        <input type="hidden" name="addressId" value="<%= addresses._id %>">
+                                        <input type="hidden" name="firstName" value="<%= addresses[i].fname %>">
+                                        <% console.log("fnae is here ",addresses[i].fname) %>
+                                        <input type="hidden" name="lastName" value="<%= addresses[i].lname %>">
+                                        <input type="hidden" name="mobileNumber" value="<%= addresses[i].mobile %>">
+                                        <input type="hidden" name="email" value="<%= addresses[i].email %>">
+                                        <input type="hidden" name="address" value="<%= addresses[i].address %>">
+                                        <input type="hidden" name="city" value="<%= addresses[i].city %>">
+                                        <input type="hidden" name="postCode" value="<%= addresses[i].pin %>">
+                                        <input type="hidden" name="addressId" value="<%= addresses[i]._id %>">
                       </div>
                       <%}%>
                                     <!-- Add New Address Option -->
@@ -906,7 +907,7 @@
                              <label class="form-check-label" for="pay_by_check">Pay by Card</label>
                          </span> -->
                          <span class="form-check d-inline-block ml-2">
-                             <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" checked >
+                             <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" >
                              <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
                          </span>
                          <span class="form-check d-inline-block ml-2">
@@ -1293,22 +1294,17 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
    
 
-    function proceedToPayment() {
-      
-      $('#check_existing').collapse('hide');
-      $('#check_payment').collapse('show');
-    
-      if (!addressId) {
+function proceedToPayment() {
+    $('#check_existing').collapse('hide');
+    $('#check_payment').collapse('show');
+
+    if (!addressId) {
         $('#errorModalHead').text('Invalid Address');
         $('#errorModalBody').text('Please select or add a valid address');
         $('#statusErrorsModal').modal('show');
-        return
-      }
-      // if ($("#cash_on_delivery").is(":checked")) {
-      //   paymentMethod = 'Cash On Delivery';
-      // } 
-     
-    };
+        return;
+    }
+}
     // $('#placeorder').click(async () => {
 
     //   try {
@@ -1363,48 +1359,50 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
 
 // the modification may occur here
-$('#orderplace').on('submit', function (event) {
-  event.preventDefault();
 
-  const paymentMethod = $("input[name='paymentMethod']:checked").val();
-  if (!paymentMethod) {
+$('#orderplace').on('submit', function(event) {
+    event.preventDefault();
 
-    showErrorAlert('Please select a payment method before submitting the form.');
-    return;
-  }
+    const paymentMethod = $("input[name='paymentMethod']").val();
+    if (!paymentMethod) {
+        showErrorAlert('Please select a payment method before submitting the form.');
+        return;
+    }
+
 
 
   // Proceed with form submission
   const formData = $(this).serialize();
-  console.log("Form data:", formData);
+    console.log("Form data:", formData);
 
-  $.ajax({
-    type: 'POST',
-    url: '/checkout',
-    data: formData,
-    success: function (response) {
-      console.log('Form submitted successfully:', response);
-      if (response && response.success) {
-        const orderId = response.orderId;
-        console.log("The order ID:", orderId);
-        Swal.fire({
-          icon: 'success',
-          title: 'Order Placed!',
-          text: 'Your order has been placed successfully.'
-        }).then(() => {
-          window.location.href = `/ordersuccess?id=${orderId}`;
-        });
-      } else {
-        console.error('Form submission failed:', response);
-        showErrorAlert('There was an error processing your order. Please try again later.');
-      }
-    },
-    error: function (error) {
-      console.error('Error submitting form:', error.message);
-      showErrorAlert('There was an error processing your order. Please try again later.');
-    }
-  });
+    $.ajax({
+        type: 'POST',
+        url: '/checkout',
+        data: formData,
+        success: function(response) {
+            console.log('Form submitted successfully:', response);
+            if (response && response.success) {
+                const orderId = response.orderId;
+                console.log("The order ID:", orderId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed!',
+                    text: 'Your order has been placed successfully.'
+                }).then(() => {
+                    window.location.href = `/ordersuccess?id=${orderId}`;
+                });
+            } else {
+                console.error('Form submission failed:', response);
+                showErrorAlert('There was an error processing your order. Please try again later.');
+            }
+        },
+        error: function(error) {
+            console.error('Error submitting form:', error.message);
+            showErrorAlert('There was an error processing your order. Please try again later.');
+        }
+    });
 });
+
 
 function showErrorAlert(message) {
   Swal.fire({
@@ -1415,28 +1413,32 @@ function showErrorAlert(message) {
 }
 
 
-$('#placeOrder').click(function (event) {
-  event.preventDefault();
 
-  const formdata = $('#checkout').serialize();
-  console.log("the formdata may here", formdata);
+$('#placeOrder').click(function(event) {
+    event.preventDefault();
 
-  // AJAX request for Razorpay
-  $.ajax({
-    url: '/checkout',
-    method: "post",
-    data: formdata,
-    success: function (response) {
-      console.log("ajax response is proceeded", response);
-      if (response.success) {
-        let orderId = response.orderId;
-        console.log("the order id may here", orderId);
-        location.href = `/ordercomplete?id=${orderId}`;
-      } else if (response.success === false) {
-        console.log('response.success has become false now');
-      }
-    }
-  });
+    const formData = $('#checkout').serialize();
+    console.log("the formData may here", formData);
+
+    // AJAX request for Razorpay
+    $.ajax({
+        url: '/checkout',
+        method: "post",
+        data: formData,
+        success: function(response) {
+            console.log("ajax response is proceeded", response);
+            if (response.success) {
+                let orderId = response.orderId;
+                console.log("the order id may here", orderId);
+                location.href = `/ordercomplete?id=${orderId}`;
+            } else if (response.success === false) {
+                console.log('response.success has become false now');
+            }
+        }
+    });
+  })
+  $('#cash_on_delivery').click(function() {
+    console.log("Payment method selected: Cash on Delivery");
 });
    })
 </script>
