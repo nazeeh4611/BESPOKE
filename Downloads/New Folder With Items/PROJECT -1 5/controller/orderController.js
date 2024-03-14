@@ -9,20 +9,23 @@ const Cart = require("../model/cartModel");
 const OrderPlace = async (req, res) => {
   try {
       const userId = req.session.userId;
-      const { addressId, subtotal, paymentMethod } = req.body;
+      console.log(req.body,'bodyyyyy');
+
+      const { addId, paymentMethod } = req.body;
+      console.log(req.body.addId,'adressssssssssss  ');
       
-      console.log("address id from body may here",addressId);
+    //   console.log("address id from body may here",addressId);
 console.log("subtotal from body may here",subtotal);
 console.log("payment method from body here",paymentMethod);
 
       const cartdata = await Cart.findOne({ user: userId });
 
-      if (!addressId) {
-          return res.json({
-              success: false,
-              message: "Select the address and payment method before placing the order",
-          });
-      }
+    //   if (!addressId) {
+    //       return res.json({
+    //           success: false,
+    //           message: "Select the address and payment method before placing the order",
+    //       });
+    //   }
 
       const userAddress = await Address.findOne({
           "address._id": addressId,
@@ -38,7 +41,7 @@ console.log("payment method from body here",paymentMethod);
       }
 
       // Since userAddress is an array, use userAddress[0] if it exists
-      const addressObject = userAddress.address[0];
+      const addressObject = userAddress.address[1];
       console.log(addressObject,"obhdhjg");
 
       const userdata = await User.findOne({ _id: req.session.userId });

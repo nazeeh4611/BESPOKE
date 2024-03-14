@@ -317,7 +317,7 @@
     <nav
       class="header-mobile__navigation navigation d-flex flex-column w-100 position-absolute top-100 bg-body overflow-auto">
       <div class="container">
-        <form action="search.html" method="GET" class="search-field position-relative mt-4 mb-3">
+        <form  class="search-field position-relative mt-4 mb-3">
           <div class="position-relative">
             <input class="search-field__input w-100 border rounded-1" type="text" name="search-keyword"
               placeholder="Search products">
@@ -384,23 +384,7 @@
             </li>
 
 
-
-            <!-- <li class="navigation__item">
-              <a href="#" class="navigation__link js-nav-right d-flex align-items-center">Pages<svg class="ms-auto" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg></a>
-              <div class="sub-menu position-absolute top-0 start-100 w-100 d-none">
-                <a href="#" class="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"><svg class="me-2" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>Pages</a>
-                <ul class="list-unstyled">
-                  <li class="sub-menu__item"><a href="./account_dashboard.html" class="menu-link menu-link_us-s">My Account</a></li>
-                  <li class="sub-menu__item"><a href="./login_register.html" class="menu-link menu-link_us-s">Login / Register</a></li>
-                  <li class="sub-menu__item"><a href="./store_location.html" class="menu-link menu-link_us-s">Store Locator</a></li>
-                  <li class="sub-menu__item"><a href="./lookbook.html" class="menu-link menu-link_us-s">Lookbook</a></li>
-                  <li class="sub-menu__item"><a href="./faq.html" class="menu-link menu-link_us-s">Faq</a></li>
-                  <li class="sub-menu__item"><a href="./terms.html" class="menu-link menu-link_us-s">Terms</a></li>
-                  <li class="sub-menu__item"><a href="./404.html" class="menu-link menu-link_us-s">404 Error</a></li>
-                  <li class="sub-menu__item"><a href="./coming_soon.html" class="menu-link menu-link_us-s">Coming Soon</a></li>
-                </ul>
-              </div>
-            </li> -->
+\
 
             <li class="navigation__item">
               <a href="./about.html" class="navigation__link">About</a>
@@ -633,7 +617,7 @@
           </div>
 
           <div class="search-popup js-hidden-content">
-            <form action="./search_result.html" method="GET" class="search-field container">
+            <form >
               <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
               <div class="position-relative">
                 <input class="search-field__input search-popup__input w-100 fw-medium" type="text" name="search-keyword"
@@ -745,7 +729,7 @@
         </a>
         
       </div>
-      <form name="checkout-form" id="orderplace" action="/ordercomplete">
+      <form >
         <div class="checkout-form">
           <div class="col-lg-8 col-12">
             <!-- Select Existing Address Accordion -->
@@ -766,8 +750,8 @@
                       <label>Select an existing address:</label>
                       <%for(let i = 0; i < addresses.length;i++){%>
                       <div>
-                        <input type="radio" id="existing_address_1" name="existing_address" value="<%=addresses[i]._id%>" onclick="handleAddressSelection('<%=addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
-                                        <label for="existing_address_1"><%=addresses[i].fname%> , <%=addresses[i].address%>, <%=addresses[i].mobile%>....
+                        <input type="radio" id="existing_address_1"  value="<%=addresses[i]._id%>" <%if(addresses[i].isDefault){%>checked<%}%>>
+                                        <label ><%=addresses[i].fname%> , <%=addresses[i].address%>, <%=addresses[i].mobile%>....
                                         </label>
                                         <input type="hidden" name="firstName" value="<%= addresses[i].fname %>">
                                         <% console.log("fnae is here ",addresses[i].fname) %>
@@ -987,7 +971,8 @@
                  
                   </tbody>
                 </table>
-                <button class="btn btn-primary btn-checkout" id="placeorder">PLACE ORDER</button>
+                <!-- <button type="button" onclick="submitForm()" class="btn btn-primary btn-checkout" >PLACE ORDER</button> -->
+                <!-- <a onclick="submitForm()">dfs</a> -->
               
             </div>
           </div>
@@ -1120,8 +1105,8 @@
     })
     let addressId,paymentMethod ;
 
-    addressId = $('#existing_address_1').val();
     console.log("address id from ejs herrrrr",addressId);
+    
    
     function handleAddressSelection(id) {
       console.log("the iid from handle is here",id);
@@ -1222,9 +1207,9 @@ $('#saveAndProceedBtn').on('click', async function(e) {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
             const responseData = await response.json();
-            const addressId = responseData.addedId;
+            // const addressId = responseData.addedId;
 
-            console.log(addressId, "address id is here");
+            // console.log(addressId, "address id is here");
             $('#saveAndProceedBtn').attr('disabled', true);
             
             $('#addForm :input').prop('readonly', true);
@@ -1298,12 +1283,12 @@ function proceedToPayment() {
     $('#check_existing').collapse('hide');
     $('#check_payment').collapse('show');
 
-    if (!addressId) {
-        $('#errorModalHead').text('Invalid Address');
-        $('#errorModalBody').text('Please select or add a valid address');
-        $('#statusErrorsModal').modal('show');
-        return;
-    }
+    // if (!addressId) {
+    //     $('#errorModalHead').text('Invalid Address');
+    //     // $('#errorModalBody').text('Please select or add a valid address');
+    //     // $('#statusErrorsModal').modal('show');
+    //     return;
+    // }
 }
    
 
@@ -1314,68 +1299,63 @@ function proceedToPayment() {
 
 
 <script>
-  $(document).ready(function () {
+ function submitForm(){
 
-$('#cash_on_delivery').click(function() {
-    const paymentMethod = $(this).val(); 
-    console.log("Selected Payment Method:", paymentMethod);
-});
+        let addId = document.getElementById('existing_address_1').value
+        console.log(addId,'adddressidddd');
+        
+        // const form = $(this);
 
-$('#orderplace').on('submit', function(event) {
-    event.preventDefault();
-    
-    const form = $(this);
-    const paymentMethod = $("input[name='paymentMethod']:checked").val();
-    const formData = form.serialize(); 
+        const paymentMethod = $("input[name='paymentMethod']:checked").val();
 
-    if (!paymentMethod) {
-        showErrorAlert('Please select a payment method before submitting the form.');
-        return;
+        // const formData = form.serialize(); 
+
+        if (!paymentMethod) {
+            showErrorAlert('Please select a payment method before submitting the form.');
+            return;
+        }
+
+        // Additional data to send with the form
+        const additionalData = {
+            paymentMethod: paymentMethod
+        };
+
+        // console.log(formData,'formmm');
+
+        $.ajax({
+            type: 'POST',
+            url: '/checkout',
+            data: {paymentMethod, addId},
+            success: function(response) {
+                console.log('Form submitted successfully:', response);
+                if (response && response.success) {
+                    const orderId = response.orderId;
+                    console.log("The order ID:", orderId);
+                    // Redirect to order complete page
+                    // window.location.href = `/ordercomplete?id=${orderId}`;
+                } else {
+                    console.error('Form submission failed:', response);
+                    showErrorAlert('There was an error processing your order. Please try again later.');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting form:', error.message);
+                showErrorAlert('There was an error processing your order. Please try again later.');
+            }     
+        });
+    ;
+
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Submission Failed',
+            text: message
+        });
     }
 
-    // Additional data to send with the form
-    const additionalData = {
-        paymentMethod: paymentMethod
-    };
-
-    $.ajax({
-        type: 'POST',
-        url: '/checkout',
-        data: formData + '&' + $.param(additionalData), 
-        success: function(response) {
-            console.log('Form submitted successfully:', response);
-            if (response && response.success) {
-                const orderId = response.orderId;
-                console.log("The order ID:", orderId);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Your order has been placed successfully.'
-                }).then(() => {
-                    window.location.href = `/ordercomplete?id=${orderId}`;
-                });
-            } else {
-                console.error('Form submission failed:', response);
-                showErrorAlert('There was an error processing your order. Please try again later.');
-            }
-        },
-        error: function(error) {
-            console.error('Error submitting form:', error.message);
-            showErrorAlert('There was an error processing your order. Please try again later.');
-        }
-    });
-});
-
-function showErrorAlert(message) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Submission Failed',
-        text: message
-    });
+    // Other event bindings and functions can go here
 }
 
-// Other event bindings and functions can go here
-});
 
 </script>
 
