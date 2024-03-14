@@ -742,7 +742,7 @@
         </a>
         
       </div>
-      <form name="checkout-form" id="orderplace" action="/ordercomplete">
+      <form name="checkout-form" id="orderplace" action="">
         <div class="checkout-form">
           <div class="col-lg-8 col-12">
             <!-- Select Existing Address Accordion -->
@@ -764,7 +764,16 @@
                       <%for(let i = 0; i < addresses.length;i++){%>
                       <div>
                         <input type="radio" id="existing_address_1" name="existing_address" value="<%=addresses[i]._id%>" onclick="handleAddressSelection('<%=addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
-                                        <label for="existing_address_1"><%=addresses[i].fname%> , <%=addresses[i].address%>, <%=addresses[i].mobile%>....</label>
+                                        <label for="existing_address_1"><%=addresses[i].fname%> , <%=addresses[i].address%>, <%=addresses[i].mobile%>....
+                                        </label>
+                                        <input type="hidden" name="firstName" value="<%= addresses.fname %>">
+                                        <input type="hidden" name="lastName" value="<%= addresses.lname %>">
+                                        <input type="hidden" name="mobileNumber" value="<%= addresses.mobile %>">
+                                        <input type="hidden" name="email" value="<%= addresses.email %>">
+                                        <input type="hidden" name="address" value="<%= addresses.address %>">
+                                        <input type="hidden" name="city" value="<%= addresses.city %>">
+                                        <input type="hidden" name="postCode" value="<%= addresses.pin %>">
+                                        <input type="hidden" name="addressId" value="<%= addresses._id %>">
                       </div>
                       <%}%>
                                     <!-- Add New Address Option -->
@@ -894,7 +903,7 @@
                              <label class="form-check-label" for="pay_by_check">Pay by Card</label>
                          </span> -->
                          <span class="form-check d-inline-block ml-2">
-                             <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" checked>
+                             <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" checked >
                              <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
                          </span>
                          <span class="form-check d-inline-block ml-2">
@@ -907,9 +916,7 @@
                          <input type="checkbox" class="form-check-input" id="user_agree_check">
                          <label class="form-check-label" for="user_agree_check">I accept the Terms of Use & Privacy Policy</label>
                      </div> -->
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary f_13">Place Order</button>
-                    </div>
+                  
                     </form>
                   </div>
                 </div>
@@ -982,6 +989,50 @@
           </div>
         </div>
       </form>
+
+
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Proceed To Order</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+          
+            <div class="modal-body">
+              `
+          
+    
+              <p class="p-2">Are you sure you want to proceed with this order!!</p>
+            </div>
+          
+    
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="placeorder" class="btn btn-primary">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  <div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-end">
+          <button id="closeBtnError" type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-lg-4">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+            <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+            <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+            <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" />
+          </svg>
+          <h4 class="text-danger mt-3" id="errorModalHead">Please Select a Valid Address!</h4>
+          <p class="mt-3" id="errorModalBody">You did not select a valid address.</p>
+          <button type="button" class="btn btn-sm mt-3 btn-danger" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
     </section>
   </main>
                
@@ -1080,7 +1131,49 @@
         $('#check_existing_address').collapse('hide');
       }
     }
-    $('#saveAndProceedBtn').on('click', async function(e) {
+ // Define the validateAdd function first
+function validateAdd() {
+    const fname = $('#AddFname').val();
+    const lname = $('#AddLname').val();
+    const mobile = $('#AddMobile').val();
+    const email = $('#AddEmail').val();
+    const address = $('#AddAddress').val();
+    const city = $('#AddCity').val();
+    const post = $('#AddPost').val();
+    isValid = true;
+    if (!fname.trim()) {
+        isValid = false;
+        $('#add1').css('display', 'block');
+    }
+    if (!lname.trim()) {
+        isValid = false;
+        $('#add2').css('display', 'block');
+    }
+    if (!mobile.trim() || mobile.length !== 10) {
+        isValid = false;
+        $('#add3').css('display', 'block');
+    }
+    if (!email.trim()) {
+        isValid = false;
+        $('#add4').css('display', 'block');
+    }
+    if (!address.trim()) {
+        isValid = false;
+        $('#add5').css('display', 'block');
+    }
+    if (!city.trim()) {
+        isValid = false;
+        $('#add6').css('display', 'block');
+    }
+    if (!post.trim()) {
+        isValid = false;
+        $('#add7').css('display', 'block');
+    }
+
+    return isValid;
+}
+
+$('#saveAndProceedBtn').on('click', async function(e) {
     e.preventDefault();
 
     $('#add1').css('display', 'none');
@@ -1130,27 +1223,20 @@
             console.log(addressId, "address id is here");
             $('#saveAndProceedBtn').attr('disabled', true);
             
-            // Set all input fields within the #addForm to read-only
-            document.querySelectorAll('#addForm input').forEach(function(input) {
-                input.readOnly = true;
-            });
+            $('#addForm :input').prop('readonly', true);
+            $('#addForm :input').removeClass('form-control');
 
             $('#check_add').collapse('hide');
-            $('#check_ship').collapse('show');
+            $('#check_payment').collapse('show');
             $('#check_existing_address').css('display', 'none');
         } else {
             throw new Error('Response is not in JSON format');
         }
     } catch (error) {
-        // Handle fetch errors, JSON parsing errors, or non-JSON response errors here
         console.error('There was a problem with the fetch operation:', error);
-        // Additional error handling
-        // For example, you can check if the response is not in JSON format
         if (error instanceof SyntaxError) {
-            // Handle non-JSON response
             console.error('Response is not in JSON format');
             console.error('Response content:', await response.text());
-            // You may want to inform the user or take appropriate action
         }
     }
 });
@@ -1204,184 +1290,155 @@
 
    
 
-    function proceedToPayment() {
-      
-      $('#check_existing').collapse('hide');
-      $('#check_payment').collapse('show');
-    
-      if (!addressId) {
+function proceedToPayment() {
+    $('#check_existing').collapse('hide');
+    $('#check_payment').collapse('show');
+
+    if (!addressId) {
         $('#errorModalHead').text('Invalid Address');
         $('#errorModalBody').text('Please select or add a valid address');
         $('#statusErrorsModal').modal('show');
-        return
-      }
-      if ($("#cash_on_delivery").is(":checked")) {
-        paymentMethod = 'Cash On Delivery';
-      } 
-     
-    };
-    $('#placeorder').click(async () => {
-
-      try {
-        let split = '';
-        if (paymentMethod === 'Partial') {
-          if ($('#walletCOD').is(':checked')) split = 'walletCod';
-          else split = 'walletOnline'
-        }
-
-        const response = await fetch('/order', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            address: addressId,
-            deliveryType,
-            paymentMethod,
-            selectedCouponCode,
-            split,
-          }),
-        })
-        if (response.status === 200) {
-            const newResponse = await response.json();
-            const paymentMethod = newResponse.paymentMethod;
-            const orderId = newResponse.orderId;
-            let amount;
-            if(newResponse.online){
-              amount = newResponse.online;
-            }else{
-              amount = newResponse.totalAmount;
-            }
-            const nextOrderId = newResponse.nextOrderId;
-            console.log(amount);
-            if(orderId){
-
-            const options = {
-              "key": 'rzp_test_VMXBmdlGP9IevY',
-              "amount": amount, // Convert to the smallest currency unit
-              "currency": "INR",
-              "name": "Plantly Ecom",
-              "description": "Ecommerce Transactions",
-              "image": "/assets/img/product/product_1.jpg",
-              "order_id": orderId,
-              "handler": async function(response) {
-                const verifySettings = {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      response,
-                      nextOrderId,
-                      paymentMethod,
-                    }),
-                  };
-                 const newResponse = await fetch('/api/payment/verify', verifySettings);
-                 if(newResponse.status===200){
-                  window.location.href = `/orderConfirmation?order=${nextOrderId}`;
-                 }
-              },
-              "theme": {
-                "color": "#99cc33"
-              }
-            };
-
-            const rzp1 = new Razorpay(options);
-
-            rzp1.on('payment.failed', function(response) {
-              alert(response.error.code);
-              alert(response.error.description);
-              alert(response.error.source);
-              alert(response.error.step);
-              alert(response.error.reason);
-              alert(response.error.metadata.order_id);
-              alert(response.error.metadata.payment_id);
-            });
-
-            rzp1.open();
-          }
-        else{
-          window.location.href = `/orderConfirmation?order=${nextOrderId}`;
-        }
-      }
-      if (response.status === 409) {
-        $('#errorModalHead').text('Out of Stock');
-        $('#errorModalBody').text('Sorry !!! Some items went out of stock!!!');
-        $('#statusErrorsModal').modal('show');
-      }
-    } catch (err) {
-      console.log(err);
+        return;
     }
 
+    if ($("#cash_on_delivery").is(":checked")) {
+        paymentMethod = 'COD'; // Corrected payment method
+    }
+}
 
+// $('#placeorder') click handler
+$('#placeorder').click(async () => {
+    try {
+        console.log(addressId, "last check");
+        const response = await fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                address: addressId,
+                subtotal,
+                paymentMethod,
+            }),
+        });
 
-    });
-
-    $('#coupon-select').change(() => {
-      if ($('#coupon-select').val() !== 'default') {
-        $('#couponBtn').removeAttr('disabled');
-        $('#couponBtn').text('Apply');
-      } else {
-        $('#couponBtn').attr('disabled', true)
-        const amount = $('#totalValue').val();
-        $('#coupondiv').css('display', 'none');
-        selectedCouponCode = null;
-        couponDiscount = 0;
-        $('#discounted').text(`-${couponDiscount}`);
-        $('#maximumD').text('');
-        $('#discountDiv').css('color','black');
-        $('#netPayable').text(+amount + +deliveryCharge);
-      }
-
-
-      $('#couponBtn').click(() => {
-        console.log(deliveryCharge);
-        selectedCouponCode = $('#coupon-select').find(':selected').data('code');
-        const maximumDiscount = $('#coupon-select').find(':selected').data('max');
-
-        if ($('#coupon-select').val() !== 'default') {
-          selectedCouponVal = $('#coupon-select').val();
-          $('#coupondiv').css('display', 'block');
-          $('#couponSpan').text(selectedCouponVal);
-          const amount = $('#totalValue').val();
-          let couponDiscount = Math.floor((selectedCouponVal / 100) * amount);
-          if(couponDiscount>maximumDiscount)couponDiscount = maximumDiscount
-          const finalAmount = amount - couponDiscount;
-          $('#discounted').text(`-${couponDiscount}`);
-          $('#maximumD').text(`(Max Discount ${maximumDiscount})`);
-          $('#discountDiv').css('color','red');
-          $('#totalAmount1').text(`Rs. ${finalAmount}`);
-          $('#netPayable').text(finalAmount + deliveryCharge);
-          $('#couponBtn').text('Applied');
-          $('#couponBtn').attr('disabled', true)
+        if (response.status === 200) {
+            const newResponse = await response.json();
+            const orderId = newResponse.orderId;
+            window.location.href = `/orderConfirmation?order=${orderId}`; // Corrected redirection logic
+        } else if (response.status === 409) {
+            $('#errorModalHead').text('Out of Stock');
+            $('#errorModalBody').text('Sorry !!! Some items went out of stock!!!');
+            $('#statusErrorsModal').modal('show');
+        } else {
+            throw new Error('Unexpected response from server');
         }
-        $('#couponBtn').off('click');
-      })
-    })
+    } catch (err) {
+        console.log(err);
+    }
+});
 
-    $('#showAllCouponsBtn').click(()=>{
-      $('#exampleModalLong').modal('show');
-    })
 
-    $('#closeCoupon').click(()=>{
-      $('#exampleModalLong').modal('hide');
-    })
-    $('#couponCloseX').click(()=>{
-      $('#exampleModalLong').modal('hide');
-    })
+   
+  
+    
+
+
+
+
+
   </script>
 
+
+<!-- <script>
+   $(document).ready(function () {
+
+
+// the modification may occur here
+$('#orderplace').on('submit', function (event) {
+  event.preventDefault();
+
+  const paymentMethod = $("input[name='paymentMethod']:checked").val();
+console.log("payemtMethod is here");
+  if (!paymentMethod) {
+    showErrorAlert('Please select a payment method before submitting the form.');
+    return;
+  }
+
+  // Proceed with form submission
+  const formData = $(this).serialize();
+  console.log("Form data:", formData);
+
+  $.ajax({
+    type: 'POST',
+    url: '/checkout',
+    data: formData,
+    success: function (response) {
+      console.log('Form submitted successfully:', response);
+      if (response && response.success) {
+        const orderId = response.orderId;
+        console.log("The order ID:", orderId);
+        Swal.fire({
+          icon: 'success',
+          title: 'Order Placed!',
+          text: 'Your order has been placed successfully.'
+        }).then(() => {
+          window.location.href = `/ordersuccess?id=${orderId}`;
+        });
+      } else {
+        console.error('Form submission failed:', response);
+        showErrorAlert('There was an error processing your order. Please try again later.');
+      }
+    },
+    error: function (error) {
+      console.error('Error submitting form:', error.message);
+      showErrorAlert('There was an error processing your order. Please try again later.');
+    }
+  });
+});
+
+function showErrorAlert(message) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Submission Failed',
+    text: message
+  });
+}
+
+
+$('#placeOrder').click(function (event) {
+  event.preventDefault();
+
+  const formdata = $('#checkout').serialize();
+  console.log("the formdata may here", formdata);
+
+  // AJAX request for Razorpay
+  $.ajax({
+    url: '/checkout',
+    method: "post",
+    data: formdata,
+    success: function (response) {
+      console.log("ajax response is proceeded", response);
+      if (response.success) {
+        let orderId = response.orderId;
+        console.log("the order id may here", orderId);
+        location.href = `/ordersuccess?id=${orderId}`;
+      } else if (response.success === false) {
+        console.log('response.success has become false now');
+        razorpaypayment(response.orders);
+      }
+    }
+  });
+});
+   })
+</script> -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
    </body>
 
-<!-- Mirrored from dostguru.com/HTML/plantly/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 10 Nov 2023 08:19:00 GMT -->
 </html>
 
 <%- include("../layouts/userpartials/footer.ejs") %>
 
 
-<script>
-
-</script>

@@ -9,12 +9,13 @@ const Cart = require("../model/cartModel");
 const OrderPlace = async (req, res) => {
   try {
       const userId = req.session.userId;
-      const { addressId, subtotal, paymentMethod } = req.body;
-
+      const { address, subtotal, paymentMethod } = req.body;
+console.log("address id from body may here",address);
+console.log("subtotal from body may here");
 
       const cartdata = await Cart.findOne({ user: userId });
 
-      if (!addressId) {
+      if (!address) {
           return res.json({
               success: false,
               message: "Select the address and payment method before placing the order",
@@ -22,7 +23,7 @@ const OrderPlace = async (req, res) => {
       }
 
       const userAddress = await Address.findOne({
-          "address._id": addressId,
+          "address._id": address,
       });
       console.log("user",);
      
@@ -54,7 +55,7 @@ const OrderPlace = async (req, res) => {
       const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
 
       const products = cartdata.product;
-      const orderStatus = paymentMethod === "COD" ? "placed" : "pending";
+      const orderStatus = paymentMethod === "Cash On Delivery" ? "placed" : "pending";
   
       const NewOrder = new Order({
         deliveryDetails:addressObject,
