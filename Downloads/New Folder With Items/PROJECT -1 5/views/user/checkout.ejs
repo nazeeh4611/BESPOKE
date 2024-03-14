@@ -906,7 +906,7 @@
                              <input class="form-check-input" type="radio" name="paymentMethod" id="pay_by_check" checked>
                              <label class="form-check-label" for="pay_by_check">Pay by Card</label>
                          </span> -->
-                         <span class="form-check d-inline-block ml-2">
+                         <span class="form-check d-inline-block ml-2">  
                           <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" value="COD">
                           <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
                          </span>
@@ -1315,24 +1315,24 @@ function proceedToPayment() {
 
 <script>
   $(document).ready(function () {
-    // Click event listener for the "Cash on Delivery" radio button
+
     $('#cash_on_delivery').click(function() {
-        const paymentMethod = $(this).val(); // Assigning the value to paymentMethod
+      const paymentMethod = $("input[name='paymentMethod']:checked").val();
+      if (!paymentMethod) {
+           console.log('Please select a payment method before submitting the form.');
+            return;
+        }
+
         console.log("Selected Payment Method:", paymentMethod);
     });
     
     $('#orderplace').on('submit', function(event) {
         event.preventDefault();
         
-        const paymentMethod = $("input[name='paymentMethod']:checked").val();
-        if (!paymentMethod) {
-            showErrorAlert('Please select a payment method before submitting the form.');
-            return;
-        }
-
+       
         console.log("Selected Payment Method:", paymentMethod);
     });
-});
+
 
 
 
@@ -1343,21 +1343,23 @@ $(document).ready(function () {
     $('#orderplace').on('submit', function(event) {
         event.preventDefault();
         
+        const form = $(this);
 
         $('#cash_on_delivery').click(function() {
-          const paymentMethod = $("input[name='paymentMethod']:checked").val();
+            const paymentMethod = $(this).val(); 
             console.log("Selected Payment Method:", paymentMethod);
-            if (!paymentMethod) {
+        });
+
+        const paymentMethod = $("input[name='paymentMethod']:checked").val();
+        if (!paymentMethod) {
             showErrorAlert('Please select a payment method before submitting the form.');
             return;
         }
-        });
-
-      
 
         const formData = form.serialize(); 
         console.log("Form data:", formData);
 
+        // AJAX request to submit form data
         $.ajax({
             type: 'POST',
             url: '/checkout',
@@ -1421,6 +1423,7 @@ $('#placeOrder').click(function(event) {
   })
 
    })
+  });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -57,7 +57,7 @@ console.log("payment method from body here",paymentMethod);
       const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
 
       const products = cartdata.product;
-      const orderStatus = paymentMethod === "Cash On Delivery" ? "placed" : "pending";
+      const orderStatus = paymentMethod === "COD" ? "placed" : "pending";
   
       const NewOrder = new Order({
         deliveryDetails:addressObject,
