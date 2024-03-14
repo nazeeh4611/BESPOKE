@@ -145,14 +145,19 @@
                 </div>
                 
                 <div class="pc__info position-relative">
-                  <%if(products[i].quantity < 6){ %>
+                  <% if (products[i].quantity == 0) { %>
                     <div class="meta-item">
-                      
-                      <span style="color: red; font-size:medium; font-weight: 500;">
-                          <%=products[i].quantity %> item left!
-                      </span>
+                        <span style="color: red; font-size:medium; font-weight: 500;">
+                            out of stock!
+                        </span>
                     </div>
-                    <% } %>
+                <% } else if (products[i].quantity < 6) { %>
+                    <div class="meta-item">
+                        <span style="color: red; font-size:medium; font-weight: 500;">
+                            <%= products[i].quantity %> item left!
+                        </span>
+                    </div>
+                <% } %>
                   <p class="pc__category">Dresses</p>
                   <h6 class="pc__title"><a href="./product1_simple.html">
                       <%= products[i].name %>

@@ -1316,114 +1316,67 @@ function proceedToPayment() {
 <script>
   $(document).ready(function () {
 
-    $('#cash_on_delivery').click(function() {
-      const paymentMethod = $("input[name='paymentMethod']:checked").val();
-      if (!paymentMethod) {
-           console.log('Please select a payment method before submitting the form.');
-            return;
-        }
+$('#cash_on_delivery').click(function() {
+    const paymentMethod = $(this).val(); 
+    console.log("Selected Payment Method:", paymentMethod);
+});
 
-        console.log("Selected Payment Method:", paymentMethod);
-    });
+$('#orderplace').on('submit', function(event) {
+    event.preventDefault();
     
-    $('#orderplace').on('submit', function(event) {
-        event.preventDefault();
-        
-       
-        console.log("Selected Payment Method:", paymentMethod);
-    });
+    const form = $(this);
+    const paymentMethod = $("input[name='paymentMethod']:checked").val();
+    const formData = form.serialize(); 
 
-
-
-
-
-
-
-$(document).ready(function () {
-    $('#orderplace').on('submit', function(event) {
-        event.preventDefault();
-        
-        const form = $(this);
-
-        $('#cash_on_delivery').click(function() {
-            const paymentMethod = $(this).val(); 
-            console.log("Selected Payment Method:", paymentMethod);
-        });
-
-        const paymentMethod = $("input[name='paymentMethod']:checked").val();
-        if (!paymentMethod) {
-            showErrorAlert('Please select a payment method before submitting the form.');
-            return;
-        }
-
-        const formData = form.serialize(); 
-        console.log("Form data:", formData);
-
-        // AJAX request to submit form data
-        $.ajax({
-            type: 'POST',
-            url: '/checkout',
-            data: formData,
-            success: function(response) {
-
-                console.log('Form submitted successfully:', response);
-                if (response && response.success) {
-                    const orderId = response.orderId;
-                    console.log("The order ID:", orderId);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Order Placed!',
-                        text: 'Your order has been placed successfully.'
-                    }).then(() => {
-                        window.location.href = `/ordercomplete?id=${orderId}`;
-                    });
-                } else {
-                    console.error('Form submission failed:', response);
-                    showErrorAlert('There was an error processing your order. Please try again later.');
-                }
-            },
-            error: function(error) {
-                console.error('Error submitting form:', error.message);
-                showErrorAlert('There was an error processing your order. Please try again later.');
-            }
-        });
-    });
-
-    function showErrorAlert(message) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Submission Failed',
-            text: message
-        });
+    if (!paymentMethod) {
+        showErrorAlert('Please select a payment method before submitting the form.');
+        return;
     }
 
+    // Additional data to send with the form
+    const additionalData = {
+        paymentMethod: paymentMethod
+    };
 
-$('#placeOrder').click(function(event) {
-    event.preventDefault();
-
-    const formData = $('#checkout').serialize();
-    console.log("the formData may here", formData);
-
-    // AJAX request for Razorpay
     $.ajax({
+        type: 'POST',
         url: '/checkout',
-        method: "post",
-        data: formData,
+        data: formData + '&' + $.param(additionalData), 
         success: function(response) {
-            console.log("ajax response is proceeded", response);
-            if (response.success) {
-                let orderId = response.orderId;
-                console.log("the order id may here", orderId);
-                location.href = `/ordercomplete?id=${orderId}`;
-            } else if (response.success === false) {
-                console.log('response.success has become false now');
+            console.log('Form submitted successfully:', response);
+            if (response && response.success) {
+                const orderId = response.orderId;
+                console.log("The order ID:", orderId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed!',
+                    text: 'Your order has been placed successfully.'
+                }).then(() => {
+                    window.location.href = `/ordercomplete?id=${orderId}`;
+                });
+            } else {
+                console.error('Form submission failed:', response);
+                showErrorAlert('There was an error processing your order. Please try again later.');
             }
+        },
+        error: function(error) {
+            console.error('Error submitting form:', error.message);
+            showErrorAlert('There was an error processing your order. Please try again later.');
         }
     });
-  })
+});
 
-   })
-  });
+function showErrorAlert(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Submission Failed',
+        text: message
+    });
+}
+
+// Other event bindings and functions can go here
+});
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
