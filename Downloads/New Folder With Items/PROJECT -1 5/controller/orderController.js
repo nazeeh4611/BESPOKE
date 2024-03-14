@@ -10,7 +10,8 @@ const OrderPlace = async (req, res) => {
   try {
       const userId = req.session.userId;
       const { addressId, subtotal, paymentMethod } = req.body;
-console.log("address id from body may here",addressId);
+      
+      console.log("address id from body may here",addressId);
 console.log("subtotal from body may here",subtotal);
 console.log("payment method from body here",paymentMethod);
 

@@ -907,11 +907,11 @@
                              <label class="form-check-label" for="pay_by_check">Pay by Card</label>
                          </span> -->
                          <span class="form-check d-inline-block ml-2">
-                             <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" >
-                             <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
+                          <input class="form-check-input" type="radio" name="paymentMethod" id="cash_on_delivery" value="COD">
+                          <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
                          </span>
                          <span class="form-check d-inline-block ml-2">
-                             <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment">
+                             <input class="form-check-input" type="radio" name="paymentMethod" id="upi_payment" value="RazoPay">
                              <label class="form-check-label" for="upi_payment">Online Payment</label>
                          </span>
                         
@@ -1305,48 +1305,7 @@ function proceedToPayment() {
         return;
     }
 }
-    // $('#placeorder').click(async () => {
-
-    //   try {
-    //    console.log(addressId,"last check");
-    //       const response = await fetch('/checkout', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         address: addressId,
-
-    //         subtotal,
-    //         paymentMethod,
-    //       }),
-    //     })
-    //     if (response.status === 200) {
-    //         const newResponse = await response.json();
-    //         const paymentMethod = newResponse.paymentMethod;
-    //         const orderId = newResponse.orderId;
-    //       }
-    //     else{
-    //       window.location.href = `/ordercomplete?order=${orderId}`;
-    //     }
-      
-    //   if (response.status === 409) {
-    //     $('#errorModalHead').text('Out of Stock');
-    //     $('#errorModalBody').text('Sorry !!! Some items went out of stock!!!');
-    //     $('#statusErrorsModal').modal('show');
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // }
-
-
-
-    // });
-
    
-  
-    
-
 
 
 
@@ -1355,63 +1314,86 @@ function proceedToPayment() {
 
 
 <script>
-   $(document).ready(function () {
-
-
-// the modification may occur here
-
-$('#orderplace').on('submit', function(event) {
-    event.preventDefault();
-
-    const paymentMethod = $("input[name='paymentMethod']").val();
-    if (!paymentMethod) {
-        showErrorAlert('Please select a payment method before submitting the form.');
-        return;
-    }
-
-
-
-  // Proceed with form submission
-  const formData = $(this).serialize();
-    console.log("Form data:", formData);
-
-    $.ajax({
-        type: 'POST',
-        url: '/checkout',
-        data: formData,
-        success: function(response) {
-            console.log('Form submitted successfully:', response);
-            if (response && response.success) {
-                const orderId = response.orderId;
-                console.log("The order ID:", orderId);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Your order has been placed successfully.'
-                }).then(() => {
-                    window.location.href = `/ordersuccess?id=${orderId}`;
-                });
-            } else {
-                console.error('Form submission failed:', response);
-                showErrorAlert('There was an error processing your order. Please try again later.');
-            }
-        },
-        error: function(error) {
-            console.error('Error submitting form:', error.message);
-            showErrorAlert('There was an error processing your order. Please try again later.');
+  $(document).ready(function () {
+    // Click event listener for the "Cash on Delivery" radio button
+    $('#cash_on_delivery').click(function() {
+        const paymentMethod = $(this).val(); // Assigning the value to paymentMethod
+        console.log("Selected Payment Method:", paymentMethod);
+    });
+    
+    $('#orderplace').on('submit', function(event) {
+        event.preventDefault();
+        
+        const paymentMethod = $("input[name='paymentMethod']:checked").val();
+        if (!paymentMethod) {
+            showErrorAlert('Please select a payment method before submitting the form.');
+            return;
         }
+
+        console.log("Selected Payment Method:", paymentMethod);
     });
 });
 
 
-function showErrorAlert(message) {
-  Swal.fire({
-    icon: 'error',
-    title: 'Submission Failed',
-    text: message
-  });
-}
 
+
+
+
+$(document).ready(function () {
+    $('#orderplace').on('submit', function(event) {
+        event.preventDefault();
+        
+
+        $('#cash_on_delivery').click(function() {
+          const paymentMethod = $("input[name='paymentMethod']:checked").val();
+            console.log("Selected Payment Method:", paymentMethod);
+            if (!paymentMethod) {
+            showErrorAlert('Please select a payment method before submitting the form.');
+            return;
+        }
+        });
+
+      
+
+        const formData = form.serialize(); 
+        console.log("Form data:", formData);
+
+        $.ajax({
+            type: 'POST',
+            url: '/checkout',
+            data: formData,
+            success: function(response) {
+
+                console.log('Form submitted successfully:', response);
+                if (response && response.success) {
+                    const orderId = response.orderId;
+                    console.log("The order ID:", orderId);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been placed successfully.'
+                    }).then(() => {
+                        window.location.href = `/ordercomplete?id=${orderId}`;
+                    });
+                } else {
+                    console.error('Form submission failed:', response);
+                    showErrorAlert('There was an error processing your order. Please try again later.');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting form:', error.message);
+                showErrorAlert('There was an error processing your order. Please try again later.');
+            }
+        });
+    });
+
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Submission Failed',
+            text: message
+        });
+    }
 
 
 $('#placeOrder').click(function(event) {
@@ -1437,9 +1419,7 @@ $('#placeOrder').click(function(event) {
         }
     });
   })
-  $('#cash_on_delivery').click(function() {
-    console.log("Payment method selected: Cash on Delivery");
-});
+
    })
 </script>
 
