@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html dir="ltr" lang="zxx">
 
@@ -1290,54 +1293,59 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
    
 
-function proceedToPayment() {
-    $('#check_existing').collapse('hide');
-    $('#check_payment').collapse('show');
-
-    if (!addressId) {
+    function proceedToPayment() {
+      
+      $('#check_existing').collapse('hide');
+      $('#check_payment').collapse('show');
+    
+      if (!addressId) {
         $('#errorModalHead').text('Invalid Address');
         $('#errorModalBody').text('Please select or add a valid address');
         $('#statusErrorsModal').modal('show');
-        return;
-    }
+        return
+      }
+      // if ($("#cash_on_delivery").is(":checked")) {
+      //   paymentMethod = 'Cash On Delivery';
+      // } 
+     
+    };
+    // $('#placeorder').click(async () => {
 
-    if ($("#cash_on_delivery").is(":checked")) {
-        paymentMethod = 'COD'; // Corrected payment method
-    }
-}
+    //   try {
+    //    console.log(addressId,"last check");
+    //       const response = await fetch('/checkout', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         address: addressId,
 
-// $('#placeorder') click handler
-$('#placeorder').click(async () => {
-    try {
-        console.log(addressId, "last check");
-        const response = await fetch('/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                address: addressId,
-                subtotal,
-                paymentMethod,
-            }),
-        });
+    //         subtotal,
+    //         paymentMethod,
+    //       }),
+    //     })
+    //     if (response.status === 200) {
+    //         const newResponse = await response.json();
+    //         const paymentMethod = newResponse.paymentMethod;
+    //         const orderId = newResponse.orderId;
+    //       }
+    //     else{
+    //       window.location.href = `/ordercomplete?order=${orderId}`;
+    //     }
+      
+    //   if (response.status === 409) {
+    //     $('#errorModalHead').text('Out of Stock');
+    //     $('#errorModalBody').text('Sorry !!! Some items went out of stock!!!');
+    //     $('#statusErrorsModal').modal('show');
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
 
-        if (response.status === 200) {
-            const newResponse = await response.json();
-            const orderId = newResponse.orderId;
-            window.location.href = `/orderConfirmation?order=${orderId}`; // Corrected redirection logic
-        } else if (response.status === 409) {
-            $('#errorModalHead').text('Out of Stock');
-            $('#errorModalBody').text('Sorry !!! Some items went out of stock!!!');
-            $('#statusErrorsModal').modal('show');
-        } else {
-            throw new Error('Unexpected response from server');
-        }
-    } catch (err) {
-        console.log(err);
-    }
-});
 
+
+    // });
 
    
   
@@ -1350,7 +1358,7 @@ $('#placeorder').click(async () => {
   </script>
 
 
-<!-- <script>
+<script>
    $(document).ready(function () {
 
 
@@ -1359,11 +1367,12 @@ $('#orderplace').on('submit', function (event) {
   event.preventDefault();
 
   const paymentMethod = $("input[name='paymentMethod']:checked").val();
-console.log("payemtMethod is here");
   if (!paymentMethod) {
+
     showErrorAlert('Please select a payment method before submitting the form.');
     return;
   }
+
 
   // Proceed with form submission
   const formData = $(this).serialize();
@@ -1422,16 +1431,15 @@ $('#placeOrder').click(function (event) {
       if (response.success) {
         let orderId = response.orderId;
         console.log("the order id may here", orderId);
-        location.href = `/ordersuccess?id=${orderId}`;
+        location.href = `/ordercomplete?id=${orderId}`;
       } else if (response.success === false) {
         console.log('response.success has become false now');
-        razorpaypayment(response.orders);
       }
     }
   });
 });
    })
-</script> -->
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
