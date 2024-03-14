@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-9">
           <div class="page-content my-account__orders-list">
-            <% if(Orders && Orders.length >0 ){ %>
+            <% if(order  ){ %>
             <table class="orders-table">
               <thead>
                 <tr>
@@ -32,7 +32,7 @@
               </thead>
               <tbody>
              
-                  <% Orders.forEach((oredr,index)=>{ %>
+                  <% order.forEach((order,index)=>{ %>
                     <tr>
                     <td><%= index + 1 %></td> 
                   
