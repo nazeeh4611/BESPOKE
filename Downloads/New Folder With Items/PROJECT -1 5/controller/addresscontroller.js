@@ -28,7 +28,7 @@ const NewAddress = async(req,res)=>{
 const postAddress = async (req,res)=>{
     try {
     const userData = await User.findOne({_id:req.session.userId});
-    const {firstName,lastName,mobileNumber,email,address,city,postCode,isDefault}=req.body;
+    const {firstName,lastName,mobileNumber,email,address,city,postCode}=req.body;
     const userIn = req.session.userId;
 
     if(userData){

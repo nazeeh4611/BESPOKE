@@ -97,6 +97,8 @@ userRoute.post("/resetpass", userController.resetPass);
 
 // load shop
 userRoute.get("/shop", userController.loadshop);
+userRoute.get("/search", userController.searchProducts);
+
 
 // load productDetail
 userRoute.get("/productdetail", userController.ProductDetail);

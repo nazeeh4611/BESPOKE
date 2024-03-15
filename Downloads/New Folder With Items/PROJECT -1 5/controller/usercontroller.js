@@ -407,23 +407,21 @@ const userLogout = async (req, res) => {
 
 const loadshop = async (req, res) => {
   try {
-    let query = { is_Listed: true };
+      let query = { is_Listed: true };
 
-    // Filtering by category if provided
-    if (req.query.category) {
-      query.category = req.query.category;
-    }
+      if (req.query.category) {
+          query.category = req.query.category;
+      }
 
-    // Sorting based on the selected option
-    let sortOption = {};
-    switch (req.query.sort) {
+      let sortOption = {};
+      switch (req.query.sort) {
       case "1":
         // Featured
-        sortOption = { /* define your sorting criteria */ };
+        sortOption = { };
         break;
       case "2":
         // Best selling
-        sortOption = { /* define your sorting criteria */ };
+        sortOption = { };
         break;
       case "3":
         // Alphabetically, A-Z
@@ -454,24 +452,35 @@ const loadshop = async (req, res) => {
         break;
     }
 
-    const productDetails = await Product.find(query).populate("category").sort(sortOption);
-    const products = productDetails.filter(product => product.category && product.category.is_Listed);
-
-    // Fetch the categories for dropdown
-    const categories = await Category.find({});
-    const userIn = req.session.userId;
-
-    res.render("user/shop", {
-      products,
-      categories,
-      user: req.session.userId,
-      userIn,
-    });
-  } catch (error) {
-    console.log(error.message);
+    if (req.query.searchKeyword) {
+      const searchQuery = req.query.searchKeyword;
+      query.name = { $regex: searchQuery, $options: "i" }; // Case-insensitive search
   }
+
+  const productDetails = await Product.find(query).populate("category").sort(sortOption);
+  const products = productDetails.filter(product => product.category && product.category.is_Listed);
+
+  const categories = await Category.find({});
+  const userIn = req.session.userId;
+
+  res.render("user/shop", { products, categories, user: req.session.userId, userIn });
+} catch (error) {
+  console.log(error.message);
+}
 };
 
+
+const searchProducts = async (req, res) => {
+  try {
+      const query = req.query.searchKeyword;
+      const products = await Product.find({ name: { $regex: query, $options: "i" } }).populate("category");
+      const categories = await Category.find({});
+      res.render("user/shop", { products, categories, user: req.session.userId });
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).send("Internal Server Error");
+  }
+};
 
 const ProductDetail = async (req, res) => {
   try {
@@ -538,6 +547,7 @@ module.exports = {
   userLogout,
   resetPass,
   loadshop,
+  searchProducts,
   ProductDetail,
   errorpage,
 };
