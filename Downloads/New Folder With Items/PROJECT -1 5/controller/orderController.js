@@ -163,6 +163,7 @@ const ordercancel = async(req,res)=>{
     try {
        const userId = req.session.userId;
        const orderId = req.body.orderId;
+       console.log("cansel",orderId);
        const order = await Order.findById({_id:orderId});
 
   const data = await Order.findByIdAndUpdate(
@@ -185,12 +186,36 @@ const ordercancel = async(req,res)=>{
     }
 }
 
+const returnOrder = async(req,res)=>{
+    try {
+        const userId = req.session.userId;
+        console.log("1");
+        const orderId = req.body.orderId;
+        
+        console.log(orderId,"2");
+        const orders = await Order.findById({_id:orderId});
 
+        console.log(orders,"3");
+        if(Date.now()>orders.expiredate){
+            res.json({datelimit:true});
+        }else{
+            await Order.findByIdAndUpdate(
+                {_id:orderId},
+                {$set:{status:'waiting for approvel'}}
+            );
+            res.json({return:true})
+        }
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error:"Internal server error"});
+    }
+}
 module.exports = {
  OrderPlace,
  OrderPlaced,
  orderlist,
 orderview,
 ordercancel,
-
+returnOrder,
 }

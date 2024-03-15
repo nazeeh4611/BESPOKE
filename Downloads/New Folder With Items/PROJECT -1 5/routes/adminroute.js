@@ -10,16 +10,16 @@ const adminAuth = require("../middlewares/adminAuth");
 adminRoute.use(express.json());
 adminRoute.use(express.urlencoded({ extended: true }));
 
-adminRoute.get("/",adminController.adminLogin);
+adminRoute.get("/",adminAuth.isLogout,adminController.adminLogin);
 adminRoute.post("/",adminController.verifyAdminLogin);
-adminRoute.get("/adminLogout",  adminController.adminLogout);
-adminRoute.get("/dashboard",  adminController.adminDashboard);
+adminRoute.get("/adminLogout",adminAuth.isLogin,adminController.adminLogout);
+adminRoute.get("/dashboard",adminAuth.isLogin,adminController.adminDashboard);
 adminRoute.get("/adminlogout", adminController.adminLogout);
-adminRoute.get("/users",  adminController.userManagement);
-adminRoute.get("/block",  adminController.BlockUser);
+adminRoute.get("/users",adminAuth.isLogin,adminController.userManagement);
+adminRoute.get("/block",adminController.BlockUser);
 
-adminRoute.get("/category", categoryController.loadCategory);
-adminRoute.get("/addcategory", categoryController.addCategory);
+adminRoute.get("/category",adminAuth.isLogin,categoryController.loadCategory);
+adminRoute.get("/addcategory",adminAuth.isLogin,categoryController.addCategory);
 adminRoute.post("/addcategory", categoryController.newCategory);
 adminRoute.get("/editcategory", categoryController.editCategory);
 adminRoute.post("/editcategory", categoryController.editedCategory);
@@ -38,12 +38,12 @@ adminRoute.get(
 );
 
 adminRoute.post(
-  "/addproduct",
+  "/addproduct",adminAuth.isLogin,
   upload.upload.array("image", 4), 
   productController.addProduct
 );
 adminRoute.get(
-  "/editproduct",
+  "/editproduct",adminAuth.isLogin,
 
   productController.loadeditproduct
 );
@@ -63,8 +63,8 @@ adminRoute.post(
 
   productController.productUnlist
 );
-adminRoute.get(
-  "/deleteproduct",
+adminRoute.delete(
+  "/deleteproduct",adminAuth.isLogin,
 
   productController.deleteProduct
 );
@@ -75,9 +75,24 @@ adminRoute.delete(
 );
 
 adminRoute.get(
-  "/orders",
-  adminController.orderlist);
+  "/orders",adminAuth.isLogin,
+  adminController.orderlist
+  );
 
+adminRoute.get(
+  "/orderstatus",adminAuth.isLogin,
+  adminController.orderstatus
+);
+
+adminRoute.get(
+  "/ordercancel",
+  adminController.ordercancel
+);
+
+adminRoute.get(
+  "/orderdelivered",
+  adminController.orderdelivered
+);
 
 
 module.exports = adminRoute;

@@ -31,6 +31,7 @@ const verifyAdminLogin = async (req, res) => {
 
       if (passwordMatch) {
         req.session.adminId = userData._id;
+        console.log("hlo thi");
         res.redirect("/admin/dashboard");
       } else {
         messages.message = "Incorrect password"; 
@@ -118,6 +119,78 @@ const orderlist = async(req,res)=>{
   }
 }
 
+const orderstatus = async(req,res)=>{
+  try {
+    const id = req.query.id;
+
+    const orders = await Order.findById({_id:id});
+
+    if(orders.status == 'placed'){
+      await Order.findByIdAndUpdate(
+        {_id:id},
+        {$set:{status:'pending'}},
+      );
+      res.redirect("/admin/orders")
+    }
+    if(orders.status == 'pending'){
+      await Order.findByIdAndUpdate(
+        {_id:id},
+        {$set:{status:'placed'}}
+      );
+      res.redirect("/admin/orders")
+    }else{
+      res.redirect("/admin/orders")
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const ordercancel = async(req,res)=>{
+  try {
+    const id = req.query.id;
+ const orders = await Order.findById({_id:id});
+
+ if(orders){
+  await Order.findByIdAndUpdate(
+    {_id:id},
+    {$set:{status:'cancelled'}},
+  )
+ }
+   res.redirect('/admin/orders');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+const orderdelivered = async(req,res)=>{
+  try {
+    const id = req.query.id;
+    console.log("id may here",id);
+    const orders = await Order.findById({_id:id});
+    console.log(orders,"suii");
+
+    if(orders.status == 'placed'){
+      await Order.findByIdAndUpdate(
+        {_id:id},
+        {$set:{status:'delivered'}},
+      )
+    }
+    if(orders.status == 'waiting for approvel'){
+      await Order.findByIdAndUpdate(
+        {_id:id},
+        {$set:{status:'Return Approved'}}
+      )
+      res.redirect('/admin/orders')
+    }else{
+      res.redirect('/admin/orders')
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   adminLogin,
   verifyAdminLogin,
@@ -126,4 +199,7 @@ module.exports = {
   userManagement,
   BlockUser,
   orderlist,
+  orderstatus,
+  ordercancel,
+  orderdelivered,
 };

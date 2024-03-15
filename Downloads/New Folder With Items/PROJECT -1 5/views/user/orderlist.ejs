@@ -2,9 +2,9 @@
 
 <main>
     <div class="mb-4 pb-4"></div>
-    <section class="my-account container">
+    <section class="my-account container" >
       <h2 class="page-title">Orders</h2>
-      <div class="row">
+      <div class="row"  id="reload">
      
         <div class="col-lg-3">
           <ul class="account-nav">
@@ -20,7 +20,7 @@
         <div class="col-lg-9">
           <div class="page-content my-account__orders-list">
             <% if(Orders && Orders.length > 0  ){ %>
-            <table class="orders-table" id="reload">
+            <table class="orders-table"  >
               <thead>
                 <tr>
                   <th>No</th>
@@ -49,15 +49,15 @@
                         <td>$<%= order.subtotal %></td>
                         <td>  <%= order.paymentMethod %></td>
                         <td>
-                          <% if(order.status == 'placed') { %>
-                          <button onclick="" class="btn btn-primary">cancel</button>
-                         <a href="/view?id=<%=order._id %>"><button  class="btin btn-primar">view order</button> </a> 
-                           
-                           
+                          <a href="/view?id=<%=order._id %>"><button  class="btin btn-primar">view order</button> </a>
+                          <% if(order.status !== 'cancelled' && order.status !== 'delivered' && order.status !== 'Return Approved' && order.status !== 'Waiting for Approvel' && order.status !== 'pending') { %>
+                          <button onclick="cancelorder('<%=order._id %>')" class="btn btn-primary">cancel</button>
                             <% } %>
-                            <% if(order.status == "delivered") { %>
-                            <button class="btn btn-primary">return</button>
-                              <% } %>
+                            <% if(order.status == 'delivered') { %>
+                              <button onclick="returnOrder ('<%=order._id %>')" class="btn btn-primary">Return</button>
+                               
+                              
+                                <%} %>
                         </td>
                       </tr>
                       <% }) %>
@@ -82,8 +82,13 @@
       width: 100%;
         height: 3.125rem;
         font-size: 0.875rem; }
+        .col-lg-9-d {
+      flex: 0 0 auto;
+      width: 100%; }
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   const cancelorder = async(orderId)=>{
@@ -125,5 +130,47 @@
     
   }
   }
+
+  function returnOrder(orderId) {
+  console.log("the order id is getting", orderId);
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Do it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('/return', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            orderId: orderId
+          })
+        })
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.datelimit) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Return Date expired'
+            })
+          } else if (response.return) {
+            location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error("error occurred in fetch:", error.message)
+        })
+    }
+  })
+}
+
 </script>
   <%- include("../layouts/userpartials/footer.ejs") %>
