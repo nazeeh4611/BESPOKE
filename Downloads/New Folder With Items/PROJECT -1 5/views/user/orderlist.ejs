@@ -1,76 +1,74 @@
 <%- include("../layouts/userpartials/header.ejs") %>
 
 <main>
-    <div class="mb-4 pb-4"></div>
-    <section class="my-account container" >
+  <div class="mb-4 pb-4"></div>
+  <section class="my-account container">
+      <div class="mb-4 pb-4"></div>
       <h2 class="page-title">Orders</h2>
-      <div class="row"  id="reload">
-     
-        <div class="col-lg-3">
-          <ul class="account-nav">
-            <li><a href="/dashboard" class="menu-link menu-link_us-s">Dashboard</a></li>
-            <li><a href="/orders" class="menu-link menu-link_us-s menu-link_active">Orders</a></li>
-            <li><a href="/address" class="menu-link menu-link_us-s ">Addresses</a>
-            </li>
-            <li><a href="/profile" class="menu-link menu-link_us-s">Account Details</a></li>
-            <li><a href="./account_wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
-            <li><a href="/logout" class="menu-link menu-link_us-s">Logout</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-9">
-          <div class="page-content my-account__orders-list">
-            <% if(Orders && Orders.length > 0  ){ %>
-            <table class="orders-table"  >
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>OrderID</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Total</th>
-                  <th>PaymentMethod</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-             
-                  <% Orders.forEach((order,index)=>{ %>
-                    <tr>
-                    <td><%= index + 1 %></td> 
-                  
-                    
-                        <td><%= order.id %></td>
-                        <% if(order.Date) { %>
-                          <td><%= order.Date.toISOString().substring(0, 10) %></td>
-                          <% }else{ %>
-                            <td>N/A</td>
-                            <%} %>
-                        <td><%= order.status %></td>
-                        <td>$<%= order.subtotal %></td>
-                        <td>  <%= order.paymentMethod %></td>
-                        <td>
-                          <a href="/view?id=<%=order._id %>"><button  class="btin btn-primar">view order</button> </a>
-                          <% if(order.status !== 'cancelled' && order.status !== 'delivered' && order.status !== 'Return Approved' && order.status !== 'Waiting for Approvel' && order.status !== 'pending') { %>
-                          <button onclick="cancelorder('<%=order._id %>')" class="btn btn-primary">cancel</button>
-                            <% } %>
-                            <% if(order.status == 'delivered') { %>
-                              <button onclick="returnOrder ('<%=order._id %>')" class="btn btn-primary">Return</button>
-                               
-                              
-                                <%} %>
-                        </td>
-                      </tr>
-                      <% }) %>
-                      <% }else { %>
-                        <h3>ORDERS NOT FOUND</h3>
-                        <% } %>    
-              </tbody>
-            </table>
+      <div class="row" id="reload">
+          <div class="col-lg-3">
+              <ul class="account-nav">
+                  <li><a href="/dashboard" class="menu-link menu-link_us-s">Dashboard</a></li>
+                  <li><a href="/orders" class="menu-link menu-link_us-s menu-link_active">Orders</a></li>
+                  <li><a href="/address" class="menu-link menu-link_us-s ">Addresses</a>
+                  </li>
+                  <li><a href="/profile" class="menu-link menu-link_us-s">Account Details</a></li>
+                  <li><a href="./account_wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
+                  <li><a href="/logout" class="menu-link menu-link_us-s">Logout</a></li>
+              </ul>
           </div>
-        </div>
+          <div class="col-lg-9">
+              <div class="page-content my-account__orders-list">
+                  <% if(Orders && Orders.length > 0 ) { %>
+                  <table class="orders-table">
+                      <thead>
+                          <tr>
+                              <th>No</th>
+                              <th>OrderID</th>
+                              <th>Date</th>
+                              <th>Status</th>
+                              <th>Total</th>
+                              <th>PaymentMethod</th>
+                              <th>Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <% Orders.forEach((order,index)=>{ %>
+                          <tr>
+                              <td><%= index + 1 %></td>
+                              <td><%= order.id %></td>
+                              <% if(order.Date) { %>
+                              <td><%= order.Date.toISOString().substring(0, 10) %></td>
+                              <% }else{ %>
+                              <td>N/A</td>
+                              <% } %>
+                              <td><%= order.status %></td>
+                              <td>$<%= order.subtotal %></td>
+                              <td><%= order.paymentMethod %></td>
+                              <td>
+                                  <a href="/view?id=<%=order._id %>"><button style="width: 141px;" class="btin btn-primar">View Order</button></a>
+                                  <% if(order.status !== 'cancelled' && order.status !== 'delivered' && order.status !== 'Return Approved' && order.status !== 'Waiting for Approval' && order.status !== 'pending') { %>
+                                  <button onclick="cancelorder('<%=order._id %>')" class="btn btn-primary">Cancel</button>
+                                  <% } %>
+                                  <% if(order.status == 'delivered') { %>
+                                  <button onclick="returnOrder('<%=order._id %>')" class="btn btn-primary">Return</button>
+                                  <% } %>
+                              </td>
+                          </tr>
+                          <% }) %>
+                          <% } else { %>
+                          <tr>
+                              <td colspan="7">ORDERS NOT FOUND</td>
+                          </tr>
+                          <% } %>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
       </div>
-    </section>
-  </main>
+  </section>
+</main>
+
 <style>
    .btn-primar {
     color: #fff;
@@ -91,45 +89,49 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-  const cancelorder = async(orderId)=>{
+ const cancelorder = async (orderId) => {
   try {
     const result = await Swal.fire({
-      title:"Are you sure?",
-      text:"Do you want to cancel this order ?",
-      icon:'warning',
-      showCancelButton:true,
-      confirmButtonText:"Confirm",
-      cancelButtonText:"Cancel",
-      reverseButtons:true,
-    })
-    if(result.isConfirmed){
-      const response = await fetch("/cancelorder",{
-        method:'PATCH',
-        headers:{
-          'Content-Type':'application/json',
+      title: "Are you sure?",
+      text: "Do you want to cancel this order?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      const response = await fetch("/cancelorder", {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body:JSON.stringify({orderId:orderId})
-      })
+        body: JSON.stringify({ orderId: orderId })
+      });
+
+      if (response.ok) {
+        const responseData = await response.json(); // Fix here: response instead of res
+        if (responseData.success) {
+          Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
+            .then(() => {
+              console.log("order cancelled successfully");
+              window.location.href = '/orders';
+            });
+        } else {
+          Swal.fire('Error!', 'Failed to cancel order.', 'error');
+          console.log("order cancel failed");
+        }
+      } else {
+        Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
+        console.log("error occurred", response.status);
+      }
     }
-    if(response.ok){
-      const responseData = await res.json();
-      if(responseData.success){
-      Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success');
-      console.log("order cancelled successfully");
-      $('#reload').load('/orders #reload');
-    }else{
-      Swal.fire('Error!', 'Failed to cancel order.', 'error');
-      console.log("order cancel failed");
-    }
-    }else{
-      Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
-       console.log("error occured",response.status);
-    }
-    
   } catch (error) {
-    
+    console.error("Error occurred:", error);
   }
-  }
+}
+
 
   function returnOrder(orderId) {
   console.log("the order id is getting", orderId);
