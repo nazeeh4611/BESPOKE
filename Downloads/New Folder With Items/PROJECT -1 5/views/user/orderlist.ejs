@@ -5,6 +5,7 @@
     <section class="my-account container">
       <h2 class="page-title">Orders</h2>
       <div class="row">
+     
         <div class="col-lg-3">
           <ul class="account-nav">
             <li><a href="/dashboard" class="menu-link menu-link_us-s">Dashboard</a></li>
@@ -18,7 +19,7 @@
         </div>
         <div class="col-lg-9">
           <div class="page-content my-account__orders-list">
-            <% if(order  ){ %>
+            <% if(Orders && Orders.length > 0  ){ %>
             <table class="orders-table">
               <thead>
                 <tr>
@@ -27,12 +28,13 @@
                   <th>Date</th>
                   <th>Status</th>
                   <th>Total</th>
+                  <th>PaymentMethod</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
              
-                  <% order.forEach((order,index)=>{ %>
+                  <% Orders.forEach((order,index)=>{ %>
                     <tr>
                     <td><%= index + 1 %></td> 
                   
@@ -44,14 +46,17 @@
                             <td>N/A</td>
                             <%} %>
                         <td><%= order.status %></td>
-                        <td><%= order.subtotal %></td>
-                        <td><%= order.paymentmethod %></td>
+                        <td>$<%= order.subtotal %></td>
+                        <td>  <%= order.paymentMethod %></td>
                         <td>
-                          <% if(order.status !== "cancelled" && order.status !== "delivered" && order.status !== "Return Approved" && order.status !== "pending" && order.status !== "waiting for approval") { %>
-                            <td><button class="btn btn-primary">cancel</button></td>
+                          <% if(order.status == 'placed') { %>
+                          <button class="btn btn-primary">cancel</button>
+                         <a href="/view?id=<%=order._id %>"><button  class="btin btn-primar">view order</button> </a> 
+                           
+                           
                             <% } %>
                             <% if(order.status == "delivered") { %>
-                              <td><button class="btn btn-primary">return</button></td>
+                            <button class="btn btn-primary">return</button>
                               <% } %>
                         </td>
                       </tr>
@@ -66,6 +71,17 @@
       </div>
     </section>
   </main>
+<style>
+   .btn-primar {
+    color: #fff;
+    background-color: #000000;
+    border-color: #ffffff;
+     }
 
+    .my-account .orders-table tbody td .btin {
+      width: 100%;
+        height: 3.125rem;
+        font-size: 0.875rem; }
+</style>
 
   <%- include("../layouts/userpartials/footer.ejs") %>

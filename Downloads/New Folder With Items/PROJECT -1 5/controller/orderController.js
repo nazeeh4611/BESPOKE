@@ -64,7 +64,7 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
           deliveryDetails:addressObject,
             user: userdata._id,
             username: userdata.name,
-            paymentmethod: paymentMethod,
+            paymentMethod: paymentMethod,
             product: products.map(product => ({
                 productId: product.productId,
                 name: product.name,
@@ -114,15 +114,17 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
 
 const OrderPlaced = async(req,res)=>{
     try {
-        console.log("hey im here");
+    
         const id =req.query.id;
-        console.log("id here",id);
 
         const userId = req.session.userId;
          const date = new Date();
+
         const userData = await User.findOne({_id:userId});
         const order = await Order.findOne({_id:id});
+
         res.render("user/ordercomplete" ,{order:order,date})
+
     } catch (error) {
         console.log(error);
     }
@@ -133,20 +135,34 @@ const orderlist = async(req,res)=>{
         
         const userId = req.session.userId;
         const userData =  await User.findOne({_id:userId});
-        const order = await Order.findOne({_id:userId}).sort({Date:-1});
-        res.render("user/orderlist",{userId,userData,order})
+        const  Orders  = await Order.find({user:userId}).sort({Date:-1});
+         res.render("user/orderlist",{userId,userData,Orders})
     } catch (error) {
         console.log(error);
     }
 }
 
 
-
+const orderview = async(req,res)=>{
+    try {
+    const id = req.query.id;
+    console.log("het id",id);
+    const userId = req.session.userId;
+    const userData = await User.findOne({_id:userId});
+    const orderdata = await Order.findById({_id:id}).populate(
+     "product.productId",
+    );
+    console.log("view order data here ",orderdata);
+    res.render("user/orderview",{orderdata,userData,userId});
+    } catch (error) {
+        
+    }
+}
 
 module.exports = {
  OrderPlace,
  OrderPlaced,
  orderlist,
-
+orderview,
 
 }

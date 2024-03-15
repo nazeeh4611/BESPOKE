@@ -74,4 +74,10 @@ adminRoute.delete(
   productController.deleteimage
 );
 
+adminRoute.get(
+  "/orders",
+  adminController.orderlist);
+
+
+
 module.exports = adminRoute;

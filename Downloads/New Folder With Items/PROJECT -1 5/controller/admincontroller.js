@@ -108,6 +108,16 @@ const BlockUser = async (req, res) => {
   }
 };
 
+
+const orderlist = async(req,res)=>{
+  try {
+    const Orders = await Order.find().sort({Date:-1});
+    res.render("admin/orderDetails",{Orders});
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
   adminLogin,
   verifyAdminLogin,
@@ -115,4 +125,5 @@ module.exports = {
   adminLogout,
   userManagement,
   BlockUser,
+  orderlist,
 };

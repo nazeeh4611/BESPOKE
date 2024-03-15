@@ -468,7 +468,13 @@ const ProductDetail = async (req, res) => {
   }
 };
 
-
+const errorpage = async(req,res)=>{
+  try {
+    res.render("error/404");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = {
   loadHome,
@@ -494,4 +500,5 @@ module.exports = {
   resetPass,
   loadshop,
   ProductDetail,
+  errorpage,
 };

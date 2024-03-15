@@ -27,6 +27,8 @@ userRoute.use(
 // load homepage
 userRoute.get("/", userController.loadHome);
 
+// load error page
+userRoute.get("/404",userController.errorpage);
 // load and verify register
 userRoute.get("/register", userAuth.isLogout, userController.userRegister);
 userRoute.post("/register", userController.verifyRegister);
@@ -121,10 +123,11 @@ userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 
 
 //  load orders 
+userRoute.get('/checkout',cartcontroller.Loadcheckout)
 userRoute.post("/checkout",ordercontroller.OrderPlace)
 userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
 userRoute.get('/orders',ordercontroller.orderlist);
+userRoute.get("/view",ordercontroller.orderview);
 
 // load checkout page and address
 
-userRoute.get('/checkout',cartcontroller.Loadcheckout)
