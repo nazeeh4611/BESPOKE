@@ -408,21 +408,59 @@ const userLogout = async (req, res) => {
 const loadshop = async (req, res) => {
   try {
     let query = { is_Listed: true };
+
+    // Filtering by category if provided
     if (req.query.category) {
       query.category = req.query.category;
-      console.log("lo",req.query.category);
     }
-    const productDetailes = await Product.find(query).populate("category");
-    const products = productDetailes.filter((product) => {
-      if (product.category && product.category.is_Listed == 1) {
-        return product;
-      }
-    });
 
-    // fetch the categories for dropdown
+    // Sorting based on the selected option
+    let sortOption = {};
+    switch (req.query.sort) {
+      case "1":
+        // Featured
+        sortOption = { /* define your sorting criteria */ };
+        break;
+      case "2":
+        // Best selling
+        sortOption = { /* define your sorting criteria */ };
+        break;
+      case "3":
+        // Alphabetically, A-Z
+        sortOption = { name: 1 };
+        break;
+      case "4":
+        // Alphabetically, Z-A
+        sortOption = { name: -1 };
+        break;
+      case "5":
+        // Price, low to high
+        sortOption = { price: 1 };
+        break;
+      case "6":
+        // Price, high to low
+        sortOption = { price: -1 };
+        break;
+      case "7":
+        // Date, old to new
+        sortOption = { date: 1 };
+        break;
+      case "8":
+        // Date, new to old
+        sortOption = { date: -1 };
+        break;
+      default:
+        // Default Sorting
+        break;
+    }
 
+    const productDetails = await Product.find(query).populate("category").sort(sortOption);
+    const products = productDetails.filter(product => product.category && product.category.is_Listed);
+
+    // Fetch the categories for dropdown
     const categories = await Category.find({});
     const userIn = req.session.userId;
+
     res.render("user/shop", {
       products,
       categories,
@@ -433,6 +471,7 @@ const loadshop = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 const ProductDetail = async (req, res) => {
   try {
