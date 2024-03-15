@@ -20,7 +20,7 @@
         <div class="col-lg-9">
           <div class="page-content my-account__orders-list">
             <% if(Orders && Orders.length > 0  ){ %>
-            <table class="orders-table">
+            <table class="orders-table" id="reload">
               <thead>
                 <tr>
                   <th>No</th>
@@ -50,7 +50,7 @@
                         <td>  <%= order.paymentMethod %></td>
                         <td>
                           <% if(order.status == 'placed') { %>
-                          <button class="btn btn-primary">cancel</button>
+                          <button onclick="" class="btn btn-primary">cancel</button>
                          <a href="/view?id=<%=order._id %>"><button  class="btin btn-primar">view order</button> </a> 
                            
                            
@@ -84,4 +84,46 @@
         font-size: 0.875rem; }
 </style>
 
+
+<script>
+  const cancelorder = async(orderId)=>{
+  try {
+    const result = await Swal.fire({
+      title:"Are you sure?",
+      text:"Do you want to cancel this order ?",
+      icon:'warning',
+      showCancelButton:true,
+      confirmButtonText:"Confirm",
+      cancelButtonText:"Cancel",
+      reverseButtons:true,
+    })
+    if(result.isConfirmed){
+      const response = await fetch("/cancelorder",{
+        method:'PATCH',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({orderId:orderId})
+      })
+    }
+    if(response.ok){
+      const responseData = await res.json();
+      if(responseData.success){
+      Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success');
+      console.log("order cancelled successfully");
+      $('#reload').load('/orders #reload');
+    }else{
+      Swal.fire('Error!', 'Failed to cancel order.', 'error');
+      console.log("order cancel failed");
+    }
+    }else{
+      Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
+       console.log("error occured",response.status);
+    }
+    
+  } catch (error) {
+    
+  }
+  }
+</script>
   <%- include("../layouts/userpartials/footer.ejs") %>

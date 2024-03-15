@@ -58,7 +58,7 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
         const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
   
         const products = cartdata.product;
-        const orderStatus = paymentMethod === "COD" ? "placed" : "pending";
+        const orderStatus = paymentMethod === "CASH ON DELIVERY" ? "placed" : "pending";
     
         const NewOrder = new Order({
           deliveryDetails:addressObject,
@@ -83,7 +83,7 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
         const orderId = saveOrder._id;
         const totalamount = saveOrder.subtotal;
   
-        if (paymentMethod === "COD") {
+        if (paymentMethod === "CASH ON DELIVERY") {
             for (const cartProduct of cartdata.product) {
                 await Product.findOneAndUpdate(
                     { _id: cartProduct.productId },
@@ -159,10 +159,38 @@ const orderview = async(req,res)=>{
     }
 }
 
+const ordercancel = async(req,res)=>{
+    try {
+       const userId = req.session.userId;
+       const orderId = req.body.orderId;
+       const order = await Order.findById({_id:orderId});
+
+  const data = await Order.findByIdAndUpdate(
+    {user:userId,
+    _id:orderId},
+    {$set:{status:'cancelled'}},
+    {new:true},
+  )
+  if(data){
+    res.json({success:true})
+  }else{
+    res.json({
+        success:false,
+        message:"order is not found",
+    })
+  }
+    } catch (error) {
+        console.log(error.message);
+        res.json({success:false,error:error.message});
+    }
+}
+
+
 module.exports = {
  OrderPlace,
  OrderPlaced,
  orderlist,
 orderview,
+ordercancel,
 
 }

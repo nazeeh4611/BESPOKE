@@ -466,16 +466,30 @@
                             <%= Orders[i].paymentMethod %>
                           </td>
                           <td>
-                            <%= Orders[i].status %>
+                            <% if (
+                            Orders[i].status === 'placed' ||
+                            Orders[i].status === 'delivered' ||
+                            Orders[i].status === 'waiting for approval' ||
+                            Orders[i].status === 'Return Approved'
+                            ){ %>
+                              <a href="/orderstatus?id=<%= Orders[i]._id %>">
+                                <span class="status-label status-placed">
+                                <%= Orders[i].status %>
+                            </span></a>
+                            <%}else if(Orders[i].status === 'cancelled') {%>
+                              <a>
+                                <span class="status-canceled px-3 py-1 text-xs font-semibold leading-tight text-gray-800 bg-gray-200 rounded-full dark:text-gray-100 dark:bg-gray-700">
+                                    <%= Orders[i].status %>
+                                </span>
+                            </a>
+                            <%}else if(Orders[i].status === 'pending') %>
+                            <a>
+                              <span class="status-canceled px-3 py-1 text-xs font-semibold leading-tight text-gray-800 bg-gray-200 rounded-full dark:text-gray-100 dark:bg-gray-700">
+                                  <%= Orders[i].status %>
+                              </span>
+                          </a>
                           </td>
-                          <td>
-                            <% if(Orders[i].status == 'placed'){ %>
-                              <button class="Block button" type="button" value="return"
-                                                      >return</button>
-                              <% } else { %>
-                               
-                                <% } %>
-                          </td>
+                         
                         </tr>
                         <% } %>
                           <% } else { %>

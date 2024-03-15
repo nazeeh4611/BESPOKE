@@ -128,6 +128,7 @@ userRoute.post("/checkout",ordercontroller.OrderPlace)
 userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
 userRoute.get('/orders',ordercontroller.orderlist);
 userRoute.get("/view",ordercontroller.orderview);
+userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 
 // load checkout page and address
 
