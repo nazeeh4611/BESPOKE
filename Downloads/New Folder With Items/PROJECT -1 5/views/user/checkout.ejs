@@ -48,13 +48,7 @@
       <div class="mb-4 pb-4"></div>
       <h2 class="page-title">Shipping and Checkout</h2>
       <div class="checkout-steps">
-        <a href="./shop_cart.html" class="checkout-steps__item active">
-          <span class="checkout-steps__item-number">01</span>
-          <span class="checkout-steps__item-title">
-            <span>Shopping Bag</span>
-            <em>Manage Your Items List</em>
-          </span>
-        </a>
+       
         <a href=" class="checkout-steps__item active">
           <span class="checkout-steps__item-number">02</span>
           <span class="checkout-steps__item-title">
@@ -62,13 +56,7 @@
             <em>Checkout Your Items List</em>
           </span>
         </a>
-        <a href="./shop_order_complete.html" class="checkout-steps__item">
-          <span class="checkout-steps__item-number">03</span>
-          <span class="checkout-steps__item-title">
-            <span>Confirmation</span>
-            <em>Review And Submit Your Order</em>
-          </span>
-        </a>
+       
       </div>
       <form name="checkout-form" action="" id="orderplace">
         <div class="checkout-form">
@@ -211,7 +199,7 @@
                 
                       </td>
                       <td>
-                        <%=product.total %>
+                       $ <%=product.total %>
                       </td>
                     </tr>
                     <tr>
@@ -231,7 +219,7 @@
                   <tbody>
                     <tr>
                       <th>SUBTOTAL</th>
-                      <td><%= subtotal%></td>
+                      <td>$<%= subtotal%></td>
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
@@ -243,7 +231,7 @@
                     </tr>
                     <tr>
                       <th>TOTAL</th>
-                      <td> <%= subtotal%></td>
+                      <td> $<%= subtotal%></td>
                       <input type="hidden" value="<%= subtotal%>" name="subtotal">
                     </tr>
                  
@@ -393,27 +381,18 @@ $('#saveAndProceedBtn').on('click', async function(e) {
                 postCode: post,
             })
         });
-
+        window.location.href = '/checkout'; 
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
 
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-            const responseData = await response.json();
-            // const addressId = responseData.addedId;
+        const responseData = await response.json();
 
-            // console.log(addressId, "address id is here");
-            $('#saveAndProceedBtn').attr('disabled', true);
-            
-            $('#addForm :input').prop('readonly', true);
-            $('#addForm :input').removeClass('form-control');
-
-            $('#check_add').collapse('hide');
-            $('#check_payment').collapse('show');
-            $('#check_existing_address').css('display', 'none');
+        if (responseData.success) {
+            // Redirect to the desired page after successfully adding the address
+        
         } else {
-            throw new Error('Response is not in JSON format');
+            console.log('Failed to add address');
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);

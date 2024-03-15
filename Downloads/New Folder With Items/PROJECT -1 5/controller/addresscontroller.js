@@ -25,42 +25,44 @@ const NewAddress = async(req,res)=>{
 }
 
 
-const postAddress = async (req,res)=>{
+const postAddress = async (req, res) => {
     try {
-    const userData = await User.findOne({_id:req.session.userId});
-    const {firstName,lastName,mobileNumber,email,address,city,postCode}=req.body;
-    const userIn = req.session.userId;
+        const userData = await User.findOne({_id: req.session.userId});
+        const {firstName, lastName, mobileNumber, email, address, city, postCode, isDefault} = req.body;
+        const userIn = req.session.userId;
 
-    if(userData){
-        const Data = await Address.findOneAndUpdate(
-            {user:userIn},
-            {
-              $push:{
-                address:{
-                fname:firstName,
-                lname:lastName,
-                city:city,
-                mobile:mobileNumber,
-                email:email,
-                address:address,
-                pin:postCode,
-                isdifault:isDefault,
-            },
+        if (userData) {
+            const Data = await Address.findOneAndUpdate(
+                {user: userIn},
+                {
+                    $push: {
+                        address: {
+                            fname: firstName,
+                            lname: lastName,
+                            city: city,
+                            mobile: mobileNumber,
+                            email: email,
+                            address: address,
+                            pin: postCode,
+                        },
+                    }
+                },
+                {new: true, upsert: true}
+            )
+            console.log("address here", Data);
+            // Redirect to the address page after successfully adding the address
+            res.redirect('/address'); // Change '/address' to the actual route of your address page
+        } else {
+            res.render("user/addaddress", {userIn}); // Sending HTML response
         }
-    },
-    {new:true,upsert:true},
-    res.json({success:true})
- )
- console.log("address here",Data);
-   res.redirect('/address')
- }else{
-    res.render("user/addaddress",{userIn});
-
- }
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: "Internal Server Error"}); // Handle error with proper status and JSON response
     }
 }
+
+
+
 
 // editAddress function
 const editAddress = async (req, res) => {
