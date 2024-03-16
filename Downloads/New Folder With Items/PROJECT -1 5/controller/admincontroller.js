@@ -31,7 +31,7 @@ const verifyAdminLogin = async (req, res) => {
 
       if (passwordMatch) {
         req.session.adminId = userData._id;
-        console.log("hlo thi");
+       
         res.redirect("/admin/dashboard");
       } else {
         messages.message = "Incorrect password"; 
@@ -167,9 +167,9 @@ const ordercancel = async(req,res)=>{
 const orderdelivered = async(req,res)=>{
   try {
     const id = req.query.id;
-    console.log("id may here",id);
+  
     const orders = await Order.findById({_id:id});
-    console.log(orders,"suii");
+
 
     if(orders.status == 'placed'){
       await Order.findByIdAndUpdate(

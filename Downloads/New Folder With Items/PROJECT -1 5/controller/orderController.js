@@ -10,12 +10,11 @@ const Cart = require("../model/cartModel");
 const OrderPlace = async (req, res) => {
     try {
         const userId = req.session.userId;
-        console.log(req.body,'bodyyyyy');
+
   
         const { addressId, paymentMethod,subtotal} = req.body;
-console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod);        
   
-  
+  console.log("the address id here",addressId,"the payment here",paymentMethod,"subtotal here",subtotal);
         const cartdata = await Cart.findOne({ user: userId });
   
         if (!addressId) {
@@ -28,8 +27,8 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
         const userAddress = await Address.findOne({
             "address._id": addressId,
         });
-        console.log("user",);
-       
+     
+       console.log(userAddress);
         // Check if userAddress is not empty and has at least one address
         if (!userAddress || userAddress.length === 0) {
             return res.json({
@@ -39,9 +38,10 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
         }
   
         // Since userAddress is an array, use userAddress[0] if it exists
-        const addressObject = userAddress.address[0];
-        console.log(addressObject,"obhdhjg");
-  
+        const addressObject =userAddress.address.filter((address)=> address._id==addressId);
+        console.log("address obect here ",addressObject);
+      
+
         const userdata = await User.findOne({ _id: req.session.userId });
   
         for (const cartProduct of cartdata.product) {
@@ -93,8 +93,8 @@ console.log("addressid:",addressId,"subtotal:",subtotal,"payment",paymentMethod)
         }
   
         const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
-  
-        return res.json({ success: true, orderId: orderId });
+        
+        return res.redirect(`/ordercomplete?id=${orderId}`);
   
     } catch (error) {
         console.log(error);
@@ -122,8 +122,8 @@ const OrderPlaced = async(req,res)=>{
 
         const userData = await User.findOne({_id:userId});
         const order = await Order.findOne({_id:id});
-
-        res.render("user/ordercomplete" ,{order:order,date})
+   
+        res.render("user/ordercomplete" ,{order:order,date,orderId:id})
 
     } catch (error) {
         console.log(error);
@@ -146,13 +146,13 @@ const orderlist = async(req,res)=>{
 const orderview = async(req,res)=>{
     try {
     const id = req.query.id;
-    console.log("het id",id);
+   
     const userId = req.session.userId;
     const userData = await User.findOne({_id:userId});
     const orderdata = await Order.findById({_id:id}).populate(
      "product.productId",
     );
-    console.log("view order data here ",orderdata);
+  
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
         
@@ -163,7 +163,7 @@ const ordercancel = async(req,res)=>{
     try {
        const userId = req.session.userId;
        const orderId = req.body.orderId;
-       console.log("cansel",orderId);
+     
        const order = await Order.findById({_id:orderId});
 
   const data = await Order.findByIdAndUpdate(
@@ -189,13 +189,13 @@ const ordercancel = async(req,res)=>{
 const returnOrder = async(req,res)=>{
     try {
         const userId = req.session.userId;
-        console.log("1");
+       
         const orderId = req.body.orderId;
         
-        console.log(orderId,"2");
+       
         const orders = await Order.findById({_id:orderId});
 
-        console.log(orders,"3");
+       
         if(Date.now()>orders.expiredate){
             res.json({datelimit:true});
         }else{

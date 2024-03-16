@@ -58,7 +58,7 @@
         </a>
        
       </div>
-      <form name="checkout-form" action="" id="orderplace">
+      <form name="checkout-form" method="post" action="/checkout" id="orderplace">
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <h4>BILLING DETAILS</h4>
@@ -94,17 +94,10 @@
                            PIN : <%= value.pin %>
                            <br>
                            <label for="option<%= index + 1 %>" class="op mb-2">
-                            <input type="radio" id="existing_address_1" name="options" value="option<%= index +1 %>" class="me-1"
+                            <input type="radio" id="existing_address_1" name="addressId" value="<%= value._id %>" class="me-1"
                               required>
                             </label>
-                            <input type="hidden" name="firstName" value="<%= value.fname %>">
-                            <input type="hidden" name="lastName" value="<%= value.lname %>">
-                            <input type="hidden" name="mobileNumber" value="<%= value.mobile %>">
-                            <input type="hidden" name="email" value="<%= value.email %>">
-                            <input type="hidden" name="address" value="<%= value.address %>">
-                            <input type="hidden" name="city" value="<%= value.city %>">
-                            <input type="hidden" name="postCode" value="<%= value.pin %>">
-                            <input type="hidden" name="addressId" value="<%= value._id %>">
+                          
                            <!-- <input type="radio" id="existing_address_1"  value="<%=value._id%>" onclick="handleAddressSelection('<%= value._id %>')">
                             </tr> -->
                 
@@ -264,7 +257,7 @@
                   Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
                 </div>
               </div>
-              <button onclick="submitForm()" class="my-button">Place Order</button>
+              <button type="submit" class="my-button">Place Order</button>
             </div>
           </div>
         </div>
@@ -389,7 +382,7 @@ $('#saveAndProceedBtn').on('click', async function(e) {
         const responseData = await response.json();
 
         if (responseData.success) {
-            // Redirect to the desired page after successfully adding the address
+          
         
         } else {
             console.log('Failed to add address');
@@ -449,110 +442,14 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
    return isValid;
 }
-
-   
-
-function proceedToPayment() {
-    $('#check_existing').collapse('hide');
-    $('#check_payment').collapse('show');
-
-    // if (!addressId) {
-    //     $('#errorModalHead').text('Invalid Address');
-    //     // $('#errorModalBody').text('Please select or add a valid address');
-    //     // $('#statusErrorsModal').modal('show');
-    //     return;
-    // }
-}
-   
   </script>
-  <script>
-    $(document).ready(function () {
-
-
-      // the modification may occur here
-      $('#orderplace').on('submit', function (event) {
-        event.preventDefault();
-
-      const paymentMethod = $("input[name='paymentMethod']:checked").val();
-
-
-        if (!paymentMethod) {
-          showErrorAlert('Please select a payment method before submitting the form.');
-          return;
-        }
-
-        // Proceed with form submission
-        const formData = $(this).serialize();
-        console.log("Form data:", formData);
-
-        $.ajax({
-          type: 'POST',
-          url: '/checkout',
-          data: formData,
-          success: function (response) {
-            console.log('Form submitted successfully:', response);
-            if (response && response.success) {
-              const orderId = response.orderId;
-              console.log("The order ID:", orderId);
-              Swal.fire({
-                icon: 'success',
-                title: 'Order Placed!',
-                text: 'Your order has been placed successfully.'
-              }).then(() => {
-                window.location.href = `/ordercomplete?id=${orderId}`;
-              });
-            } else {
-              console.error('Form submission failed:', response);
-              showErrorAlert('There was an error processing your order. Please try again later.');
-            }
-          },
-          error: function (error) {
-            console.error('Error submitting form:', error.message);
-            showErrorAlert('There was an error processing your order. Please try again later.');
-          }
-        });
-      });
-
-      function showErrorAlert(message) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Submission Failed',
-          text: message
-        });
-      }
-
-
-      $('#placeOrder').click(function (event) {
-        event.preventDefault();
-
-        const formdata = $('#checkout').serialize();
-        console.log("the formdata may here", formdata);
-
-        // AJAX request for Razorpay
-        $.ajax({
-          url: '/checkout',
-          method: "post",
-          data: formdata,
-          success: function (response) {
-            console.log("ajax response is proceeded", response);
-            if (response.success) {
-              let orderId = response.orderId;
-              console.log("the order id may here", orderId);
-              location.href = `/ordersuccess?id=${orderId}`;
-            } else if (response.success === false) {
-              console.log('response.success has become false now');
-              razorpaypayment(response.orders);
-            }
-          }
-        });
-      });
-
   
-
-      // Function for verifying Razorpay payment
- 
-    });
+  <script>
+    
   </script>
+
+
+
   <!-- External JavaScripts -->
   <script src="/public/js/jquery.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
@@ -593,26 +490,7 @@ function proceedToPayment() {
 <!-- custom js -->
 <script src="/public/assets/js/custom.js"></script>
 
-<script>
-   // Disable form submissions if there are invalid fields
-   (function() {
-     'use strict';
-     window.addEventListener('load', function() {
-       // Get the forms we want to add validation styles to
-       var forms = document.getElementsByClassName('needs-validation');
-       // Loop over them and prevent submission
-       var validation = Array.prototype.filter.call(forms, function(form) {
-         form.addEventListener('submit', function(event) {
-           if (form.checkValidity() === false) {
-             event.preventDefault();
-             event.stopPropagation();
-           }
-           form.classList.add('was-validated');
-         }, false);
-       });
-     }, false);
-   })();
-</script>
+
 
 
 </body></html>

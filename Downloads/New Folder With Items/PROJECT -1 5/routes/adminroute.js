@@ -30,7 +30,7 @@ adminRoute.get(
 );
 adminRoute.get("/list",  categoryController.Listed);
 adminRoute.get("/unlist",  categoryController.UnListed);
-adminRoute.get("/products", productController.loadProduct);
+adminRoute.get("/products",adminAuth.isLogin,productController.loadProduct);
 adminRoute.get(
   "/addproduct",
  
@@ -63,7 +63,7 @@ adminRoute.post(
 
   productController.productUnlist
 );
-adminRoute.delete(
+adminRoute.get(
   "/deleteproduct",adminAuth.isLogin,
 
   productController.deleteProduct

@@ -59,12 +59,11 @@ const verifyRegister = async (req, res) => {
   try {
     const existUser = await User.findOne({ email: req.body.email });
     if (existUser && existUser.is_Verified) {
-      const message = "Email already Registered ";
+      const message = "Email already Registered";
       res.render("user/register", { message });
     } else if (existUser && !existUser.is_Verified) {
-      const message =
-        "Email already registered but not not verified. send OTP to email and verify the Email ";
-      res.render("user/register", { message });
+
+      res.render("user/register", { messages: { message: "This Email is already exist" } });
     } else {
       const confirmPassword = req.body.confirmPassword;
 
@@ -92,7 +91,6 @@ const verifyRegister = async (req, res) => {
     console.log(error.message);
   }
 };
-
 
 
 const getsendOtp = async (req, res) => {

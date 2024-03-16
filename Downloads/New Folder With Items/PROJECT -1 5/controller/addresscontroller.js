@@ -49,15 +49,15 @@ const postAddress = async (req, res) => {
                 },
                 {new: true, upsert: true}
             )
-            console.log("address here", Data);
-            // Redirect to the address page after successfully adding the address
-            res.redirect('/address'); // Change '/address' to the actual route of your address page
+           
+            
+            res.redirect('/address'); 
         } else {
-            res.render("user/addaddress", {userIn}); // Sending HTML response
+            res.render("user/addaddress", {userIn}); 
         }
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({error: "Internal Server Error"}); // Handle error with proper status and JSON response
+        res.status(500).json({error: "Internal Server Error"}); 
     }
 }
 
@@ -102,7 +102,7 @@ const editAddress = async (req, res) => {
 const deleteAddress = async (req, res) => {
     try {
         const { id } = req.body;
-        console.log("Deleting address with id:", id);
+      
         
 
         const userAddress = await Address.updateOne(

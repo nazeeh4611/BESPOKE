@@ -47,10 +47,10 @@ const newCategory = async (req, res) => {
 const editCategory = async (req, res) => {
   try {
     const categoryId = req.query.id;
-    console.log("tghe id iud ", categoryId);
+   
     const category = await Categories.findOne({ _id: categoryId });
 
-    console.log("data is here", category);
+  
 
     res.render("admin/editcategory", { category });
   } catch (error) {

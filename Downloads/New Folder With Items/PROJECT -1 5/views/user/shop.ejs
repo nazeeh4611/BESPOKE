@@ -924,34 +924,33 @@
   <script src="/public/js/theme.js"></script>
   <script>
   document.getElementById('sortForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault(); 
     const sortSelect = document.getElementById('sortSelect');
     const selectedSort = sortSelect.options[sortSelect.selectedIndex].value;
     const currentUrl = new URL(window.location.href="/shop");
-    currentUrl.searchParams.set('sort', selectedSort); // Set sort query parameter
-    window.location.href = currentUrl.href; // Redirect to the updated URL
+    currentUrl.searchParams.set('sort', selectedSort); 
+    window.location.href = currentUrl.href; 
   });
 </script>
 <script>
   document.getElementById('sortSelect').addEventListener('change', function(event) {
     const selectedSort = event.target.value;
     const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('sort', selectedSort); // Set sort query parameter
-    window.location.href = currentUrl.href; // Redirect to the updated URL
+    currentUrl.searchParams.set('sort', selectedSort); 
+    window.location.href = currentUrl.href; 
   });
 </script>
 <script>
   document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault(); 
     const searchInput = document.getElementById('searchInput').value;
-    const searchUrl = `/search.html?search-keyword=${encodeURIComponent(searchInput)}`; // Encode search input and construct search URL
-    window.location.href = searchUrl; // Redirect to the search results page
+    const searchUrl = `/search.html?search-keyword=${encodeURIComponent(searchInput)}`;
+    window.location.href = searchUrl; 
   });
 </script>
   <script>
   function openCartDrawer() {
-      updateCartDrawer(); // Call the function to update the cart drawer
-      // Add code to open the cart drawer if it's not already open
+      updateCartDrawer(); 
     }
     function addToCart(id) {
       console.log("vutuyvj", id);
@@ -972,7 +971,7 @@
         confirmButtonText: 'continue shopping',
       }).then((result) => {
         if (result.isConfirmed) {
-          // If "Go to Cart" is clicked, redirect to /cart
+         
           window.location.reload('/productdetail');
         } 
       });
@@ -1002,10 +1001,10 @@
         dataType: "html",
       })
         .done((cartData) => {
-          $(".cart").html(cartData); // Replace entire cart content with fetched HTML
+          $(".cart").html(cartData); 
           $(`#cartDrawer`).load(`/productdetail #cartDrawer`)
           console.log("the srt");
-          // After updating cart, update the cart drawer
+         
         })
         .fail((xhr, status, error) => {
           console.error("An error occurred while updating cart", error);
@@ -1014,13 +1013,13 @@
 
     function updateCartDrawer() {
       $.ajax({
-        url: "/cart/drawer", // Assuming you have an endpoint to fetch the cart drawer content
+        url: "/cart/drawer",
         method: "get",
         dataType: "html",
       })
         .done((drawerData) => {
 
-          $(".cart-drawer").html(drawerData); // Replace entire cart drawer content with fetched HTML
+          $(".cart-drawer").html(drawerData); 
 
 
         })

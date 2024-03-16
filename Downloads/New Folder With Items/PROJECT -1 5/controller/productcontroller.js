@@ -5,6 +5,7 @@ const fs = require("fs");
 const sharp = require("sharp");
 const mongoose = require("mongoose");
 const { log } = require("console");
+const { name } = require("ejs");
 
 // load products page
 const loadProduct = async (req, res) => {
@@ -35,7 +36,10 @@ const addProduct = async (req, res) => {
     if (productDatas.length > 0) {
       return res.status(404).send("It's already existed");
     }
-
+ 
+    if(productDatas.productname == await products.findOne({name:name})){
+      res.json({success:false});
+    }
     const { productName, description, quantity, categories, price } = req.body;
     console.log("5", req.body.categories);
     console.log("4", req.body.productName);

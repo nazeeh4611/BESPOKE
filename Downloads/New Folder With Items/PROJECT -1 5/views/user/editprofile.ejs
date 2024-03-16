@@ -1075,13 +1075,13 @@
          })();
       </script>
   <script>
-    // Disable form submissions if there are invalid fields
+   
     (function() {
       'use strict';
       window.addEventListener('load', function() {
-        // Get the forms we want to add validation styles to
+      
         var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
+     
         var validation = Array.prototype.filter.call(forms, function(form) {
           form.addEventListener('submit', function(event) {
             if (form.checkValidity() === false) {
@@ -1208,9 +1208,7 @@ $('#saveAndProceedBtn').on('click', async function(e) {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
             const responseData = await response.json();
-            // const addressId = responseData.addedId;
-
-            // console.log(addressId, "address id is here");
+          
             $('#saveAndProceedBtn').attr('disabled', true);
             
             $('#addForm :input').prop('readonly', true);
@@ -1354,7 +1352,7 @@ function proceedToPayment() {
         });
     }
 
-    // Other event bindings and functions can go here
+   
 }
 
 

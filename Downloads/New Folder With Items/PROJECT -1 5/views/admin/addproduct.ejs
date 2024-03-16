@@ -471,8 +471,8 @@
         if (quantity === "") {
           document.getElementById("quantityError").innerHTML = "Quantity is required";
           hasError = true;
-        } else if (isNaN(quantity) || quantity <= 0) {
-          document.getElementById("quantityError").innerHTML = "Quantity must be a positive number";
+        } else if (isNaN(quantity)) {
+          document.getElementById("quantityError").innerHTML = "Quantity must be a  number";
           hasError = true;
         }
     

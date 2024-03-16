@@ -106,7 +106,7 @@ const successfb = async (req, res) => {
     } else {
       // Hashing the user's Google ID for password
       const spassword = await securePassword(req.user.id);
-      console.log("spass", spassword);
+    
 
       // Creating a new instance of the User model
       const newUser = new User({

@@ -180,20 +180,20 @@
                                     <tr>
                                         <th>Subtotal</th>
                                         <td>$<%= subtotal %>
-                                        </td> <!-- Use subtotal variable here -->
+                                        </td> 
                                     </tr>
                                     <tr>
                                         <th>Shipping</th>
-                                        <!-- Your shipping options -->
+                                      
                                     </tr>
                                     <tr>
                                         <th>VAT</th>
-                                        <!-- VAT amount -->
+                                     
                                     </tr>
                                     <tr>
                                         <th>Total</th>
                                         <td>$<%= subtotal %>
-                                        <!-- Total amount -->
+                                       
                                     </tr>
                                 </tbody>
 
@@ -226,18 +226,17 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => response.json()) // Parse the JSON response
+                .then(response => response.json())
     
                 .then(response => {
                     if (response.success) {
-                        // Reload the cart section and update subtotal
                         $('#reload').load('/cart  #reload');
                         $('#subtotal').load('/cart  #subtotal');
                     } else {
                         console.log("Error: ", response.error);
                     }
                 })
-                .catch(error => console.error("Error:", error)); // Handle any fetch errors
+                .catch(error => console.error("Error:", error));
         }
     </script>
     
@@ -245,7 +244,7 @@
         function Total(input, id, price) {
             const quantity = parseInt(input.value);
             const total =  quantity * price;
-            // You can update the UI to display the total or send this information to the server if needed
+          
         }
     </script>
     
@@ -268,7 +267,7 @@
                             timer:1000,
                         });
                         $('#reload').load('/cart #reload')
-                        // Optionally, you can add logic here to update the UI after successful removal
+                       
                     } else {
                         console.error("Failed to remove item from cart.");
                     }

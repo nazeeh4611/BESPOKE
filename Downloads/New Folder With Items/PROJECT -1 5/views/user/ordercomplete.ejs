@@ -12,6 +12,8 @@
               <span>Confirmation</span>
               <em>Review And Submit Your Order</em>
             </span>
+            <!-- Include this in your ordercomplete.ejs file -->  
+           
           </a>
         </div>
         <div class="order-complete">
@@ -25,7 +27,7 @@
           </div>
           <div class="order-info">
             <div class="order-info__item">
-              <label>OrderID : <%= order._id  %></label>
+              <label>OrderID : #<%= order._id  %></label>
             </div>
             <div class="order-info__item">
               <label>Date</label>
@@ -43,13 +45,44 @@
           </div>
           <div class="checkout__totals-wrapper">
             <div class="checkout__totals">
-              <h3>Order Details</h3>
+              <h3>PRODUCT DETAILS</h3>
+              
               <table class="checkout-cart-items">
                 <thead>
+                 
                   <% order.product.forEach((value,index)=>{ %>
                   
-                 
+               <p>Name :   <%=value.name %></p>  
+                   <br>
+                <p>Qty  :   <%=value.quantity %></p>  
+                   <br>
+               <p>Price  :    <%=value.price %></p>  
+                   <br>
+                <p>Total  : <%= value.price * value.quantity %></p>
                   <% }) %>
+                </tbody>
+              </table>
+
+              <h3>SHIPPING DETAILS</h3>
+              <table class="checkout-cart-items">
+                <thead>
+                 
+                 <% order.deliveryDetails.forEach((value)=>{ %>
+                  
+               <p>  First Name: <%= value.fname %></p>  
+                   <br>
+                <p> Last Name: <%= value.lname %></p>  
+                   <br>
+               <p>  Address: <%= value.address %></p>  
+                   <br>
+                <p> Mobile: <%= value.mobile %></p>
+                <br>
+                <p >City: <%= value.city %></p>
+                <br>
+                <p>  PIN: <%= value.pin %> </p>
+            
+                  
+                <% }) %>
                 </tbody>
               </table>
             </div>

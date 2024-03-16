@@ -154,11 +154,11 @@ const updateCart = async (req, res) => {
       },
       {
         $inc: {
-          "product.$.quantity": count, // Use $ to identify the correct element to update in the array
-          "product.$.total": count * product.price, // Calculate the total based on the product's price
+          "product.$.quantity": count, 
+          "product.$.total": count * product.price,
         },
       },
-      { new: true } // Return the updated document
+      { new: true } 
     );
     res.json({ success: true });
   } catch (error) {
@@ -212,13 +212,13 @@ const Loadcheckout = async(req,res)=>{
     );
   }
  
-  const productId = req.body.productId; // Corrected variable name
+  const productId = req.body.productId; 
   const productdata = await Product.findById(productId);
 
 
   const existProduct = await Cart.findOne({
     user: req.session.userId,
-    "product.productId": productId, // Ensure correct property name
+    "product.productId": productId, 
   });
     res.render("user/checkout",{cartdata,addresses,subtotal})
   } catch (error) {
