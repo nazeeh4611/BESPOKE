@@ -30,16 +30,18 @@ const loadAddProduct = async (req, res) => {
 // adding product
 
 const addProduct = async (req, res) => {
-  try {
-    const productDatas = await products.find({ name: req.body.productname });
 
-    if (productDatas.length > 0) {
-      return res.status(404).send("It's already existed");
+  try {
+    
+    
+    const productDatas = await products.findOne({name:req.body.productName });
+    console.log("ygygsigifgsfggfgfsfgbfdisf",productDatas);
+    const Datas = await category.find({ is_Listed: 1 });
+    if (productDatas) {
+  
+    res.render('admin/addproduct',{productData: Datas,messages:{message:"Productname already existed"}})
     }
- 
-    if(productDatas.productname == await products.findOne({name:name})){
-      res.json({success:false});
-    }
+   
     const { productName, description, quantity, categories, price } = req.body;
     console.log("5", req.body.categories);
     console.log("4", req.body.productName);
@@ -48,7 +50,7 @@ const addProduct = async (req, res) => {
     console.log("1", req.body.price);
     const filenames = [];
     const existcategory = await category.findOne({ name: categories });
-    const Datas = await category.find({ is_Listed: 1 });
+   
 
     if (!req.files || req.files.length !== 4) {
       return res.render("admin/addproduct", {

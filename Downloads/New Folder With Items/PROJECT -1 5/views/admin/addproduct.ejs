@@ -378,6 +378,7 @@
                 <label for="exampleInputCity1">Category</label>
                 <select class="form-control" name="categories" id="exampleInputCity1">
                   <option value="">Select Category</option>
+                  <% console.log("product datas guhdgf",productData) %>
                   <% productData.forEach(productData=> { %>
                     <option value="<%= productData.name %>">
                       <%= productData.name %>
@@ -389,6 +390,11 @@
               </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
+              <% if (typeof messages !== 'undefined' && messages.message) { %>
+                <h5 style="color: red;">
+                  <%= messages.message %>
+                </h5>
+              <% } %>
             </form>
              </div>
         </div>
