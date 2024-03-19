@@ -60,7 +60,7 @@ const adminDashboard = async (req, res) => {
 
 const adminLogout = async (req, res) => {
   try {
-    req.session.destroy();
+    req.session.adminId = null;
     res.redirect("/admin");
   } catch (error) {
     console.log(error.message);

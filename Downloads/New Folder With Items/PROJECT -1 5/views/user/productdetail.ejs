@@ -104,10 +104,6 @@
         <% if (cartdata && cartdata.product.length> 0) { %>
           <div class="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
             <hr class="cart-drawer-divider">
-            <div class="d-flex justify-content-between">
-              <h6 class="fs-base fw-medium">SUBTOTAL:</h6>
-              <span class="cart-subtotal fw-medium"><%= subtotal %></span>
-            </div><!-- /.d-flex justify-content-between -->
             <a href="/cart" class="btn btn-light mt-3 d-block">View Cart</a>
             <a href="/checkout" class="btn btn-primary mt-3 d-block">Checkout</a>
           </div><!-- /.aside-content -->
@@ -753,6 +749,8 @@
           .catch(error => console.error("Error:", error)); // Handle any fetch errors
   }
 </script>
+
+
 
 
 

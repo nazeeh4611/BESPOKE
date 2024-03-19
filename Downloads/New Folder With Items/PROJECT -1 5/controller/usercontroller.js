@@ -22,13 +22,15 @@ const loadHome = async (req, res) => {
       model: "Product",
     });
 
+    // const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
 
     const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
 
    
 
-    res.render("user/home", { userIn, user: req.session.userId,cartdata,subtotal });
+    // res.render("user/home", { userIn, user: req.session.userId, cartdata: {cartdata, product: filteredProducts } });
+    res.render("user/home", { userIn, user: req.session.userId, cartdata });
   } catch (error) {
     console.log(error.message);
   }
@@ -496,17 +498,17 @@ const ProductDetail = async (req, res) => {
       model: "Product",
     });
 
+    const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
 
-    const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
+
 
 
     res.render("user/productdetail", {
+      cartdata: {cartdata, product: filteredProducts },
       data: product,
       user: req.session.userId,
       userIn,
-      cartdata,
-      subtotal,
       user: req.session.userId,
     });
   } catch (error) {
@@ -514,13 +516,17 @@ const ProductDetail = async (req, res) => {
   }
 };
 
+
 const errorpage = async(req,res)=>{
   try {
-    res.render("error/404");
+    res.render("user/404");
   } catch (error) {
     console.log(error);
   }
 }
+
+
+
 
 module.exports = {
   loadHome,

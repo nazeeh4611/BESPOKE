@@ -3,8 +3,10 @@ const Category = require("../model/catagoryModel");
 const User = require("../model/userModel");
 const Product = require("../model/productModel");
 const Address = require("../model/addressModel");
+const wishlist = require("../model/wishlistModel");
 const { Long } = require("mongodb");
 const { session } = require("passport");
+const { success } = require("./authController");
 
 const cartopen = async (req, res) => {
   try {
@@ -16,11 +18,11 @@ const cartopen = async (req, res) => {
         model: "Product",
       });
 
-      const subtotal = cartdata?.product.reduce(
-        (acc, val) => acc + val.total,
-        0
-      );
-      res.render("user/cart", { cartdata, subtotal, user: req.session.userId });
+      const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
+
+      const subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
+
+      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, user: req.session.userId });
     } else {
       res.redirect("/login");
     }
@@ -28,6 +30,7 @@ const cartopen = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 const AddToCart = async (req, res) => {
   try {
@@ -50,7 +53,6 @@ const AddToCart = async (req, res) => {
       });
     }
 
-    // Check if adding the product will exceed available stock
     const existProduct = await Cart.findOne({
       user: userId,
       "product.productId": productId,
@@ -116,7 +118,6 @@ const updateCart = async (req, res) => {
     const user_id = req.session.userId;
     const count = req.body.count;
 
-    // Fetch the product and user's cart data
     const product = await Product.findOne({ _id: product_id });
     const cartData = await Cart.findOne({ user: user_id });
 
@@ -146,7 +147,7 @@ const updateCart = async (req, res) => {
       }
     }
 
-    // Update the cart in the database
+
     const cartDetail = await Cart.findOneAndUpdate(
       {
         user: user_id,
@@ -201,7 +202,7 @@ const Loadcheckout = async(req,res)=>{
     path:'product.productId',
     model:'Product'
   })
-  
+  const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
   const addresses = address.address;
 
@@ -220,16 +221,137 @@ const Loadcheckout = async(req,res)=>{
     user: req.session.userId,
     "product.productId": productId, 
   });
-    res.render("user/checkout",{cartdata,addresses,subtotal})
+    res.render("user/checkout",{cartdata: {cartdata, product: filteredProducts },addresses,subtotal})
   } catch (error) {
     console.log(error.message);
   }
 }
+
+
+const loadwishlist = async(req,res)=>{
+  try {
+     const userId = req.session.userId;
+      if(!userId){
+        console.log("aal illya tto");
+      }
+      if(userId){
+        console.log("aal ind tto");
+      }
+     if (userId) {
+      const wishlistdata = await wishlist.findOne({ user: userId }).populate({
+        path: "product.productId",
+        model: "Product",
+      });
+      
+    const cartdata = await Cart.findOne({ user: userId }).populate({
+      path: "product.productId",
+      model: "Product",
+    });
+
+
+
+      const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
+
+      res.render("user/wishlist",{ wishlistdata,user:req.session.userId,cartdata:{cartdata, product: filteredProducts }, })
+    }  else{
+      res.redirect('login')
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const postwishlist = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+
+
+    if (!userId) {
+      return res.json({ success: false, error: "Please login" });
+    }
+
+   
+    const userData = await User.findById(userId);
+   
+    if (!userData) {
+      return res.json({ success: false, error: "User not found" });
+    }
+
+ 
+    const { productId } = req.body;
+
+    const productData = await Product.findById(productId);
+
+    if (!productData) {
+      return res.json({ success: false, error: `Product with ID ${productId} not found` });
+    }
+
+    const existProduct = await wishlist.findOne({
+      user: userId,
+      "product.productId": productId,
+    });
+
+    if (existProduct) {
+      return res.json({
+        success: false,
+        error: "This item already exists in the wishlist",
+      });
+    } else {
+      const wishlistData = await wishlist.findOneAndUpdate(
+        { user: userId },
+        {
+          $set: { user: userId },
+          $push: {
+            product: {
+              productId: productId,
+              name: productData.name,
+              price: productData.price,
+            },
+          },
+        },
+        { upsert: true, new: true }
+      );
+
+
+      return res.json({ success: true, wishlistData });
+    }
+  } catch (error) {
+    console.log(error.message);
+      
+    return res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+
+const removefromwishlist = async (req, res) => {
+  try {
+      const userId = req.session.userId;
+      const productId = req.body.productId;
+
+
+      const result = await wishlist.findOneAndDelete(
+          { user: userId },
+          { product: { productId: productId } }, 
+      );
+
+      if (result) {
+          res.json({ success: true, result });
+      } else {
+          res.status(404).json({ success: false, message: "Product not found in wishlist." });
+      }
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
 
 module.exports = {
   cartopen,
   AddToCart,
   updateCart,
   removecart,
-  Loadcheckout
+  Loadcheckout,
+  loadwishlist,
+  postwishlist,
+  removefromwishlist,
 };

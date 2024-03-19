@@ -14582,7 +14582,7 @@
           font-size: 0.875rem;
           text-transform: uppercase;
           font-weight: 500;
-          padding: 0 0 0.625rem; }
+          padding: 0 16px 0.625rem; }
       .shopping-cart .cart-table tbody tr {
         position: relative;
         display: block;
@@ -14610,7 +14610,7 @@
         margin-left: 9.375rem; }
         @media (min-width: 768px) {
           .shopping-cart .cart-table tbody td {
-            padding: 1.875rem 0;
+            padding: 1.875rem 19px;
             display: table-cell;
             margin: 0; } }
         .shopping-cart .cart-table tbody td:first-child {

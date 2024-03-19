@@ -18,7 +18,7 @@
             
             <div class="shopping-cart" >
                 <div class="cart-table__wrapper">
-                    <% if (cartdata && cartdata.product.length> 0) { %>
+                    <% if (cartdata && cartdata.product.length > 0 ) { %>
                   
                         <div class="mb-5 pb-xl-5" >
                             <table class="cart-table"> 
@@ -33,7 +33,10 @@
                                     </tr>
                                 </thead>
                                 <% cartdata.product.forEach(product=> { %>
-                                <% if(product.productId.quantity == 0){ %>
+                                 
+                                    <% if(product.productId.quantity == 0){ %>
+                              
+                              
                                     <tbody >
                                         <tr>
                                             <td>
@@ -200,11 +203,16 @@
                             </table>
                         </div>
                         <div class="mobile_fixed-btn_wrapper">
+                        
                             <div class="button-wrapper container">
                                 <a href="/checkout">
                                 <button id="proceed" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</button>
                             </a>
                             </div>
+                     
+
+
+
                             <% } else { %>
                                 <h3>Cart is empty</h3>
                                 <% } %>

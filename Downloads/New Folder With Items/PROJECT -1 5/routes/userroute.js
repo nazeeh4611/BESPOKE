@@ -124,7 +124,7 @@ userRoute.patch('/editAddress',addresscontroller.editAddress);
 userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 
 
-//  load orders 
+//  load checkout & orders 
 userRoute.get('/checkout',cartcontroller.Loadcheckout)
 userRoute.post("/checkout",ordercontroller.OrderPlace)
 userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
@@ -133,5 +133,9 @@ userRoute.get("/view",ordercontroller.orderview);
 userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 userRoute.post("/return",ordercontroller.returnOrder);
 
-// load checkout page and address
+// load wishlist
+
+userRoute.get('/wishlist',userAuth.isLogin,cartcontroller.loadwishlist);
+userRoute.post('/wishlist',userAuth.isLogin,cartcontroller.postwishlist);
+userRoute.delete('/removewishlist',userAuth.isLogin,cartcontroller.removefromwishlist);
 

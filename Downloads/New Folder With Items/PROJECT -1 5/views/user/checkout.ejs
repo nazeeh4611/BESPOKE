@@ -186,6 +186,7 @@
                   </thead>
                   <tbody>
                     <% cartdata.product.forEach((product)=>{ %>
+                  
                     <tr>
                       <td>
                         <%= product.name %> X   <%=product.quantity %>
@@ -205,6 +206,7 @@
                       </td>
                     </tr>
                   </tbody>
+                
                   <% }) %>
                 </table>
                 <table class="checkout-totals">
