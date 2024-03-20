@@ -231,12 +231,7 @@ const Loadcheckout = async(req,res)=>{
 const loadwishlist = async(req,res)=>{
   try {
      const userId = req.session.userId;
-      if(!userId){
-        console.log("aal illya tto");
-      }
-      if(userId){
-        console.log("aal ind tto");
-      }
+     
      if (userId) {
       const wishlistdata = await wishlist.findOne({ user: userId }).populate({
         path: "product.productId",

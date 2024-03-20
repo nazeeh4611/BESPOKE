@@ -235,7 +235,7 @@
               </div>
               <div class="checkout__payment-methods">
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="wallet" >
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" >
                   <label class="form-check-label" for="checkout_payment_method_1">
                     Wallet
                    
@@ -243,15 +243,15 @@
                 </div>
                
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="cash_on_delivery" value="CASH ON DELIVERY">
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" value="CASH ON DELIVERY">
                   <label class="form-check-label" for="checkout_payment_method_3">
                     Cash on delivery
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method" id="paypal">
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" value="RAZORPAY">
                   <label class="form-check-label" for="checkout_payment_method_4">
-                    Paypal
+                    Online
                    
                   </label>
                 </div>
@@ -447,7 +447,63 @@ $('#saveAndProceedBtn').on('click', async function(e) {
   </script>
   
   <script>
+    // function for razorpay 
+      function razorpay(orders){
+        console.log("checkpoint:1");
+        var options = {
+    "key": "rzp_test_5mTjMS04uhfKer", 
+    "amount": orders.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "BESPOKESHOPPING", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": orders.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function(response){
+      verifypayment(response,orders)
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+
+      }
     
+function verifypayment(Payment,orders){
+  $.ajax({
+    url:"/verifypayment",
+    method:'POST',
+    data:{
+      Payment,
+      orders,
+    },
+     success: function (response) {
+            console.log("ajax verify payment response", response);
+            if (response.success) {
+              let orderId = response.orderId
+              console.log("the order id may her for the razo pay and ::", orderId)
+              window.location.href = `/ordersuccess?id=${orderId}`
+            } else if (response.onlineSuccess) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Payment has done',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            }
+          }
+        });
+      
+      }
   </script>
 
 
@@ -466,7 +522,7 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
 
 
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

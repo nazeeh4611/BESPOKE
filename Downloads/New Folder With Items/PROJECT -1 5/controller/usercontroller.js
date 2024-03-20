@@ -14,9 +14,9 @@ const nodemailer = require("nodemailer");
 
 const loadHome = async (req, res) => {
   try {
-    const userIn = req.session.userId;
+    
 
-
+   const userIn = req.session.userId; 
     const cartdata = await Cart.findOne({ user: userIn }).populate({
       path: "product.productId",
       model: "Product",

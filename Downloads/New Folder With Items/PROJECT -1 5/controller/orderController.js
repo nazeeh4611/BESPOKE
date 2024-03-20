@@ -4,8 +4,12 @@ const category = require("../model/catagoryModel");
 const User = require('../model/userModel');
 const Address = require("../model/addressModel")
 const Cart = require("../model/cartModel");
-
-
+const Razorpay = require('razorpay');
+const crypto = require('crypto')
+var instance = new Razorpay({
+  key_id: 'rzp_test_5mTjMS04uhfKer',
+  key_secret:process.env.RAZORPAY_SECRET,
+});
 
 const OrderPlace = async (req, res) => {
     try {
@@ -17,7 +21,7 @@ const OrderPlace = async (req, res) => {
   console.log("the address id here",addressId,"the payment here",paymentMethod,"subtotal here",subtotal);
         const cartdata = await Cart.findOne({ user: userId });
   
-        if (!addressId) {
+        if (!addressId || !paymentMethod) {
             return res.json({
                 success: false,
                 message: "Select the address and payment method before placing the order",
@@ -90,12 +94,22 @@ const OrderPlace = async (req, res) => {
                     { $inc: { quantity: -cartProduct.quantity } }
                 );
             }
-        }
+     
   
         const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
         
         return res.redirect(`/ordercomplete?id=${orderId}`);
-  
+    }else{
+        const orders = await instance.orders.create({
+            amount: totalamount * 100,
+            currency: "INR",
+            receipt: "" + orderId,
+            })
+            console.log(orders,"all data will bw here");
+
+            return res.json({success:false,orders })
+    }
+   
     } catch (error) {
         console.log(error);
         return res.json({
@@ -106,7 +120,41 @@ const OrderPlace = async (req, res) => {
   };
   
   
+const verifypayment = async(req,res)=>{
+    try {
+        const userId = req.session.userId;
+        const Data = req.body;
 
+        let hmac = crypto.createHmac('sha256',process.env.RAZORPAY_SECRET);
+        hmac.update(Data.razorpay_order_id + "|" + Data.razorpay_payment_id)
+        const hmacvalue = hmac.digest('hex');
+
+
+  if (hmacvalue == Data.razorpay_signature) {
+    for (const Data of Cart.product) {
+        const { productId, quantity } = Data;
+        await Product.findByIdAndUpdate(
+          { _id: productId },
+          { $inc: { quantity: -quantity } }
+        );
+      }
+  }
+  
+  const NewOrder = await Order.findByIdAndUpdate(
+    {_id:Data.orders.receipt},
+    {$set:{status:'placed'}},
+  )
+
+  const cartdata = await Cart.findOne({user:userId})
+  const orderId = await NewOrder._id;
+
+  const DeleteCartItem = await Cart.deleteOne({_id:cartdata._id });
+  console.log("item deleted from cart ",DeleteCartItem);
+  res.json({orderId,success:true});
+    } catch (error) {
+        
+    }
+}
   
 
   
@@ -211,6 +259,22 @@ const returnOrder = async(req,res)=>{
         res.status(500).json({error:"Internal server error"});
     }
 }
+
+
+const orderrazor = async(req,res)=>{
+    try {
+        const {orderId,totalamount} = req.body;
+   const orders = await instance.orders.create({
+            amount: totalamount * 100,
+            currency: "INR",
+            receipt: "" + orderId,
+            })
+            return res.json({success:true,orders })
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
  OrderPlace,
  OrderPlaced,
@@ -218,4 +282,6 @@ module.exports = {
 orderview,
 ordercancel,
 returnOrder,
+orderrazor,
+verifypayment,
 }
