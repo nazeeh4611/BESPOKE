@@ -58,7 +58,7 @@
         </a>
        
       </div>
-      <form name="checkout-form" method="post" action="/checkout" id="orderplace">
+      <form name="checkout-form">
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <h4>BILLING DETAILS</h4>
@@ -227,7 +227,7 @@
                     <tr>
                       <th>TOTAL</th>
                       <td> $<%= subtotal%></td>
-                      <input type="hidden" value="<%= subtotal%>" name="subtotal">
+                      <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
                     </tr>
                  
                   </tbody>
@@ -241,25 +241,23 @@
                    
                   </label>
                 </div>
-               
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" value="CASH ON DELIVERY">
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="cashOnDelivery" value="CASH ON DELIVERY">
                   <label class="form-check-label" for="checkout_payment_method_3">
                     Cash on delivery
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" value="RAZORPAY">
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="razorpay" value="RAZORPAY">
                   <label class="form-check-label" for="checkout_payment_method_4">
                     Online
-                   
                   </label>
                 </div>
                 <div class="policy-text">
                   Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
                 </div>
               </div>
-              <button type="submit" class="my-button">Place Order</button>
+              <button type="submit" class="my-button" id="placeorder">Place Order</button>
             </div>
           </div>
         </div>
@@ -281,9 +279,9 @@
 
       }
     })
-    let addressId,paymentMethod ;
+    let addressId ;
 
-    
+
    
     function handleAddressSelection(id) {
       console.log("the iid from handle is here",id);
@@ -444,10 +442,71 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
    return isValid;
 }
+
+
   </script>
+
   
   <script>
-    // function for razorpay 
+
+
+// Define your AJAX call
+const makePayment = () => {
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+    if (!paymentMethod) {
+        console.error("No payment method selected");
+        return; 
+    }
+    const addressId = document.querySelector('input[name="addressId"]:checked');
+    if (!addressId) {
+        console.error("No address selected");
+        return; 
+    }
+    const subtotal = '<%= subtotal%>';
+    if(!subtotal){
+      console.error("subtotal not found");
+      return;
+    }
+   
+
+    $.ajax({
+        url: "/checkout",
+        method: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({ paymentMethod: paymentMethod.value,
+        addressId:addressId.value,
+        subtotal:subtotal }),
+        success: function (response) {
+    console.log('Form submitted successfully:', response);
+    if (response && response.success) {
+        const orderId = response.orderId;
+        console.log("The order ID:", orderId);
+        Swal.fire({
+            icon: 'success',
+            title: 'Order Placed!',
+            text: 'Your order has been placed successfully.'
+        }).then(() => {
+            window.location.href = `/ordercomplete?id=${orderId}`;
+        });
+    } else if (response.success === false && response.orders) {
+        console.log('response.success has become false now', response.orders);
+        razorpay(response.orders);
+    }
+},
+        error: function(xhr, status, error) {
+            console.error("AJAX Error:", error);
+        }
+    });
+}
+
+// Now you can call this function wherever appropriate
+// For example, inside a click event handler for a button
+
+
+
+
+    // function for razorpay   
       function razorpay(orders){
         console.log("checkpoint:1");
         var options = {
@@ -504,6 +563,10 @@ function verifypayment(Payment,orders){
         });
       
       }
+
+
+
+      document.getElementById('placeorder').addEventListener('click', makePayment);
   </script>
 
 

@@ -43,8 +43,7 @@ const OrderPlace = async (req, res) => {
   
         // Since userAddress is an array, use userAddress[0] if it exists
         const addressObject =userAddress.address.filter((address)=> address._id==addressId);
-        console.log("address obect here ",addressObject);
-      
+        
 
         const userdata = await User.findOne({ _id: req.session.userId });
   
@@ -98,7 +97,7 @@ const OrderPlace = async (req, res) => {
   
         const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
         
-        return res.redirect(`/ordercomplete?id=${orderId}`);
+         res.json({success:true,orderId})
     }else{
         const orders = await instance.orders.create({
             amount: totalamount * 100,
@@ -107,7 +106,8 @@ const OrderPlace = async (req, res) => {
             })
             console.log(orders,"all data will bw here");
 
-            return res.json({success:false,orders })
+             res.json({success:false,orders })
+        console.log("hoifhdfshsofgsof");
     }
    
     } catch (error) {
