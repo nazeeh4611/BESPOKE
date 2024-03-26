@@ -1,6 +1,8 @@
 const adminController = require("../controller/admincontroller");
 const categoryController = require("../controller/catagorycontroller");
 const productController = require("../controller/productcontroller");
+const offerController = require("../controller/offercontroller");
+const couponcontroller = require("../controller/couponcontroller");
 const express = require("express");
 const upload = require("../middlewares/upload");
 
@@ -92,6 +94,67 @@ adminRoute.get(
   "/orderdelivered",
   adminController.orderdelivered
 );
+
+adminRoute.get(
+  "/offerlist",
+  offerController.offeropen
+);
+
+adminRoute.get(
+  "/addoffer",
+  offerController.loadaddoffer
+  );
+
+  adminRoute.post(
+    "/addoffer",
+    offerController.addoffer
+  );
+
+  adminRoute.post(
+    "/listoffer",
+    offerController.listoffer
+  );
+
+  adminRoute.post(
+    "/unlistoffer",
+    offerController.unlistoffer
+  );
+
+  adminRoute.post(
+    "/applyproductoffer",
+    offerController.applyProductOffer
+  );
+
+  adminRoute.delete(
+    "/removeproductoffer",
+    offerController.removeProductOffer
+  );
+
+  adminRoute.post(
+    "/applycategoryoffer",
+    offerController.applyCategoryOffer
+  );
+
+  adminRoute.delete(
+    "/removecategoryoffer",
+    offerController.removeCategoryOffer
+  );
+
+  adminRoute.get(
+    "/couponlist",
+  couponcontroller.loadCoupon
+  );
+
+  adminRoute.get(
+    "/addcoupon",
+    couponcontroller.loadaddcoupon
+  );
+
+  adminRoute.post(
+    "/addcoupon",
+    couponcontroller.addCoupon
+  );
+  
 
 
 module.exports = adminRoute;

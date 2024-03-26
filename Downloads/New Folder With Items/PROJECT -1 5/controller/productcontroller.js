@@ -1,17 +1,21 @@
 const products = require("../model/productModel");
 const category = require("../model/catagoryModel");
+const Offer = require("../model/offerModel");
 const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const mongoose = require("mongoose");
 const { log } = require("console");
 const { name } = require("ejs");
+const Product = require("../model/productModel");
 
 // load products page
 const loadProduct = async (req, res) => {
   try {
+
+    const offers = await Offer.find({})
     const Products = await products.find({});
-    res.render("admin/product", { Products });
+    res.render("admin/product", { Products,offers});
   } catch (error) {
     console.log(error.message);
   }
@@ -197,7 +201,10 @@ const productUnlist = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const id = req.query.id;
-    await products.deleteOne({ _id: id });
+    await products.updateOne(
+      { _id: id },
+      {$set:{is_Deleted:true}},
+      );
     res.redirect("/admin/products");
   } catch (error) {
     console.log(error.message);
@@ -230,6 +237,8 @@ const deleteimage = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   loadProduct,
   loadAddProduct,
@@ -240,4 +249,5 @@ module.exports = {
   productUnlist,
   deleteProduct,
   deleteimage,
+
 };

@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const Product = require('../model/productModel');
 const Order = require('../model/orderModel');
 const Category = require('../model/catagoryModel')
+const Offer = require("../model/offerModel");
 
 // admin login page
 
@@ -190,6 +191,8 @@ const orderdelivered = async(req,res)=>{
     console.log(error);
   }
 }
+
+
 
 module.exports = {
   adminLogin,

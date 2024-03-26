@@ -13,6 +13,10 @@ const CategoryModel = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  offer:[{
+    type:mongoose.Types.ObjectId,
+    ref:"offer"
+  }]
 });
 
-module.exports = mongoose.model("category", CategoryModel);
+module.exports = mongoose.model("Category", CategoryModel);

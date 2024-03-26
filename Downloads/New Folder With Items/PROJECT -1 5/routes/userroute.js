@@ -7,6 +7,7 @@ const cartcontroller = require("../controller/cartcontroller");
 const authController = require("../controller/authController");
 const addresscontroller = require('../controller/addresscontroller')
 const ordercontroller = require("../controller/orderController")
+const couponcontroller = require("../controller/couponcontroller");
 const userAuth = require("../middlewares/userAuth");
 const session = require("express-session");
 // Middleware
@@ -135,9 +136,15 @@ userRoute.get("/view",ordercontroller.orderview);
 userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 userRoute.post("/return",ordercontroller.returnOrder);
 
+
+// coupon
+
+userRoute.post('/applycoupon',couponcontroller.applycoupon)
+
 // load wishlist
 
 userRoute.get('/wishlist',userAuth.isLogin,cartcontroller.loadwishlist);
 userRoute.post('/wishlist',userAuth.isLogin,cartcontroller.postwishlist);
 userRoute.delete('/removewishlist',userAuth.isLogin,cartcontroller.removefromwishlist);
+
 

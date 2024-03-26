@@ -70,7 +70,12 @@
       </div><!-- /.aside-header -->
       <% if (cartdata && cartdata.product.length> 0) { %>
         <div class="aside-content cart-drawer-items-list">
+         
           <% cartdata.product.forEach(product=> { %>
+            <%if( product.productId.is_Listed==false){ %>
+            
+        
+          <%} else{%>
             <hr class="cart-drawer-divider">
             <div class="cart-drawer-item d-flex position-relative">
               <div class="position-relative">
@@ -91,6 +96,7 @@
               </div>
     
             </div><!-- /.cart-drawer-item d-flex -->
+            <% }  %>
             <% }) %>
               <% } else { %>
                 <h3>Cart is empty</h3>
@@ -119,13 +125,16 @@
     <section class="product-single container">
 
       <div class="card-wrapper">
-
+        <%if(data.is_Listed == true && data.is_Deleted == false){ %>
         <div class="product-single__details-tab">
+          
           <div class="card">
+          
             <!-- card left -->
             <div class="product-imgs">
               <div class="img-display" id="zoom-in">
                 <div class="img-showcase">
+                 
                   <% for (let i=0; i < data.Image.length; i++) { %>
                   
                     <img src="/public/uploadImg/<%= data.Image[i] %> " alt="shoe image">
@@ -264,15 +273,24 @@
                       <div class="meta-item">
                         <label>Category:</label>
                         <span>
+
                           <%= data.category.name %>
                         </span>
                       </div>
 
               </div>
             </div>
+           </div>
           </div>
+          <%}else{ %>
+            
+            <h1>Product Not Found</h1>
+            <div class="pb-3"></div>
+           
+            <% } %>
+            
           <ul class="nav nav-tabs" id="myTab" role="tablist">
-
+           
             <li class="nav-item" role="presentation">
 
               <div class="tab-content">
@@ -474,6 +492,9 @@
 
         </div>
     </section>
+    <div class="pb-3"></div>
+    <div class="pb-3"></div>
+    <div class="pb-3"></div>
     <section class="products-carousel container">
       <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Related <strong>Products</strong></h2>
 
@@ -656,6 +677,8 @@
     });
     const data = await response.json();
     if (data.success) {
+      // Calculate and return subtotal along with other data
+      const subtotal = data.subtotal;
       Swal.fire({
         icon: "success",
         text: "Your product is added to the cart",
@@ -666,7 +689,8 @@
           window.location.reload('/productdetail');
         }
       });
-    } else if(data.success == false){
+      return subtotal;
+    } else if (data.success === false) {
       Swal.fire({
         icon: "info",
         title: "Info",
@@ -676,9 +700,9 @@
           window.location.reload('/productdetail');
         }
       });
-    }else{
+    } else {
       if (data) {
-        window.location.href = "/login"
+        window.location.href = "/login";
       }
     }
   } catch (error) {
@@ -687,23 +711,29 @@
 }
 
 
-    function updateCart() {
-      console.log("the function isworkinh");
-      $.ajax({
+function updateCart() {
+    console.log("the function is working");
+    $.ajax({
         url: "/cart",
         method: "get",
-        dataType: "html",
-      })
-        .done((cartData) => {
-          $(".cart").html(cartData); // Replace entire cart content with fetched HTML
-          $(`#cartDrawer`).load(`/productdetail #cartDrawer`)
-          console.log("the srt");
-          // After updating cart, update the cart drawer
-        })
-        .fail((xhr, status, error) => {
-          console.error("An error occurred while updating cart", error);
-        });
-    }
+        dataType: "json", // Change dataType to json since you are returning json from the server
+    })
+    .done((responseData) => {
+        if (responseData.success) {
+            $(".cart").html(responseData.cartData); // Replace entire cart content with fetched HTML
+            $(`#cartDrawer`).load(`/productdetail #cartDrawer`);
+
+            // Update subtotal
+            $('#subtotal').html(responseData.subtotal); // Update subtotal with the new value from the server
+        } else {
+            console.error("Failed to update cart: ", responseData.error);
+        }
+    })
+    .fail((xhr, status, error) => {
+        console.error("An error occurred while updating cart", error);
+    });
+}
+
 
     function updateCartDrawer() {
       $.ajax({
@@ -750,6 +780,17 @@
   }
 </script>
 
+<script>
+  async function updateSubtotalAndReloadCart(id) {
+      try {
+          const subtotal = await addToCart(id);
+          // Update the subtotal element with the new subtotal value
+          document.getElementById("subtotal").innerText = "$" + subtotal;
+      } catch (error) {
+          console.error("Error:", error);
+      }
+  }
+</script>
 
 
 

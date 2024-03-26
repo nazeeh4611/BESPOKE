@@ -44,12 +44,13 @@
     
   
     <div class="mb-4 pb-4"></div>
+
     <section class="shop-checkout container">
       <div class="mb-4 pb-4"></div>
       <h2 class="page-title">Shipping and Checkout</h2>
       <div class="checkout-steps">
        
-        <a href=" class="checkout-steps__item active">
+        <a href="" class="checkout-steps__item active">
           <span class="checkout-steps__item-number">02</span>
           <span class="checkout-steps__item-title">
             <span>Shipping and Checkout</span>
@@ -58,15 +59,18 @@
         </a>
        
       </div>
+    
       <form name="checkout-form">
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <h4>BILLING DETAILS</h4>
+            
             <h6>Select an existing address:</h6>
              <a href="/addaddress">Select A address</a>
-            <% if(addresses.length > 0){ %>
 
-              <% addresses.forEach((value, index)=> { %>
+            <% if(addresses.address.length > 0 ){ %>
+
+              <% addresses.address.forEach((value, index)=> { %>
                 <% if (value && typeof value==='object' ) { %>
                 
                   <div class="checkot__totals-wrapper">
@@ -109,7 +113,7 @@
                   </div>
                <%}%>
                <% }) %>
-             <%} %>
+             <% } %>
              <div>
               <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()" <%if(addresses.length===0){%>Checked<%}%>>
               <label for="add_new_address">Add a new address</label>
@@ -125,7 +129,7 @@
             <div id="check_add" class="collapse" aria-labelledby="chechout_add" data-parent="#check_out_toggle">
               <div class="card-body">
                   <div id="c_address" class="page-content">
-                      <form id="addForm" class="needs-validation" method="post" novalidate>
+                      <form id="addForm" class="needs-validation"  novalidate method="post"> 
                           <div class="form-group">
                               <label for="AddFname" class="font-weight-bolder">First Name</label>
                               <input type="text" class="form-control" name="firstName" placeholder="First Name" id="AddFname">
@@ -185,6 +189,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    
                     <% cartdata.product.forEach((product)=>{ %>
                   
                     <tr>
@@ -235,7 +240,7 @@
               </div>
               <div class="checkout__payment-methods">
                 <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="payment" >
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="wallet" value="WALLET" >
                   <label class="form-check-label" for="checkout_payment_method_1">
                     Wallet
                    
@@ -256,13 +261,66 @@
                 <div class="policy-text">
                   Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
                 </div>
+                <div class="mb-4 pb-4"></div>
+                <% if(coupon.length > 0) { %>
+                <form class="position-relative bg-body">
+                  <div class="form-control fw-medium" type="text" name="coupon_code" placeholder="" id="cpn-btn">APPLY COUPON</div>
+                  <button class="btn-lin fw-medium position-absolute top-0 end-0 h-100 px-4" type="button" onclick="modalshow()"
+                     id="selct" value="SELECT">SELECT</button>
+              </form>
+              <% } %>
               </div>
-              <button type="submit" class="my-button" id="placeorder">Place Order</button>
+              <button type="button" class="my-button" id="placeorder">Place Order</button>
             </div>
           </div>
         </div>
       </form>
+     
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" > 
+        <div class="modal-dialog ">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">SELECT COUPON</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           
+            <div class="modal-body">
+              <% if(coupon.length > 0) { %>
+             <% for(let i=0;i < coupon.length;i++){ %>
+                  <div class="billing-info__wrapper">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-12">
+                          <div class="return-details" class="col-md-12">
+                            <p style="color: green;"><strong style="color: #000000;"><%= coupon[i].name %></strong>&nbsp;you save $<%= coupon[i].discountamount %></p>
+                            <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
+                            <p>Get $<%= coupon[i].discountamount %> Off on <u>$<%= coupon[i].criteriaamount %></u> and Above</p>
+                            <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
+                            <div class="button-line-container">
+                              <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=coupon[i]._id %>')">select</button>
+                              <hr class="full-width-line">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <% } %>
+              <% } else { %>
+                <h5 style="color: #7c0000;">Coupon Not Found</h5>
+              <% } %>
+            </div>
+            
+            
+            <div class="modal-footer">
+              <button type="button" style="color: #fff; background-color: #000000;" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
+   
   </main>
 
   <div class="mb-5 pb-xl-5"></div>
@@ -489,7 +547,7 @@ const makePayment = () => {
         }).then(() => {
             window.location.href = `/ordercomplete?id=${orderId}`;
         });
-    } else if (response.success === false && response.orders) {
+    } else if (response.success == false) {
         console.log('response.success has become false now', response.orders);
         razorpay(response.orders);
     }
@@ -550,7 +608,7 @@ function verifypayment(Payment,orders){
             if (response.success) {
               let orderId = response.orderId
               console.log("the order id may her for the razo pay and ::", orderId)
-              window.location.href = `/ordersuccess?id=${orderId}`
+              window.location.href = `/ordercomplete?id=${orderId}`
             } else if (response.onlineSuccess) {
               Swal.fire({
                 icon: 'error',
@@ -568,7 +626,63 @@ function verifypayment(Payment,orders){
 
       document.getElementById('placeorder').addEventListener('click', makePayment);
   </script>
+<script>
+        function modalshow(){
+       console.log("id may here");
+       $('#staticBackdrop').modal("show")
+        }
+        function applycoupon(id){
+    console.log("id getting here", id);
 
+    $.ajax({
+        url: "/applycoupon",
+        method: 'POST',
+        data: {id},
+        success: (response) => {
+            if(response.success == false) {
+                Swal.fire({
+                    icon: "error",
+                    title: "coupon is not available",
+                    showConfirmButton: false,
+                })
+            } else if(response.coupon == 'Already applied') {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'coupon already applied',
+                    showConfirmButton: false,
+                })
+            } else if(response.coupon == 'Already Used') {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'already used',
+                    showConfirmButton: false,
+                })
+            } else if(response.coupon) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'coupon selected',
+                    text: 'coupon selected successfully',
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "OK",
+                }).then((result) => {
+                    const code = response.coupondata.couponcode;
+                    console.log("hii", code);
+                    if (result.isConfirmed) {
+                        $('#staticBackdrop').modal("hide");
+                        // Update the text content of the div with the coupon code
+                        $("#cpn-btn").text(code);
+                        $("#cpn-btn").css('color','green');
+                        $("#selct").text('REMOVE');
+                        $("#selct").css('color','red');
+                    }
+                });
+            }
+        }
+    });
+}
+
+
+</script>
 
 
   <!-- External JavaScripts -->

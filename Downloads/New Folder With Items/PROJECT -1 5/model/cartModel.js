@@ -31,6 +31,11 @@ const cartModel = new mongoose.Schema({
       },
     },
   ],
+  coupondiscount:{
+    type:mongoose.Types.ObjectId,
+    ref:"coupon",
+    default:null,
+  }
 });
 
 // Middleware to convert string values to ObjectId

@@ -7,9 +7,13 @@ const productsModel = new mongoose.Schema({
   },
   category: {
     type: mongoose.Types.ObjectId,
-    ref: "category",
+    ref: "Category",
     required: true,
   },
+  offer:[{
+    type:mongoose.Types.ObjectId,
+    ref:"offer",
+  }],
   Image: {
     type: [String],
     required: true,
@@ -34,6 +38,10 @@ const productsModel = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  is_Deleted:{
+    type:Boolean,
+    default:false,
+  }
 });
 
 const Product = mongoose.model("Product", productsModel);

@@ -2,6 +2,7 @@ const User = require("../model/userModel");
 const Product = require("../model/productModel");
 const Cart = require("../model/cartModel");
 const Category = require("../model/catagoryModel");
+const Offer = require("../model/offerModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const randomstrings = require("randomstring");
@@ -16,7 +17,7 @@ const loadHome = async (req, res) => {
   try {
     
 
-   const userIn = req.session.userId; 
+   const userIn = req.session.userId
     const cartdata = await Cart.findOne({ user: userIn }).populate({
       path: "product.productId",
       model: "Product",
@@ -407,7 +408,7 @@ const userLogout = async (req, res) => {
 
 const loadshop = async (req, res) => {
   try {
-      let query = { is_Listed: true };
+      let query = { is_Listed: true,is_Deleted:false};
 
       if (req.query.category) {
           query.category = req.query.category;
@@ -454,16 +455,24 @@ const loadshop = async (req, res) => {
 
     if (req.query.searchKeyword) {
       const searchQuery = req.query.searchKeyword;
-      query.name = { $regex: searchQuery, $options: "i" }; // Case-insensitive search
+      query.name = { $regex: searchQuery, $options: "i" }; 
   }
 
-  const productDetails = await Product.find(query).populate("category").sort(sortOption);
+  const productDetails = await Product.find(query)
+  .populate({
+    path: "category",
+    model: "Category",
+  })
+  .populate("offer")
+  .sort(sortOption);
+ 
   const products = productDetails.filter(product => product.category && product.category.is_Listed);
-
   const categories = await Category.find({});
+ 
+  
   const userIn = req.session.userId;
 
-  res.render("user/shop", { products, categories, user: req.session.userId, userIn });
+  res.render("user/shop", { products, categories, user: req.session.userId, userIn, });
 } catch (error) {
   console.log(error.message);
 }
@@ -475,7 +484,8 @@ const searchProducts = async (req, res) => {
       const query = req.query.searchKeyword;
       const products = await Product.find({ name: { $regex: query, $options: "i" } }).populate("category");
       const categories = await Category.find({});
-      res.render("user/shop", { products, categories, user: req.session.userId });
+
+      res.render("user/shop", { products, categories, user: req.session.userId, });
   } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
@@ -486,9 +496,10 @@ const ProductDetail = async (req, res) => {
   try {
     const productId = req.query.id;
 
-    const product = await Product.findById({ _id: productId }).populate(
-      "category"
+    const productdata = await Product.findById({ _id: productId }).populate(
+      "category",
     );
+ 
     const userIn = req.session.userId;
     const userId = req.session.userId;
 
@@ -498,15 +509,16 @@ const ProductDetail = async (req, res) => {
       model: "Product",
     });
 
-    const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
+  
+    // const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
-
+    // : {cartdata, product: filteredProducts }
 
 
 
     res.render("user/productdetail", {
-      cartdata: {cartdata, product: filteredProducts },
-      data: product,
+      cartdata,
+      data: productdata,
       user: req.session.userId,
       userIn,
       user: req.session.userId,

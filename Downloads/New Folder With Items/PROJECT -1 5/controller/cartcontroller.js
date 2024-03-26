@@ -4,6 +4,7 @@ const User = require("../model/userModel");
 const Product = require("../model/productModel");
 const Address = require("../model/addressModel");
 const wishlist = require("../model/wishlistModel");
+const Coupon = require('../model/couponModel')
 const { Long } = require("mongodb");
 const { session } = require("passport");
 const { success } = require("./authController");
@@ -16,9 +17,10 @@ const cartopen = async (req, res) => {
       const cartdata = await Cart.findOne({ user: userId }).populate({
         path: "product.productId",
         model: "Product",
+        match: { is_Deleted: false }
       });
 
-      const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
+      const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
       const subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
 
@@ -30,6 +32,7 @@ const cartopen = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 
 const AddToCart = async (req, res) => {
@@ -121,52 +124,40 @@ const updateCart = async (req, res) => {
     const product = await Product.findOne({ _id: product_id });
     const cartData = await Cart.findOne({ user: user_id });
 
-    // Handle decrease in quantity
-    if (count == -1) {
-      const currentQuantity = cartData.product.find(
-        (p) => p.productId == product_id
-      ).quantity;
-      if (currentQuantity <= 1) {
-        return res.json({
-          success: false,
-          error: "Quantity cannot be decreased below 1",
-        });
-      }
-    }
-
-    // Handle increase in quantity
-    if (count == 1) {
-      const currentQuantity = cartData.product.find(
-        (p) => p.productId == product_id
-      ).quantity;
-      if (currentQuantity + count > product.quantity) {
-        return res.json({
-          success: false,
-          error: "Cannot add more than available quantity",
-        });
-      }
-    }
-
-
-    const cartDetail = await Cart.findOneAndUpdate(
-      {
-        user: user_id,
-        "product.productId": product_id,
-      },
-      {
-        $inc: {
-          "product.$.quantity": count, 
-          "product.$.total": count * product.price,
-        },
-      },
-      { new: true } 
+    // Find the index of the product in the cart
+    const productIndex = cartData.product.findIndex(
+      (p) => p.productId == product_id
     );
-    res.json({ success: true });
+
+    // Update quantity and recalculate total price
+    const updatedQuantity = cartData.product[productIndex].quantity + count;
+    if (updatedQuantity <= 0) {
+      // Remove the product from the cart if the quantity becomes zero
+      cartData.product.splice(productIndex, 1);
+    } else {
+      // Update quantity and total price
+      cartData.product[productIndex].quantity = updatedQuantity;
+      cartData.product[productIndex].total = updatedQuantity * product.price;
+    }
+
+    // Recalculate subtotal
+    let subtotal = 0;
+    cartData.product.forEach((item) => {
+      subtotal += item.total;
+    });
+
+    // Update the cart and subtotal in the database
+    await cartData.save();
+
+    res.json({ success: true, subtotal: subtotal });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+
+
 
 const removecart = async (req, res) => {
   try {
@@ -193,39 +184,54 @@ const removecart = async (req, res) => {
 };
 
 
-const Loadcheckout = async(req,res)=>{
+const Loadcheckout = async (req, res) => {
   try {
     const userIn = req.session.userId;
 
-  const address = await Address.findOne({user:userIn});
-  const cartdata = await Cart.findOne({user:userIn}).populate({
-    path:'product.productId',
-    model:'Product'
-  })
-  const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
+    const address = await Address.findOne({ user: userIn });
+    const cartdata = await Cart.findOne({ user: userIn }).populate({
+      path: 'product.productId',
+      model: 'Product',
+      match: {is_Deleted:false},
+    });
 
-  const addresses = address.address;
+    if (!cartdata) {
+      return res.render("user/404", { messages: { message: "Your cart is empty." } });
+    }
 
-  if (cartdata && cartdata.product) {
-    subtotal = cartdata.product?.reduce(
-      (acc, val) => acc + val.total,
-       0
-    );
-  }
- 
-  const productId = req.body.productId; 
-  const productdata = await Product.findById(productId);
+    const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
 
-  const existProduct = await Cart.findOne({
-    user: req.session.userId,
-    "product.productId": productId, 
-  });
-    res.render("user/checkout",{cartdata: {cartdata, product: filteredProducts },addresses,subtotal})
+    let addresses = address || { address: [] };
+
+    // Calculate subtotal
+    let subtotal = 0;
+    if (cartdata && cartdata.product) {
+      subtotal = cartdata.product.reduce((acc, val) => acc + val.total, 0);
+    }
+
+    const productId = req.body.productId;
+    const productdata = await Product.findById(productId);
+
+    const existProduct = await Cart.findOne({
+      user: req.session.userId,
+      "product.productId": productId,
+    });
+
+    const coupon = await Coupon.find({});
+
+    res.render("user/checkout", {
+      cartdata: { cartdata, product: filteredProducts },
+      addresses,
+      subtotal,
+      coupon
+    });
   } catch (error) {
     console.log(error.message);
+    res.status(500).send("Internal Server Error");
   }
 }
+
 
 
 const loadwishlist = async(req,res)=>{

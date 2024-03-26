@@ -1,10 +1,12 @@
 const Categories = require("../model/catagoryModel");
+const Offer = require("../model/offerModel");
 
 const loadCategory = async (req, res) => {
   try {
     const Data = await Categories.find();
 
-    res.render("admin/category", { Data: Data });
+const offer = await Offer.find({});
+    res.render("admin/category", { Data: Data,offer });
   } catch (error) {
     console.log(error.message);
   }
