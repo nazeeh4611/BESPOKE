@@ -677,8 +677,6 @@
     });
     const data = await response.json();
     if (data.success) {
-      // Calculate and return subtotal along with other data
-      const subtotal = data.subtotal;
       Swal.fire({
         icon: "success",
         text: "Your product is added to the cart",
@@ -689,8 +687,7 @@
           window.location.reload('/productdetail');
         }
       });
-      return subtotal;
-    } else if (data.success === false) {
+    } else if(data.success == false){
       Swal.fire({
         icon: "info",
         title: "Info",
@@ -700,9 +697,9 @@
           window.location.reload('/productdetail');
         }
       });
-    } else {
+    }else{
       if (data) {
-        window.location.href = "/login";
+        window.location.href = "/login"
       }
     }
   } catch (error) {
@@ -711,7 +708,7 @@
 }
 
 
-function updateCart() {
+   function updateCart() {
     console.log("the function is working");
     $.ajax({
         url: "/cart",
@@ -780,17 +777,6 @@ function updateCart() {
   }
 </script>
 
-<script>
-  async function updateSubtotalAndReloadCart(id) {
-      try {
-          const subtotal = await addToCart(id);
-          // Update the subtotal element with the new subtotal value
-          document.getElementById("subtotal").innerText = "$" + subtotal;
-      } catch (error) {
-          console.error("Error:", error);
-      }
-  }
-</script>
 
 
 

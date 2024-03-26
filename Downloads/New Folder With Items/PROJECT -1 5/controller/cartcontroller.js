@@ -23,7 +23,7 @@ const cartopen = async (req, res) => {
       const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
       const subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
-
+      console.log("subtotal here",subtotal)
       res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, user: req.session.userId });
     } else {
       res.redirect("/login");
@@ -49,6 +49,7 @@ const AddToCart = async (req, res) => {
 
     const productId = req.body.productId;
     const productdata = await Product.findById(productId);
+   
     if (!productdata || productdata.quantity === 0) {
       return res.json({
         success: false,
@@ -77,6 +78,7 @@ const AddToCart = async (req, res) => {
         });
       }
     }
+    console.log("checkpoint 1")
     if (existProduct) {
       const updatedCart = await Cart.findOneAndUpdate(
         {
@@ -84,12 +86,15 @@ const AddToCart = async (req, res) => {
           "product.productId": productId,
         },
         {
-          $inc: { "product.$.quantity": 1 },
+          $inc: { "product.$.quantity": 1 ,
+            },
         },
         { new: true }
       );
+      console.log("checkpoint 2")
       return res.json({ success: true, stock: true, updatedCart });
     } else {
+      console.log("checkpoint 3")
       const cartData = await Cart.findOneAndUpdate(
         { user: userId },
         {
@@ -100,20 +105,21 @@ const AddToCart = async (req, res) => {
               name: productdata.name,
               price: productdata.price,
               quantity: 1,
-              total: productdata.price,
+              total:  productdata.price,
             },
           },
         },
         { upsert: true, new: true }
       );
+      console.log("checkpoint 4")
       return res.json({ success: true, stock: true, cartData });
     }
+    console.log("checkpoint 5")
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
-
 
 const updateCart = async (req, res) => {
   try {
@@ -124,39 +130,56 @@ const updateCart = async (req, res) => {
     const product = await Product.findOne({ _id: product_id });
     const cartData = await Cart.findOne({ user: user_id });
 
-    // Find the index of the product in the cart
-    const productIndex = cartData.product.findIndex(
-      (p) => p.productId == product_id
-    );
-
-    // Update quantity and recalculate total price
-    const updatedQuantity = cartData.product[productIndex].quantity + count;
-    if (updatedQuantity <= 0) {
-      // Remove the product from the cart if the quantity becomes zero
-      cartData.product.splice(productIndex, 1);
-    } else {
-      // Update quantity and total price
-      cartData.product[productIndex].quantity = updatedQuantity;
-      cartData.product[productIndex].total = updatedQuantity * product.price;
+    // Handle decrease in quantity
+    if (count == -1) {
+      const currentQuantity = cartData.product.find(
+        (p) => p.productId == product_id
+      ).quantity;
+     
+      if (currentQuantity <= 1) {
+        return res.json({
+          success: false,
+          error: "Quantity cannot be decreased below 1",
+        });
+      }
     }
 
-    // Recalculate subtotal
-    let subtotal = 0;
-    cartData.product.forEach((item) => {
-      subtotal += item.total;
-    });
+    // Handle increase in quantity
+    if (count == 1) {
+      const currentQuantity = cartData.product.find(
+        (p) => p.productId == product_id
+      ).quantity;
+    
+      if (currentQuantity + count > product.quantity) {
+        return res.json({
+          success: false,
+          error: "Cannot add more than available quantity",
+        });
+      }
+    }
 
-    // Update the cart and subtotal in the database
-    await cartData.save();
-
-    res.json({ success: true, subtotal: subtotal });
+    const updatedCart = await Cart.findOneAndUpdate(
+      {
+        user: user_id,
+        "product.productId": product_id,
+      },
+      {
+        $inc: {
+          "product.$.quantity": count,
+          "product.$.total": count * 
+          cartData.product.find((p) => p.productId.equals(product_id)).price,
+        },
+      },
+      { new: true }
+    );
+   console.log("cout @ addd to cart", count * 
+   cartData.product.find((p) => p.productId.equals(product_id)).price)
+    res.json({ success: true, updatedCart });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-
-
 
 
 const removecart = async (req, res) => {
