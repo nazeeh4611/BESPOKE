@@ -140,6 +140,7 @@ userRoute.post("/return",ordercontroller.returnOrder);
 // coupon
 
 userRoute.post('/applycoupon',couponcontroller.applycoupon)
+userRoute.post("/removecoupon",couponcontroller.RemoveCoupon);
 
 // load wishlist
 

@@ -78,7 +78,6 @@ const AddToCart = async (req, res) => {
         });
       }
     }
-    console.log("checkpoint 1")
     if (existProduct) {
       const updatedCart = await Cart.findOneAndUpdate(
         {
@@ -93,10 +92,8 @@ const AddToCart = async (req, res) => {
         },
         { new: true }
       );
-      console.log("reached here",updatedCart);
       return res.json({ success: true, stock: true, updatedCart });
     } else {
-      console.log("checkpoint 3")
       const cartData = await Cart.findOneAndUpdate(
         { user: userId },
         {
@@ -113,10 +110,8 @@ const AddToCart = async (req, res) => {
         },
         { upsert: true, new: true }
       );
-      console.log("checkpoint 4")
       return res.json({ success: true, stock: true, cartData });
     }
-    console.log("checkpoint 5")
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -218,7 +213,9 @@ const Loadcheckout = async (req, res) => {
       path: 'product.productId',
       model: 'Product',
       match: {is_Deleted:false},
-    });
+    })
+    .populate("coupondiscount");
+
 
     if (!cartdata) {
       return res.render("user/404", { messages: { message: "Your cart is empty." } });
@@ -244,12 +241,13 @@ const Loadcheckout = async (req, res) => {
     });
 
     const coupon = await Coupon.find({});
-
+  
     res.render("user/checkout", {
       cartdata: { cartdata, product: filteredProducts },
       addresses,
       subtotal,
-      coupon
+      coupon,
+      coupondiscount: cartdata.coupondiscount 
     });
   } catch (error) {
     console.log(error.message);

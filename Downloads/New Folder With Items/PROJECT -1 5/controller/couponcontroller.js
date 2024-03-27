@@ -1,6 +1,7 @@
 const Coupon = require('../model/couponModel');
 const User = require('../model/userModel');
 const Cart = require("../model/cartModel");
+const { findOneAndUpdate } = require('../model/orderModel');
 
 
 
@@ -75,16 +76,37 @@ const applycoupon = async(req,res)=>{
     {user:userId},
     {$set:{coupondiscount:coupondata._id}},
    );
-   console.log(cartcoupon);
-      res.json({coupon:true,coupondata})  
+   res.json({success:true,coupondata})
+   console.log(cartcoupon); 
    }else{
-    res.json('Already applied')
+    res.json({status:'Already applied'});
+    console.log(res.json,"already apllie");
    }
 }else{
-    res.json('Already Used')
+    res.json({status:'Already Used'});
+    console.log(res.json,'Already Used');
 }
     } catch (error) {
         console.log(error);
+    }
+}
+
+const RemoveCoupon = async(req,res)=>{
+    try {
+        const couponId = req.body.couponId;
+        console.log("coupon id here",couponId);
+      
+         const userId = req.session.userId;
+       console.log("userId",userId);
+         const coupondata = await Coupon.findOneAndUpdate({_id:couponId},{$pull:{useduser:userId}});
+         const cartdata = await Cart.findOneAndUpdate({user:userId},{$set:{coupondiscount:null}});
+         res.json({success:true});
+         console.log(coupondata,"coupondata");
+         console.log(cartdata,"cartdata");
+        
+  
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -93,4 +115,5 @@ module.exports = {
     loadaddcoupon,
     addCoupon,
     applycoupon,
+    RemoveCoupon,
 }

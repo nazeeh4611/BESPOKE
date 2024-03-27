@@ -177,6 +177,7 @@
          </div>
        
           </div>
+          
           <div class="checkout__totals-wrapper">
             <div class="sticky-content">
               <div class="checkout__totals">
@@ -214,6 +215,7 @@
                 
                   <% }) %>
                 </table>
+                <% if(coupondiscount && subtotal > coupondiscount.criteriaamount) { %>
                 <table class="checkout-totals">
                  
                   <tbody>
@@ -226,17 +228,38 @@
                       <td>Free shipping</td>
                     </tr>
                     <tr>
-                      <th>VAT</th>
-                      <td>$0</td>
+                      <th>Coupon Discount</th>
+                      <td style="color: green;">$<%=coupondiscount.discountamount %></td>
                     </tr>
                     <tr>
                       <th>TOTAL</th>
-                      <td> $<%= subtotal%></td>
+                      <td> $<%= subtotal-coupondiscount.discountamount %></td>
                       <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
                     </tr>
-                 
+               
                   </tbody>
                 </table>
+                <% }else{ %>
+                  <table class="checkout-totals">
+                 
+                    <tbody>
+                      <tr>
+                        <th>SUBTOTAL</th>
+                        <td>$<%= subtotal%></td>
+                      </tr>
+                      <tr>
+                        <th>SHIPPING</th>
+                        <td>Free shipping</td>
+                      </tr>
+                      <tr>
+                        <th>TOTAL</th>
+                        <td> $<%= subtotal%></td>
+                        <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
+                      </tr>
+                 
+                    </tbody>
+                  </table>
+                  <% } %>
               </div>
               <div class="checkout__payment-methods">
                 <div class="form-check">
@@ -263,11 +286,19 @@
                 </div>
                 <div class="mb-4 pb-4"></div>
                 <% if(coupon.length > 0) { %>
+                  <% if(coupondiscount) { %>
+                    <form class="position-relative bg-body">
+                      <div class="form-control fw-medium" type="text" name="coupon_code" placeholder="" id="cpn-btn">#<%= coupondiscount.couponcode %></div>
+                      <button class="btn-lin fw-medium position-absolute top-0 end-0 h-100 px-4" type="button" onclick="removecoupon('<%=coupondiscount._id %>')"
+                         id="selct" value="REMOVE">REMOVE</button>
+                  </form>
+              <% } else { %>
                 <form class="position-relative bg-body">
-                  <div class="form-control fw-medium" type="text" name="coupon_code" placeholder="" id="cpn-btn">APPLY COUPON</div>
+                  <div class="form-control fw-medium" type="text" name="coupon_code" placeholder="" id="cpn-btn2">APPLY COUPON</div>
                   <button class="btn-lin fw-medium position-absolute top-0 end-0 h-100 px-4" type="button" onclick="modalshow()"
-                     id="selct" value="SELECT">SELECT</button>
+                     id="selct2" value="SELECT">SELECT</button>
               </form>
+              <% }%>
               <% } %>
               </div>
               <button type="button" class="my-button" id="placeorder">Place Order</button>
@@ -296,10 +327,17 @@
                             <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
                             <p>Get $<%= coupon[i].discountamount %> Off on <u>$<%= coupon[i].criteriaamount %></u> and Above</p>
                             <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
+                            <% if(subtotal > coupon[i].criteriaamount) { %>
                             <div class="button-line-container">
                               <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=coupon[i]._id %>')">select</button>
                               <hr class="full-width-line">
                             </div>
+                            <%}else{%>
+                              <div class="button-line-container">
+                                <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px; display:block;  background: linear-gradient(200deg, rgb(180, 173, 173), rgb(189, 180, 180)); " disabled >select</button>
+                                <hr class="full-width-line">
+                              </div>
+                              <%}%>
                           </div>
                         </div>
                       </div>
@@ -516,7 +554,7 @@ const makePayment = () => {
         return; 
     }
     const addressId = document.querySelector('input[name="addressId"]:checked');
-    if (!addressId) {
+    if (!addressId) {addressId
         console.error("No address selected");
         return; 
     }
@@ -645,42 +683,73 @@ function verifypayment(Payment,orders){
                     title: "coupon is not available",
                     showConfirmButton: false,
                 })
-            } else if(response.coupon == 'Already applied') {
+            } else if(response.status == 'Already applied') {
                 Swal.fire({
                     icon: 'info',
                     title: 'coupon already applied',
                     showConfirmButton: false,
                 })
-            } else if(response.coupon == 'Already Used') {
+            } else if(response.status == 'Already Used') {
                 Swal.fire({
                     icon: 'info',
-                    title: 'already used',
+                    title: ' Coupon already used',
                     showConfirmButton: false,
                 })
-            } else if(response.coupon) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'coupon selected',
-                    text: 'coupon selected successfully',
-                    confirmButtonColor: "#3085d6",
-                    confirmButtonText: "OK",
-                }).then((result) => {
-                    const code = response.coupondata.couponcode;
-                    console.log("hii", code);
-                    if (result.isConfirmed) {
-                        $('#staticBackdrop').modal("hide");
-                        // Update the text content of the div with the coupon code
-                        $("#cpn-btn").text(code);
-                        $("#cpn-btn").css('color','green');
-                        $("#selct").text('REMOVE');
-                        $("#selct").css('color','red');
-                    }
-                });
-            }
+            } else if(response.success == true) {
+    Swal.fire({
+        icon: 'success',
+        title: 'coupon selected',
+        text: 'coupon selected successfully',
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+    }).then((result) => {
+        const code = response.coupondata.couponcode;
+        console.log("hii", code);
+        if (result.isConfirmed) {
+            $('#staticBackdrop').modal("hide");
+            location.reload("/checkout");
+
+            // Update the coupon button and text
+            $("#cpn-btn").text(code).css('color', 'green');
+            $("#selct").text('REMOVE').css('color', 'red');
         }
     });
 }
 
+        }
+    });
+}
+
+
+function removecoupon(id){
+   console.log("id getting here",id);
+
+   $.ajax({
+    url:"/removecoupon",
+    method:"POST",
+    data:{couponId:id},
+    success:(response)=>{
+      if(response.success == true){
+        console.log("reached here")
+        Swal.fire({
+          icon:"success",
+          title:"coupon removed",
+          confirmButtonText:"OK",
+          timer:1500,
+        }).then((result)=>{
+            location.reload("/checkout")
+        })
+        
+      }else{
+        Swal.fire({
+          icon:'error',
+          title:"error occured try again later",
+          timer:1500,
+        });
+      }
+    }
+   })
+}
 
 </script>
 

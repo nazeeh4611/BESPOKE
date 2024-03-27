@@ -298,7 +298,7 @@ const orderview = async(req,res)=>{
     const userData = await User.findOne({_id:userId});
     const orderdata = await Order.findById({_id:id}).populate(
      "product.productId",
-    );
+    )
   
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {

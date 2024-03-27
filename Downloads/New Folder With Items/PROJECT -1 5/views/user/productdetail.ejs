@@ -216,18 +216,11 @@
                           </span>
                         </div>
                         <% } %>
-                        <div class="qty-control position-relative">
-                          <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
-                          <div class="qty-control__reduce">-</div>
-                          <div class="qty-control__increase">+</div>
-                        </div><!-- .qty-control -->
+                    
                       <button type="button" onclick="addToCart('<%= data._id %>')"
                         class="btn btn-primary btn-addtocart js-open-aside">Add to Cart</button>
                     </div>
                   </form>
-                  <% }else if(cartdata.product.productId){ %>
-                    <button type="button" onclick="addToCart('<%= data._id %>')"
-                      class="btn btn-primary btn-addtocart js-open-aside">Go to Cart</button>
                   <% }else{ %>
                     
                       <div class="product-single__addtocart">
@@ -682,6 +675,7 @@
       },
       body: JSON.stringify({
         productId: id,
+
       }),
     });
     const data = await response.json();
