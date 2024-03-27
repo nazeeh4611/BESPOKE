@@ -216,10 +216,18 @@
                           </span>
                         </div>
                         <% } %>
+                        <div class="qty-control position-relative">
+                          <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
+                          <div class="qty-control__reduce">-</div>
+                          <div class="qty-control__increase">+</div>
+                        </div><!-- .qty-control -->
                       <button type="button" onclick="addToCart('<%= data._id %>')"
                         class="btn btn-primary btn-addtocart js-open-aside">Add to Cart</button>
                     </div>
                   </form>
+                  <% }else if(cartdata.product.productId){ %>
+                    <button type="button" onclick="addToCart('<%= data._id %>')"
+                      class="btn btn-primary btn-addtocart js-open-aside">Go to Cart</button>
                   <% }else{ %>
                     
                       <div class="product-single__addtocart">
@@ -508,6 +516,7 @@
                     alt="Cropped Faux leather Jacket" class="pc__img">
                   <img loading="lazy" src="/public/images/product-3-2.jpg" width="330" height="400"
                     alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
+                    
                 </a><button onclick="addToCart(id)"
                   class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
                   data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>

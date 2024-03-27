@@ -86,12 +86,14 @@ const AddToCart = async (req, res) => {
           "product.productId": productId,
         },
         {
-          $inc: { "product.$.quantity": 1 ,
+          $inc: { "product.$.quantity": 1 
+               , "product.$.total": productdata.price,
+             
             },
         },
         { new: true }
       );
-      console.log("checkpoint 2")
+      console.log("reached here",updatedCart);
       return res.json({ success: true, stock: true, updatedCart });
     } else {
       console.log("checkpoint 3")
