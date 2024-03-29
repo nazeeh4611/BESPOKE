@@ -194,6 +194,31 @@ const orderdelivered = async(req,res)=>{
 
 
 
+
+const salesReport = async(req,res)=>{
+  try {
+    const orderData = await Order.find({}).populate({
+      path:"user",
+      model: 'User',
+    }).populate({
+      path: 'product.productId',
+      model: 'Product',
+    });
+    orderData.forEach((order) => {
+      console.log("User:", order.user); 
+      order.product.forEach((item) => {
+        console.log("Product Name:", item.name);
+      });
+    });
+  
+  
+    res.render("admin/sales",{orderData})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 module.exports = {
   adminLogin,
   verifyAdminLogin,
@@ -205,4 +230,5 @@ module.exports = {
   orderstatus,
   ordercancel,
   orderdelivered,
+  salesReport,
 };

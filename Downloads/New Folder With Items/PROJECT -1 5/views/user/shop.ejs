@@ -829,6 +829,12 @@
                       <% } else { %>
                         <span class="money price">$<%= products[i].price.toFixed(2) %></span>
                       <% } %>
+
+                      <% if(categories.offer) { %>
+                        <% let percentage = categories.offer[0].discount; %>
+                        <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
+                        <span class="money price"><del>$<%= products[i].price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %>
+                          <% } %>
                     </div>
                   </h6>
                   <div class="product-card__review d-flex align-items-center">

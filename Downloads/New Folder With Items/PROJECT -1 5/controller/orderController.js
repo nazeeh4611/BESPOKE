@@ -299,10 +299,11 @@ const orderview = async(req,res)=>{
     const orderdata = await Order.findById({_id:id}).populate(
      "product.productId",
     )
+console.log(orderdata.deliveryDetails,"here")
   
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
-        
+        console.log(error)
     }
 }
 

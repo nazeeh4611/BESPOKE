@@ -155,6 +155,10 @@ adminRoute.get(
     couponcontroller.addCoupon
   );
   
+  adminRoute.get(
+    "/sales",
+    adminController.salesReport
+  );
 
 
 module.exports = adminRoute;

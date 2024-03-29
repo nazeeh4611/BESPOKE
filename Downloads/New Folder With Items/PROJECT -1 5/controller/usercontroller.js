@@ -408,21 +408,21 @@ const userLogout = async (req, res) => {
 
 const loadshop = async (req, res) => {
   try {
-      let query = { is_Listed: true,is_Deleted:false};
+    let query = { is_Listed: true, is_Deleted: false };
 
-      if (req.query.category) {
-          query.category = req.query.category;
-      }
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
 
-      let sortOption = {};
-      switch (req.query.sort) {
+    let sortOption = {};
+    switch (req.query.sort) {
       case "1":
         // Featured
-        sortOption = { };
+        sortOption = {};
         break;
       case "2":
         // Best selling
-        sortOption = { };
+        sortOption = {};
         break;
       case "3":
         // Alphabetically, A-Z
@@ -455,28 +455,33 @@ const loadshop = async (req, res) => {
 
     if (req.query.searchKeyword) {
       const searchQuery = req.query.searchKeyword;
-      query.name = { $regex: searchQuery, $options: "i" }; 
+      query.name = { $regex: searchQuery, $options: "i" };
+    }
+
+    const productDetails = await Product.find(query)
+      .populate({
+        path: "category",
+        model: "Category",
+      })
+      .populate("offer")
+      .sort(sortOption);
+    console.log(productDetails)
+    console.log("hii",productDetails.offer);
+    const products = productDetails.filter(
+      product => product.category && product.category.is_Listed
+    );
+     
+    const categories = await Category.find({});
+   
+    const userIn = req.session.userId;
+
+   
+    res.render("user/shop", { products, categories,user: req.session.userId, userIn });
+  } catch (error) {
+    console.log(error.message);
   }
-
-  const productDetails = await Product.find(query)
-  .populate({
-    path: "category",
-    model: "Category",
-  })
-  .populate("offer")
-  .sort(sortOption);
- 
-  const products = productDetails.filter(product => product.category && product.category.is_Listed);
-  const categories = await Category.find({});
- 
-  
-  const userIn = req.session.userId;
-
-  res.render("user/shop", { products, categories, user: req.session.userId, userIn, });
-} catch (error) {
-  console.log(error.message);
-}
 };
+
 
 
 const searchProducts = async (req, res) => {

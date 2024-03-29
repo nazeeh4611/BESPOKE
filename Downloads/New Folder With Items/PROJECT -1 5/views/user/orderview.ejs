@@ -57,12 +57,16 @@
                                     </div>
                                     <p>Payment Mode: <%= orderdata.paymentMethod %></p>
                                     <div class="delivery-details">
-                                        <p>Deliver to:</p>
-                                        <p>Name : <%= orderdata.deliveryDetails.fname %></p>
-                                        <p> Address : <%= orderdata.deliveryDetails.address %></p>
-                                        <p>City : <%= orderdata.deliveryDetails.city %></p>
-                                        <p> PIN : <%= orderdata.deliveryDetails.pin %></p>
-                                        <p>Phone : <%= orderdata.deliveryDetails.mobile %> </p>
+<% orderdata.deliveryDetails.forEach((order)=>{ %>
+
+                                        <p>Deliver to: <%= order.fname %> <%=  order.lname%> </p>
+                                        <p>Name : <%= order.fname %></p>
+                                        <p> Address : <%= order.address %></p>
+                                        <p>City : <%= order.city %></p>
+                                        <p> PIN : <%= order.pin %></p>
+                                        <p>Phone : <%= order.mobile %> </p>
+
+                                        <% })%>
                                     </div>
                                 </div>
                         </tbody>
