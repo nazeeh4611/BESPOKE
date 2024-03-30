@@ -160,5 +160,11 @@ adminRoute.get(
     adminController.salesReport
   );
 
+  adminRoute.post(
+    "/sales",
+    adminController.filterSales
+  );
+
+
 
 module.exports = adminRoute;

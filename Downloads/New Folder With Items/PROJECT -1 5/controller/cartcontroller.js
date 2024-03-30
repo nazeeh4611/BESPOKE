@@ -22,9 +22,15 @@ const cartopen = async (req, res) => {
 
       const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
-      const subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
+      let subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
       console.log("subtotal here",subtotal)
-      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, user: req.session.userId });
+
+      let total = 0;
+     cartdata.product.forEach((product)=>{
+      total += product.productId.price * product.quantity ;
+     })
+     subtotal = total;
+      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal,total, user: req.session.userId });
     } else {
       res.redirect("/login");
     }
@@ -229,7 +235,10 @@ const Loadcheckout = async (req, res) => {
     // Calculate subtotal
     let subtotal = 0;
     if (cartdata && cartdata.product) {
-      subtotal = cartdata.product.reduce((acc, val) => acc + val.total, 0);
+      cartdata.product.forEach((product)=>{
+        subtotal += product.productId.price * product.quantity ;
+      })
+   
     }
 
     const productId = req.body.productId;

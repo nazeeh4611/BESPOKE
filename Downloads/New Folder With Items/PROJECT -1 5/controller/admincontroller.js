@@ -168,7 +168,7 @@ const ordercancel = async(req,res)=>{
 const orderdelivered = async(req,res)=>{
   try {
     const id = req.query.id;
-  
+     const userId = req.session.userId;
     const orders = await Order.findById({_id:id});
 
 
@@ -183,6 +183,10 @@ const orderdelivered = async(req,res)=>{
         {_id:id},
         {$set:{status:'Return Approved'}}
       )
+      await User.findByIdAndUpdate(
+        {_id:userId},
+        {$inc:{wallet:orders.subtotal}}
+    )
       res.redirect('/admin/orders')
     }else{
       res.redirect('/admin/orders')
@@ -197,27 +201,59 @@ const orderdelivered = async(req,res)=>{
 
 const salesReport = async(req,res)=>{
   try {
-    const orderData = await Order.find({}).populate({
+    const orderData = await Order.find({status:'delivered'}).populate({
       path:"user",
       model: 'User',
     }).populate({
       path: 'product.productId',
       model: 'Product',
-    });
-    orderData.forEach((order) => {
-      console.log("User:", order.user); 
-      order.product.forEach((item) => {
-        console.log("Product Name:", item.name);
-      });
-    });
-  
-  
+    }).sort({Date:-1});
+
     res.render("admin/sales",{orderData})
   } catch (error) {
     console.log(error)
   }
 }
 
+
+const filterSales = async (req,res)=>{
+  try {
+const fromdate = req.body.fromdate ? new Date(req.body.fromdate) : null;
+fromdate.setHours(0,0,0,0);
+const todate = req.body.todate ? new Date(req.body.todate) : null;
+todate.setHours(23,59,59,999)
+console.log("1",fromdate,"2",todate);
+
+const currentDate = new Date();
+
+console.log(currentDate)
+
+if(fromdate && todate){
+  if(todate < fromdate){
+    let temp =  fromdate;
+     fromdate = todate 
+     todate  = temp;
+  }
+}else if(fromdate){
+  todate = currentDate
+}else if(todate){
+  fromdate = currentDate
+}
+const orderData = await Order.find({Date:{$lt:todate,$gt:fromdate},status:'delivered'}).populate({
+  path:"user",
+  model: 'User',
+}).populate({
+  path: 'product.productId',
+  model: 'Product',
+}).sort({Date:-1});
+   
+
+  res.render("admin/sales",{orderData})
+
+  } catch (error) {
+    
+  }
+}
 
 module.exports = {
   adminLogin,
@@ -231,4 +267,5 @@ module.exports = {
   ordercancel,
   orderdelivered,
   salesReport,
+  filterSales,
 };

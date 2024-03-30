@@ -1,755 +1,613 @@
-<head>
-    <title>Checkout | Plantly</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="">
-    <!-- bootstrap min-->
-    <link rel="stylesheet" type="text/css" href="/public/assets/bootstrap.min.css">
-    <!-- fontawesome -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/assets/fontawesome.css">
-    <link rel="stylesheet" type="text/css" href="/public/assets/fontawesome.min.css">
-    <!-- OwlCarousel2 -->         
-    <link rel="stylesheet" type="text/css" href="/public/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/assets/owl.carousel.css">
-    <!-- daterangepicker --> 
-    <link rel="stylesheet" type="text/css" href="/public/assets/daterangepicker.css" />
-    <!-- fancybox -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/jquery.fancybox.css">
-    <!-- animate -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/animate.min.css">
-    <!-- media -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/media.css">
-    <!-- style -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/style.css">
-    <!-- responsive -->
-    <link rel="stylesheet" type="text/css" href="/public/assets/responsive.css">
-    <!-- googleapis -->
-    <link rel="preconnect" href="../../../fonts.gstatic.com/index.html">
-    <link href="../../../fonts.googleapis.com/css238f0.css?family=Rubik:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"> 
- </head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BESPOKE ADMIN</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/public/admin/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="/public/admin/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- End layout styles -->
+    
+  </head>
+
+    <style>
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #505050;
+    text-align: left;
+  }
+
+  th {
+    background-color: #000000;
+    color: rgb(157, 157, 157);
+  }
+
+  /* Button styles */
+  .btn-1,
+  .btn-2,
+  .btn-3,
+  .btn-4 {
+    padding: 2px 8px;
+    margin: 2px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-1 a,
+  .btn-2 a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .btn-1 {
+    background-color: #2f971a;
+    /* Blue for Edit button */
+  }
+
+  .btn-2 {
+    background-color: #dc3545;
+    /* Red for Delete button */
+  }
+
+  .btn-3 {
+    background-color: #28a745;
+    /* Green for List button */
+  }
+
+  .btn-4 {
+    background-color: #dc3545;
+    /* Red for Unlist button */
+  }
+
+  .btn-7 {
+    padding: 3px 6px;
+    margin-right: 20px;
+    /* Add margin to create space between the button and the heading */
+    background-color: #28a745;
+    /* Green background color */
+    color: white;
+    /* White text color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-7:hover {
+    background-color: #076e1f;
+    /* Darker green on hover */
+  }
 
 
+  h2 {
+    display: inline-block;
+    /* Keep the heading and button on the same line */
+    margin-bottom: 10px;
+    /* Add some space below the heading */
+    margin-right: 20px;
+    /* Add some space between the heading and the table */
+  }
 
+  /* Table styles */
+  table {
+    margin-top: 20px;
+    /* Add some space between the button and the table */
+  }
 
+  </style>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <div id="home_vertical_menu">
-    <div class="row ">
-       <div class="col-lg-3 vertical_menu">
-          <div class="v_menu bg-white rounded">
-             <div class="cat_menu bg-warning rounded-top"><a href="#" class="pe-auto text-uppercase d-md-none d-sm-none d-none d-lg-block font-weight-bolder"><i class="fas fa-bars"></i>all categories</a></div>
-             <div class="navbar-header d-xl-none d-lg-none">
-                <button type="button" class="btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fas fa-bars"></i></button>
-             </div>
-             <div id="mySidenav" class="sidenav  ">
-                <div class="close-nav d-xl-none d-lg-none">
-                   <span class="categories">Menu</span>
-                   <a href="javascript:void(0)" class="closebtn pull-right" onclick="closeNav()"><i class="fas fa-times"></i></a>
-                </div>
-               <ul class="vertical_main_menu h_menu navbar navbar-nav">
-                   <li><a href="index.html">Home</a></li>
-                   <li class="">
-                      <a class="dropdown-toggle" href="shop-left-sidebar.html"  role="button" data-toggle="dropdown" aria-expanded="false">shop&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
-                      <ul class="dropdown-menu">
-                         <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">left sidebar</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="shop-right-sidebar.html">right sidebar</a></li>
-                      </ul>
-                   </li>
-                   <li class="dropdown mega_menu m1_menu level-1 font-weight-bolderer">
-                      <a class="dropdown-toggle" href="single-product.html"  role="button" data-toggle="dropdown" aria-expanded="false">portfolio&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
-                      <ul class="dropdown-menu">
-                         <li>
-                            <ul class="row mx-0">
-                               <li class="mg_menu col-lg-6 col-md-12 ">
-                                  <ul>
-                                     <li class="h_title text-uppercase font-weight-bolder border-bottom">portfolio grid 2</li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-2.html">portfolio grid 2</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-3.html">portfolio grid 3</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-4.html">portfolio grid 4</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-2.html">mesonary grid 2</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-3.html">mesonary grid 3</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-4.html">mesonary grid 4</a></li>
-                                  </ul>
-                               </li>
-                               <li class="mg_menu col-lg-6 col-md-12">
-                                  <ul>
-                                     <li class="h_title text-uppercase font-weight-bolder border-bottom">theme elements</li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="title.html">title</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="category-style.html">category</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="services.html">services</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="product-tab.html">product tab</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="multi-slider-product.html">multi slider product</a></li>
-                                  </ul>
-                               </li>
-                            </ul>
-                         </li>
-                      </ul>
-                   </li>
-                   <li>
-                      <a class="dropdown-toggle" href="blog.html"  role="button" data-toggle="dropdown" aria-expanded="false">
-                      blog&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                      <ul class="dropdown-menu">
-                         <li><a class="dropdown-item font-weight-bolderer" href="blog.html">blog</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="blog-left-sidebar.html">left sidebar</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="blog-right-sidebar.html">right sidebar</a></li>
-                      </ul>
-                   </li>
-                   <li class="dropdown mega_menu level-1 font-weight-bolderer">
-                      <a class="dropdown-toggle" href="single-product.html"  role="button" data-toggle="dropdown" aria-expanded="false">Category&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                      <ul class="dropdown-menu">
-                         <li>
-                            <ul class="row mx-0">
-                               <li class="mg_menu col-lg-4 col-md-12 ">
-                                  <ul>
-                                     <li class="h_title text-uppercase font-weight-bolder border-bottom">Pot</li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Pigmyweeds</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Indoor Plants</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">outdoor Plants</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Flamingo plant</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Succulent Plant</a></li>
-                                  </ul>
-                               </li>
-                               <li class="mg_menu col-lg-4 col-md-12">
-                                  <ul>
-                                     <li class="h_title text-uppercase font-weight-bolder border-bottom">Plants</li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Nerve Plant</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Flowering Plants</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Plant Seed</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Luck Plants</a></li>
-                                     <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Plant House</a></li>
-                                  </ul>
-                               </li>
-                            </ul>
-                         </li>
-                      </ul>
-                   </li>
-                   <li class="dropdown level-1 font-weight-bolderer">
-                      <a class="dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-expanded="false">pages&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                      <ul class="dropdown-menu">
-                         <li><a class="dropdown-item font-weight-bolderer" href="about-us.html">about us</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="login.html">login</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="registration.html">registration</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="single-product.html">single product</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="single-blog.html">single blog</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="cart.html">cart</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="compare.html">compare</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="wishlist.html">wishlist</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="checkout.html">check out</a></li>
-                         <li><a class="dropdown-item font-weight-bolderer" href="forgot.html">forgot password</a></li>
-                      </ul>
-                   </li>
-                   <li class="level-1 font-weight-bolderer"><a href="contact-us.html">contact-us</a></li
-                      >
-                </ul>
-             </div>
-          </div>
-          <!-- v_menu bg-white rounded -->
-       </div>
-    </div>
-    <!-- row -->
- </div>
- <!-- container  menu_slider mt-4 -->
- <!-- vertical menu and slider end -->
- <!-- checkout page -->
- <div id="checkout_page" class="checkout-page animate__animated animate__fadeInUp">
-    <div class="sp_header bg-white p-3 ">
-       <div class="container custom_container ">
-          <div class="row ">
-             <div class="col-12 ">
-                <ul>
-                   <li class="d-inline-block font-weight-bolderer"><a href="index.html">home</a></li>
-                   <li class="d-inline-block hr_ font-weight-bolderer"><a href="#">checkout</a></li>
-                </ul>
-             </div>
-          </div>
-       </div>
-    </div>
-    <div class="container custom_container">
-       <div class="row">
-          <div class="col-lg-8 col-12">
-             <div class="accordion" id="check_out_toggle">
-                <div class="card rounded mb-2">
-                   <div class="card-header bg-white" id="checkout_info">
-                      <h2 class="mb-0">
-                         <button class="btn btn-link btn-block text-left text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_info" aria-expanded="true" aria-controls="check_info">
-                         Personal information<span class="float-right"><i class="fas fa-angle-down"></i></span>
-                         </button>
-                      </h2>
-                   </div>
-                   <div id="check_info" class="collapse show" aria-labelledby="checkout_info" data-parent="#check_out_toggle">
-                      <div class="card-body">
-                         <ul class="nav nav-tabs " role="tablist" >
-                            <li class="nav-item" >
-                               <a class="nav-link p-0 font-weight-bolder active" id="order_guest_tab" data-toggle="tab" href="#order_guest" role="tab" aria-controls="order_guest" aria-selected="true">order as a guest</a>
-                            </li>
-                            <li class="hr_"></li>
-                            <li class="nav-item" >
-                               <a class="nav-link p-0 font-weight-bolder" id="sign_in_tab" data-toggle="tab" href="#sign_in" role="tab" aria-controls="sign_in" aria-selected="false">sign in</a>
-                            </li>
-                         </ul>
-                         <div class="tab-content" >
-                            <div class="tab-pane fade show active" id="order_guest"  aria-labelledby="order_guest">
-                               <div id="Registration" class="page-content mt-4 mb-0">
-                                  <form  class="needs-validation " method="post" novalidate>
-                                     <div class="form-group text-left">
-                                        <label class="font-weight-bolder">Social title</label><br>
-                                        <span class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios" id="gender_mr" checked>
-                                        <label class="form-check-label" for="gender_mr">
-                                        mr.
-                                        </label>
-                                        </span>
-                                        <span class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios" id="gender_mrs">
-                                        <label class="form-check-label" for="gender_mrs">
-                                        mrs.
-                                        </label>
-                                        </span>
-                                     </div>
-                                     <div class="form-group">
-                                        <label for="f_name" class="font-weight-bolder">First name</label>
-                                        <input type="text" class="form-control" id="f_name" placeholder="First name"  required>
-                                        <div class="invalid-feedback">Please enter your name.</div>
-                                     </div>
-                                     <div class="form-group" >
-                                        <label for="l_name" class="font-weight-bolder">Last name</label>
-                                        <input type="text" class="form-control" id="l_name" placeholder="Last Name" required>
-                                        <div class="invalid-feedback">Please enter your name.</div>
-                                     </div>
-                                     <div class="form-group">
-                                        <label for="r_email" class="font-weight-bolder">Email address</label>
-                                        <input type="email" class="form-control" id="r_email" aria-describedby="emailHelp" placeholder="Email" required>
-                                        <div class="invalid-feedback">Please enter your account name.</div>
-                                     </div>
-                                     <div class="form-group font-weight-bolder">
-                                        <label for="r_password" class="font-weight-bolder">Password</label>
-                                        <input type="password" class="form-control" id="r_password" placeholder="password" required>
-                                        <div class="invalid-feedback">Please enter your password.</div>
-                                     </div>
-                                     <div class="form-group">
-                                        <label class="font-weight-bolder">birth date</label>
-                                        <input class="form-control"  type="date" required/>
-                                        <div class="invalid-feedback">Please enter your birthdate.</div>
-                                     </div>
-                                     <div class="form-group form-check d-block">
-                                        <input type="checkbox" class="form-check-input" >
-                                        <label class="form-check-label" for="user_check">Sign up for our newsletter</label>
-                                     </div>
-                                     <div class="form-group form-check d-block">
-                                        <input type="checkbox" class="form-check-input" >
-                                        <label class="form-check-label" for="user_check">I agree to the terms and conditions and the privacy policy</label>
-                                     </div>
-                                     <div><input type="submit" name="submit" class="btn btn-primary mt-3" value="Save"></div>
-                                  </form>
-                               </div>
-                            </div>
-                            <div class="tab-pane fade" id="sign_in"  aria-labelledby="sign_in_tab">
-                               <div id="login" class="page-content  mt-4 ">
-                                  <form class="needs-validation " method="post" novalidate>
-                                     <div class="form-group">
-                                        <label for="user_email" class="font-weight-bolder">Email address</label>
-                                        <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp" required>
-                                        <div class="invalid-feedback">Please enter account name.</div>
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                     </div>
-                                     <div class="form-group font-weight-bolder" >
-                                        <label for="user_password" class="font-weight-bolder">Password</label>
-                                        <input type="password" class="form-control" id="user_password" required>
-                                        <div class="invalid-feedback">Please enter your Password.</div>
-                                     </div>
-                                     <div class="form-group form-check">
-                                        <input type="checkbox" class="form-check-input" id="user_check" >
-                                        <label class="form-check-label" for="user_check">Check me out</label>
-                                     </div>
-                                     <input type="submit" name="submit" class="btn btn-primary mb-3 d-inline-block" value="submit">
-                                     <div class="pass_acc d-inline-block float-right pt-3">
-                                        <span class="forgot_password font-weight-bolderer"><a href="forgot.html">Forgot your password? </a></span>
-                                     </div>
-                                  </form>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <!-- card -->
-                <div class="card rounded mb-2">
-                   <div class="card-header bg-white" id="chechout_add">
-                      <h2 class="mb-0">
-                         <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_add" aria-expanded="false" aria-controls="check_add">
-                         Address<span class="float-right"><i class="fas fa-angle-down"></i></span>
-                         </button>
-                      </h2>
-                   </div>
-                   <div id="check_add" class="collapse" aria-labelledby="chechout_add" data-parent="#check_out_toggle">
-                      <div class="card-body">
-                         <div id="c_address" class="page-content">
-                            <form class="needs-validation " method="post" novalidate>
-                               <div class="form-group" >
-                                  <label for="f_name" class="font-weight-bolder">line 1</label>
-                                  <input type="text" class="form-control"  placeholder="Address Line 1"  required>
-                                  <div class="invalid-feedback">Please Enter your address.</div>
-                               </div>
-                               <div class="form-group" >
-                                  <label for="l_name" class="font-weight-bolder">line 2</label>
-                                  <input type="text" class="form-control"  placeholder="Address Line 2"  required>
-                                  <div class="invalid-feedback">Please Enter your address.</div>
-                               </div>
-                               <div class="form-group">
-                                  <label for="r_email" class="font-weight-bolder">city</label>
-                                  <input type="text" class="form-control"  placeholder="City"  required>
-                                  <div class="invalid-feedback">Please Enter your city.</div>
-                               </div>
-                               <div class="form-group">
-                                  <label for="r_password" class="font-weight-bolder">state</label>
-                                  <input type="text" class="form-control"  placeholder="State"  required>
-                               </div>
-                               <div class="form-group">
-                                  <label for="r_password" class="font-weight-bolder">post code</label>
-                                  <input type="text" class="form-control"  placeholder="Post Code"  required>
-                                  <div class="invalid-feedback">Please Enter your post code.</div>
-                               </div>
-                               <div class="form-group">
-                                  <label for="r_password" class="font-weight-bolder">country</label>
-                                  <input type="text" class="form-control"  placeholder="Country"  required>
-                                  <div class="invalid-feedback">Please Enter your country.</div>
-                               </div>
-                               <div><button id="clearButton" type="reset" class=" f_13 btn btn-primary rese mt-3">reset</button><input type="submit" name="submit" class="f_13 btn btn-primary mt-3 float-right" value="save"></div>
-                            </form>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <!-- card -->
-                <div class="card rounded mb-2">
-                   <div class="card-header bg-white" id="checkout_shipping">
-                      <h2 class="mb-0">
-                         <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_ship" aria-expanded="false" aria-controls="check_ship">
-                         Shipping Method<span class="float-right"><i class="fas fa-angle-down"></i></span>
-                         </button>
-                      </h2>
-                   </div>
-                   <div id="check_ship" class="collapse" aria-labelledby="checkout_shipping" data-parent="#check_out_toggle">
-                      <div class="card-body">
-                         <div id="ship_check" class="page-content">
-                            <form>
-                               <div class="form-group text-left">
-                                  <label class="font-weight-bolder">Shipping Method</label><br>
-                                  <span class="form-check d-inline-block">
-                                  <input class="form-check-input" type="radio" name="gridRadios" id="free_ship" checked>
-                                  <label class="form-check-label" for="free_ship">
-                                  Free shipping
-                                  </label>
-                                  </span>
-                                  <span class="form-check d-inline-block ml-2">
-                                  <input class="form-check-input" type="radio" name="gridRadios" id="with_ship">
-                                  <label class="form-check-label" for="with_ship">
-                                  shipping
-                                  </label>
-                                  </span>
-                               </div>
-                            </form>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <!-- card -->
-                <div class="card rounded mb-2">
-                   <div class="card-header bg-white" id="checkout_payment">
-                      <h2 class="mb-0">
-                         <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_payment" aria-expanded="false" aria-controls="check_payment">
-                         Payment<span class="float-right"><i class="fas fa-angle-down"></i></span>
-                         </button>
-                      </h2>
-                   </div>
-                   <div id="check_payment" class="collapse" aria-labelledby="checkout_payment" data-parent="#check_out_toggle">
-                      <div class="card-body">
-                         <div id="pay_check" class="page-content">
-                            <form >
-                               <div class="form-group text-left">
-                                  <label class="font-weight-bolder">payment Method</label><br>
-                                  <span class="form-check d-inline-block">
-                                  <input class="form-check-input" type="radio" name="gridRadios" id="pay_by_check" checked>
-                                  <label class="form-check-label" for="pay_by_check">
-                                  pay by check
-                                  </label>
-                                  </span>
-                                  <span class="form-check d-inline-block ml-2">
-                                  <input class="form-check-input" type="radio" name="gridRadios" id="pay_by_bank">
-                                  <label class="form-check-label" for="pay_by_bank">
-                                  pay by bank 
-                                  </label>
-                                  </span>
-                               </div>
-                               <div class="form-group form-check">
-                                  <input type="checkbox" class="form-check-input" id="user_pay_check" >
-                                  <label class="form-check-label" for="user_pay_check">I accept the Terms of Use & Privacy Policy</label>
-                               </div>
-                               <div class="text-center">
-                                  <button type="submit" class="btn btn-primary f_13">
-                                  Order with an obligation to pay
-                                  </button>
-                               </div>
-                            </form>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <!-- card -->
-             </div>
-          </div>
-          <div class="col-lg-4 col-12 ">
-             <div class="border rounded bg-white final_payment">
-                <div class="card-body  border-bottom">
-                   <p class="text-muted">5 items</p>
-                   <p class="font-weight-bolderer">show details</p>
-                   <div>
-                      <span class="font-weight-bolder">subtotal</span>
-                      <span class="float-right font-weight-bolder">$94.00</span>
-                   </div>
-                   <div>
-                      <span class="font-weight-bolder">shipping</span>
-                      <span class="float-right font-weight-bolder">$9.00</span>
-                   </div>
-                </div>
-                <div class="card-body ">
-                   <div>
-                      <span class="font-weight-bolder">total(tax excl.)</span>
-                      <span class="float-right font-weight-bolder">$94.00</span>
-                   </div>
-                   <div>
-                      <span class="font-weight-bolder">taxes</span>
-                      <span class="float-right font-weight-bolder">$9.00</span>
-                   </div>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
- <div class="card-header bg-white" id="chechout_existing_address">
-    <h2 class="mb-0">
-      <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_existing" aria-expanded="false" aria-controls="check_existing">
-        Select Existing Address<span class="float-right"><i class="fas fa-angle-down"></i></span>
-      </button>
-    </h2>
-  </div>
-  <div id="check_existing" class="collapse show" aria-labelledby="chechout_existing_address" data-parent="#check_out_toggle">
-    <div class="card-body">
-      <div id="c_existing_address" class="page-content">
-        <!-- Add code to display existing addresses here -->
-        <!-- You can use radio buttons or another form of selection -->
-        <label>Select an existing address:</label>
-        <%for(let i = 0; i < addresses.length;i++){%>
-        <div>
-          <input type="radio" id="existing_address_1" name="existing_address" value="<%= addresses[i]._id%>" onclick="handleAddressSelection('<%= addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
-                          <label for="existing_address_1"><%=addresses[i].name%> , <%= addresses[i].address%> ....</label>
         </div>
-        <%}%>
-                      <!-- Add New Address Option -->
-                      <div>
-                          <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()" <%if(addresses.length===0){%>Checked<%}%>>
-                          <label for="add_new_address">Add a new address</label>
+        <ul class="nav">
+          <li class="nav-item profile">
+            <div class="profile-desc">
+              <div class="profile-pic">
+                <div class="count-indicator">
+                  <span class="count bg-success"></span>
+                </div>
+                <div class="profile-name">
+                  <h5 class="mb-0 font-weight-normal">BESPOKE</h5>
+                  <span>Gold Member</span>
+                </div>
+              </div>
+              <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+              <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
+                <a href="#" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-settings text-primary"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-onepassword  text-info"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-calendar-today text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item nav-category">
+            <span class="nav-link">Navigation</span>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="/admin/dashboard">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="/admin/users" aria-expanded="false" aria-controls="ui-basic">
+              <span class="menu-icon">
+                <i class="mdi mdi-laptop"></i>
+              </span>
+              <span class="menu-title">Users</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/buttons.html">Buttons</a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Dropdowns</a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="/admin/products">
+              <span class="menu-icon">
+                <i class="mdi mdi-playlist-play"></i>
+              </span>
+              <span class="menu-title">Products</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="/admin/category">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+              <span class="menu-title">Categories</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="/admin/orders">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+              <span class="menu-title">Orders</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="../../pages/icons/mdi.html">
+              <span class="menu-icon">
+                <i class="mdi mdi-contacts"></i>
+              </span>
+              <span class="menu-title">Icons</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <span class="menu-icon">
+                <i class="mdi mdi-security"></i>
+              </span>
+              <span class="menu-title">User Pages</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/blank-page.html"> Blank Page </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-404.html"> 404 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-500.html"> 500 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login.html"> Login </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register.html"> Register </a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
+              <span class="menu-icon">
+                <i class="mdi mdi-file-document-box"></i>
+              </span>
+              <span class="menu-title">Documentation</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+          </div>
+          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+              <span class="mdi mdi-menu"></span>
+            </button>
+            <ul class="navbar-nav w-100">
+              <li class="nav-item w-100">
+                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                  <input type="text" class="form-control" placeholder="Search products">
+                </form>
+              </li>
+            </ul>
+            <ul class="navbar-nav navbar-nav-right">
+              <li class="nav-item dropdown d-none d-lg-block">
+                <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">+ Create New Project</a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
+                  <h6 class="p-3 mb-0">Projects</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-file-outline text-primary"></i>
                       </div>
-                      <button type="button" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToShipping()">Proceed</button>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Software Development</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-web text-info"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">UI Development</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-layers text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Software Testing</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">See all projects</p>
+                </div>
+              </li>
+              <li class="nav-item nav-settings d-none d-lg-block">
+                <a class="nav-link" href="#">
+                  <i class="mdi mdi-view-grid"></i>
+                </a>
+              </li>
+              <li class="nav-item dropdown border-left">
+                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-email"></i>
+                  <span class="count bg-success"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                  <h6 class="p-3 mb-0">Messages</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                      <p class="text-muted mb-0"> 1 Minutes ago </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                      <p class="text-muted mb-0"> 15 Minutes ago </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                      <p class="text-muted mb-0"> 18 Minutes ago </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">4 new messages</p>
+                </div>
+              </li>
+              <li class="nav-item dropdown border-left">
+                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                  <i class="mdi mdi-bell"></i>
+                  <span class="count bg-danger"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                  <h6 class="p-3 mb-0">Notifications</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-calendar text-success"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Event today</p>
+                      <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-settings text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Settings</p>
+                      <p class="text-muted ellipsis mb-0"> Update dashboard </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-link-variant text-warning"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Launch Admin</p>
+                      <p class="text-muted ellipsis mb-0"> New admin wow! </p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">See all notifications</p>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                  <div class="navbar-profile">
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name">BESPOKE</p>
+                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                  <h6 class="p-3 mb-0">Profile</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-settings text-success"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Settings</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-logout text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Log out</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">Advanced settings</p>
+                </div>
+              </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+              <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+          </div>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+         
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+           
+              <h2>SALES REPORT</h2>
+              <table>
+                <thead>
+                    <tr>
+                        <th>OrderID</th>
+                        <th>Product-Details</th>
+                        <th>Date</th>
+                        <th>Payment-Method</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                        <th>Customer Name</th>
+                    </tr>
+                </thead>
+                <% if(orderData) { %>
+                <% orderData.forEach((order) => { %>
+                <% order.product.forEach((item) => { %>
+                <tr>
+                    <td>
+                        <%= order._id %>
+                    </td>
+                    <td>
+                        <button style="background-color: rgb(255, 255, 255); border-radius: 5px; box-shadow: #ffffff; border-color: #fff;" onclick="modalshow('<%= item.name %>', '<%= item.price %>,<%= item.quantity %>')">View</button>
+                       
+                    </td>
+                    <td>
+                        <%= order.Date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %>
+                    </td>
+                    <td>
+                        <%= order.paymentMethod %>
+                    </td>
+                    <td>
+                        <%= order.status %>
+                    </td>
+                    <td>
+                        $<%= order.subtotal %>
+                    </td>
+                    <td>
+                        <%= order.user.name %>
+                    </td>
+                </tr>
+                <% }) %>
+                <% }) %>
+                <% } else { %>
+                <tr>
+                    <td colspan="5">Offer is not found</td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+      
+      
+            </nav>
+                  
+                    </div>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">SELECT COUPON</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <% if(orderData ) { %>
+                            <% orderData.forEach((order)=> {
+                                order.product.forEach((item) => {
+                            %>
+                            <div class="billing-info__wrapper">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="return-details" class="col-md-12">
+                                              <img src="/public/uploadImg/<%= val.productId.Image[0] %>" width="150" height="150" alt="">
+                                                <p style="color: rgb(255, 255, 255);"><strong style="color: #ffffff;">Product-Name</strong>&nbsp; <%= item.name %></p>
+                                                <p style="color: #fff;">Price : <u style="color:rgb(255, 255, 255);"><%= item.price %></u></p>
+                                                <p></u> Qty  : <%= item.quantity %></p>
+                                                <p>Expire on</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%}) %>
+                            <% }) %>
+                            <% } %>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" style="color: #fff; background-color: #000000;" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                      </div>
                   </div>
               </div>
-          </div>
-      </div>
- 
-
-
-      <div class="card rounded mb-2 ">
-        <div class="card-header bg-white" id="chechout_existing_address">
-          <h2 class="mb-0">
-            <button class="btn btn-link btn-block text-left collapsed text-body p-0 font-weight-bolder" type="button" data-toggle="collapse" data-target="#check_existing" aria-expanded="false" aria-controls="check_existing">
-              Select Existing Address<span class="float-right"><i class="fas fa-angle-down"></i></span>
-            </button>
-          </h2>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
         </div>
-        <div id="check_existing" class="collapse show" aria-labelledby="chechout_existing_address" data-parent="#check_out_toggle">
-          <div class="card-body">
-            <div id="c_existing_address" class="page-content">
-              <!-- Add code to display existing addresses here -->
-              <!-- You can use radio buttons or another form of selection -->
-              <label>Select an existing address:</label>
-              <%for(let i = 0; i < addresses.length;i++){%>
-              <div>
-                <input type="radio" id="existing_address_1" name="existing_address" value="<%= addresses[i]._id%>" onclick="handleAddressSelection('<%= addresses[i]._id%>')" <%if(addresses[i].isDefault){%>checked<%}%>>
-                                <label for="existing_address_1"><%=addresses[i].name%> , <%= addresses[i].address%> ....</label>
-              </div>
-              <%}%>
-                            <!-- Add New Address Option -->
-                            <div>
-                                <input type="radio" id="add_new_address" name="existing_address" onclick="handleAddressSelection()" <%if(addresses.length===0){%>Checked<%}%>>
-                                <label for="add_new_address">Add a new address</label>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>    
+<script>
+      function modalshow(name, price,quantity) {
+        console.log("here",quantity)
+        var modalBody = document.getElementById('modalBody');
+        modalBody.innerHTML = `
+            <div class="billing-info__wrapper">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="return-details" class="col-md-12">
+                                <p style="color: rgb(255, 255, 255);"><strong style="color: #ffffff;">Product-Name</strong>&nbsp; ${name}</p>
+                                <p>Price : <u  style="color: rgb(255, 255, 255);"><strong style="color: #ffffff;">${price}</u></p>
+                                <p></u> Qty : ${quantity}</p>
+                                <p>Expire on</p>
                             </div>
-                            <button type="button" class="btn btn-primary mt-3 mb-3 float-right" onclick="proceedToShipping()">Proceed</button>
                         </div>
                     </div>
                 </div>
-     
- </div>
- 
-
-
-
- <script>
-   $(document).ready(function() {
-   if (($("#add_new_address").is(":checked"))) {
-     $('#addAddress').css('display', 'block');
-     $('#check_add').collapse('show');
-     $('#check_existing_address').css('display', 'none');
-
-   }
- })
- let addressId, deliveryType, deliveryCharge, paymentMethod, selectedCouponCode, selectedCouponVal, finalAmountPay;
-
- addressId = $('#existing_address_1').val()
- finalAmountPay = $('#netPayable').data('net');
- if ($("#with_ship").is(":checked")) {
-   deliveryType = 'express';
-   deliveryCharge = 300;
- } else {
-   deliveryType = 'Normal';
-   deliveryCharge = 100;
- }
- function handleAddressSelection(id) {
-   if (id) {
-     $('#addAddress').css('display', 'none');
-     addressId = id;
-   } else {
-     addressId = null;
-     $('#addAddress').css('display', 'block');
-     $('#check_add').collapse('show');
-     $('#check_existing_address').collapse('hide');
-   }
- }
-
- $('#saveAndProceedBtn').on('click', async function(e) {
-   e.preventDefault();
-
-   $('#add1').css('display', 'none');
-   $('#add2').css('display', 'none');
-   $('#add3').css('display', 'none');
-   $('#add4').css('display', 'none');
-   $('#add5').css('display', 'none');
-   $('#add6').css('display', 'none');
-   $('#add7').css('display', 'none');
-
-   const name = $('#addName').val();
-   const address = $('#addAddress1').val();
-   const city = $('#addCity').val();
-   const state = $('#addState').val();
-   const country = $('#addCountry').val();
-   const postCode = $('#addPost').val();
-   const number = $('#addNumber').val();
-
-   if (!validateAdd()) return;
-
-   const response = await fetch('/addAddress', {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     body: JSON.stringify({
-       fullName: name,
-       addressLine1: address,
-       city,
-       state,
-       country,
-       postCode,
-       mobileNumber: number
-     })
-   })
-   const x = await response.json();
-   addressId = x.addedId;
-
-   console.log(addressId);
-   $('#saveAndProceedBtn').attr('disabled', true);
-   $('#addForm :input').attr('disabled', true);
-   $('#check_add').collapse('hide');
-   $('#check_ship').collapse('show');
-   $('#check_existing_address').css('display', 'none');
- });
-
-
- function validateAdd() {
-   const name = $('#addName').val();
-   const address = $('#addAddress1').val();
-   const city = $('#addCity').val();
-   const state = $('#addState').val();
-   const country = $('#addCountry').val();
-   const postCode = $('#addPost').val();
-   const number = $('#addNumber').val();
-   isValid = true;
-   if (!name.trim()) {
-     isValid = false;
-     $('#add1').css('display', 'block');
-   }
-   if (!address.trim()) {
-     isValid = false;
-     $('#add2').css('display', 'block');
-   }
-   if (!city.trim()) {
-     isValid = false;
-     $('#add3').css('display', 'block');
-   }
-   if (!state.trim()) {
-     isValid = false;
-     $('#add4').css('display', 'block');
-   }
-   if (!country.trim()) {
-     isValid = false;
-     $('#add7').css('display', 'block');
-   }
-   if (!postCode.trim() || postCode.length !== 6) {
-     isValid = false;
-     $('#add5').css('display', 'block');
-   }
-   if (!number.trim() || number.length !== 10) {
-     isValid = false;
-     $('#add6').css('display', 'block');
-   }
-   return isValid;
- }
+            </div>`;
+        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        myModal.show();
+    }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const formData = {
-  
-   firstName:document.getElementById('AddFname').value,
-   lastName :document.getElementById('AddLname').value,
-   mobileNum:document.getElementById('AddMobile').value,
-       email:document.getElementById('AddEmail').value,
-     address:document.getElementById('AddAddress').value,
-        city:document.getElementById('AddCity').value,
-    postCode:document.getElementById('AddPost').value,
-          id:document.getElementById('addressId').value,
-}
-console.log("ghdhdhhdsdhfh",formData);
-
-
-
-
-function validateAdd() {
-   const fname = $('#AddFname').val().trim()
-   const lname = $('#AddLname').val().trim();
-   const mobile = $('#AddMobile').val().trim();
-   const email = $('#AddEmail').val().trim();
-   const address = $('#AddAddress').val().trim();
-   const city = $('#AddCity').val().trim();
-   const post = $('#AddPost').val().trim();
-   let isValid = true;
-
-   if (!fname) {
-       isValid = false;
-       $('#add1').css('display', 'block');
-   }
-   if (!lname) {
-       isValid = false;
-       $('#add2').css('display', 'block');
-   }
-   if (!mobile) {
-       isValid = false;
-       $('#add3').css('display', 'block');
-   }
-   if (!email) {
-       isValid = false;
-       $('#add4').css('display', 'block');
-   }
-   if (!address) {
-       isValid = false;
-       $('#add5').css('display', 'block');
-   }
-   if (!city) {
-       isValid = false;
-       $('#add6').css('display', 'block');
-   }
-   if (!post) {
-       isValid = false;
-       $('#add7').css('display', 'block');
-   }
-
-   return isValid;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-window.onload = function() {
-   // Get the count of input boxes from Local Storage
-   const inputBoxCount = localStorage.getItem('inputBoxCount');
-
-   // Hide the input box container initially if there are images
-   const imageContainers = document.querySelectorAll('.image-container');
-   if (imageContainers.length === 0) {
-       document.getElementById('inputBoxContainer').style.display = '';
-   }
-}
+</script>
+   
+  </body>
+</html>

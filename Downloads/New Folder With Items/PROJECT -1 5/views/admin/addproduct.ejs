@@ -410,17 +410,17 @@
   function previewImages(event) {
       var files = event.target.files;
       var imagePreview = document.getElementById('imagePreview');
-      var maxAllowed = 4; // Maximum allowed images
+      var maxAllowed = 4;
       var errorMessage = document.getElementById('ImageError');
-      errorMessage.innerHTML = ''; // Clear previous error message
+      errorMessage.innerHTML = ''; 
       
       if (files.length > maxAllowed) {
           errorMessage.textContent = 'You can only select up to ' + maxAllowed + ' images.';
-          event.target.value = ''; // Clear the file input
-          return; // Exit function
+          event.target.value = '';
+          return;
       }
       
-      imagePreview.innerHTML = ''; // Clear previous previews
+      imagePreview.innerHTML = ''; 
       
       for (var i = 0; i < files.length; i++) {
           (function(file) {
