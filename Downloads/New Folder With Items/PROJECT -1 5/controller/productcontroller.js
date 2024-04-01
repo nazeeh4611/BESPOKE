@@ -39,7 +39,6 @@ const addProduct = async (req, res) => {
     
     
     const productDatas = await products.findOne({name:req.body.productName });
-    console.log("ygygsigifgsfggfgfsfgbfdisf",productDatas);
     const Datas = await category.find({ is_Listed: 1 });
     if (productDatas) {
   
@@ -47,11 +46,7 @@ const addProduct = async (req, res) => {
     }
    
     const { productName, description, quantity, categories, price } = req.body;
-    console.log("5", req.body.categories);
-    console.log("4", req.body.productName);
-    console.log("3", req.body.description);
-    console.log("2", req.body.quantity);
-    console.log("1", req.body.price);
+
     const filenames = [];
     const existcategory = await category.findOne({ name: categories });
    
@@ -115,7 +110,6 @@ const loadeditproduct = async (req, res) => {
 const editProduct = async (req, res) => {
   try {
     const id = req.body.id;
-    console.log("id", id);
     const { productName, description, quantity, categories, price } = req.body;
 
     const Datas = await products.findOne({ _id: id });

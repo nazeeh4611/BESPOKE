@@ -7,7 +7,7 @@ const offeropen = async(req,res)=>{
     try {
   
       const offers = await Offer.find();
-      console.log("offer ",offers );
+
       res.render("admin/offer",{offers})
     } catch (error) {
       console.log(error);
@@ -31,7 +31,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
 // }
 
       const {offerName,Discount,startingDate,endingDate} = req.body;
-      console.log("1",offerName,"2",startingDate,"3",endingDate,"4",Discount);
+
                   
                    
                     
@@ -53,7 +53,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
   const listoffer = async(req,res)=>{
     try {
      const offerId = req.body.id;
-      console.log("id",offerId);
+     
          await Offer.updateOne(
             {_id:offerId},
             {$set:{is_Blocked:false}},
@@ -67,7 +67,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
   const unlistoffer = async(req,res)=>{
     try {
         const offerId = req.body.id;
-        console.log("iidd",offerId);
+ 
         await Offer.updateOne(
             {_id:offerId},
             {$set:{is_Blocked:true}}
@@ -81,12 +81,12 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
   const applyProductOffer = async(req,res)=>{
     try {
      const {offerId,proid} = req.body;
-     console.log("1",offerId,"2",proid);
+ 
      const offers = await Product.findByIdAndUpdate(
       {_id:proid},
       {$set:{offer:offerId}},
      );
-     console.log(offers,"the offers");
+   
      res.json({success:true})
     } catch (error) {
       console.log(error);
@@ -102,7 +102,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
         {$pull:{offer:id}},
         {new:true},
       );
-      console.log(offers,"after the deletion");
+   
       res.json({success:true})
     } catch (error) {
       console.log(error);
@@ -117,7 +117,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
       {_id:catid},
       {$set:{offer:offerId}},
      );
-     console.log(offers,"the offers");
+   
      res.json({success:true})
     } catch (error) {
       console.log(error);
@@ -133,7 +133,6 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
         {$pull:{offer:id}},
         {new:true},
       );
-      console.log(offers,"after the deletion");
       res.json({success:true})
     } catch (error) {
       console.log(error);

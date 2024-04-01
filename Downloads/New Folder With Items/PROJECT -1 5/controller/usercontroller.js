@@ -410,9 +410,10 @@ const loadshop = async (req, res) => {
   try {
     let query = { is_Listed: true, is_Deleted: false };
 
-    if (req.query.category) {
-      query.category = req.query.category;
-    }
+    const category  = req.query.category;
+    
+
+   
 
     let sortOption = {};
     switch (req.query.sort) {
@@ -465,8 +466,6 @@ const loadshop = async (req, res) => {
       })
       .populate("offer")
       .sort(sortOption);
-    console.log(productDetails)
-    console.log("hii",productDetails.offer);
     const products = productDetails.filter(
       product => product.category && product.category.is_Listed
     );

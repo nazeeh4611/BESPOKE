@@ -5,7 +5,8 @@ const User = require('../model/userModel');
 const Address = require("../model/addressModel")
 const Cart = require("../model/cartModel");
 const Razorpay = require('razorpay');
-const crypto = require('crypto')
+const crypto = require('crypto');
+const { ok } = require("assert");
 var instance = new Razorpay({
   key_id: 'rzp_test_5mTjMS04uhfKer',
   key_secret:process.env.RAZORPAY_SECRET,
@@ -18,7 +19,6 @@ const OrderPlace = async (req, res) => {
 
         const { addressId, paymentMethod,subtotal} = req.body;
 
-        console.log("the address id here",addressId,"the payment here",paymentMethod,"subtotal here",subtotal);
         const cartdata = await Cart.findOne({ user: userId });
 
         if (!addressId || !paymentMethod) {
@@ -31,8 +31,7 @@ const OrderPlace = async (req, res) => {
         const userAddress = await Address.findOne({
             "address._id": addressId,
         });
-
-        console.log(userAddress);
+    
 
         if (!userAddress || userAddress.length === 0) {
             return res.json({
@@ -98,10 +97,9 @@ const OrderPlace = async (req, res) => {
                 currency: "INR",
                 receipt: "" + orderId,
                 })
-                console.log(orders,"all data will bw here");
+            
 
             res.json({success:false,orders })
-            console.log("hoifhdfshsofgsof");
         }
     } catch (error) {
         console.log(error);
@@ -140,7 +138,6 @@ const verifypayment = async(req,res)=>{
   const orderId = await NewOrder._id;
 
   const DeleteCartItem = await Cart.deleteOne({_id:cartdata._id });
-  console.log("item deleted from cart ",DeleteCartItem);
   res.json({orderId,success:true});
     } catch (error) {
         
@@ -191,7 +188,6 @@ const orderview = async(req,res)=>{
     const orderdata = await Order.findById({_id:id}).populate(
      "product.productId",
     )
-console.log(orderdata.deliveryDetails,"here")
   
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
@@ -234,7 +230,6 @@ const returnOrder = async(req,res)=>{
         
        
         const orders = await Order.findById({_id:orderId});
-         console.log("price",orders.subtotal)
        
         if(Date.now()>orders.expiredate){
             res.json({datelimit:true});

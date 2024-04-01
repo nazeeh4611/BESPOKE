@@ -81,7 +81,7 @@
                                                          }
                                             </style>
                                             <td>
-                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price 
+                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price
                                                          %></span>
                                             </td>
                                             <td>
@@ -152,7 +152,7 @@
                                                 </div><!-- .qty-control -->
                                             </td>
                                             <td>
-                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price 
+                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price.toFixed(2)
                                                          %></span>
                                             </td>
                                             <td>
@@ -250,7 +250,12 @@
                         $('#reload').load('/cart  #reload');
                         $('#subtotal').load('/cart  #subtotal');
                     } else {
-                        console.log("Error: ", response.error);
+                        
+                        swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: response.message,
+          });
                     }
                 })
                 .catch(error => console.error("Error:", error));

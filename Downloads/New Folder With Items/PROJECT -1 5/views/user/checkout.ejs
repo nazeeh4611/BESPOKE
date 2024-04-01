@@ -550,11 +550,21 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 const makePayment = () => {
     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
     if (!paymentMethod) {
+      Swal.fire({
+          icon:"error",
+          title:"please select address and payment method before order",
+          confirmButtonText:true,
+        })
         console.error("No payment method selected");
         return; 
     }
     const addressId = document.querySelector('input[name="addressId"]:checked');
     if (!addressId) {addressId
+      Swal.fire({
+          icon:"error",
+          title:"please select address and payment method before order",
+          confirmButtonText:true,
+        })
         console.error("No address selected");
         return; 
     }
@@ -586,6 +596,7 @@ const makePayment = () => {
         }).then(() => {
             window.location.href = `/ordercomplete?id=${orderId}`;
         });
+
     } else if (response.success == false) {
         console.log('response.success has become false now', response.orders);
         razorpay(response.orders);

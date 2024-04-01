@@ -27,7 +27,7 @@ const cartopen = async (req, res) => {
       const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
       let subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
-      console.log("subtotal here",subtotal)
+   
 
       let total = 0;
      
@@ -35,7 +35,7 @@ const cartopen = async (req, res) => {
         let offer = 0;
         if(product.productId.offer && product.productId.offer.length > 0){
           offer = product.productId.offer[0].discount; 
-          console.log("Offer:", offer);
+
           total += (product.productId.price-((product.productId.price*offer/100))*product.quantity)
         }else{
           total += product.productId.price * product.quantity;
@@ -191,8 +191,6 @@ const updateCart = async (req, res) => {
       },
       { new: true }
     );
-   console.log("cout @ addd to cart", count * 
-   cartData.product.find((p) => p.productId.equals(product_id)).price)
     res.json({ success: true, updatedCart });
   } catch (error) {
     console.log(error.message);
@@ -235,6 +233,10 @@ const Loadcheckout = async (req, res) => {
       path: 'product.productId',
       model: 'Product',
       match: {is_Deleted:false},
+      populate: [
+        { path: 'category', model: 'Category', populate: { path: 'offer' } },
+        { path: 'offer' },
+      ],
     })
     .populate("coupondiscount");
 
@@ -250,12 +252,21 @@ const Loadcheckout = async (req, res) => {
 
     // Calculate subtotal
     let subtotal = 0;
+    let total = 0
     if (cartdata && cartdata.product) {
       cartdata.product.forEach((product)=>{
-        
-        subtotal += product.productId.price * product.quantity ;
+       
+        if (product.productId && product.productId.price) {
+          if (product.productId.offer && product.productId.offer.length > 0) {
+            let offer = product.productId.offer[0].discount;
+            total += (product.productId.price - (product.productId.price * offer / 100)) * product.quantity;
+          } else {
+            total += product.productId.price * product.quantity;
+          }
+        }
+       
       })
-   
+   subtotal = total;
     }
 
     const productId = req.body.productId;
