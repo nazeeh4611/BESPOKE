@@ -58,8 +58,11 @@
                                                 </div>
                                             </td>
                                             <td>
+                                             
+                                               
                                                 <span class="shopping-cart__product-price">$<%= product.productId.price
                                                         %></span>
+                                             
                                             </td>
                                             <td>
                                                 <div class="product-single__addtocart" >
@@ -122,8 +125,18 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="shopping-cart__product-price">$<%= product.productId.price
-                                                        %></span>
+                                                <% if(product.productId.offer && product.productId.offer.length > 0){ 
+                                                    let offer = 0;
+                                                    offer = product.productId.offer[0].discount; 
+                                                    let discountedPrice = product.productId.price - (product.productId.price * (offer / 100)); %>
+                                                    <span class="shopping-cart__product-price">
+                                                       $<%= discountedPrice.toFixed(2) %>
+                                                    </span>
+                                                    </span>
+                                                <% } else { %>
+                                                    <span class="shopping-cart__product-price">$<%= product.productId.price %></span>
+                                                <% } %>
+                                             
                                             </td>
                                             <td>
                                                 <div class="qty-control position-relative">

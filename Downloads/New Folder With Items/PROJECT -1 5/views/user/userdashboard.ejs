@@ -2,6 +2,19 @@
 
 
   <main>
+    <style>
+      .wallet-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #dcdcdc;
+  
+}
+
+.wallet-amount {
+ color:green;
+}
+    </style>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">
       <h2 class="page-title">My Account</h2>
@@ -27,9 +40,20 @@
                   href="./account_edit_address.html">shipping and billing addresses</a>, and <a class="unerline-link"
                   href="./account_edit.html"> account details.</a>
             </h4>
+
+           
           </div>
+          <div class="wallet-box">
+            <h3>WALLET</h3>
+            <div class="wallet-amount">
+                <p>Wallet amount: <strong>$<%= userid.wallet %></strong></p>
+            </div>
         </div>
+         
+        </div>
+        
       </div>
+      
     </section>
   </main>
 

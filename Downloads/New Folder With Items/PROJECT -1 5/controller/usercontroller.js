@@ -503,6 +503,8 @@ const ProductDetail = async (req, res) => {
 
     const productdata = await Product.findById({ _id: productId }).populate(
       "category",
+    ).populate(
+      "offer"
     );
  
     const userIn = req.session.userId;
@@ -514,6 +516,11 @@ const ProductDetail = async (req, res) => {
       model: "Product",
     });
 
+
+     productdata.offer.forEach((offer)=>{
+      console.log(offer.discount)
+     })
+  
   
     // const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 

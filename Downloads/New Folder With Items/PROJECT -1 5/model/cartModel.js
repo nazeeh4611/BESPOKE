@@ -6,6 +6,10 @@ const cartModel = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  offer:[{
+    type:mongoose.Types.ObjectId,
+    ref:"offer",
+  }],
   product: [
     {
       productId: {

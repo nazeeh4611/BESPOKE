@@ -195,7 +195,20 @@
 
               <div class="product-price">
                 <!-- <p class = "last-price">Old Price: <span>$257.00</span></p> -->
-                <h3> <span class="current-price">$<%= data.price %></span></h3>
+                <% if (data.offer && data.offer.length > 0) { %>
+                <%   data.offer.forEach((offer)=>{  %>
+                  
+               
+                  <% let percentage = offer.discount; %>
+                  <% let discountedPrice = data.price - (data.price * (percentage / 100)); %>
+                  <span class="money price"></span>
+                  <h3 style="color: green;"> <span class="current-price"><del style="color: #252525;">$<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h3>
+                  <% }) %>
+                <% } else { %>
+                  <span class="money price">$<%= data.price.toFixed(2) %></span>
+                <% } %>
+              
+             
               </div>
 
               <div class="product-detail">
@@ -661,8 +674,7 @@
 
   <script>
     function openCartDrawer() {
-      updateCartDrawer(); // Call the function to update the cart drawer
-      // Add code to open the cart drawer if it's not already open
+      updateCartDrawer(); 
     }
 
     async function addToCart(id) {

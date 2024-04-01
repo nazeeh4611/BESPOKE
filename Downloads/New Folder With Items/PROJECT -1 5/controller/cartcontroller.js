@@ -17,8 +17,12 @@ const cartopen = async (req, res) => {
       const cartdata = await Cart.findOne({ user: userId }).populate({
         path: "product.productId",
         model: "Product",
-        match: { is_Deleted: false }
-      });
+        match: { is_Deleted: false },
+        populate: [
+          { path: 'category', model: 'Category', populate: { path: 'offer' } },
+          { path: 'offer' },
+        ],
+      })
 
       const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
@@ -26,11 +30,22 @@ const cartopen = async (req, res) => {
       console.log("subtotal here",subtotal)
 
       let total = 0;
-     cartdata.product.forEach((product)=>{
-      total += product.productId.price * product.quantity ;
-     })
-     subtotal = total;
-      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal,total, user: req.session.userId });
+     
+      cartdata.product.forEach((product) => {
+        let offer = 0;
+        if(product.productId.offer && product.productId.offer.length > 0){
+          offer = product.productId.offer[0].discount; 
+          console.log("Offer:", offer);
+          total += (product.productId.price-((product.productId.price*offer/100))*product.quantity)
+        }else{
+          total += product.productId.price * product.quantity;
+        }
+       
+       
+     
+      });
+      subtotal = total;
+      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, total, user: req.session.userId });
     } else {
       res.redirect("/login");
     }
@@ -38,6 +53,7 @@ const cartopen = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 
 
@@ -236,6 +252,7 @@ const Loadcheckout = async (req, res) => {
     let subtotal = 0;
     if (cartdata && cartdata.product) {
       cartdata.product.forEach((product)=>{
+        
         subtotal += product.productId.price * product.quantity ;
       })
    
