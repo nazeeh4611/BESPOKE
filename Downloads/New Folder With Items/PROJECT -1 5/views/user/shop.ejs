@@ -605,18 +605,19 @@
           </div>
 
           <div class="search-popup js-hidden-content">
-            <form action="/search" method="GET" class="search-field container">
+            <form id="searchForm" class="search-field container">
               <div class="position-relative">
-                  <input class="search-field__input search-popup__input w-100 fw-medium" type="text" name="searchKeyword" placeholder="Search products">
-                  <button class="btn-icon search-popup__submit" type="submit">
-                      <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <use href="#icon_search"></use>
-                      </svg>
-                  </button>
+                <input id="searchInput" class="search-field__input search-popup__input w-100 fw-medium" type="text" name="searchKeyword" placeholder="Search products">
+                <button class="btn-icon search-popup__submit" type="submit">
+                  <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_search"></use>
+                  </svg>
+                </button>
               </div>
-          </form>
-          <!-- /.header-search -->
-          </div><!-- /.search-popup -->
+            </form>
+            <!-- /.header-search -->
+          </div>
+          
         </div><!-- /.header-tools__item hover-container -->
 
         <div class="header-tools__item hover-container" id="userIconContainer">
@@ -779,7 +780,7 @@
       </div><!-- /.d-flex justify-content-between -->
 
       <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
-        <% if (products.length > 0) { %>
+        <% if (products.length > 0 ) { %>
           <% for (let i = 0; i < products.length; i++) { %>
             <div class="product-card-wrapper">
               <div class="product-card mb-3 mb-md-4 mb-xxl-5">
@@ -903,31 +904,40 @@
 
   <!-- Footer Scripts -->
   <script src="/public/js/theme.js"></script>
-  <script>
+ <script>
   document.getElementById('sortForm').addEventListener('submit', function(event) {
     event.preventDefault(); 
     const sortSelect = document.getElementById('sortSelect');
     const selectedSort = sortSelect.options[sortSelect.selectedIndex].value;
-    const currentUrl = new URL(window.location.href="/shop");
-    currentUrl.searchParams.set('sort', selectedSort); 
-    window.location.href = currentUrl.href; 
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('sort', selectedSort);
+    const currentUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.location.href = currentUrl; 
   });
 </script>
 <script>
   document.getElementById('sortSelect').addEventListener('change', function(event) {
     const selectedSort = event.target.value;
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('sort', selectedSort); 
-    window.location.href = currentUrl.href; 
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('sort', selectedSort);
+    const currentUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.location.href = currentUrl; 
   });
 </script>
+
 <script>
-  document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    const searchInput = document.getElementById('searchInput').value;
-    const searchUrl = `/search.html?search-keyword=${encodeURIComponent(searchInput)}`;
-    window.location.href = searchUrl; 
-  });
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+  event.preventDefault(); 
+  const searchInput = document.getElementById('searchInput').value;
+  const sortSelect = document.getElementById('sortSelect');
+  const selectedSort = sortSelect.options[sortSelect.selectedIndex].value;
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set('searchKeyword', encodeURIComponent(searchInput));
+  searchParams.set('sort', selectedSort);
+  const currentUrl = `${window.location.pathname}?${searchParams.toString()}`;
+  window.location.href = currentUrl; 
+});
+
 </script>
   <script>
   function openCartDrawer() {

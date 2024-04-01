@@ -485,16 +485,52 @@ const loadshop = async (req, res) => {
 
 const searchProducts = async (req, res) => {
   try {
-      const query = req.query.searchKeyword;
-      const products = await Product.find({ name: { $regex: query, $options: "i" } }).populate("category");
+    const query = req.query.searchKeyword;
+
+    if (!query || query.trim().length === 0) {
+      // If the search query is empty, return all listed and not deleted products
+      const products = await Product.find({
+        is_Deleted: false,
+        is_Listed: true
+      }).populate("category");
+
+      // Fetch all categories
       const categories = await Category.find({});
 
-      res.render("user/shop", { products, categories, user: req.session.userId, });
+      return res.render("user/shop", { products, categories, user: req.session.userId });
+    }
+
+    // Construct the search regex to match names starting with the query letter
+    const regex = new RegExp(`^${query}`, 'i');
+
+    // Find products that match the search query and meet the conditions
+    const products = await Product.find({
+      name: regex,
+      is_Deleted: false,
+      is_Listed: true
+    }).populate("category");
+
+    // Filter out products whose names don't start with the query letter
+    const filteredProducts = products.filter(product => product.name.toLowerCase().startsWith(query.toLowerCase()));
+
+    // Fetch all categories
+    const categories = await Category.find({});
+
+    res.render("user/shop", { products: filteredProducts, categories, user: req.session.userId });
   } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Internal Server Error");
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
   }
 };
+
+
+
+
+
+
+
+
+
 
 const ProductDetail = async (req, res) => {
   try {
