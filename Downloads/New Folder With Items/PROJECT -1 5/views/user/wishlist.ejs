@@ -776,7 +776,7 @@
               <% } %>
                   </div>
                   <button class="btn-remove-from-wishlist">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" onclick="removewishlist('<%= product._id %>')" xmlns="http://www.w3.org/2000/svg"><use href="#icon_close"></use></svg>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" onclick="removewishlist('<%= product.productId._id %>')" xmlns="http://www.w3.org/2000/svg"><use href="#icon_close"></use></svg>
                   </button>
                 </div>
                 <div class="pc__info position-relative">
@@ -827,6 +827,7 @@
 <script src="/public/js/jquery.min.js"></script>
 <script>
   function removewishlist(id) {
+    console.log("deleting id ",id)
       $.ajax({
           url: "/removewishlist",
           method: 'DELETE',

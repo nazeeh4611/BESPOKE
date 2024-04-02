@@ -14,10 +14,6 @@ const CouponSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    activationdate:{
-        type:Date,
-        required:true
-    },
     expiredate:{
         type:Date,
         required:true,

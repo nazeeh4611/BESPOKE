@@ -475,7 +475,6 @@
                     <th>Name</th>
                     <th>Coupon-Code</th>
                     <th>Discount</th>
-                    <th>Activation Date</th>
                     <th>Expire Date</th>
                     <th>Criteria Amount</th>
                     <th>Action </th>
@@ -495,14 +494,6 @@
                           <%= coupon[i].discountamount %>
                         </td>
                         <td>
-                          <%= coupon[i].activationdate.toLocaleDateString('en-US', {
-                            weekday: 'short',
-                            month: 'short',
-                            day: '2-digit',
-                            year: 'numeric'
-                          }).toLowerCase() %>
-                        </td>
-                        <td>
                           <%= coupon[i].expiredate.toLocaleDateString('en-US', {
                             weekday: 'short',
                             month: 'short',
@@ -514,10 +505,9 @@
                           <%= coupon[i].criteriaamount %>
                         </td>
                         <td>
-                          <button class="btn-1"><a href=""
-                            >Edit</a></button>
-                          <button class="btn-2"><a >Delete</a></button>
-                        </td>
+                          <button class="btn-1"><a href="/admin/editcoupon?_id=<%= coupon[i]._id %>">Edit</a></button>
+                          <button type="button" class="btn-2 delete-btn" data-id="<%= coupon[i]._id %>">Delete</button>
+                      </td>
                      
                       </tr>
                       <%}%>
@@ -556,6 +546,35 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const deleteButtons = document.querySelectorAll('.delete-btn');
+          
+          deleteButtons.forEach(button => {
+              button.addEventListener('click', function () {
+                  const couponId = this.getAttribute('data-id');
+                  
+                  Swal.fire({
+                      title: '<span style="color: red;">Are you sure?</span>',
+                      html: '<span style="color: black;">You won\'t be able to revert this!</span>',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!'
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                      
+                          window.location.href = '/admin/deletecoupon?_id=' + couponId;
+                      }
+                  });
+              });
+          });
+      });
+  </script>
+  
+
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

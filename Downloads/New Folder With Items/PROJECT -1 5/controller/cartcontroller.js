@@ -284,7 +284,7 @@ const Loadcheckout = async (req, res) => {
       addresses,
       subtotal,
       coupon,
-      coupondiscount: cartdata.coupondiscount 
+      coupondiscount: cartdata.coupondiscount, 
     });
   } catch (error) {
     console.log(error.message);
@@ -390,10 +390,11 @@ const removefromwishlist = async (req, res) => {
       const productId = req.body.productId;
 
 
-      const result = await wishlist.findOneAndDelete(
-          { user: userId },
-          { product: { productId: productId } }, 
-      );
+      const result = await wishlist.findOneAndUpdate(
+        { user: userId },
+        {$pull:{ product: { productId: productId } }}, 
+        {new:true}
+    );
 
       if (result) {
           res.json({ success: true, result });

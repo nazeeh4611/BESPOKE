@@ -120,6 +120,21 @@ adminRoute.get(
     offerController.unlistoffer
   );
 
+  adminRoute.get(
+    "/editoffer",
+    offerController.editoffer
+  );
+
+  adminRoute.post(
+    "/editoffer",
+    offerController.editedoffer
+  );
+
+  // adminRoute.get(
+  //   "/deleteoffer",
+  //   offerController.deleteoffer
+  // );
+
   adminRoute.post(
     "/applyproductoffer",
     offerController.applyProductOffer
@@ -155,6 +170,20 @@ adminRoute.get(
     couponcontroller.addCoupon
   );
   
+  adminRoute.get(
+    "/editcoupon",
+  couponcontroller.editcoupon
+  );
+
+  adminRoute.post(
+    "/editcoupon",
+    couponcontroller.editedcoupon
+  );
+
+  adminRoute.get(
+    "/deletecoupon",
+    couponcontroller.deleteCoupon
+  ); 
   adminRoute.get(
     "/sales",
     adminController.salesReport

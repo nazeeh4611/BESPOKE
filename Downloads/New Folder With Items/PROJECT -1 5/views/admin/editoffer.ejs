@@ -338,41 +338,34 @@
             <p class="card-description"> Add Offer Details </p>
             <form class="forms-sample" method="post" >              
               <div class="form-group">
-                <label for="exampleInputName1">Coupon-Name</label>
-                <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name">
-                <div id="CoupenNameError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputName1">Coupon-Code</label>
-                <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code">
-                <div id="CoupenCodeError" class="text-danger"></div>
+                <input type="hidden" name="offerId" value="<%= offer._id %>">
+                <label for="exampleInputName1">Offer-Name</label>
+                <input type="text" class="form-control" name="offerName" id="exampleInputName1" placeholder="Offer Name" value="<%= offer.name %>">
+                <div id="offerError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="Discount">Discount</label>
-                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
+                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount" value="<%= offer.discount %>">
                 <div id="DiscountError" class="text-danger"></div>
               </div>
               <div class="form-group">
-                <label for="expiredate">Expire Date</label>
-                <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date">
-                <div id="ExpireDate" class="text-danger"></div>
+                <label for="startingdate">Starting Date</label>
+                <input type="date" class="form-control" name="startingDate" id="exampleInputEmail3"
+                  placeholder="Starting Date" value="<%= offer.startingdate %>">
+                <div id="startingDateError" class="text-danger"></div>
               </div>
               <div class="form-group">
-                <label for="Discount">Criteria Amount</label>
-                <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria">
-                <div id="CriteriaError" class="text-danger"></div>
+                <label for="expiredate">Expire Date</label>
+                <input type="date" class="form-control" name="endingDate" id="endingDate" placeholder="Expire Date" value="<%= offer.endingdate %>">
+                <div id="endingDate" class="text-danger"></div>
               </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark"><a href="">Cancel</a></button>
               <% if (typeof messages !== 'undefined' && messages.message) { %>
-                <h5 style="color: red;">
-                  <%= messages.message %>
-                </h5>
-              <% } %>
                 <h3 class="mb-3">
-                
+                  <%= messages.message %>
                 </h3>
-           
+              <% }%>
             </form>
              </div>
         </div>
@@ -384,6 +377,106 @@
 
 
 
+<!-- 
+    <script>
+      function validateForm() {
+        // Reset error messages
+        document.getElementById("productError").innerHTML = "";
+        document.getElementById("productDescriptionError").innerHTML = "";
+        document.getElementById("quantityError").innerHTML = "";
+        document.getElementById("priceError").innerHTML = "";
+        document.getElementById("ImageError").innerHTML = "";
+        document.getElementById("CategoryError").innerHTML = "";
+    
+        // Get form inputs
+        var productName = document.forms["productForm"]["productName"].value.trim();
+        var description = document.forms["productForm"]["description"].value.trim();
+        var quantity = document.forms["productForm"]["quantity"].value.trim();
+        var price = document.forms["productForm"]["price"].value.trim();
+        var image = document.forms["productForm"]["image"].value.trim();
+        var category = document.forms["productForm"]["categories"].value.trim();
+    
+        // Flag to track if there are any errors
+        var hasError = false;
+    
+        // Validate product name
+        if (productName === "") {
+          document.getElementById("productError").innerHTML = "Product name is required";
+          hasError = true;
+        }
+    
+        // Validate description
+        if (description === "") {
+          document.getElementById("productDescriptionError").innerHTML = "Description is required";
+          hasError = true;
+        }
+    
+        // Validate quantity
+        if (quantity === "") {
+          document.getElementById("quantityError").innerHTML = "Quantity is required";
+          hasError = true;
+        } else if (isNaN(quantity)) {
+          document.getElementById("quantityError").innerHTML = "Quantity must be a  number";
+          hasError = true;
+        }
+    
+        // Validate price
+        if (price === "") {
+          document.getElementById("priceError").innerHTML = "Price is required";
+          hasError = true;
+        } else if (isNaN(price) || price <= 0) {
+          document.getElementById("priceError").innerHTML = "Price must be a positive number";
+          hasError = true;
+        }
+    
+        // Validate image
+        if (image === "") {
+          document.getElementById("ImageError").innerHTML = "Image is required";
+          hasError = true;
+        }
+    
+        // Validate category
+        if (category === "") {
+          document.getElementById("CategoryError").innerHTML = "Select Category";
+          hasError = true;
+        }
+    
+        // If there are errors, prevent form submission
+        if (hasError) {
+          return false;
+        }
+        return true;
+      }
+
+    </script> -->
+
+
+
+      
+
+            <!-- <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const fileInput = document.getElementById('productImage');
+              const imagePreviewContainer = document.getElementById('imagePreview');
+
+              fileInput.addEventListener('change', function () {
+                  imagePreviewContainer.innerHTML = "";
+
+                  for (const file of fileInput.files) {
+                      const img = document.createElement('img');
+                      img.src = URL.createObjectURL(file);
+                      img.className = "img-sm img-thumbnail mr-2";
+                      img.alt = "preview";
+                      img.style.width = '80px';
+                      img.style.height = '80px'; 
+                      img.style.objectFit = 'cover'; 
+                      imagePreviewContainer.appendChild(img);
+                  }
+              });
+          });
+
+
+        </script> -->
 
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

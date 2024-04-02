@@ -23,27 +23,79 @@ const loadaddcoupon = async(req,res)=>{
     }
 }
 
-const addCoupon = async(req,res)=>{
+const addCoupon = async (req, res) => {
     try {
-      const{CouponName,CouponCode,Discount,ActivationDate,ExpireDate,Criteria} =req.body
-      console.log(CouponName,"1",CouponCode,"2",Discount,"3",ActivationDate,"4",ExpireDate,"5",Criteria,"6");
+        const { CouponName, CouponCode, Discount, ExpireDate, Criteria } = req.body;
+        console.log(CouponName, "1", CouponCode, "2", Discount, "3","4", ExpireDate, "5", Criteria, "6");
 
-      const newCoupon = new Coupon({
-        name:CouponName,
-        discountamount:Discount,
-        couponcode:CouponCode,
-        activationdate:ActivationDate,
-        expiredate:ExpireDate,
-        criteriaamount:Criteria,
-      })
-      newCoupon.save();
-      console.log("all are here",newCoupon);
-      res.redirect("/admin/couponlist")
- 
+        if (Discount > Criteria) {
+            res.render("admin/addcoupon", { messages: { message: "criteria amount must be greater than discount" } });
+        } else {
+            const newCoupon = new Coupon({
+                name: CouponName,
+                discountamount: Discount,
+                couponcode: CouponCode,
+                expiredate: ExpireDate,
+                criteriaamount: Criteria,
+            });
+            await newCoupon.save();
+            console.log("all are here", newCoupon);
+            res.redirect("/admin/couponlist");
+        }
     } catch (error) {
-     console.log(error);   
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+const editcoupon = async (req,res)=>{
+    try {
+        const id = req.query._id;
+        console.log("id vannal aayii",id)
+      
+        const coupon = await Coupon.findOne({_id:id});
+        console.log("finded data",coupon);
+        res.render("admin/editcoupon",{coupon})
+    } catch (error) {
+        
     }
 }
+
+const editedcoupon = async(req,res)=>{
+    try {
+        const id = req.body.couponId;
+        console.log(id,"id may here")
+        const { CouponName, CouponCode, Discount, ExpireDate, Criteria } = req.body;
+
+      
+       const updateCoupon = await Coupon.findByIdAndUpdate(
+        {_id:id},
+        {  name: CouponName,
+            discountamount: Discount,
+            couponcode: CouponCode,
+            expiredate: ExpireDate,
+            criteriaamount: Criteria,
+        }
+       );
+      res.redirect("/admin/couponlist")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const deleteCoupon = async(req,res)=>{
+    try {
+        const id = req.query._id;
+       
+      const after =  await Coupon.findByIdAndDelete(
+            {_id:id},
+         );
+    res.redirect("/admin/couponlist")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 const applycoupon = async(req,res)=>{
     try {
@@ -80,7 +132,7 @@ const applycoupon = async(req,res)=>{
    console.log(cartcoupon); 
    }else{
     res.json({status:'Already applied'});
-    console.log(res.json,"already apllie");
+    console.log(res.json,"already apllied");
    }
 }else{
     res.json({status:'Already Used'});
@@ -116,4 +168,7 @@ module.exports = {
     addCoupon,
     applycoupon,
     RemoveCoupon,
+    editcoupon,
+    editedcoupon,
+    deleteCoupon,
 }

@@ -335,31 +335,32 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title"></h4>
-            <p class="card-description"> Add Offer Details </p>
+            <p class="card-description"> Edit Coupon Details </p>
             <form class="forms-sample" method="post" >              
               <div class="form-group">
+                <input type="hidden"  name="couponId" id="" value="<%= coupon.id %>">
                 <label for="exampleInputName1">Coupon-Name</label>
-                <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name">
+                <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name" value="<%= coupon.name %>">
                 <div id="CoupenNameError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="exampleInputName1">Coupon-Code</label>
-                <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code">
+                <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code" value="<%= coupon.couponcode %>">
                 <div id="CoupenCodeError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="Discount">Discount</label>
-                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
+                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount" value="<%= coupon.discountamount %>">
                 <div id="DiscountError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="expiredate">Expire Date</label>
-                <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date">
+                <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date" value="<%= coupon.expiredate %>">
                 <div id="ExpireDate" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="Discount">Criteria Amount</label>
-                <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria">
+                <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria" value="<%= coupon.criteriaamount %>">
                 <div id="CriteriaError" class="text-danger"></div>
               </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>

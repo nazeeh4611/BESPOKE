@@ -327,14 +327,14 @@
                             <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
                             <p>Get $<%= coupon[i].discountamount %> Off on <u>$<%= coupon[i].criteriaamount %></u> and Above</p>
                             <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
-                            <% if(subtotal >= coupon[i].criteriaamount) { %>
+                            <% if(subtotal >= coupon[i].criteriaamount && coupon[i].useduser !== userIn) { %>
                             <div class="button-line-container">
                               <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=coupon[i]._id %>')">select</button>
                               <hr class="full-width-line">
                             </div>
                             <%}else{%>
                               <div class="button-line-container">
-                                <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px; display:block;  background: linear-gradient(200deg, rgb(180, 173, 173), rgb(189, 180, 180)); " disabled >select</button>
+                                <button class="btn-lin fw-medium" id="cpn-bt" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px; display:block;  background: linear-gradient(200deg, rgb(180, 173, 173), rgb(189, 180, 180)); " disabled >select</button>
                                 <hr class="full-width-line">
                               </div>
                               <%}%>
@@ -702,11 +702,7 @@ function verifypayment(Payment,orders){
                     showConfirmButton: false,
                 })
             } else if(response.status == 'Already Used') {
-                Swal.fire({
-                    icon: 'info',
-                    title: ' Coupon already used',
-                    showConfirmButton: false,
-                })
+             $(`#cpn-bt`).css('display','none',)
             } else if(response.success == true) {
     Swal.fire({
         icon: 'success',

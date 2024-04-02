@@ -78,6 +78,51 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
     }
   }
 
+  const editoffer = async(req,res)=>{
+    try {
+      const id = req.query._id;
+      console.log(id,"id")
+      const offer = await Offer.findOne({_id:id});
+      console.log("offer name ",offer.name)
+     res.render("admin/editoffer",{offer})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const editedoffer = async(req,res)=>{
+    try {
+      const id = req.body.offerId;
+      console.log("offer is",id)
+      const {offerName,Discount,startingDate,endingDate} = req.body;
+      const edit = await Offer.findByIdAndUpdate(
+        {_id:id},
+        {
+          name:offerName,
+          discount:Discount,
+          startingdate:startingDate,
+          endingdate:endingDate,
+        }
+      );
+      console.log("edited data ",edit)
+      res.redirect("/admin/offerlist")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+// const deleteoffer = async(req,res)=>{
+//   try {
+//     const id = req.query.id;
+//    await Offer.findByIdAndDelete(
+//     {_id:id},
+//    );
+//    res.redirect("/admin/offerlist")
+//   } catch (error) {
+    
+//   }
+// }
+
   const applyProductOffer = async(req,res)=>{
     try {
      const {offerId,proid} = req.body;
@@ -145,6 +190,9 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
     addoffer,
     listoffer,
     unlistoffer,
+    editoffer,
+    editedoffer,
+    // deleteoffer,
     applyProductOffer,
     removeProductOffer,
     applyCategoryOffer,
