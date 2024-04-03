@@ -770,9 +770,9 @@
                     <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg></span>
                   </div>
                   <% if (product.productId.quantity > 0) { %>
-                  <button
-                  class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium " onclick="addToCart('<%= product.productId._id %>')"
-              title="Add To Cart">Add To Cart</button>
+                    <button
+                    class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium " onclick="addToCart('<%= product.productId._id %>'),removewishlist('<%= product.productId._id %>')"
+                title="Add To Cart">Add To Cart</button>
               <% } %>
                   </div>
                   <button class="btn-remove-from-wishlist">
@@ -805,9 +805,10 @@
               </div>
             </div>
             <% }) %>
-    <%} %>
+    <%}else{ %>
+      <h4>Wishlist is Empty</h4>
         
-    
+    <% }%>
       
     
         

@@ -390,11 +390,11 @@ const removefromwishlist = async (req, res) => {
       const productId = req.body.productId;
 
 
-      const result = await wishlist.findOneAndUpdate(
-        { user: userId },
-        {$pull:{ product: { productId: productId } }}, 
-        {new:true}
-    );
+     const result = await wishlist.findOneAndUpdate(
+          { user: userId },
+          {$pull:{ product: { productId: productId } }}, 
+          {new:true}
+      );
 
       if (result) {
           res.json({ success: true, result });
