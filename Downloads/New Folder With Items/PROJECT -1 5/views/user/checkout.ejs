@@ -327,7 +327,7 @@
                             <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
                             <p>Get $<%= coupon[i].discountamount %> Off on <u>$<%= coupon[i].criteriaamount %></u> and Above</p>
                             <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
-                            <% if(subtotal >= coupon[i].criteriaamount x) { %>
+                            <% if(subtotal >= coupon[i].criteriaamount) { %>
                             <div class="button-line-container">
                               <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=coupon[i]._id %>')">select</button>
                               <hr class="full-width-line">
