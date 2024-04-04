@@ -585,7 +585,7 @@ const makePayment = () => {
         addressId:addressId.value,
         subtotal:subtotal }),
         success: function (response) {
-    console.log('Form submitted successfully:', response);
+  
     if (response && response.success) {
         const orderId = response.orderId;
         console.log("The order ID:", orderId);

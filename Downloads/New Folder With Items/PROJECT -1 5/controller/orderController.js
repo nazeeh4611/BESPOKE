@@ -192,6 +192,8 @@ const orderview = async(req,res)=>{
   orderdata.product.forEach((value)=>{
     console.log("idnbnbnb",value._id)
   })
+
+  
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
         console.log(error)
@@ -270,17 +272,37 @@ const returnOrder = async (req, res) => {
 }
 
 
+const resonsend = async(req,res)=>{
+    try {
+        const productId = req.query.productId;
+        console.log("pro",productId)
+        const order = await Order.findOne({ 'product.productId': productId });
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        const product = order.product.find(item => item.productId.toString() === productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found in order' });
+        }
+        console.log(product);
+        res.json({ reason: product.reason });
+    } catch (err) {
+        console.error('Error fetching reason:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 
 const orderrazor = async (req, res) => {
     try {
         const { orderId, totalamount } = req.body;
         const orders = await instance.orders.create({
-            amount: totalamount * 100, // Amount in cents (USD)
+            amount: totalamount * 100, 
             currency: "USD",
             receipt: "" + orderId,
         });
 
-        // Call razorpay function with orders
+       
         razorpay(orders);
 
         return res.json({ success: true, orders });
@@ -297,6 +319,7 @@ module.exports = {
 orderview,
 ordercancel,
 returnOrder,
+resonsend,
 orderrazor,
 verifypayment,
 }

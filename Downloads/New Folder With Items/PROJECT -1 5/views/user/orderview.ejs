@@ -177,40 +177,54 @@ background-color: transparent;
                 </div>
             </div>
             </div>
-        <div class="modal fade" id="staticBackdrop" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Return Request</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="col-md-12">
-                    <div class="mt-3">
-                        <select class="form-select" name="reason" id="ReturnReason">
-                          <option value="" disabled selected>Select a reason for returning</option>
-                          <option value="Defective Product">Defective Product</option>
-                          <option value="Received Wrong Size/Colour">Received Wrong Size/Colour</option>
-                          <option value="changed My mind">Changed My mind</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <textarea class="form-control form-control_gray mt-3"  name="other_reason" id="OtherReason" placeholder="Enter details if 'Other' selected" cols="30" rows="4" style="display: none;"></textarea>
-                      </div>
+            <div class="modal fade" id="staticBackdrop" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Return Request</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="mt-3">
+                                    <form id="returnForm">
+                                        <select class="form-select" name="reason" id="ReturnReason" required>
+                                            <option value="" disabled selected>Select a reason for returning</option>
+                                            <option value="Defective Product">Defective Product</option>
+                                            <option value="Received Wrong Size/Colour">Received Wrong Size/Colour</option>
+                                            <option value="changed My mind">Changed My mind</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <textarea class="form-control form-control_gray mt-3" name="other_reason" id="OtherReason" placeholder="Enter details if 'Other' selected" cols="30" rows="4" style="display: none;"></textarea>
+                                        <div id="formMessages"></div> <!-- Container for form messages -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <% let hasProductId = false; %>
+                            <% orderdata.product.forEach((product) => { %>
+                            <% if (product && product.productId._id) { %>
+                            <% hasProductId = true; %>
+                            <% } %>
+                            <% }) %>
+            
+                            <% if (hasProductId) { %>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="hidden" id="returnOrderId" name="orderId" value="<%= orderdata._id %>">
+                            <% let submitButtonDisplayed = false; %>
+                            <% orderdata.product.forEach((product) => { %>
+                            <% if (product && product.productId._id && !submitButtonDisplayed) { %>
+                            <% submitButtonDisplayed = true; %>
+                            <button type="button" class="btn btn-primary" onclick="validateAndSubmit()">Submit</button>
+                            <% } %>
+                            <% }) %>
+                            <% } %>
+                        </div>
+            
+                    </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <% orderdata.product.forEach((value) => { %>
-                  <% if (value && value._id) { %> 
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input type="hidden" id="returnOrderId" name="orderId" value="<%= orderdata._id %>">
-
-                <button type="button" class="btn btn-primary" onclick="returnOrder('<%= value._id %>','<%= orderdata._id %>')">Submit</button>
-                   <% } %>
-                <%}) %>
-              </div>
             </div>
-          </div>
-        </div>
     </section>
 </main>
 
@@ -229,6 +243,27 @@ background-color: transparent;
 }
 
   </script>
+<script>
+    function validateAndSubmit() {
+        var reason = document.getElementById("ReturnReason").value;
+        var otherReasonTextarea = document.getElementById("OtherReason");
+        var formMessages = document.getElementById("formMessages");
+
+        formMessages.innerHTML = ""; 
+
+        if (reason === "") {
+            formMessages.innerHTML = "<div class='alert alert' style='color:red; font-size:medium;'; role='alert'>Please select a reason for returning.</div>";
+            return;
+        }
+
+        if (reason === "other" && otherReasonTextarea.value.trim() === "") {
+            formMessages.innerHTML = "<div class='alert alert' style='color:red; font-size:medium;' role='alert'>Please enter details for 'Other' reason.</div>";
+            return;
+        }
+
+        document.getElementById("returnForm").submit(); 
+    }
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const returnReasonSelect = document.getElementById("ReturnReason");
@@ -295,9 +330,21 @@ background-color: transparent;
  
 
    
-   function returnOrder(proid,) {
-    const returnReason = document.getElementById('ReturnReason').value;
+function returnOrder(proid) {
+    const returnReasonSelect = document.getElementById('ReturnReason');
+    const otherReasonTextarea = document.getElementById('OtherReason');
+    
+    let returnReason;
 
+    if (returnReasonSelect.value === 'other') {
+        returnReason = otherReasonTextarea.value;
+    } else {
+        returnReason = returnReasonSelect.value;
+    }
+
+  
+
+    
   
     console.log(returnReason,"reason")
     const orderId = document.getElementById('returnOrderId').value;

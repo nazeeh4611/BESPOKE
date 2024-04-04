@@ -571,32 +571,37 @@
                   </div>
                 </div>
               </div>
+              
          
-        
-              <div class="modal fade" id="staticBackdrop" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal fade" id="staticB" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Return Reason</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <% Orders.forEach((order, index) => { %>
-                        <% order.product.forEach((product) => { %>
-                          <h4> <%= product.reason %></h4>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Return Reason</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <% Orders.forEach((order) => { %>
+                                <% order.product.forEach((product,index) => { %>
+                                    <%= product.productId.reason %>
+                                <% }) %>
+                            <% }) %>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                           
+                            <% Orders.forEach((order) => { %>
+                              <% order.product.forEach((product,index) => { %>
+                                <button onclick="returned('<%= product.status %>','<%= order._id %>','<%= product._id %>')" type="button" id="ship" class="btn btn-primary">Submit</button>
+                              <% }) %>
                           <% }) %>
-                          <% }) %>
-                     
-                    <div class="modal-footer">
-                 
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" >Submit</button>
-                       
+                           
+                            
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
+              
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
@@ -631,14 +636,29 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-function modal(id) {
-  console.log(id,"id")
-  if(id){
-    $('#staticBackdrop').modal('show');
-  }
+function modal(productId) {
+  console.log("hiii",productId)
+    // Assuming you're using jQuery for AJAX requests
+    $.ajax({
+        url: '/getReason', // Route to fetch reason based on product ID
+        type: 'GET',
+        data: { productId: productId },
+        success: function(data) {
+            // Populate modal body with the fetched reason
+            $('.modal-body').html(data.reason);
+            console.log("kiii",data.reason)
+            // Display the modal
+            $('#staticB').modal('show');
+        },
+        error: function(err) {
+            console.error('Error fetching reason:', err);
+        }
+    });
+}
+
  
 
-}
+
 </script>
 <script>
   function shipmentUpdate(status,orderId,proid){
@@ -667,6 +687,9 @@ function modal(id) {
       })
       .then(()=>{
         $('#statusmodal').modal('hide');
+        $('#staticB').modal('hide');
+        
+
         setTimeout(()=>{
           window.location.reload('/orderlist')
         })
@@ -676,6 +699,35 @@ function modal(id) {
 
   }
 
+</script>
+
+<script>
+  function returned(status,orderId,proid){
+    console.log("jiii")
+    $('#ship').click(()=>{
+      console.log("ivade eethi")
+      fetch("/admin/orderstatus",{
+        method:'PATCH',
+        headers:{
+          'content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          id:proid,
+          orderId:orderId
+        })
+      })
+      .then(()=>{
+        $('#statusmodal').modal('hide');
+        $('#staticB').modal('hide');
+        
+
+        setTimeout(()=>{
+          window.location.reload('/orderlist')
+        })
+      })
+    })
+
+  }
 </script>
 
     <!-- endinject -->

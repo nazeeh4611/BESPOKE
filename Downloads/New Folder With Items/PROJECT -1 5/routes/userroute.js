@@ -135,6 +135,7 @@ userRoute.get('/orders',ordercontroller.orderlist);
 userRoute.get("/view",ordercontroller.orderview);
 userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 userRoute.post("/return",ordercontroller.returnOrder);
+userRoute.get("/getReason",ordercontroller.resonsend);
 
 
 // coupon

@@ -115,7 +115,11 @@ const BlockUser = async (req, res) => {
 const orderlist = async(req,res)=>{
   try {
     const Orders = await Order.find().sort({Date:-1});
-
+     Orders.forEach((order, index) => { 
+      order.product.forEach((product) => { 
+       console.log(product.productId,"pullingo")
+     }) 
+   })
     res.render("admin/orderDetails",{Orders});
   } catch (error) {
     console.log(error)
@@ -155,7 +159,10 @@ const orderstatus = async(req, res) => {
 
     } else if (product.status === 'out for delivery') {
       console.log("Updating status to 'delivered'");
-
+    }else if(product.status === 'waiting for approval'){
+      order.product[productIndex].status = 'returned';
+      order.product[productIndex].reason = '';
+    }else{
       order.product[productIndex].status = 'delivered';
     }
 
