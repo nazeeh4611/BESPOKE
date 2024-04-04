@@ -73,16 +73,21 @@
   
     .btn-2 {
       background-color: #dc3545;
+     
       /* Red for Delete button */
     }
   
-    .btn-3 {
-      background-color: #28a745;
+    #btn-3 {
+      background-color: #00c32d;
+      color: white;
+      border: none;
       /* Green for List button */
     }
   
-    .btn-4 {
-      background-color: #dc3545;
+    #btn-4 {
+      background-color: #cd0015;
+      color: white;
+      border: none;
       /* Red for Unlist button */
     }
   
@@ -486,7 +491,7 @@
                                 <button class="btn-2" style="color: #fff;" onclick="removeoffer('<%= Data[i].offer[0]._id %>','<%=Data[i]._id %>')"><a
                                    >Remove </a></button>
                                    <%}else{ %>
-                                    <button type="button" class="btn-1" onclick="modalshow('<%= Data[i]._id %>')">
+                                    <button type="button" style="background-color: #28a745;" class="btn-1" onclick="modalshow('<%= Data[i]._id %>')">
                                       Select
                                     </button>
                                      
@@ -497,11 +502,11 @@
                           <div class="dropdown">
                             <% if (Data[i].is_Listed==1) { %>
                               <a href="/admin/UnList?id=<%= Data[i]._id %>" 
-                                class="btn btn-light rounded btn-sm font-sm" style="background-color: #ff0000;"> <i>UnList</i>
+                                class="btn btn-light rounded btn-sm font-sm" id="btn-4"> <i>UnList</i>
                               </a>
                               <% } else { %>
                                 <a href="/admin/List?id=<%= Data[i]._id %>" 
-                                  class="btn btn-light rounded btn-sm font-sm" style="background-color: rgb(98, 255, 0);"> <i>List</i>
+                                  class="btn btn-light rounded btn-sm font-sm" id="btn-3"> <i>List</i>
                                 </a>
                                 <% } %>
                           </div>

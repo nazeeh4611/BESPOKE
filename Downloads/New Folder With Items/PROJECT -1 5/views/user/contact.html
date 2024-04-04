@@ -49,3 +49,101 @@
         <div></div>
         <% } %>
 </div>
+
+
+
+
+
+
+
+
+<script>
+  const cancelorder = async (orderId) => {
+   try {
+     const result = await Swal.fire({
+       title: "Are you sure?",
+       text: "Do you want to cancel this order?",
+       icon: 'warning',
+       showCancelButton: true,
+       confirmButtonText: "Confirm",
+       cancelButtonText: "Cancel",
+       reverseButtons: true,
+     });
+ 
+     if (result.isConfirmed) {
+       const response = await fetch("/cancelorder", {
+         method: 'PATCH',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ productId: proid })
+       });
+ 
+       if (response.ok) {
+         const responseData = await response.json(); // Fix here: response instead of res
+         if (responseData.success) {
+           Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
+             .then(() => {
+               console.log("order cancelled successfully");
+               window.location.href = '/orders';
+             });
+         } else {
+           Swal.fire('Error!', 'Failed to cancel order.', 'error');
+           console.log("order cancel failed");
+         }
+       } else {
+         Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
+         console.log("error occurred", response.status);
+       }
+     }
+   } catch (error) {
+     console.error("Error occurred:", error);
+   }
+ }
+ 
+ 
+ function returnOrder(proid,) {
+  const orderId = document.getElementById('returnOrderId').value;
+  console.log("the order id is getting", proid, orderId);
+  $('#staticBackdrop').modal('hide');
+  Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Do it!",
+      cancelButtonText: "Cancel",
+  }).then((result) => {
+      if (result.isConfirmed) {
+          fetch('/return', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      orderId: orderId, // Ensure orderId is passed as a string
+                      productId: proid // Ensure proid is passed as a string
+                  })
+              })
+              .then((response) => response.json())
+              .then((response) => {
+                  if (response.datelimit) {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Return Date expired'
+                      })
+                  } else if (response.return) {
+                      location.reload();
+                  }
+              })
+              .catch((error) => {
+                  console.error("error occurred in fetch:", error.message)
+              })
+      }
+  })
+}
+
+ </script>

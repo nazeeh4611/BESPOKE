@@ -26,7 +26,7 @@
                               <th>No</th>
                               <th>OrderID</th>
                               <th>Date</th>
-                              <th>Status</th>
+                              <!-- <th>Status</th> -->
                               <th>Total</th>
                               <th>PaymentMethod</th>
                               <th>Actions</th>
@@ -42,17 +42,13 @@
                               <% }else{ %>
                               <td>N/A</td>
                               <% } %>
-                              <td><%= order.status %></td>
+                              <!-- <td><%= order.status %></td> -->
                               <td>$<%= order.subtotal %></td>
                               <td><%= order.paymentMethod %></td>
                               <td>
+                                
                                   <a href="/view?id=<%=order._id %>"><button style="width: 141px;" class="btin btn-primar">View Order</button></a>
-                                  <% if(order.status !== 'cancelled' && order.status !== 'delivered' && order.status !== 'Return Approved' && order.status !== 'Waiting for Approval' && order.status !== 'pending') { %>
-                                  <button onclick="cancelorder('<%=order._id %>')" class="btn btn-primary">Cancel</button>
-                                  <% } %>
-                                  <% if(order.status == 'delivered') { %>
-                                  <button onclick="modalshow()" class="btn btn-primary">Return</button>
-                                  <% } %>
+                              
                               </td>
                           </tr>
                           <% }) %>
@@ -122,107 +118,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var returnReason = document.getElementById("ReturnReason");
-    var otherReasonTextarea = document.getElementById("OtherReason");
-  
-    returnReason.addEventListener("change", function() {
-      if (returnReason.value === "other") {
-        otherReasonTextarea.style.display = "block";
-      } else {
-        otherReasonTextarea.style.display = "none";
-      }
-    });
-  });
-  </script>
-<script>
- const cancelorder = async (orderId) => {
-  try {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to cancel this order?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Cancel",
-      reverseButtons: true,
-    });
-
-    if (result.isConfirmed) {
-      const response = await fetch("/cancelorder", {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ orderId: orderId })
-      });
-
-      if (response.ok) {
-        const responseData = await response.json(); // Fix here: response instead of res
-        if (responseData.success) {
-          Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
-            .then(() => {
-              console.log("order cancelled successfully");
-              window.location.href = '/orders';
-            });
-        } else {
-          Swal.fire('Error!', 'Failed to cancel order.', 'error');
-          console.log("order cancel failed");
-        }
-      } else {
-        Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
-        console.log("error occurred", response.status);
-      }
-    }
-  } catch (error) {
-    console.error("Error occurred:", error);
-  }
-}
 
 
-  function returnOrder(orderId) {
-  console.log("the order id is getting", orderId);
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Do it!",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch('/return', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            orderId: orderId
-          })
-        })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response.datelimit) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Return Date expired'
-            })
-          } else if (response.return) {
-            location.reload();
-          }
-        })
-        .catch((error) => {
-          console.error("error occurred in fetch:", error.message)
-        })
-    }
-  })
-}
-
-</script>
 
 <script src="/public/js/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -232,12 +129,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 
-<script>
-  function modalshow() {
-    console.log("id may here");
-    $('#staticBackdrop').modal('show'); // This line triggers the modal to show
-  }
-</script>
+
 
 
 

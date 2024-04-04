@@ -21,6 +21,7 @@ const adminLogin = async (req, res) => {
 
 const verifyAdminLogin = async (req, res) => {
   try {
+    let messages = {};
     const userData = await User.findOne({ email: req.body.email });
    
 
@@ -30,17 +31,17 @@ const verifyAdminLogin = async (req, res) => {
         userData.password,
       );
 
-      if (passwordMatch) {
+      if (passwordMatch && userData.is_Admin == 1) {
         req.session.adminId = userData._id;
        
         res.redirect("/admin/dashboard");
       } else {
         messages.message = "Incorrect password"; 
-        res.render("admin/adminlogin", { messages });
+        res.render("admin/adminlogin", { messages:{message:"incorrect email or password"}});
       }
     } else {
       messages.message = "Incorrect email"; 
-      res.render("admin/adminlogin", { messages });
+      res.render("admin/adminlogin", { messages:{message:"incorrect email or password"} });
     }
   } catch (error) {
     console.log(error.message);
@@ -114,38 +115,61 @@ const BlockUser = async (req, res) => {
 const orderlist = async(req,res)=>{
   try {
     const Orders = await Order.find().sort({Date:-1});
+
     res.render("admin/orderDetails",{Orders});
   } catch (error) {
-    
+    console.log(error)
   }
 }
 
-const orderstatus = async(req,res)=>{
+const orderstatus = async(req, res) => {
   try {
-    const id = req.query.id;
+    const { orderId, id } = req.body;
+   
+    const order = await Order.findById(orderId);
+    console.log("Order:", order);
+  
+    const productIndex = order.product.findIndex(item => item._id.toString() === id);
+    console.log("Product Index:", productIndex);
 
-    const orders = await Order.findById({_id:id});
+    if (productIndex === -1) {
+      console.log("Product not found");
+      return res.redirect("/admin/orders");
+    }
 
-    if(orders.status == 'placed'){
-      await Order.findByIdAndUpdate(
-        {_id:id},
-        {$set:{status:'pending'}},
-      );
-      res.redirect("/admin/orders")
+    const product = order.product[productIndex];
+    console.log("Product:", product);
+
+    if (product.status === 'pending') {
+      console.log("Updating status to 'placed'");
+      order.product[productIndex].status = 'placed';
+
+    } else if (product.status === 'placed') {
+      console.log("Updating status to 'shipped'");
+      order.product[productIndex].status = 'shipped';
+     
+    } else if (product.status === 'shipped') {
+      console.log("Updating status to 'out for delivery'");
+      order.product[productIndex].status = 'out for delivery';
+
+
+    } else if (product.status === 'out for delivery') {
+      console.log("Updating status to 'delivered'");
+
+      order.product[productIndex].status = 'delivered';
     }
-    if(orders.status == 'pending'){
-      await Order.findByIdAndUpdate(
-        {_id:id},
-        {$set:{status:'placed'}}
-      );
-      res.redirect("/admin/orders")
-    }else{
-      res.redirect("/admin/orders")
-    }
+
+    await order.save();
+
+    res.redirect("/admin/orders");
   } catch (error) {
     console.log(error);
+    res.redirect("/admin/orders");
   }
 }
+
+
+
 
 const ordercancel = async(req,res)=>{
   try {

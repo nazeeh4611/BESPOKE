@@ -124,19 +124,20 @@ const verifypayment = async(req,res)=>{
         const { productId, quantity } = Data;
         await Product.findByIdAndUpdate(
           { _id: productId },
-          { $inc: { quantity: -quantity } }
+          { $inc: { quantity: -quantity } },
+          {$set:{status:"placed"}},
         );
       }
   }
-  
+
   const NewOrder = await Order.findByIdAndUpdate(
     {_id:Data.orders.receipt},
     {$set:{status:'placed'}},
   )
 
+
   const cartdata = await Cart.findOne({user:userId})
   const orderId = await NewOrder._id;
-
   const DeleteCartItem = await Cart.deleteOne({_id:cartdata._id });
   res.json({orderId,success:true});
     } catch (error) {
@@ -188,7 +189,9 @@ const orderview = async(req,res)=>{
     const orderdata = await Order.findById({_id:id}).populate(
      "product.productId",
     )
-  
+  orderdata.product.forEach((value)=>{
+    console.log("idnbnbnb",value._id)
+  })
     res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
         console.log(error)
@@ -199,17 +202,19 @@ const ordercancel = async(req,res)=>{
     try {
        const userId = req.session.userId;
        const orderId = req.body.orderId;
-     
-       const order = await Order.findById({_id:orderId});
+       const productId = req.body.productId;
 
-  const data = await Order.findByIdAndUpdate(
-    {user:userId,
-    _id:orderId},
-    {$set:{status:'cancelled'}},
-    {new:true},
-  )
+       console.log(userId,orderId,productId)
+       const order = await Order.findById({_id:orderId});
+       const productIndex = order.product.findIndex(item => item._id.toString() === productId);
+       console.log(productIndex,"productIndex")
+      let data =  order.product[productIndex].status = 'cancelled';
+  console.log(data)
   if(data){
+    order.product[productIndex].status = 'cancelled';
+    await order.save(); // Save the updated order
     res.json({success:true})
+   
   }else{
     res.json({
         success:false,
@@ -222,32 +227,44 @@ const ordercancel = async(req,res)=>{
     }
 }
 
-const returnOrder = async(req,res)=>{
+const returnOrder = async (req, res) => {
     try {
         const userId = req.session.userId;
-       
-        const orderId = req.body.orderId;
-        
-       
-        const orders = await Order.findById({_id:orderId});
-       
-        if(Date.now()>orders.expiredate){
-            res.json({datelimit:true});
-        }else{
-            await Order.findByIdAndUpdate(
-                {_id:orderId},
-                {$set:{status:'waiting for approvel'}}
-            );
-           
-         
-            res.json({return:true})
+        const { orderId, productId } = req.body; // Destructure orderId and productId directly
+
+        if (!orderId || !productId) {
+            return res.status(400).json({ error: "orderId and productId are required" });
         }
 
+        console.log("1", orderId, "2", productId);
+
+        const orders = await Order.findById(orderId);
+
+        if (!orders) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        if (Date.now() > orders.expiredate) {
+            return res.json({ datelimit: true });
+        } else {
+            const productIndex = orders.product.findIndex(item => item._id.toString() === productId);
+           console.log(productIndex,"productIndex")
+            if (productIndex === -1) {
+                return res.status(404).json({ error: "Product not found in order" });
+            }
+
+            orders.product[productIndex].status = 'waiting for approval';
+
+            await orders.save(); // Save the updated order
+
+            return res.json({ return: true });
+        }
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({error:"Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
+
 
 
 const orderrazor = async(req,res)=>{

@@ -34,6 +34,11 @@
                 <label for="customerPasswodInput">Password *</label>
               </div>
               <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+              <% if (typeof messages !== 'undefined' && messages.message) { %>
+                <h5 style="color: red;">
+                  <%= messages.message %>
+                </h5>
+              <% } %>
             </form>
 
 

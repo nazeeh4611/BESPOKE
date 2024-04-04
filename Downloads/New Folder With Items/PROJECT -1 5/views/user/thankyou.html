@@ -1,820 +1,338 @@
-
 <%- include("../layouts/userpartials/header.ejs") %>
 
-
 <main>
-
- 
-    <!-- Customer Login Form -->
-    <div class="aside aside_right overflow-hidden customer-forms" id="customerForms">
-      <div class="customer-forms__wrapper d-flex position-relative">
-        <div class="customer__login">
-          <div class="aside-header d-flex align-items-center">
-            <h3 class="text-uppercase fs-6 mb-0">Login</h3>
-            <button class="btn-close-lg js-close-aside ms-auto"></button>
-          </div><!-- /.aside-header -->
-  
-          <form action="/login" method="post" class="aside-content">
-            <div class="form-floating mb-3">
-              <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput" placeholder="name@example.com">
-              <label for="customerNameEmailInput">Username or email address *</label>
-            </div>
-  
-            <div class="pb-3"></div>
-  
-            <div class="form-label-fixed mb-3">
-              <label for="customerPasswordInput" class="form-label">Password *</label>
-              <input name="password" id="customerPasswordInput" class="form-control form-control_gray" type="password" placeholder="********">
-            </div>
-  
-            <div class="d-flex align-items-center mb-3 pb-2">
-              <div class="form-check mb-0">
-              </div>
-              <a href="/forgetpass" class="btn-text ms-auto">Lost password?</a>
-            </div>
-  
-            <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
-  
-            <div class="customer-option mt-4 text-center">
-              <span class="text-secondary">No account yet?</span>
-              <a href="/register" class="btn-text js-show-register">Create Account</a>
-            </div>
-          </form>
-        </div><!-- /.customer__login -->
-      </div><!-- /.customer-forms__wrapper -->
-    </div><!-- /.aside aside_right -->
-
-    <div class="mb-md-1 pb-md-3"></div>
-    <section class="product-single container">
-      
-      <div class = "card-wrapper">
-
-      <div class="product-single__details-tab">
-        
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          
-          <li class="nav-item" role="presentation">
-            
-            <!-- <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab" href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a> -->
-          </li>
-          <!-- <li class="nav-item" role="presentation">
-            <a class="nav-link nav-link_underscore" id="tab-additional-info-tab" data-bs-toggle="tab" href="#tab-additional-info" role="tab" aria-controls="tab-additional-info" aria-selected="false">Additional Information</a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab" href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews (2)</a>
-          </li> -->
-        </ul>
-        <div class="tab-content">
-          <div class = "card">
-            <!-- card left -->
-            <div class = "product-imgs">
-              <div class = "img-display">
-                <div class = "img-showcase">
-                  <% for (let i=0; i < data.Image.length; i++) { %>
-                  <img src = "/public/uploadImg/<%= data.Image[i] %> " alt = "shoe image">
-                  <!-- <img src = "/public/images/shoe_2.jpg" alt = "shoe image">
-                  <img src = "/public/images/shoe_3.jpg" alt = "shoe image">
-                  <img src = "/public/images/shoe_4.jpg" alt = "shoe image"> -->
-                  <% }%>
-                </div>
-              </div>
-              <div class = "img-select">
-               
-                <div class = "img-item">
-                  <a href = "#" data-id = "1">
-                    <img src = "/public/uploadImg/<%= data.Image[0] %> " alt = "shoe image">
-                  </a>
-                </div>
-                <div class = "img-item">
-                  <a href = "#" data-id = "2">
-                    <img src = "/public/uploadImg/<%= data.Image[1] %> " alt = "shoe image">
-                  </a>
-                </div>
-                <div class = "img-item">
-                  <a href = "#" data-id = "3">
-                    <img src ="/public/uploadImg/<%= data.Image[2] %> " alt = "shoe image">
-                  </a>
-                </div>
-                <div class = "img-item">
-                  <a href = "#" data-id = "4">
-                    <img src ="/public/uploadImg/<%= data.Image[3] %> " alt = "shoe image">
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- card right -->
-            <div class = "product-content">
-              <h6 class = "product-title"><%= data.name %></h6>
-        
-             <div class="product-single__rating">
-              <div class="reviews-group d-flex">
-                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-              </div>
-              <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
-            </div>
-    
-              <div class = "product-price">
-                <!-- <p class = "last-price">Old Price: <span>$257.00</span></p> -->
-            <h3> <span class="current-price">$<%= data.price %></span></h3>
-              </div>
-    
-              <div class = "product-detail">
-                <h4>about this item: </h4>
-                <p><%= data.description %></p>
-               
-                <% if(data.quantity >0){ %>
-                <form name="addtocart-form" method="post">
-                  <div class="product-single__addtocart">
-                    <div class="qty-control position-relative">
-                      <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
-                      <div class="qty-control__reduce">-</div>
-                      <div class="qty-control__increase">+</div>
-                    </div><!-- .qty-control -->
-                    <button type="submit" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Add to Cart</button>
-                  </div>
-                </form>
-                <% }else{ %>
-                  <form name="addtocart-form" method="post">
-                    <div class="product-single__addtocart">
-                      <button type="submit" class="btn btn-primary btn-addtocart btn-outofstock">Out of Stock</button>
-                    </div>
-                    
-                  </form>
-    
-             <% } %>
-             <div class="product-single__addtolinks">
-              <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg><span>Add to Wishlist</span></a>
-              <share-button class="share-button">
-                <button class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
-                  <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_sharing"></use></svg>
-                  <span>Share</span>
-                </button>
-                <details id="Details-share-template__main" class="m-1 xl:m-1.5" hidden="">
-                  <summary class="btn-solid m-1 xl:m-1.5 pt-3.5 pb-3 px-5">+</summary>
-                  <div id="Article-share-template__main" class="share-button__fallback flex items-center absolute top-full left-0 w-full px-2 py-4 bg-container shadow-theme border-t z-10">
-                    <div class="field grow mr-4">
-                      <label class="field__label sr-only" for="url">Link</label>
-                      <input type="text" class="field__input w-full" id="url" value="https://uomo-crystal.myshopify.com/blogs/news/go-to-wellness-tips-for-mental-health" placeholder="Link" onclick="this.select();" readonly="">
-                    </div>
-                    <button class="share-button__copy no-js-hidden">
-                      <svg class="icon icon-clipboard inline-block mr-1" width="11" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 11 13">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 1a1 1 0 011-1h7a1 1 0 011 1v9a1 1 0 01-1 1V1H2zM1 2a1 1 0 00-1 1v9a1 1 0 001 1h7a1 1 0 001-1V3a1 1 0 00-1-1H1zm0 10V3h7v9H1z" fill="currentColor"></path>
-                      </svg>
-                      <span class="sr-only">Copy link</span>
-                    </button>
-                  </div>
-                </details>
-              </share-button>
-              <script src="js/details-disclosure.js" defer="defer"></script>
-              <script src="js/share.js" defer="defer"></script>
-            </div>
-            <div class="meta-item">
-              <label>Category:</label>
-              <span><%= data.category.name %></span>
-            </div>
-             
-            </div>
-          </div>
-        </div>
-          <!-- <div class="tab-pane fade show active" id="tab-description" role="tabpanel" aria-labelledby="tab-description-tab">
-            <div class="product-single__description"> -->
-    
-              <!-- <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p> -->
-              <!-- <div class="row"> -->
-                <!-- <div class="col-lg-6">
-                  <h3 class="block-title">Why choose product?</h3>
-                  <ul class="list text-list">
-                    <li>Creat by cotton fibric with soft and smooth</li>
-                    <li>Simple, Configurable (e.g. size, color, etc.), bundled</li>
-                    <li>Downloadable/Digital Products, Virtual Products</li>
-                  </ul>
-                </div> -->
-                <!-- <div class="col-lg-6">
-                  <h3 class="block-title">Sample Number List</h3>
-                  <ol class="list text-list">
-                    <li>Create Store-specific attrittbutes on the fly</li>
-                    <li>Simple, Configurable (e.g. size, color, etc.), bundled</li>
-                    <li>Downloadable/Digital Products, Virtual Products</li>
-                  </ol>
-                </div> -->
-              <!-- </div> -->
-              <!-- <h3 class="block-title mb-0">Lining</h3>
-              <p class="content">100% Polyester, Main: 100% Polyester.</p> -->
-            <!-- </div>
-          </div> -->
-          <!-- <div class="tab-pane fade" id="tab-additional-info" role="tabpanel" aria-labelledby="tab-additional-info-tab"> -->
-            <!-- <div class="product-single__addtional-info">
-              <div class="item">
-                <label class="h6">Weight</label>
-                <span>1.25 kg</span>
-              </div>
-              <div class="item">
-                <label class="h6">Dimensions</label>
-                <span>90 x 60 x 90 cm</span>
-              </div>
-              <div class="item">
-                <label class="h6">Size</label>
-                <span>XS, S, M, L, XL</span>
-              </div>
-              <div class="item">
-                <label class="h6">Color</label>
-                <span>Black, Orange, White</span>
-              </div>
-              <div class="item">
-                <label class="h6">Storage</label>
-                <span>Relaxed fit shirt-style dress with a rugged</span>
-              </div>
-            </div>
-          </div> -->
-          <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
-            <h2 class="product-single__reviews-title">Reviews</h2>
-            <div class="product-single__reviews-list">
-              <div class="product-single__reviews-item">
-                <div class="customer-avatar">
-                  <img loading="lazy" src="images/avatar.jpg" alt="">
-                </div>
-                <div class="customer-review">
-                  <div class="customer-name">
-                    <h6>Janice Miller</h6>
-                    <div class="reviews-group d-flex">
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    </div>
-                  </div>
-                  <div class="review-date">April 06, 2023</div>
-                  <div class="review-text">
-                    <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est…</p>
-                  </div>
-                </div>
-              </div>
-              <div class="product-single__reviews-item">
-                <div class="customer-avatar">
-                  <img loading="lazy" src="images/avatar.jpg" alt="">
-                </div>
-                <div class="customer-review">
-                  <div class="customer-name">
-                    <h6>Benjam Porter</h6>
-                    <div class="reviews-group d-flex">
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    </div>
-                  </div>
-                  <div class="review-date">April 06, 2023</div>
-                  <div class="review-text">
-                    <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est…</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-single__review-form">
-              <form name="customer-review-form">
-                <h5>Be the first to review “Message Cotton T-Shirt”</h5>
-                <p>Your email address will not be published. Required fields are marked *</p>
-                <div class="select-star-rating">
-                  <label>Your rating *</label>
-                  <span class="star-rating">
-                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z"></path>
-                    </svg>
-                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z"></path>
-                    </svg>
-                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z"></path>
-                    </svg>
-                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z"></path>
-                    </svg>
-                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z"></path>
-                    </svg>
-                  </span>
-                  <input type="hidden" id="form-input-rating" value="">
-                </div>
-                <div class="mb-4">
-                  <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Your Review" cols="30" rows="8"></textarea>
-                </div>
-                <div class="form-label-fixed mb-4">
-                  <label for="form-input-name" class="form-label">Name *</label>
-                  <input id="form-input-name" class="form-control form-control-md form-control_gray">
-                </div>
-                <div class="form-label-fixed mb-4">
-                  <label for="form-input-email" class="form-label">Email address *</label>
-                  <input id="form-input-email" class="form-control form-control-md form-control_gray">
-                </div>
-                <div class="form-check mb-4">
-                  <input class="form-check-input form-check-input_fill" type="checkbox" value="" id="remember_checkbox">
-                  <label class="form-check-label" for="remember_checkbox">
-                    Save my name, email, and website in this browser for the next time I comment.
-                  </label>
-                </div>
-                <div class="form-action">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="products-carousel container">
-      <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Related <strong>Products</strong></h2>
-  
-      <div id="related_products" class="position-relative">
-      
-
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="/public/images/product-3-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="/public/images/product-3-2.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Kirby T-Shirt</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$17</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="/public/images/product_15.jpeg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_1-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Cropped Faux Leather Jacket</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$29</span>
-                </div>
-                <div class="product-card__review d-flex align-items-center">
-                  <div class="reviews-group d-flex">
-                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star"></use></svg>
-                  </div>
-                  <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_2.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_2-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Calvin Shorts</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$62</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_6.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_6-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Shirt In Botanical Cheetah Print</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$62</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_7.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_7-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Cotton Jersey T-Shirt</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$17</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_4.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_4-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Cableknit Shawl</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price price-old">$129</span>
-                  <span class="money price price-sale">$99</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_5.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_5-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Colorful Jacket</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price">$29</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="swiper-slide product-card">
-              <div class="pc__img-wrapper">
-                <a href="./product1_simple.html">
-                  <img loading="lazy" src="images/product_8.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
-                  <img loading="lazy" src="images/product_8-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                </a>
-                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-              </div>
-  
-              <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
-                <h6 class="pc__title"><a href="./product1_simple.html">Zessi Dresses</a></h6>
-                <div class="product-card__price d-flex">
-                  <span class="money price price-old">$129</span>
-                  <span class="money price price-sale">$99</span>
-                </div>
-  
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart"></use></svg>
-                </button>
-              </div>
-            </div>
-          </div><!-- /.swiper-wrapper -->
-        </div><!-- /.swiper-container js-swiper-slider -->
-  
-        <div class="products-carousel__prev position-absolute top-50 d-flex align-items-center justify-content-center">
-          <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_md"></use></svg>
-        </div><!-- /.products-carousel__prev -->
-        <div class="products-carousel__next position-absolute top-50 d-flex align-items-center justify-content-center">
-          <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_md"></use></svg>
-        </div><!-- /.products-carousel__next -->
-  
-        <div class="products-pagination mt-4 mb-5 d-flex align-items-center justify-content-center"></div>
-        <!-- /.products-pagination -->
-      </div><!-- /.position-relative -->
-  
-    </section><!-- /.products-carousel container -->
-  </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Image Zoom functions go here
-        function zoomIn(event, zoomFactor) {
-            const image = event.target;
-            image.style.transform = `scale(${zoomFactor})`;
-        }
-
-        function resetZoom(event) {
-            const image = event.target;
-            image.style.transform = 'scale(1)';
-        }
-
-        const productImages = document.querySelectorAll('.zoom-in img');
-
-        productImages.forEach(img => {
-            img.addEventListener('mouseover', function () {
-                img.style.transform = 'scale(2.0)';
-                img.style.transition = 'transform 0.3s ease';
-            });
-
-            img.addEventListener('mousemove', function (e) {
-                const boundingBox = img.getBoundingClientRect();
-                const offsetX = (e.clientX - boundingBox.left) / boundingBox.width;
-                const offsetY = (e.clientY - boundingBox.top) / boundingBox.height;
-
-                img.style.transformOrigin = `${offsetX * 100}% ${offsetY * 100}%`;
-            });
-
-            img.addEventListener('mouseleave', function () {
-                img.style.transform = 'scale(1)';
-            });
-
-            img.addEventListener('mousemove', function (e) {
-                zoomIn(e, 1.5);
-            });
-
-            img.addEventListener('mouseout', resetZoom);
-        });
-    });
-</script>
-  <!-- Include jQuery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <!-- Include Elevate Zoom -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
-
-<script>
-  const imgs = document.querySelectorAll('.img-select a');
-const imgBtns = [...imgs];
-let imgId = 1;
-
-imgBtns.forEach((imgItem) => {
-    imgItem.addEventListener('click', (event) => {
-        event.preventDefault();
-        imgId = imgItem.dataset.id;
-        slideImage();
-    });
-});
-
-function slideImage(){
-    const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
-
-    document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
-}
-
-window.addEventListener('resize', slideImage);
-</script>
   <style>
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
-
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: 'Open Sans', sans-serif;
-}
-body{
-    line-height: 1.5;
-}
-.card-wrapper{
-    max-width: 1100px;
-    margin: 0 auto;
-}
-img{
-    width: 100%;
-    display: block;
-}
-.img-display{
-    overflow: hidden;
-}
-.img-showcase{
-    display: flex;
-    width: 100%;
-    transition: all 0.5s ease;
-}
-.img-showcase img{
-    min-width: 100%;
-}
-.img-select{
-    display: flex;
-}
-.img-item{
-    margin: 0.3rem;
-}
-.img-item:nth-child(1),
-.img-item:nth-child(2),
-.img-item:nth-child(3){
-    margin-right: 0;
-}
-.img-item:hover{
-    opacity: 0.8;
-}
-.product-content{
-    padding: 2rem 1rem;
-}
-.product-title{
-    font-size: 1.5rem;
+    body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
   
-    font-weight: 400;
-    position: relative;
-    color: #12263a;
-    margin: 1rem 0;
-}
-.product-title::after{
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px;
-    width: 80px;
-    background: #12263a;
-}
-.product-link{
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 400;
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    background: #256eff;
-    color: #fff;
-    padding: 0 0.3rem;
-    transition: all 0.5s ease;
-}
-.product-link:hover{
-    opacity: 0.9;
-}
-.product-rating{
-    color: #ffc107;
-}
-.product-rating span{
-    font-weight: 600;
-    color: #252525;
-}
-.product-price{
-    margin: 1rem 0;
-    font-size: 1rem;
-    font-weight: 700;
-}
-.product-price span{
-    font-weight: 400;
-}
-.last-price span{
-    color: #f64749;
-    text-decoration: line-through;
-}
-.new-price span{
-    color: #256eff;
-}
-.product-detail h2{
-    text-transform: capitalize;
-    color: #12263a;
-    padding-bottom: 0.6rem;
-}
-.product-detail p{
-    font-size: 0.9rem;
-    padding: 0.3rem;
-    opacity: 0.8;
-}
-.product-detail ul{
-    margin: 1rem 0;
-    font-size: 0.9rem;
-}
-.product-detail ul li{
-    margin: 0;
-    list-style: none;
-    background: url(shoes_images/checked.png) left center no-repeat;
-    background-size: 18px;
-    padding-left: 1.7rem;
-    margin: 0.4rem 0;
-    font-weight: 600;
-    opacity: 0.9;
-}
-.product-detail ul li span{
-    font-weight: 400;
-}
-.purchase-info{
-    margin: 1.5rem 0;
-}
-.purchase-info input,
-.purchase-info .btn{
-    border: 1.5px solid #ddd;
-    border-radius: 25px;
-    text-align: center;
-    padding: 0.45rem 0.8rem;
-    outline: 0;
-    margin-right: 0.2rem;
-    margin-bottom: 1rem;
-}
-.purchase-info input{
-    width: 60px;
-}
-.purchase-info .btn{
-    cursor: pointer;
-    color: #fff;
-}
-.purchase-info .btn:first-of-type{
-    background: #256eff;
-}
-.purchase-info .btn:last-of-type{
-    background: #f64749;
-}
-.purchase-info .btn:hover{
-    opacity: 0.9;
-}
-.social-links{
-    display: flex;
-    align-items: center;
-}
-.social-links a{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: #000;
-    border: 1px solid #000;
-    margin: 0 0.2rem;
-    border-radius: 50%;
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: all 0.5s ease;
-}
-.social-links a:hover{
-    background: #000;
-    border-color: transparent;
-    color: #fff;
 }
 
-@media screen and (min-width: 992px){
-    .card{
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 1.5rem;
-    }
-    .card-wrapper{
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .product-imgs{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .product-content{
-        padding-top: 0;
-    }
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
 }
+
+h1, h2, h3 {
+  margin-bottom: 0.5rem;
+}
+
+.return-details {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.return-details p {
+  margin-bottom: 0.5rem;
+}
+
+.return-details h3 {
+  margin-bottom: 0.3rem;
+}
+
+.return-details span {
+  font-weight: bold;
+}
+    body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.order-details {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.payment-details {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.delivery-details {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.return-information {
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.order-details p {
+  margin-bottom: 0.3rem;
+}
+#rtn-btn{
+color: rgb(38, 38, 219);
+background-color: transparent;
+border: none;
+}
+
+.payment-details p,
+.delivery-details p {
+  margin-bottom: 0.5rem;
+}
+
   </style>
+    <div class="mb-4 pb-4"></div>
+    <section class="shop-checkout container">
+        <h2 class="page-title">Order Details</h2>
+        <div class="checkout-steps"></div>
+        <form name="checkout-form" action="">
+            <div class="checkout-form">
+                <div class="billing-info__wrapper">
+                  
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                              
+                            <% if(orderdata){ %>
+                              <% orderdata.product.forEach(value => { %>
+                               
+                                <div class="return-details" class="col-md-12">
+                                  <% if(value.status !== 'cancelled' && value.status !== 'delivered' && value.status !== 'Return Approved' && value.status !== 'shipped' && value.status !== 'out for delivery' && value.status !== 'Waiting for Approval' && value.status !== 'pending') { %>
+                                  <a href=""><p>Action : <u style="color: rgb(189, 0, 0);">cancel</u></p></a>
+                                  <%}%>
+                                  <% if(value.status === 'delivered'){ %>
+                                    <!-- <a href="" onclick="modalshow()"><p>Action : <u style="color: rgb(12, 74, 200);" >Return</u></p></a> -->
+                                    <p>Action: <button id="rtn-btn" onclick="modalshow()">Return</button></p>
 
+                                    <% } %>
+                                  <p><a href="">Status : <strong><%= value.status %></strong> </a></p>
+                                  <p>Order ID : <span> #<%= orderdata._id %></span></p>
+                                    <img src="/public/uploadImg/<%= value.productId.Image[0] %>" width="150" height="150" alt="">
+                            
+                                   
+                                   <br>
+                                   <br>
+                                  
+                                    <p> <strong>Product Name : </strong><%= value.name %></p>
+                                    <p><strong>Price :  </strong>$<%= value.price %></p>
+                                    <p><strong>Qty</strong> : <%= value.quantity %></h6>
+                                    <p><strong>Total</strong> :  <span>$</span><%= value.price * value.quantity %></p>
+                                  
+                                </div>
+                                <%}) %>
+                             <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout__totals-wrapper">
+                    <div class="sticky-content">
+                        <div class="checkout__totals">
+                          <h4>BILLING DETAILS</h4>
+                            <table class="checkout-cart-items">
+                                <thead>
+                                    <p>  <strong>Order placed on :  <%=
+                                       orderdata.Date.toLocaleDateString('en-US', {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                        });
+                                        %></strong></p>
+                                    <p>  <strong>Paid by <%= orderdata.paymentMethod %> </strong></p>
+                                    <div class="payment-details">
+                                        <p><strong>Order Amount:  $ <%= orderdata.subtotal %> </strong></p>
+                                        <p><strong>Delivery :   $0</strong></p>
+                                        <p> <strong>Order SubTotal:$<%= orderdata.subtotal %></p>
+                                        <p>Order Status: <strong> <%= orderdata.status %></strong></p>
+
+                                    </div>
+                                    <p>Payment Mode: <%= orderdata.paymentMethod %></p>
+                                    <div class="delivery-details">
+<% orderdata.deliveryDetails.forEach((order)=>{ %>
+
+                                        <p>Deliver to: <%= order.fname %> <%=  order.lname%> </p>
+                                        <p>Name : <%= order.fname %></p>
+                                        <p> Address : <%= order.address %></p>
+                                        <p>City : <%= order.city %></p>
+                                        <p> PIN : <%= order.pin %></p>
+                                        <p>Phone : <%= order.mobile %> </p>
+
+                                        <% })%>
+                                    </div>
+                                </div>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+        <div class="modal fade" id="staticBackdrop" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Return Request</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="col-md-12">
+                  <div class="mt-3">
+                    <select class="form-select" name="reason" id="ReturnReason">
+                      <option value="" disabled selected>Select a reason for returning</option>
+                      <option value="defective">Defective Product</option>
+                      <option value="wrong_item">Received Wrong Item</option>
+                      <option value="changed_mind">Changed My Mind</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <textarea class="form-control form-control_gray mt-3" name="other_reason" id="OtherReason" placeholder="Enter details if 'Other' selected" cols="30" rows="4" style="display: none;"></textarea>
+                  
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <!-- <% orderdata.product.forEach((value) => { %>
+                  <% if (value && value._id) { %>  -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="hidden" id="returnOrderId" name="orderId" value="<%= orderdata._id %>">
+
+                <!-- <button type="button" class="btn btn-primary" onclick="returnOrder('<%= value._id %>','<%= orderdata._id %>')">Submit</button> -->
+                   <!-- <% } %>
+                <%}) %> -->
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+</main>
+
+  <script src="/public/js/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Include jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Include Bootstrap JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
+  <script>
+ function modalshow() {
+    $('#staticBackdrop').modal('show');
 
+}
+
+  </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const returnReasonSelect = document.getElementById("ReturnReason");
+    const otherReasonTextarea = document.getElementById("OtherReason");
+  
+    returnReasonSelect.addEventListener("change", function() {
+      if (returnReasonSelect.value === "other") {
+        otherReasonTextarea.style.display = "block";
+      } else {
+        otherReasonTextarea.style.display = "none";
+      }
+    });
+  });
+  </script>
+  <script>
+    const cancelorder = async (orderId) => {
+     try {
+       const result = await Swal.fire({
+         title: "Are you sure?",
+         text: "Do you want to cancel this order?",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: "Confirm",
+         cancelButtonText: "Cancel",
+         reverseButtons: true,
+       });
+   
+       if (result.isConfirmed) {
+         const response = await fetch("/cancelorder", {
+           method: 'PATCH',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({ productId: proid })
+         });
+   
+         if (response.ok) {
+           const responseData = await response.json(); // Fix here: response instead of res
+           if (responseData.success) {
+             Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
+               .then(() => {
+                 console.log("order cancelled successfully");
+                 window.location.href = '/orders';
+               });
+           } else {
+             Swal.fire('Error!', 'Failed to cancel order.', 'error');
+             console.log("order cancel failed");
+           }
+         } else {
+           Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
+           console.log("error occurred", response.status);
+         }
+       }
+     } catch (error) {
+       console.error("Error occurred:", error);
+     }
+   }
+   
+   
+   function returnOrder(proid,) {
+    const orderId = document.getElementById('returnOrderId').value;
+    console.log("the order id is getting", proid, orderId);
+    $('#staticBackdrop').modal('hide');
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Do it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/return', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId, // Ensure orderId is passed as a string
+                        productId: proid // Ensure proid is passed as a string
+                    })
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    if (response.datelimit) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Return Date expired'
+                        })
+                    } else if (response.return) {
+                        location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.error("error occurred in fetch:", error.message)
+                })
+        }
+    })
+}
+
+   </script>
+  
 <%- include("../layouts/userpartials/footer.ejs") %>
 
 
@@ -830,457 +348,119 @@ img{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<%- include("../layouts/userpartials/header.ejs") %>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const returnReasonSelect = document.getElementById("ReturnReason");
+    const otherReasonTextarea = document.getElementById("OtherReason");
   
-    <main>
-      <div class="mb-4 pb-4"></div>
-      <section class="shop-checkout container">
-        <h2 class="page-title">Order Received</h2>
-        <div class="checkout-steps">
-        
-            <a href="/ordercomplete" class="checkout-steps__item active">
-            <span class="checkout-steps__item-number">03</span>
-            <span class="checkout-steps__item-title">
-              <span>Confirmation</span>
-              <em>Review And Submit Your Order</em>
-            </span>
-          </a>
-        </div>
-        <div class="order-complete">
-          <div class="order-complete__message">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="40" r="40" fill="#B9A16B"></circle>
-              <path d="M52.9743 35.7612C52.9743 35.3426 52.8069 34.9241 52.5056 34.6228L50.2288 32.346C49.9275 32.0446 49.5089 31.8772 49.0904 31.8772C48.6719 31.8772 48.2533 32.0446 47.952 32.346L36.9699 43.3449L32.048 38.4062C31.7467 38.1049 31.3281 37.9375 30.9096 37.9375C30.4911 37.9375 30.0725 38.1049 29.7712 38.4062L27.4944 40.683C27.1931 40.9844 27.0257 41.4029 27.0257 41.8214C27.0257 42.24 27.1931 42.6585 27.4944 42.9598L33.5547 49.0201L35.8315 51.2969C36.1328 51.5982 36.5513 51.7656 36.9699 51.7656C37.3884 51.7656 37.8069 51.5982 38.1083 51.2969L40.385 49.0201L52.5056 36.8996C52.8069 36.5982 52.9743 36.1797 52.9743 35.7612Z" fill="white"></path>
-            </svg>
-            <h3>Your order is completed!</h3>
-            <p>Thank you. Your order has been received.</p>
-          </div>
-          <div class="order-info">
-            <div class="order-info__item">
-              <label>Order</label>
-              <!-- <span><%= order_id %></span> -->
-            </div>
-            <div class="order-info__item">
-              <label>Date</label>
-              <span>27/10/2023</span>
-            </div>
-            <div class="order-info__item">
-              <label>Total</label>
-              <!-- <span><%=  order.subtotal %></span> -->
-            </div>
-            <div class="order-info__item">
-              <label>Paymetn Method</label>
-              <!-- <span><%= order.paymentMethod %></span> -->
-            </div>
-          </div>
-          <div class="checkout__totals-wrapper">
-            <div class="checkout__totals">
-              <h3>Order Details</h3>
-              <table class="checkout-cart-items">
-                <thead>
-                  <tr>
-                    <th>PRODUCT</th>
-                    <th>SUBTOTAL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <!-- <%= order.product.name %> -->
-                    </td>
-                    <td>
-                      <!-- <%= total %> -->
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Kirby T-Shirt
-                    </td>
-                    <td>
-                      $29.90
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table class="checkout-totals">
-                <tbody>
-                  <tr>
-                    <th>SUBTOTAL</th>
-                    <!-- <%=  order.subtotal %> -->
-                  </tr>
-                  <tr>
-                    <th>SHIPPING</th>
-                    <td>Free shipping</td>
-                  </tr>
-                  <tr>
-                    <th>VAT</th>
-                    <td>$19</td>
-                  </tr>
-                  <tr>
-                    <th>TOTAL</th>
-                    <!-- <%=  order.subtotal %> -->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  
+    returnReasonSelect.addEventListener("change", function() {
+      if (returnReasonSelect.value === "other") {
+        otherReasonTextarea.style.display = "block";
+      } else {
+        otherReasonTextarea.style.display = "none";
+      }
+    });
+  });
+  </script>
+  <script>
+    const cancelorder = async (orderId) => {
+     try {
+       const result = await Swal.fire({
+         title: "Are you sure?",
+         text: "Do you want to cancel this order?",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: "Confirm",
+         cancelButtonText: "Cancel",
+         reverseButtons: true,
+       });
    
-
-    <%- include("../layouts/userpartials/footer.ejs") %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <% cartdata.product.forEach(product=> { %>
-      <form name="addtocart-form" method="post">
-        <div class="product-single__addtocart">
-          <div class="qty-control position-relative">
-            <input type="number" name="quantity" value="<%= product.quantity %>" min="1"
-            class="qty-control__number text-center" onchange="Total(this,'<%=product.productId._id %>', '<%=product.productId.price %>')">
-            <div class="qty-control__reduce"   onclick="updatecount('<%= product.productId._id %>',-1) ">-</div>
-            <div class="qty-control__increase" onclick="updatecount('<%= product.productId._id %>',+1) ">+</div>
-          </div><!-- .qty-control -->
-          <%})%>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          const CancelOrder = async(req,res)=>{
-            try {
-                const userId = req.session.userId;
-                const OrderId = req.body.orderId;
-        
-                const oredrs = await Order.findOne({_id:OrderId});
-        
-                const data = await Order.findOneAndUpdate(
-                    {id:OrderId},
-                    {$set:{status:'cancelled'}},
-                    {new:true},
-                )
-                if(data){
-                res.json({
-                    success:true,
+       if (result.isConfirmed) {
+         const response = await fetch("/cancelorder", {
+           method: 'PATCH',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({ productId: proid })
+         });
+   
+         if (response.ok) {
+           const responseData = await response.json(); // Fix here: response instead of res
+           if (responseData.success) {
+             Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
+               .then(() => {
+                 console.log("order cancelled successfully");
+                 window.location.href = '/orders';
+               });
+           } else {
+             Swal.fire('Error!', 'Failed to cancel order.', 'error');
+             console.log("order cancel failed");
+           }
+         } else {
+           Swal.fire('Error!', `HTTP error: ${response.status}`, 'error');
+           console.log("error occurred", response.status);
+         }
+       }
+     } catch (error) {
+       console.error("Error occurred:", error);
+     }
+   }
+   
+   
+   function returnOrder(proid,) {
+    const orderId = document.getElementById('returnOrderId').value;
+    console.log("the order id is getting", proid, orderId);
+    $('#staticBackdrop').modal('hide');
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Do it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/return', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId, // Ensure orderId is passed as a string
+                        productId: proid // Ensure proid is passed as a string
+                    })
                 })
-            }else{
-                res.json({
-                    success:false,
-                    message:"Order not found"
+                .then((response) => response.json())
+                .then((response) => {
+                    if (response.datelimit) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Return Date expired'
+                        })
+                    } else if (response.return) {
+                        location.reload();
+                    }
                 })
-            }
-        
-            } catch (error) {
-                console.log(error);
-            }
+                .catch((error) => {
+                    console.error("error occurred in fetch:", error.message)
+                })
         }
-        
-        const ReturnOrder = async(req,res)=>{
-            try {
-                const userId = req.session.userId;
-                const OrderId = req.body.orderId;
-        
-                const orders = await Order.findOne({_id:OrderId});
-        
-                if(Date.now() > orders.expiredate){
-                res.json({datalimit:true});
-        
-                }else{
-                    const data = await Order.findOneAndUpdate(
-                        {id:OrderId},
-                        {$set:{status:'waiting for approval'}},
-                        {new:true},
-                    )
-                }
-                res.json({status:true});
-            } catch (error) {
-                res.status(500).send("Internal Server Error")
-            }
-        }
-        
-        const OrderView = async(req,res)=>{
-            try {
-                const userId = req.session.userId;
-                const id = req.query.id;
-        
-                const userData = await User.findOne({_id:userId});
-                const orderData = await Order.findOne({_id:id}).populate(
-                    'product.productId'
-                );
-        
-                res.render("user")
-            } catch (error) {
-                
-            }
-        }
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <script>
-          function validateForm() {
-            const productName = document.getElementById('exampleInputName1').value.trim();
-            const description = document.getElementById('exampleInputEmail3').value.trim();
-            const quantity = document.getElementById('product_qty').value.trim();
-            const price = document.getElementById('product_price').value.trim();
-            const image = document.querySelector('input[name="image"]').value.trim();
-            const category = document.getElementById('exampleInputCity1').value;
-        
-            let isValid = true;
-        
-        
-            if (productName === '') {
-              document.getElementById('productError').innerText = 'Product Name is required';
-              isValid = false;
-            } else {
-              document.getElementById('productError').innerText = '';
-            }
-        
-        
-            if (description === '') {
-              document.getElementById('productDescriptionError').innerText = 'Description is required';
-              isValid = false;
-            } else {
-              document.getElementById('productDescriptionError').innerText = '';
-            }
-        
-        
-            if (quantity === '') {
-              document.getElementById('quantityError').innerText = 'Quantity is required';
-              isValid = false;
-            } else {
-              document.getElementById('quantityError').innerText = '';
-            }
-        
-            // Validate Price
-            if (price === '') {
-              document.getElementById('priceError').innerText = 'Price is required';
-              isValid = false;
-            } else {
-              document.getElementById('priceError').innerText = '';
-            }
-        
-            // Validate Image
-           
-           
-            return isValid;
-          }
-        </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-===============-------------------------------------------====================-------------------------------------------
-
-const Order = require("../model/orderModel");
-const Product = require("../model/productModel");
-const category = require("../model/catagoryModel");
-const User = require('../model/userModel');
-const Address = require("../model/addressModel")
-const Cart = require("../model/cartModel");
-
-
-const OrderPlace = async (req, res) => {
-  try {
-      const userId = req.session.userId;
-      const { address, subtotal} = req.body;
-console.log("address id from body may here",address);
-console.log("subtotal from body may here");
-
-      const cartdata = await Cart.findOne({ user: userId });
-
-      if (!address) {
-          return res.json({
-              success: false,
-              message: "Select the address and payment method before placing the order",
-          });
-      }
-
-      const userAddress = await Address.findOne({
-          "address._id": address,
-      });
-      console.log("user",);
-     
-      // Check if userAddress is not empty and has at least one address
-      if (!userAddress || userAddress.length === 0) {
-          return res.json({
-              success: false,
-              message: "Please select a valid address",
-          });
-      }
-      const paymentMethod = req.body.paymentMethod || 'COD';
-
-      // Since userAddress is an array, use userAddress[0] if it exists
-      const addressObject = userAddress.address[0];
-      console.log(addressObject,"obhdhjg");
-
-      const userdata = await User.findOne({ _id: req.session.userId });
-
-      for (const cartProduct of cartdata.product) {
-          const productData = await Product.findOne({ _id: cartProduct.productId });
-
-          if (cartProduct.quantity > productData.quantity) {
-              return res.json({
-                  success: false,
-                  message: `Not enough stock available on: ${productData.name}`,
-              });
-          }
-      }
-
-      const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
-
-      const products = cartdata.product;
-      const orderStatus = paymentMethod === "Cash On Delivery" ? "placed" : "pending";
-  
-      const NewOrder = new Order({
-        deliveryDetails:addressObject,
-          user: userdata._id,
-          username: userdata.name,
-          paymentmethod: paymentMethod,
-          product: products.map(product => ({
-              productId: product.productId,
-              name: product.name,
-              price: product.price,
-              category:product.category,
-              quantity: product.quantity,
-          })),
-          subtotal: subtotal,
-          status: orderStatus,
-          Date: Date.now(),
-          expiredate: expireDate,
-
-      });
-
-      const saveOrder = await NewOrder.save();
-      const orderId = saveOrder._id;
-      console.log("orderId here ",orderId);
-      const totalamount = saveOrder.subtotal;
-
-      if (paymentMethod === "COD") {
-          for (const cartProduct of cartdata.product) {
-              await Product.findOneAndUpdate(
-                  { _id: cartProduct.productId },
-                  { $inc: { quantity: -cartProduct.quantity } }
-              );
-          }
-      }
-
-      const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
-
-      return res.json({ success: true, orderId: orderId });
-
-  } catch (error) {
-      console.log(error);
-      return res.json({
-          success: false,
-          message: "Unexpected error occurred. Please try again later."
-      });
-  }
-};
-
-  
-
-  
-
-
-const OrderPlaced = async(req,res)=>{
-    try {
-        const id = req.query.id; // Corrected parameter name
-        console.log("id here",id);
-
-        const userId = req.session.userId;
-
-        const userData = await User.findOne({_id:userId});
-        const order = await Order.findOne({_id:id});
-        res.render("user/ordercomplete" ,{order:order});
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error occurred while processing your request");
-    }
-};
-
-const orderlist = async(req,res)=>{
-    try {
-        const userId = req.session.userId;
-        const userData =  await User.findOne({_id:userId});
-        const Orders = await Order.findOne({user:userId}).sort({Date:-1});
-        res.render("user/orderlist",{userId,userData,Orders})
-    } catch (error) {
-        console.log(error);
-    }
+    })
 }
 
+   </script>
 
 
 
-module.exports = {
- OrderPlace,
- OrderPlaced,
- orderlist,
 
 
-}
+
+
+<input type="hidden" id="returnOrderId" name="orderId" value="<%= orderdata._id %>">
+
+<!-- <button type="button" class="btn btn-primary" onclick="returnOrder('<%= value._id %>','<%= orderdata._id %>')">Submit</button> -->
+   <!-- <% } %>
+<%}) %> -->

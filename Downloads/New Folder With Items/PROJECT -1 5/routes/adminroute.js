@@ -80,7 +80,7 @@ adminRoute.get(
   adminController.orderlist
   );
 
-adminRoute.get(
+adminRoute.patch(
   "/orderstatus",adminAuth.isLogin,
   adminController.orderstatus
 );
