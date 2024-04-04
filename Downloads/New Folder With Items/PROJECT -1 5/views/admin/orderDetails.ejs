@@ -499,7 +499,7 @@
                               <%= product.name %>
                             </td>
                             <td>
-                              <%= product.price %>
+                              ₹<%= product.price %>
                             </td>
                             <td>
                               <%= product.name %>
@@ -511,7 +511,7 @@
                               <button style="color: white;background-color: #28a745;border-radius: 4px; border: none;"><%= product.status %></button>
                             </td>
                             <td>
-                              <% if(product.status == "delivered" || product.status == "waiting for approvel"){ %>
+                              <% if(product.status == "delivered"){ %>
                              <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Delivered</button>
                               <% }else if(product.status == "returned"){ %>
                                 <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Returned</button>
@@ -524,7 +524,9 @@
                                   <% } %>
                             </td>
                             <td>
-                              request
+                              <% if(product.status == "waiting for approval"){ %>
+                                <button onclick="modal('<%= product.productId %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
+                                <% } %>
                             </td>
                           </tr>
                         <% }) %>
@@ -571,7 +573,29 @@
               </div>
          
         
-       
+              <div class="modal fade" id="staticBackdrop" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Return Reason</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <% Orders.forEach((order, index) => { %>
+                        <% order.product.forEach((product) => { %>
+                          <h4> <%= product.reason %></h4>
+                          <% }) %>
+                          <% }) %>
+                     
+                    <div class="modal-footer">
+                 
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" >Submit</button>
+                       
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <!-- content-wrapper ends -->
@@ -598,6 +622,24 @@
 <!-- Include Bootstrap JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+<script src="/public/js/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Include jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Include Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function modal(id) {
+  console.log(id,"id")
+  if(id){
+    $('#staticBackdrop').modal('show');
+  }
+ 
+
+}
+</script>
 <script>
   function shipmentUpdate(status,orderId,proid){
     console.log(status,"1",orderId,"2",proid,"3")

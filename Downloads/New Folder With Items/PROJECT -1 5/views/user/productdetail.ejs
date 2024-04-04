@@ -4,6 +4,17 @@
   <main>
 
     <style>
+           
+.product-label.sale-label span {
+    display: inline-block;
+    background-color: red;
+    color: rgb(255, 255, 255);
+    border: 2px solid red; 
+    border-radius: 50%; 
+    padding: 5px 10px; 
+
+
+}
       #zoom-in {
     overflow: hidden;
 }
@@ -81,6 +92,7 @@
               <div class="position-relative">
                 <img loading="lazy" class="cart-drawer-item__img"
                   src="/public/uploadImg/<%= product.productId.Image[0] %>" height="80px" width="80px" alt="">
+                  
               </div>
               <div class="cart-drawer-item__info flex-grow-1">
                 <button class="btn-close-xs position-absolute top-0 end-0 js-cart-item-remove"></button>
@@ -91,7 +103,7 @@
           <p class="cart-drawer-item__option text-secondary">Size: L</p> -->
                 <div class="d-flex align-items-center justify-content-between mt-1">
                   
-                  <span class="cart-drawer-item__price money price">$<%= product.productId.price %></span>
+                  <span class="cart-drawer-item__price money price">₹<%= product.productId.price %></span>
                 </div>
               </div>
     
@@ -138,9 +150,18 @@
                   <% for (let i=0; i < data.Image.length; i++) { %>
                   
                     <img src="/public/uploadImg/<%= data.Image[i] %> " alt="shoe image">
-                 
+                   <% data.offer.forEach((offer)=>{ %>
+                    <div class="product-label sale-label">
+                      <span>-<%= offer.discount %>%</span>
+                    </div>
+                <% }) %>
+                    
+             
+                
+                  
                     <% }%>
                 </div>
+               
               </div>
               <div class="img-select">
 
@@ -202,10 +223,10 @@
                   <% let percentage = offer.discount; %>
                   <% let discountedPrice = data.price - (data.price * (percentage / 100)); %>
                   <span class="money price"></span>
-                  <h3 style="color: green;"> <span class="current-price"><del style="color: #252525;">$<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h3>
+                  <h3 style="color: green;"> <span class="current-price"><del style="color: #252525;">₹<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h3>
                   <% }) %>
                 <% } else { %>
-                  <span class="money price">$<%= data.price.toFixed(2) %></span>
+                  <span class="money price">₹<%= data.price.toFixed(2) %></span>
                 <% } %>
               
              
@@ -532,7 +553,7 @@
                 <p class="pc__category">Dresses</p>
                 <h6 class="pc__title"><a href="./product1_simple.html">Kirby T-Shirt</a></h6>
                 <div class="product-card__price d-flex">
-                  <span class="money price">$17</span>
+                  <span class="money price">₹17</span>
                 </div>
 
                 <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"

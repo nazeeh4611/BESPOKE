@@ -38,6 +38,9 @@
             type:String,
             default:"placed",
         },
+        reason:{
+          type:String,
+        },
         },
       ],
 

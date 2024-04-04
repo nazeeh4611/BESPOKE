@@ -60,7 +60,7 @@
                                             <td>
                                              
                                                
-                                                <span class="shopping-cart__product-price">$<%= product.productId.price
+                                                <span class="shopping-cart__product-price">₹<%= product.productId.price
                                                         %></span>
                                              
                                             </td>
@@ -81,7 +81,7 @@
                                                          }
                                             </style>
                                             <td>
-                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price
+                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * product.productId.price
                                                          %></span>
                                             </td>
                                             <td>
@@ -130,11 +130,11 @@
                                                     offer = product.productId.offer[0].discount; 
                                                     let discountedPrice = product.productId.price - (product.productId.price * (offer / 100)); %>
                                                     <span class="shopping-cart__product-price">
-                                                       $<%= discountedPrice.toFixed(2) %>
+                                                        ₹<%= discountedPrice.toFixed(2) %>
                                                     </span>
                                                     </span>
                                                 <% } else { %>
-                                                    <span class="shopping-cart__product-price">$<%= product.productId.price %></span>
+                                                    <span class="shopping-cart__product-price">₹<%= product.productId.price %></span>
                                                 <% } %>
                                              
                                             </td>
@@ -152,7 +152,7 @@
                                                 </div><!-- .qty-control -->
                                             </td>
                                             <td>
-                                                <span class="shopping-cart__subtotal">$<%= product.quantity * product.productId.price.toFixed(2)
+                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * product.productId.price.toFixed(2)
                                                          %></span>
                                             </td>
                                             <td>
@@ -191,7 +191,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Subtotal</th>
-                                        <td>$<%= subtotal %>
+                                        <td>₹<%= subtotal %>
                                         </td> 
                                     </tr>
                                     <tr>
@@ -204,7 +204,7 @@
                                     </tr>
                                     <tr>
                                         <th>Total</th>
-                                        <td>$<%= total %>
+                                        <td>₹<%= total %>
                                        
                                     </tr>
                                 </tbody>

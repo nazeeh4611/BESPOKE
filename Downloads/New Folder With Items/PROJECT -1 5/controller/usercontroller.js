@@ -552,11 +552,9 @@ const ProductDetail = async (req, res) => {
     });
 
 
-     productdata.offer.forEach((offer)=>{
-      console.log(offer.discount)
-     })
+     
   
-  
+
     // const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
     // : {cartdata, product: filteredProducts }

@@ -230,6 +230,9 @@ const ordercancel = async(req,res)=>{
 const returnOrder = async (req, res) => {
     try {
         const userId = req.session.userId;
+        const reason = req.body.Reason;
+
+        console.log(reason,"the reason here")
         const { orderId, productId } = req.body; // Destructure orderId and productId directly
 
         if (!orderId || !productId) {
@@ -254,6 +257,7 @@ const returnOrder = async (req, res) => {
             }
 
             orders.product[productIndex].status = 'waiting for approval';
+            orders.product[productIndex].reason = reason;
 
             await orders.save(); // Save the updated order
 
@@ -267,19 +271,24 @@ const returnOrder = async (req, res) => {
 
 
 
-const orderrazor = async(req,res)=>{
+const orderrazor = async (req, res) => {
     try {
-        const {orderId,totalamount} = req.body;
-   const orders = await instance.orders.create({
-            amount: totalamount * 100,
-            currency: "INR",
+        const { orderId, totalamount } = req.body;
+        const orders = await instance.orders.create({
+            amount: totalamount * 100, // Amount in cents (USD)
+            currency: "USD",
             receipt: "" + orderId,
-            })
-            return res.json({success:true,orders })
+        });
+
+        // Call razorpay function with orders
+        razorpay(orders);
+
+        return res.json({ success: true, orders });
     } catch (error) {
-        
+        console.error('Error in orderrazor:', error);
+        return res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
-}
+};
 
 module.exports = {
  OrderPlace,

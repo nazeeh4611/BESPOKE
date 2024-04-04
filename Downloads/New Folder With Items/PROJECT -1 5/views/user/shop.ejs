@@ -412,7 +412,7 @@
           <label for="footerSettingsCurrency_mobile" class="me-2 text-secondary">Currency</label>
           <select id="footerSettingsCurrency_mobile" class="form-select form-select-sm bg-transparent border-0"
             aria-label="Default select example" name="store-language">
-            <option selected="">$ USD</option>
+            <option selected="">₹ INR</option>
             <option value="1">£ GBP</option>
             <option value="2">€ EURO</option>
           </select>
@@ -518,7 +518,7 @@
           <option value="swedish">Swedish</option>
         </select>
         <select class="form-select form-select-sm bg-transparent color-white" name="store-currency">
-          <option value="usd" selected="">$ USD</option>
+          <option value="usd" selected="">₹ INR</option>
           <option value="gbp">£ GBP</option>
           <option value="eur">€ EURO</option>
         </select>
@@ -791,6 +791,9 @@
                         <a href="/productdetail?id=<%= products[i]._id %>">
                           <img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img">
                         </a>
+                        <% if (products[i].offer && products[i].offer.length > 0) { %>
+                        <div class="product-label bg-red text-white right-0 top-0 left-auto mt-2 mx-2">- <%= products[i].offer[0].discount %>%</div>
+                        <% } %>
                       </div>
                     </div>
                     <span class="pc__img-prev">
@@ -826,9 +829,9 @@
                       <% if (products[i].offer && products[i].offer.length > 0) { %>
                         <% let percentage = products[i].offer[0].discount; %>
                         <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
-                        <span class="money price"><del>$<%= products[i].price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span>
+                        <span class="money price"><del>₹<%= products[i].price.toFixed(2) %></del>&nbsp;₹<%= discountedPrice.toFixed(2) %></span>
                       <% } else { %>
-                        <span class="money price">$<%= products[i].price.toFixed(2) %></span>
+                        <span class="money price">₹<%= products[i].price.toFixed(2) %></span>
                       <% } %>
 
                       <% if(categories.offer) { %>

@@ -199,7 +199,7 @@
                 
                       </td>
                       <td>
-                       $ <%=product.total %>
+                        ₹ <%=product.total %>
                       </td>
                     </tr>
                     <tr>
@@ -208,7 +208,7 @@
                     
                        </td>
                       <td>
-                        $29.90
+                        ₹29.90
                       </td>
                     </tr>
                   </tbody>
@@ -221,7 +221,7 @@
                   <tbody>
                     <tr>
                       <th>SUBTOTAL</th>
-                      <td>$<%= subtotal%></td>
+                      <td>₹<%= subtotal%></td>
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
@@ -229,11 +229,11 @@
                     </tr>
                     <tr>
                       <th>Coupon Discount</th>
-                      <td style="color: green;">$<%=coupondiscount.discountamount %></td>
+                      <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
                     </tr>
                     <tr>
                       <th>TOTAL</th>
-                      <td> $<%= subtotal-coupondiscount.discountamount %></td>
+                      <td> ₹<%= subtotal-coupondiscount.discountamount %></td>
                       <input type="hidden" value="<%= subtotal-coupondiscount.discountamount%>" name="subtotal" id="subtotal">
                     </tr>
                
@@ -245,7 +245,7 @@
                     <tbody>
                       <tr>
                         <th>SUBTOTAL</th>
-                        <td>$<%= subtotal%></td>
+                        <td>₹<%= subtotal%></td>
                       </tr>
                       <tr>
                         <th>SHIPPING</th>
@@ -253,7 +253,7 @@
                       </tr>
                       <tr>
                         <th>TOTAL</th>
-                        <td> $<%= subtotal%></td>
+                        <td> ₹<%= subtotal%></td>
                         <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
                       </tr>
                  
@@ -323,9 +323,9 @@
                       <div class="col-md-12">
                         <div class="col-md-12">
                           <div class="return-details" class="col-md-12">
-                            <p style="color: green;"><strong style="color: #000000;"><%= coupon[i].name %></strong>&nbsp;you save $<%= coupon[i].discountamount %></p>
+                            <p style="color: green;"><strong style="color: #000000;"><%= coupon[i].name %></strong>&nbsp;you save ₹<%= coupon[i].discountamount %></p>
                             <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
-                            <p>Get $<%= coupon[i].discountamount %> Off on <u>$<%= coupon[i].criteriaamount %></u> and Above</p>
+                            <p>Get ₹<%= coupon[i].discountamount %> Off on <u>₹<%= coupon[i].criteriaamount %></u> and Above</p>
                             <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
                             <% if(subtotal >= coupon[i].criteriaamount) { %>
                             <div class="button-line-container">
@@ -615,36 +615,35 @@ const makePayment = () => {
 
 
     // function for razorpay   
-      function razorpay(orders){
-        console.log("checkpoint:1");
-        var options = {
-    "key": "rzp_test_5mTjMS04uhfKer", 
-    "amount": orders.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "BESPOKESHOPPING", //your business name
-    "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
-    "order_id": orders.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function(response){
-      verifypayment(response,orders)
-    },
-    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-        "name": "Gaurav Kumar", //your customer's name
-        "email": "gaurav.kumar@example.com",
-        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
-    },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
-    "theme": {
-        "color": "#3399cc"
-    }
-};
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
+    function razorpay(orders) {
+    console.log("checkpoint:1");
+    var options = {
+        "key": "rzp_test_5mTjMS04uhfKer",
+        "amount": orders.amount,
+        "currency": "INR",
+        "name": "BESPOKESHOPPING",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": orders.id,
+        "handler": function (response) {
+            verifypayment(response, orders);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
 
-      }
-    
 function verifypayment(Payment,orders){
   $.ajax({
     url:"/verifypayment",
