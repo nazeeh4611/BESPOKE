@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
   },
   wallet:[{
       amount:{
-        type:String,
+        type:Number,
         default:0
       },
       discription:{
@@ -55,6 +55,10 @@ const userSchema = new mongoose.Schema({
       },
       Date:{
         type:Date,
+      },
+      total:{
+        type:Number,
+        default:0
       }
   }],
 });

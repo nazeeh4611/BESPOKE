@@ -352,7 +352,7 @@ const MyAccount = async (req, res) => {
   try {
     const userId = req.session.userId;
     const userid = await User.findOne({ _id: userId });
-
+    
 
     res.render("user/userdashboard", { userid });
   } catch (error) {

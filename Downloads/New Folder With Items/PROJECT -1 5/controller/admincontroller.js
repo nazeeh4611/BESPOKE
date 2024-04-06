@@ -161,11 +161,11 @@ const orderstatus = async (req, res) => {
       order.product[productIndex].reason = '';
       
       // Find the user and update the wallet
-      const user = await User.findById(userId);
-      if (user) {
-        user.wallet += product.price;
-        await user.save();
-      }
+      // const user = await User.findById(userId);
+      // if (user) {
+      //   user.wallet += product.price;
+      //   await user.save();
+      // }
     }
 
     await order.save();
