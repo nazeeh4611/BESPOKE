@@ -4,59 +4,102 @@
   <main>
     <style>
       .wallet-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #dcdcdc;
+          border: 1px solid #ccc;
+          padding: 10px;
+          border-radius: 5px;
+          background-color: #dcdcdc;
+      }
   
-}
-
-.wallet-amount {
- color:green;
-}
-    </style>
+      .wallet-amount {
+          color: green;
+      }
+  
+      table {
+          display: none; /* Initially hide the table */
+          width: 100%; /* Set table width to 100% */
+          border-collapse: collapse;
+          margin-top: 10px;
+      }
+  
+      table, th, td {
+          border: 1px solid black;
+          padding: 8px;
+      }
+  
+      button {
+          padding: 10px 20px;
+          background-color: transparent;
+          color: rgb(0, 0, 0);
+          border: none;
+          cursor: pointer;
+      }
+      
+  </style>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">
-      <h2 class="page-title">My Account</h2>
-      <div class="row">
-        <div class="col-lg-3">
-          <ul class="account-nav">
-            <li><a href="/dashboard" class="menu-link menu-link_us-s menu-link_active" >Dashboard</a></li>
-            <li><a href="/orders" class="menu-link menu-link_us-s">Orders</a></li>
-            <li><a href="/address" class="menu-link menu-link_us-s ">Addresses</a>
-            </li>
-            <li><a href="/profile" class="menu-link menu-link_us-s">Account Details</a></li>
-            <li><a href="./account_wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
-            <li><a href="/logout" class="menu-link menu-link_us-s">Logout</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-9">
-          <div class="page-content my-account__dashboard">
-            <h4>Hello <strong>
-                <%= userid.name %>
-             
-              <p>From your account dashboard you can view your <a class="unerline-link"
-                  href="./account_orders.html">recent orders</a>, manage your <a class="unerline-link"
-                  href="./account_edit_address.html">shipping and billing addresses</a>, and <a class="unerline-link"
-                  href="./account_edit.html"> account details.</a>
-            </h4>
-
-           
-          </div>
-          <div class="wallet-box">
-            <h3>WALLET</h3>
-            <div class="wallet-amount">
-                <p>Wallet amount: <strong>₹<%= userid.wallet %></strong></p>
+        <h2 class="page-title">My Account</h2>
+        <div class="row">
+            <div class="col-lg-3">
+                <ul class="account-nav">
+                    <li><a href="/dashboard" class="menu-link menu-link_us-s menu-link_active">Dashboard</a></li>
+                    <li><a href="/orders" class="menu-link menu-link_us-s">Orders</a></li>
+                    <li><a href="/address" class="menu-link menu-link_us-s">Addresses</a></li>
+                    <li><a href="/profile" class="menu-link menu-link_us-s">Account Details</a></li>
+                    <li><a href="./account_wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
+                    <li><a href="/logout" class="menu-link menu-link_us-s">Logout</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-content my-account__dashboard">
+                    <h4>Hello <strong><%= userid.name %></strong></h4>
+                    <p>From your account dashboard you can view your <a class="underline-link"
+                                                                       href="./account_orders.html">recent orders</a>,
+                        manage your <a class="underline-link"
+                                      href="./account_edit_address.html">shipping and billing addresses</a>, and <a
+                            class="underline-link" href="./account_edit.html"> account details.</a></p>
+                </div>
+                <div class="wallet-box">
+                    <h3>WALLET</h3>
+                    <div class="wallet-amount">
+                        <p>Wallet amount: <strong>₹<%= userid.wallet %></strong></p>
+                    </div>
+                    <button  id="toggleButton"><u>Wallet History</u></button>
+                </div>
+                <div class="col-md-6">
+                    <table id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Columnfberjhgbuiehf3iuhrh 1</th>
+                            <th>Cj3ru3rh34urh43urbh42</th>
+                            <th>Cor4jnru4ren3r3nr4jrrb4hrb43</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>befugf38hr</td>
+                            <td>jbfefbbujebfjbfj34</td>
+                            <td>jefnufu3rh3ubru3rbh3</td>
+                        </tr>
+                      
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-         
-        </div>
-        
-      </div>
-      
     </section>
-  </main>
+</main>
 
-  <div class="mb-5 pb-xl-5"></div>
+<div class="mb-5 pb-xl-5"></div>
+<script>
+    const toggleButton = document.getElementById('toggleButton');
+    const dataTable = document.getElementById('dataTable');
 
+    toggleButton.addEventListener('click', function () {
+        if (dataTable.style.display === 'none') {
+            dataTable.style.display = 'table';
+        } else {
+            dataTable.style.display = 'none';
+        }
+    });
+</script>
   <%- include("../layouts/userpartials/footer.ejs") %>

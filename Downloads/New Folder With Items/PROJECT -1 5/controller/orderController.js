@@ -190,7 +190,7 @@ const orderview = async(req,res)=>{
      "product.productId",
     )
   orderdata.product.forEach((value)=>{
-    console.log("idnbnbnb",value._id)
+
   })
 
   
@@ -233,40 +233,45 @@ const returnOrder = async (req, res) => {
     try {
         const userId = req.session.userId;
         const reason = req.body.Reason;
+        const { orderId, productId } = req.body; 
 
-        console.log(reason,"the reason here")
-        const { orderId, productId } = req.body; // Destructure orderId and productId directly
+        console.log("orderId",orderId)
+        console.log("productId",productId)
+        console.log("reason",reason)
 
         if (!orderId || !productId) {
             return res.status(400).json({ error: "orderId and productId are required" });
         }
 
-        console.log("1", orderId, "2", productId);
+        const order = await Order.findById(orderId);
 
-        const orders = await Order.findById(orderId);
-
-        if (!orders) {
+        if (!order) {
             return res.status(404).json({ error: "Order not found" });
         }
 
-        if (Date.now() > orders.expiredate) {
+        if (Date.now() > order.expiredate) {
             return res.json({ datelimit: true });
         } else {
-            const productIndex = orders.product.findIndex(item => item._id.toString() === productId);
-           console.log(productIndex,"productIndex")
+            const productIndex = order.product.findIndex(item => item._id.toString() === productId);
+
             if (productIndex === -1) {
                 return res.status(404).json({ error: "Product not found in order" });
             }
 
-            orders.product[productIndex].status = 'waiting for approval';
-            orders.product[productIndex].reason = reason;
+            console.log(productIndex,"index here");
+            console.log(order.product[productIndex].status,"status here");
 
-            await orders.save(); // Save the updated order
+            order.product[productIndex].status = 'waiting for approval';
+            console.log(order.product[productIndex].status,"status here after");
 
-            return res.json({ return: true });
+            order.product[productIndex].reason = reason;
+              console.log("ethitt", order.product[productIndex].reason);
+            await order.save(); 
+
+            return res.json({ return:true });
         }
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         res.status(500).json({ error: "Internal server error" });
     }
 }
@@ -275,8 +280,13 @@ const returnOrder = async (req, res) => {
 const resonsend = async(req,res)=>{
     try {
         const productId = req.query.productId;
-        console.log("pro",productId)
+        console.log("ivade ethhi",productId)
+        const orderId = req.body.orderId
+        console.log("ivade ethhi",productId)
+        console.log("ivade ethhi",orderId)
         const order = await Order.findOne({ 'product.productId': productId });
+          
+console.log(order,"o")
         if (!order) {
             return res.status(404).json({ error: 'Order not found' });
         }
@@ -284,7 +294,7 @@ const resonsend = async(req,res)=>{
         if (!product) {
             return res.status(404).json({ error: 'Product not found in order' });
         }
-        console.log(product);
+        console.log(product.reason,"reson ");
         res.json({ reason: product.reason });
     } catch (err) {
         console.error('Error fetching reason:', err);

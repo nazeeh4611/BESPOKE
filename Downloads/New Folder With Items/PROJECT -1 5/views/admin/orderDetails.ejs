@@ -229,30 +229,20 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="../../pages/icons/mdi.html">
+            <a class="nav-link" href="/admin/couponlist">   
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>
-              <span class="menu-title">Icons</span>
+              <span class="menu-title">Coupons</span>
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="/admin/offerlist">
               <span class="menu-icon">
-                <i class="mdi mdi-security"></i>
+                <i class="mdi mdi-contacts"></i>
               </span>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
+              <span class="menu-title">Offers</span>
             </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/blank-page.html"> Blank Page </a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-404.html"> 404 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-500.html"> 500 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register.html"> Register </a></li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item menu-items">
             <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
@@ -520,12 +510,12 @@
                                   <% } else if(product.status == "waiting for approval"){ %>
                                     <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;"></button>
                                 <% } else { %>
-                                  <button onclick="shipmentUpdate('<%= product.status %>','<%= order._id %>','<%= product._id %>')" style="color: rgb(255, 255, 255);background-color: blue;border-radius: 4px; border: none;">Update</button>
+                                  <button onclick="shipmentUpdate('<%= product.status %>','<%= order._id %>','<%= product.productId %>')" style="color: rgb(255, 255, 255);background-color: blue;border-radius: 4px; border: none;">Update</button>
                                   <% } %>
                             </td>
                             <td>
-                              <% if(product.status == "waiting for approval"){ %>
-                                <button onclick="modal('<%= product.productId %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
+                              <% if(product.status == "waiting for approval" && product.status !== "returned"){ %>
+                                <button onclick="modal('<%= product.productId %>','<%= product.status %>','<%= order._id %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
                                 <% } %>
                             </td>
                           </tr>
@@ -581,22 +571,19 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <% Orders.forEach((order) => { %>
-                                <% order.product.forEach((product,index) => { %>
-                                    <%= product.productId.reason %>
-                                <% }) %>
+                          <% Orders.forEach((order) => { %>
+                            <% order.product.forEach((product,index) => { %>
+                               <h4><%= product.productId.reason %></h4>
                             <% }) %>
+                        <% }) %>
+                        
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                            
-                            <% Orders.forEach((order) => { %>
-                              <% order.product.forEach((product,index) => { %>
-                                <button onclick="returned('<%= product.status %>','<%= order._id %>','<%= product._id %>')" type="button" id="ship" class="btn btn-primary">Submit</button>
-                              <% }) %>
-                          <% }) %>
-                           
                             
+                            <button onclick="returned()" type="button" id="ship" class="btn btn-primary">Submit</button>                           
+                          
                         </div>
                     </div>
                 </div>
@@ -636,19 +623,22 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-function modal(productId) {
-  console.log("hiii",productId)
+function modal(productId,status,orderId) {
+  console.log("hiii",productId,status,orderId)
     // Assuming you're using jQuery for AJAX requests
     $.ajax({
         url: '/getReason', // Route to fetch reason based on product ID
         type: 'GET',
-        data: { productId: productId },
+        data: { productId: productId,
+               orderId:orderId },
         success: function(data) {
             // Populate modal body with the fetched reason
             $('.modal-body').html(data.reason);
             console.log("kiii",data.reason)
             // Display the modal
             $('#staticB').modal('show');
+          returned(status,orderId,productId)
+
         },
         error: function(err) {
             console.error('Error fetching reason:', err);
@@ -704,6 +694,7 @@ function modal(productId) {
 <script>
   function returned(status,orderId,proid){
     console.log("jiii")
+    console.log("nnn",status,proid,orderId)
     $('#ship').click(()=>{
       console.log("ivade eethi")
       fetch("/admin/orderstatus",{

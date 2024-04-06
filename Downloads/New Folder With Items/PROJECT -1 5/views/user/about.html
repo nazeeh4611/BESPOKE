@@ -1,61 +1,54 @@
-<% if (
-  product.status === 'placed' ||
-  product.status === 'delivered' ||
-  product.status === 'waiting for approval' ||
-  product.status === 'Return Approved'
-) { %>
-  <a href="/admin/orderstatus?id=<%= product.productId._id %>">
-    <span class="status-label status-placed">
-      <%= product.status %>
-    </span>
-  </a>
-<% } else if (product.status === 'cancelled') { %>
-  <a>
-    <span class="status-canceled px-3 py-1 text-xs font-semibold leading-tight text-gray-800 bg-gray-200 rounded-full dark:text-gray-100 dark:bg-gray-700">
-      <%= product.status %>
-    </span>
-  </a>
-<% } else if (product.status === 'pending') { %>
-  <a href="/admin/orderstatus?id=<%= product.productId._id %>">
-    <span class="status-canceled px-3 py-1 text-xs font-semibold leading-tight text-gray-800 bg-gray-200 rounded-full dark:text-gray-100 dark:bg-gray-700">
-      <%= Orders[i].status %>
-    </span>
-  </a>
-<% } %>
-</td>
-<td>
-<% if (product.status == 'cancelled') { %>
-  <a class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600">
-    Canceled
-  </a>
-<% } else if (
-  product.status !== 'delivered' &&
-  product.status !== 'waiting for approval' &&
-  product.status !== 'Return Approved' &&
-  product.status !== 'pending'
-) { %>
-  <a href="/admin/ordercancel?id=<%= product.productId._id%>">
-    <span class="btn-danger">Cancel</span>
-  </a>
-  <% if (
-    product.status == 'placed' ||
-    product.status == 'delivered' &&
-    product.status !== 'delivered' &&
-    product.status !== 'pending'
-  ) { %>
-    <button style="color: white;background-color: #28a745; border: none;border-radius: 4px;"><a href="/admin/orderdelivered?id=<%= product.productId._id%>">
-      <span class="btn-primary"></span>
-    </a>Update</button>
-  <% } %>
-<% } else if (product.status == 'Return Approved') { %>
-  <a class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600">
-    Approved
-  </a>
-<% } else if (
-  product.status !== 'delivered' &&
-  product.status !== 'pending'
-) { %>
-  <a href="/admin/orderdelivered?id=<%= product.productId._id%>">
-    <span class="btn-primary">Approve</span>
-  </a>
-<% } %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toggle Table</title>
+<style>
+    table {
+        display: none; /* Initially hide the table */
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    table, th, td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<button >Toggle Table</button>
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Data 1</td>
+            <td>Data 2</td>
+            <td>Data 3</td>
+        </tr>
+        <tr>
+            <td>Data 4</td>
+            <td>Data 5</td>
+            <td>Data 6</td>
+        </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

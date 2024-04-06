@@ -45,10 +45,18 @@ const userSchema = new mongoose.Schema({
   facebook: {
     type: Boolean,
   },
-  wallet:{
-    type:Number,
-    default:0,
-  },
+  wallet:[{
+      amount:{
+        type:String,
+        default:0
+      },
+      discription:{
+        type:String
+      },
+      Date:{
+        type:Date,
+      }
+  }],
 });
 
 module.exports = mongoose.model("User", userSchema);

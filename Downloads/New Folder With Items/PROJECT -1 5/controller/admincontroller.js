@@ -126,54 +126,58 @@ const orderlist = async(req,res)=>{
   }
 }
 
-const orderstatus = async(req, res) => {
+const orderstatus = async (req, res) => {
   try {
+    const userId = req.session.userId;
     const { orderId, id } = req.body;
-   
-    const order = await Order.findById(orderId);
-    console.log("Order:", order);
-  
-    const productIndex = order.product.findIndex(item => item._id.toString() === id);
-    console.log("Product Index:", productIndex);
 
-    if (productIndex === -1) {
-      console.log("Product not found");
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      console.log("Order not found");
       return res.redirect("/admin/orders");
     }
 
+    const productIndex = order.product.findIndex(item => item.productId.toString() === id);
+
+    if (productIndex === -1) {
+      return res.redirect("/admin/orders");
+    }
+ 
     const product = order.product[productIndex];
-    console.log("Product:", product);
+    console.log("poooooo")
 
     if (product.status === 'pending') {
-      console.log("Updating status to 'placed'");
       order.product[productIndex].status = 'placed';
-
     } else if (product.status === 'placed') {
-      console.log("Updating status to 'shipped'");
       order.product[productIndex].status = 'shipped';
-     
     } else if (product.status === 'shipped') {
-      console.log("Updating status to 'out for delivery'");
       order.product[productIndex].status = 'out for delivery';
-
-
     } else if (product.status === 'out for delivery') {
-      console.log("Updating status to 'delivered'");
-    }else if(product.status === 'waiting for approval'){
+      order.product[productIndex].status = 'delivered';
+    } else if (product.status === 'waiting for approval') {
+      console.log("Product status: waiting for approval");
       order.product[productIndex].status = 'returned';
       order.product[productIndex].reason = '';
-    }else{
-      order.product[productIndex].status = 'delivered';
+      
+      // Find the user and update the wallet
+      const user = await User.findById(userId);
+      if (user) {
+        user.wallet += product.price;
+        await user.save();
+      }
     }
 
     await order.save();
 
     res.redirect("/admin/orders");
   } catch (error) {
-    console.log(error);
+    console.log("Error:", error);
     res.redirect("/admin/orders");
   }
 }
+
+
 
 
 
@@ -232,7 +236,7 @@ const orderdelivered = async(req,res)=>{
 
 const salesReport = async(req,res)=>{
   try {
-    const orderData = await Order.find({status:'delivered'}).populate({
+    const orderData = await Order.find({}).populate({
       path:"user",
       model: 'User',
     }).populate({
@@ -253,11 +257,10 @@ const fromdate = req.body.fromdate ? new Date(req.body.fromdate) : null;
 fromdate.setHours(0,0,0,0);
 const todate = req.body.todate ? new Date(req.body.todate) : null;
 todate.setHours(23,59,59,999)
-console.log("1",fromdate,"2",todate);
+
 
 const currentDate = new Date();
 
-console.log(currentDate)
 
 if(fromdate && todate){
   if(todate < fromdate){
