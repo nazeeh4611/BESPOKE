@@ -284,13 +284,13 @@ const resonsend = async(req,res)=>{
         const orderId = req.body.orderId
         console.log("ivade ethhi",productId)
         console.log("ivade ethhi",orderId)
-        const order = await Order.findOne({ 'product.productId': productId });
+        const order = await Order.findOne({ 'product._id': productId });
           
 console.log(order,"o")
         if (!order) {
             return res.status(404).json({ error: 'Order not found' });
         }
-        const product = order.product.find(item => item.productId.toString() === productId);
+        const product = order.product.find(item => item._id.toString() === productId);
         if (!product) {
             return res.status(404).json({ error: 'Product not found in order' });
         }

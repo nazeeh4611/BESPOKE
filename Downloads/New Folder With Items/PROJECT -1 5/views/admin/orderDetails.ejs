@@ -510,12 +510,12 @@
                                   <% } else if(product.status == "waiting for approval"){ %>
                                     <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;"></button>
                                 <% } else { %>
-                                  <button onclick="shipmentUpdate('<%= product.status %>','<%= order._id %>','<%= product.productId %>')" style="color: rgb(255, 255, 255);background-color: blue;border-radius: 4px; border: none;">Update</button>
+                                  <button onclick="shipmentUpdate('<%= product.status %>','<%= order._id %>','<%= product._id %>')" style="color: rgb(255, 255, 255);background-color: blue;border-radius: 4px; border: none;">Update</button>
                                   <% } %>
                             </td>
                             <td>
                               <% if(product.status == "waiting for approval" && product.status !== "returned"){ %>
-                                <button onclick="modal('<%= product.productId %>','<%= product.status %>','<%= order._id %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
+                                <button onclick="modal('<%= product._id%>','<%= product.status %>','<%= order._id %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
                                 <% } %>
                             </td>
                           </tr>
@@ -573,7 +573,7 @@
                         <div class="modal-body">
                           <% Orders.forEach((order) => { %>
                             <% order.product.forEach((product,index) => { %>
-                               <h4><%= product.productId.reason %></h4>
+                               <h4><%= product._id.reason %></h4>
                             <% }) %>
                         <% }) %>
                         
@@ -655,11 +655,11 @@ function modal(productId,status,orderId) {
     console.log(status,"1",orderId,"2",proid,"3")
     if(status == "placed"){
     $('#modaldiscription').text('Are you Sure Update Status to Shipped')
-    }
-    else if(status == "shipped")
+    }else if(status == 'shipped'){
       $('#modaldiscription').text('Are you Sure Update Status to out for delivery')
-  else if(status == "out for delivery")
+   }else if(status == "out for delivery"){
     $('#modaldiscription').text('Are you Sure Update Status to delivered')
+   }
     $('#statusmodal').modal('show')
 
 

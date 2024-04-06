@@ -117,7 +117,6 @@ const orderlist = async(req,res)=>{
     const Orders = await Order.find().sort({Date:-1});
      Orders.forEach((order, index) => { 
       order.product.forEach((product) => { 
-       console.log(product.productId,"pullingo")
      }) 
    })
     res.render("admin/orderDetails",{Orders});
@@ -138,7 +137,7 @@ const orderstatus = async (req, res) => {
       return res.redirect("/admin/orders");
     }
 
-    const productIndex = order.product.findIndex(item => item.productId.toString() === id);
+    const productIndex = order.product.findIndex(item => item._id.toString() === id);
 
     if (productIndex === -1) {
       return res.redirect("/admin/orders");
@@ -151,7 +150,7 @@ const orderstatus = async (req, res) => {
       order.product[productIndex].status = 'placed';
     } else if (product.status === 'placed') {
       order.product[productIndex].status = 'shipped';
-    } else if (product.status === 'shipped') {
+    } else if (product.status === "shipped") {
       order.product[productIndex].status = 'out for delivery';
     } else if (product.status === 'out for delivery') {
       order.product[productIndex].status = 'delivered';
