@@ -61,7 +61,7 @@
                 <div class="wallet-box">
                     <h3>WALLET</h3>
                     <div class="wallet-amount">
-                        <p>Wallet amount: <strong>₹<%= userid.wallet.amount %></strong></p>
+                        <p>Wallet amount: <strong>₹<%= userid.wallet %></strong></p>
                     </div>
                     <button  id="toggleButton"><u>Wallet History</u></button>
                 </div>
@@ -77,7 +77,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                          <% userid.wallet.forEach((wallet,index)=>{ %>
+                          <% userid.wallethistory.forEach((wallet,index)=>{ %>
                             <td><%= index+1 %></td>
                             <td><%= wallet.amount %></td>
                             <td><%= wallet.discription %></td>
@@ -87,10 +87,10 @@
                               day: '2-digit',
                               year: 'numeric'
                             }).toLowerCase() %></td>
-                        <%  }) %>
+                       
                           
                         </tr>
-                      
+                        <%  }) %>
                         </tbody>
                     </table>
                 </div>

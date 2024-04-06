@@ -4,6 +4,7 @@ const Product = require('../model/productModel');
 const Order = require('../model/orderModel');
 const Category = require('../model/catagoryModel')
 const Offer = require("../model/offerModel");
+const Wallet = require("../model/walletModel");
 
 // admin login page
 
@@ -117,7 +118,6 @@ const orderlist = async(req,res)=>{
     const Orders = await Order.find().sort({Date:-1});
      Orders.forEach((order, index) => { 
       order.product.forEach((product) => { 
-       console.log(product.productId,"pullingo")
      }) 
    })
     res.render("admin/orderDetails",{Orders});
@@ -138,19 +138,20 @@ const orderstatus = async (req, res) => {
       return res.redirect("/admin/orders");
     }
 
-    const productIndex = order.product.findIndex(item => item.productId.toString() === id);
+    const productIndex = order.product.findIndex(item => item._id.toString() === id);
 
     if (productIndex === -1) {
       return res.redirect("/admin/orders");
     }
- 
+
     const product = order.product[productIndex];
+    console.log("poooooo")
 
     if (product.status === 'pending') {
       order.product[productIndex].status = 'placed';
     } else if (product.status === 'placed') {
       order.product[productIndex].status = 'shipped';
-    } else if (product.status === 'shipped') {
+    } else if (product.status === "shipped") {
       order.product[productIndex].status = 'out for delivery';
     } else if (product.status === 'out for delivery') {
       order.product[productIndex].status = 'delivered';
@@ -159,21 +160,18 @@ const orderstatus = async (req, res) => {
       order.product[productIndex].status = 'returned';
       order.product[productIndex].reason = '';
       
-     
+    
       const user = await User.findById(userId);
       if (user) {
-       
-        const walletItemIndex = user.wallet.findIndex(item => item.discription === 'returned product');
-        if (walletItemIndex !== -1) {
-          user.wallet[walletItemIndex].amount = (parseFloat(user.wallet[walletItemIndex].amount) + parseFloat(product.price));
-        } else {
-          user.wallet.push({
-            amount: product.price,
-            discription: 'returned product',
-            Date: new Date()
-          });
-        
-        }
+   
+        user.wallet += product.price;
+ 
+        user.wallethistory.push({
+          amount: product.price,
+          discription: 'Returned Product',
+          Date: new Date(),
+        });
+
         await user.save();
       }
     }
@@ -186,7 +184,6 @@ const orderstatus = async (req, res) => {
     res.redirect("/admin/orders");
   }
 }
-
 
 
 

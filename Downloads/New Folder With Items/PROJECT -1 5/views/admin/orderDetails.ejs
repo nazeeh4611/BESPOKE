@@ -625,6 +625,7 @@
 <script>
 function modal(productId,status,orderId) {
   console.log("hiii",productId,status,orderId)
+ 
     // Assuming you're using jQuery for AJAX requests
     $.ajax({
         url: '/getReason', // Route to fetch reason based on product ID
@@ -652,6 +653,7 @@ function modal(productId,status,orderId) {
 </script>
 <script>
   function shipmentUpdate(status,orderId,proid){
+    console.log("the status here",status)
     console.log(status,"1",orderId,"2",proid,"3")
     if(status == "placed"){
     $('#modaldiscription').text('Are you Sure Update Status to Shipped')
@@ -740,4 +742,4 @@ function modal(productId,status,orderId) {
     <!-- Custom js for this page -->
     <!-- End custom js for this page -->
   </body>
-</html>
+</html

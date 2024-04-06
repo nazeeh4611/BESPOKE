@@ -45,7 +45,11 @@ const userSchema = new mongoose.Schema({
   facebook: {
     type: Boolean,
   },
-  wallet:[{
+  wallet:{
+    type:Number,
+    default:0,
+  },
+  wallethistory:[{
       amount:{
         type:Number,
         default:0
@@ -56,10 +60,6 @@ const userSchema = new mongoose.Schema({
       Date:{
         type:Date,
       },
-      total:{
-        type:Number,
-        default:0
-      }
   }],
 });
 
