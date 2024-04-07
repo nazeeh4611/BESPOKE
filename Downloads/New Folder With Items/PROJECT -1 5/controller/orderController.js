@@ -19,6 +19,8 @@ const OrderPlace = async (req, res) => {
 
         const { addressId, paymentMethod,subtotal} = req.body;
 
+console.log(paymentMethod,"here")
+
         const cartdata = await Cart.findOne({ user: userId });
 
         if (!addressId || !paymentMethod) {
@@ -90,6 +92,31 @@ const OrderPlace = async (req, res) => {
 
             const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
 
+            res.json({success:true,orderId})
+
+        }else if(paymentMethod == 'WALLET'){
+            for (const cartProduct of cartdata.product) {
+                await Product.findOneAndUpdate(
+                    { _id: cartProduct.productId },
+                    { $inc: { quantity: -cartProduct.quantity } }
+                );
+            }
+
+            const DeleteCartItem = await Cart.findOneAndDelete({ user: userId });
+           
+           const walletreduce = await User.findByIdAndUpdate(
+            {_id:userId},
+            {$inc:{wallet:-subtotal}},
+            )
+            const user = await User.findByIdAndUpdate(userId, {
+                $push: {
+                    wallethistory: {
+                        description: 'Amount debited for paying the order',
+                        amount: -subtotal,
+                        Date: new Date() // Assuming this is a debit
+                    }
+                }
+            }, { new: true });
             res.json({success:true,orderId})
         }else{
             const orders = await instance.orders.create({

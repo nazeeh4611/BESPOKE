@@ -227,8 +227,10 @@ const removecart = async (req, res) => {
 const Loadcheckout = async (req, res) => {
   try {
     const userIn = req.session.userId;
-
+    
+    const user = await User.findOne({_id:userIn});
     const address = await Address.findOne({ user: userIn });
+    console.log("user",user.wallet)
     const cartdata = await Cart.findOne({ user: userIn }).populate({
       path: 'product.productId',
       model: 'Product',
@@ -278,13 +280,18 @@ const Loadcheckout = async (req, res) => {
     });
 
     const coupon = await Coupon.find({});
+   
+    
+    
   
     res.render("user/checkout", {
       cartdata: { cartdata, product: filteredProducts },
       addresses,
       subtotal,
       coupon,
-      coupondiscount: cartdata.coupondiscount, 
+      coupondiscount: cartdata.coupondiscount,
+      user, 
+      userIn
     });
   } catch (error) {
     console.log(error.message);

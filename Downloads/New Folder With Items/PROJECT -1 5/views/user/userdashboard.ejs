@@ -33,7 +33,28 @@
           border: none;
           cursor: pointer;
       }
-      
+      #dataTable {
+        width: 100%; /* Make the table take up the full width of its container */
+        border-collapse: collapse; /* Collapse table borders */
+    }
+
+    #dataTable th,
+    #dataTable td {
+        padding: 10px; /* Add padding to table cells */
+        text-align: left; /* Align text to the left within cells */
+        border: 1px solid #ddd; /* Add borders to cells */
+    }
+
+    /* Style even rows with a light background color */
+    #dataTable tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Style the header row */
+    #dataTable thead th {
+        background-color: #333; /* Dark background color */
+        color: white; /* White text color */
+    }
   </style>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">
@@ -65,35 +86,28 @@
                     </div>
                     <button  id="toggleButton"><u>Wallet History</u></button>
                 </div>
-                <div class="col-md-6">
-                    <table id="dataTable">
-                        <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Amount</th>
-                            <th>Discription</th>
-                            <th>Date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
+                <div class="col-md-8">
+                  <table id="dataTable">
+                      <thead>
+                          <tr>
+                              <th>No</th>
+                              <th>Amount</th>
+                              <th>Description</th>
+                              <th>Date</th>
+                          </tr>
+                      </thead>
+                      <tbody>
                           <% userid.wallethistory.forEach((wallet,index)=>{ %>
-                            <td><%= index+1 %></td>
-                            <td><%= wallet.amount %></td>
-                            <td><%= wallet.discription %></td>
-                            <td><%= wallet.Date.toLocaleDateString('en-US', {
-                              weekday: 'short',
-                              month: 'short',
-                              day: '2-digit',
-                              year: 'numeric'
-                            }).toLowerCase() %></td>
-                       
-                          
-                        </tr>
-                        <%  }) %>
-                        </tbody>
-                    </table>
-                </div>
+                              <tr>
+                                  <td><%= index+1 %></td>
+                                  <td id="amount" style="color: <%= (wallet.description === 'Amount credited for returned product' || wallet.description === 'Amount credited for referel') ? 'green' : 'red' %>;"><%= wallet.amount %></td>
+                                  <td id="description"><%= wallet.description %></td>
+                                  <td><%= wallet.Date ? wallet.Date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A' %></td>
+                              </tr>
+                          <%  }) %>
+                      </tbody>
+                  </table>
+              </div>
             </div>
         </div>
     </section>

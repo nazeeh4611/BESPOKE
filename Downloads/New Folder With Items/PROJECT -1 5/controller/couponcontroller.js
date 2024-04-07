@@ -114,7 +114,7 @@ const applycoupon = async(req,res)=>{
     console.log(exists,"existing coupon");
 
 
-   if(!exists){
+   if(exists || !exists){
    const cartUser = await Cart.findOne({user:userId});
     console.log(cartUser);
    
@@ -134,9 +134,7 @@ const applycoupon = async(req,res)=>{
     res.json({status:'Already applied'});
     console.log(res.json,"already apllied");
    }
-}else{
-    res.json({status:'Already Used'});
-    console.log(res.json,'Already Used');
+
 }
     } catch (error) {
         console.log(error);

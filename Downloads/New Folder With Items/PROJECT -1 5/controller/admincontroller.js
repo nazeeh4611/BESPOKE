@@ -111,14 +111,24 @@ const BlockUser = async (req, res) => {
   }
 };
 
-
 const orderlist = async(req,res)=>{
   try {
     const Orders = await Order.find().sort({Date:-1});
-     Orders.forEach((order, index) => { 
-      order.product.forEach((product) => { 
-     }) 
-   })
+    res.render("admin/orderlist",{Orders});
+  } catch (error) {
+   console.log(error)
+  }
+}
+
+
+
+
+const orderDetails = async(req,res)=>{
+  try {
+
+    const orderId = req.query.id;
+    console.log(orderId,"orderId")
+    const Orders = await Order.findOne({_id:orderId}).sort({Date:-1});
     res.render("admin/orderDetails",{Orders});
   } catch (error) {
     console.log(error)
@@ -130,7 +140,9 @@ const orderstatus = async (req, res) => {
     const userId = req.session.userId;
     const { orderId, id } = req.body;
 
-    const order = await Order.findById(orderId);
+    console.log("reached", orderId)
+    const order = await Order.findOne({ _id: orderId });
+    console.log("rrrrrrr", order)
 
     if (!order) {
       console.log("Order not found");
@@ -138,12 +150,14 @@ const orderstatus = async (req, res) => {
     }
 
     const productIndex = order.product.findIndex(item => item._id.toString() === id);
+    console.log(productIndex, "index")
 
     if (productIndex === -1) {
       return res.redirect("/admin/orders");
     }
- 
+
     const product = order.product[productIndex];
+
     console.log("poooooo")
 
     if (product.status === 'pending') {
@@ -158,13 +172,20 @@ const orderstatus = async (req, res) => {
       console.log("Product status: waiting for approval");
       order.product[productIndex].status = 'returned';
       order.product[productIndex].reason = '';
-      
-      // Find the user and update the wallet
-      // const user = await User.findById(userId);
-      // if (user) {
-      //   user.wallet += product.price;
-      //   await user.save();
-      // }
+
+      const user = await User.findById(userId);
+      if (user) {
+        user.wallet += product.price * product.quantity;
+
+        // Update wallet history
+        user.wallethistory.push({
+          amount: product.price * product.quantity,
+          description: 'Amount credited for returned product',
+          Date: new Date()
+        });
+
+        await user.save();
+      }
     }
 
     await order.save();
@@ -175,6 +196,7 @@ const orderstatus = async (req, res) => {
     res.redirect("/admin/orders");
   }
 }
+
 
 
 
@@ -295,6 +317,7 @@ module.exports = {
   adminLogout,
   userManagement,
   BlockUser,
+  orderDetails,
   orderlist,
   orderstatus,
   ordercancel,

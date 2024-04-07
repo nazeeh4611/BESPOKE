@@ -54,13 +54,29 @@ const userSchema = new mongoose.Schema({
         type:Number,
         default:0
       },
-      discription:{
+      description:{
         type:String
       },
       Date:{
         type:Date,
       },
   }],
-});
+  referalcode:{
+    type:String,
+    unique:true
+  },
+  referalby:{
+    type:mongoose.Types.ObjectId,
+    ref:"User"
+  }
+},
+  {timestamps:true});
+
+  userSchema.pre('save',function(next){
+    if(!this.referalcode){
+      this.referalcode = refcodegenarate()
+    }
+    next();
+  });
 
 module.exports = mongoose.model("User", userSchema);

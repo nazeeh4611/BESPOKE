@@ -19,106 +19,71 @@
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
   </head>
 
+    <style>
+    /* General styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-  <style>
+    .container {
+      max-width: 100%;
+      padding: 20px;
+    }
+
     /* Table styles */
     table {
-      width: 100%;
       border-collapse: collapse;
+      width: 100%;
+      color: #ffffff;
+      font-size: 14px;
     }
-  
+
     th,
     td {
-      padding: 8px;
-      border: 1px solid #505050;
-      text-align: left;
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
     }
-  
+
     th {
-      background-color: #000000;
-      color: rgb(157, 157, 157);
+      background-color: #4CAF50;
+      color: white;
     }
-  
+
     /* Button styles */
-    .btn-1,
-    .btn-2,
-    .btn-3,
-    .btn-4 {
-      padding: 2px 8px;
-      margin: 2px;
-      cursor: pointer;
+    button {
+      background-color: #4CAF50;
+      color: white;
       border: none;
-      border-radius: 4px;
+      padding: 3px 6px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-    }
-  
-    .btn-1 a,
-    .btn-2 a {
-      color: #fff;
-      text-decoration: none;
-    }
-  
-    .btn-1 {
-      background-color: #2f971a;
-      /* Blue for Edit button */
-    }
-  
-    .btn-2 {
-      background-color: #dc3545;
-      /* Red for Delete button */
-    }
-  
-    .btn-3 {
-      background-color: #28a745;
-      /* Green for List button */
-    }
-  
-    .btn-4 {
-      background-color: #dc3545;
-      /* Red for Unlist button */
-    }
-  
-    .btn-7 {
-      padding: 3px 6px;
-      margin-right: 20px;
-      /* Add margin to create space between the button and the heading */
-      background-color: #28a745;
-      /* Green background color */
-      color: white;
-      /* White text color */
-      border: none;
-      border-radius: 4px;
+      font-size: 10px;
+      margin: 2px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      border-radius: 5px;
     }
-  
-    .btn-7:hover {
-      background-color: #076e1f;
-      /* Darker green on hover */
+
+    /* Responsive styles */
+    @media screen and (max-width: 600px) {
+
+      th,
+      td {
+        padding: 2px;
+      }
+
+      button {
+        font-size: 8px;
+        padding: 2px 4px;
+      }
+
+      .action-column {
+        min-width: 40px;
+      }
     }
-  #btn-blk{
-    border-radius: 4px;
-    border: none;
-  }
-  
-    h2 {
-      display: inline-block;
-      /* Keep the heading and button on the same line */
-      margin-bottom: 10px;
-      /* Add some space below the heading */
-      margin-right: 20px;
-      /* Add some space between the heading and the table */
-    }
-  
-    /* Table styles */
-    table {
-      margin-top: 20px;
-      /* Add some space between the button and the table */
-    }
-  
-    </style>
+  </style>
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_sidebar.html -->
@@ -229,20 +194,30 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/couponlist">   
+            <a class="nav-link" href="../../pages/icons/mdi.html">
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>
-              <span class="menu-title">Coupons</span>
+              <span class="menu-title">Icons</span>
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/offerlist">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <span class="menu-icon">
-                <i class="mdi mdi-contacts"></i>
+                <i class="mdi mdi-security"></i>
               </span>
-              <span class="menu-title">Offers</span>
+              <span class="menu-title">User Pages</span>
+              <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/blank-page.html"> Blank Page </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-404.html"> 404 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/error-500.html"> 500 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login.html"> Login </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register.html"> Register </a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item menu-items">
             <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
@@ -458,123 +433,62 @@
             </div>
             <div class="row">
               <div class="container">
-                <h2>ORDER LIST</h2>
+                <h2>USER LIST</h2>
                 <table>
                   <thead>
                     <tr>
-                   
+                      <th>S.No</th>
                       <th>Order ID</th>
-                      <th>Product Name</th>
                       <th>Price</th>
-                      <th>Qty</th>
                       <th>PaymentMethod</th>
-                      <th>Status</th>
-                      <th class="action-column">Actions</th>
-                      <th>Return request</th>
+                      <th class="action-column">Items</th>
+                      <th>Order details</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% if(Orders) { %>
-                     
-                        <% Orders.product.forEach((product) => { %>
-                          <tr>
-                            <td>
-                           <%= product._id %> 
+                    <% if(Orders.length> 0){ %>
+                      <% for(let i=0; i < Orders.length; i++){ %>
+                        <tr>
+                          <td>
+                            <%= i + 1 %>
                           </td>
                           <td>
-                            <%= product.name %>
+                            <%= Orders[i]._id %>
                           </td>
                           <td>
-                            ₹<%= product.price %>
+                            <%= Orders[i].subtotal  %>
                           </td>
                           <td>
-                            <%= product.quantity %>
+                            <%= Orders[i].paymentMethod %>
                           </td>
-                            <td>
-                              <%= Orders.paymentMethod %>
-                            </td>
-                            <td> 
-                              <button style="color: white;background-color: #28a745;border-radius: 4px; border: none;"><%= product.status %></button>
-                            </td>
-                            <td>
-                              <% if(product.status == "delivered"){ %>
-                             <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Delivered</button>
-                              <% }else if(product.status == "returned"){ %>
-                                <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Returned</button>
-                                <% } else if(product.status == "cancelled"){ %>
-                                  <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Cancelled</button>
-                                  <% } else if(product.status == "waiting for approval"){ %>
-                                    <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;"></button>
-                                <% } else { %>
-                                  <button onclick="shipmentUpdate('<%= product.status %>','<%= Orders._id %> ','<%= product._id %>')" style="color: rgb(255, 255, 255);background-color: blue;border-radius: 4px; border: none;">Update</button>
-                                  <% } %>
-                            </td>
-                            <td>
-                              <% if(product.status == "waiting for approval" && product.status !== "returned"){ %>
-                                <button onclick="modal('<%= product._id%>','<%= product.status %>',' <%= Orders._id %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
-                                <% } %>
-                            </td>
-                          </tr>
-                        <% }) %>
-                    
-                    <% } else { %>
-                      <tr>
-                        <td colspan="5">Orders Not Found</td>
-                      </tr>
-                    <% } %>
+                      
+                      <td> <%= Orders[i].product.length %></td>
+                       
+                        <td>
+                            <a href="/admin/orders?id=<%= Orders[i]._id %>"><button style="color: #ffffff;background-color: rgb(0, 201, 27);">view details</button></a>
+                          </td>
+                      
+                        </tr>
+                        <% } %>
+                          <% } else { %>
+                            <tr>
+                              <td colspan="5">Orders Not Found</td>
+                            </tr>
+                            <% } %>
                   </tbody>
                 </table>
               </div>
-            </div>
-            
-            <div class="modal fade" id="statusmodal" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="modaldiscription" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="">Update Status</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                   <h4 id="modaldiscription"></h4>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="shipbutton" class="btn btn-primary">Submit</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-                  </div>
-                </div>
-              </div>
-              
-         
-              <div class="modal fade" id="staticB" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Return Reason</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                         
-                            <% Orders.product.forEach((product,index) => { %>
-                               <h4><%= product._id.reason %></h4>
-                            <% }) %>
-                      
-                        
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                           
-                            
-                            <button onclick="returned()" type="button" id="ship" class="btn btn-primary">Submit</button>                           
-                          
-                        </div>
+      
+            </nav>
+                  
                     </div>
+                  </div>
                 </div>
+              </div>
+         
+        
+       
             </div>
-              
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
@@ -593,119 +507,6 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <script src="/public/js/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Include jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Include Bootstrap JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-<script src="/public/js/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Include jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Include Bootstrap JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-function modal(productId,status,orderId) {
-  console.log("hiii",productId,status,orderId)
- 
-    // Assuming you're using jQuery for AJAX requests
-    $.ajax({
-        url: '/getReason', // Route to fetch reason based on product ID
-        type: 'GET',
-        data: { productId: productId,
-               orderId:orderId },
-        success: function(data) {
-            // Populate modal body with the fetched reason
-            $('.modal-body').html(data.reason);
-            console.log("kiii",data.reason)
-            // Display the modal
-            $('#staticB').modal('show');
-          returned(status,orderId,productId)
-
-        },
-        error: function(err) {
-            console.error('Error fetching reason:', err);
-        }
-    });
-}
-
- 
-
-
-</script>
-<script>
-  function shipmentUpdate(status, orderId, proid) {
-    console.log("the status here", status)
-    console.log(status, "1", orderId, "2", proid, "3")
-    if (status == "placed") {
-      $('#modaldiscription').text('Are you Sure Update Status to Shipped')
-    } else if (status == 'shipped') {
-      $('#modaldiscription').text('Are you Sure Update Status to out for delivery')
-    } else if (status == "out for delivery") {
-      $('#modaldiscription').text('Are you Sure Update Status to delivered')
-    }
-    $('#statusmodal').modal('show')
-
-    // Adding .trim() to orderId to remove leading and trailing whitespace
-    $('#shipbutton').click(() => {
-      console.log("ivade eethi")
-      fetch("/admin/orderstatus", {
-          method: 'PATCH',
-          headers: {
-            'content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            id: proid,
-            orderId: orderId.trim() // Trim the orderId value
-          })
-        })
-        .then(() => {
-          $('#statusmodal').modal('hide');
-          $('#staticB').modal('hide');
-
-          setTimeout(() => {
-            window.location.reload('/orders')
-          })
-        })
-    })
-  }
-</script>
-
-
-<script>
-  function returned(status,orderId,proid){
-    console.log("jiii")
-    console.log("nnn",status,proid,orderId)
-    $('#ship').click(()=>{
-      console.log("ivade eethi")
-      fetch("/admin/orderstatus",{
-        method:'PATCH',
-        headers:{
-          'content-Type':'application/json'
-        },
-        body:JSON.stringify({
-          id:proid,
-          orderId:orderId.trim()
-        })
-      })
-      .then(()=>{
-        $('#statusmodal').modal('hide');
-        $('#staticB').modal('hide');
-        
-
-        setTimeout(()=>{
-          window.location.reload('/orderlist')
-        })
-      })
-    })
-
-  }
-</script>
-
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
@@ -717,12 +518,21 @@ function modal(productId,status,orderId) {
     <script src="../../assets/js/todolist.js"></script>
 
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-            
+   <!-- <script>
+    function viewdetails(id){
+        console.log(id,"id")
+        $.ajax({
+            url:"/admin/orders",
+            method:"GET"
+
+        })
+    }
+   </script>          -->
 
     <!-- endinject -->
     <!-- Custom js for this page -->
     <!-- End custom js for this page -->
   </body>
-</html
+</html>

@@ -263,10 +263,11 @@
               </div>
               <div class="checkout__payment-methods">
                 <div class="form-check">
+                  <% if(user.wallet >= subtotal) { %>
                   <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="wallet" value="WALLET" >
                   <label class="form-check-label" for="checkout_payment_method_1">
                     Wallet
-                   
+                   <% } %>
                   </label>
                 </div>
                 <div class="form-check">
@@ -317,37 +318,43 @@
            
             <div class="modal-body">
               <% if(coupon.length > 0) { %>
-             <% for(let i=0;i < coupon.length;i++){ %>
+                <% coupon.forEach(couponItem => { %>
                   <div class="billing-info__wrapper">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="col-md-12">
                           <div class="return-details" class="col-md-12">
-                            <p style="color: green;"><strong style="color: #000000;"><%= coupon[i].name %></strong>&nbsp;you save ₹<%= coupon[i].discountamount %></p>
-                            <p>use this code : <u style="color:rgb(0, 0, 0);"><%= coupon.couponcode %></u></p>
-                            <p>Get ₹<%= coupon[i].discountamount %> Off on <u>₹<%= coupon[i].criteriaamount %></u> and Above</p>
-                            <p>Expire on <%= coupon[i].expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
-                            <% if(subtotal >= coupon[i].criteriaamount) { %>
-                            <div class="button-line-container">
-                              <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=coupon[i]._id %>')">select</button>
-                              <hr class="full-width-line">
-                            </div>
-                            <%}else{%>
+                            <p style="color: green;"><strong style="color: #000000;"><%= couponItem.name %></strong>&nbsp;you save ₹<%= couponItem.discountamount %></p>
+                            <p>use this code : <u style="color:rgb(0, 0, 0);"><%= couponItem.couponcode %></u></p>
+                            <p>Get ₹<%= couponItem.discountamount %> Off on <u>₹<%= couponItem.criteriaamount %></u> and Above</p>
+                            <p>Expire on <%= couponItem.expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
+                            <% if(subtotal >= couponItem.criteriaamount) { %>
+                                <div class="button-line-container">
+                                  <p id="applied"></p>
+                                  <button class="btn-lin fw-medium" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px;" onclick="applycoupon('<%=couponItem._id %>')">select</button>
+                                  <hr class="full-width-line">
+                                </div>
+  
+                               
+                             
+                            <% } else { %>
                               <div class="button-line-container">
                                 <button class="btn-lin fw-medium" id="cpn-bt" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px; display:block;  background: linear-gradient(200deg, rgb(180, 173, 173), rgb(189, 180, 180)); " disabled >select</button>
+                                <p style="color: blue;">Shop for ₹<%= couponItem.criteriaamount-subtotal %>  more to apply offer</p>
                                 <hr class="full-width-line">
                               </div>
-                              <%}%>
+                            <% } %>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-              <% } %>
+                <% }) %>
               <% } else { %>
                 <h5 style="color: #7c0000;">Coupon Not Found</h5>
               <% } %>
             </div>
+            
             
             
             <div class="modal-footer">
@@ -700,8 +707,6 @@ function verifypayment(Payment,orders){
                     title: 'coupon already applied',
                     showConfirmButton: false,
                 })
-            } else if(response.status == 'Already Used') {
-             $(`#cpn-bt`).css('display','none',)
             } else if(response.success == true) {
     Swal.fire({
         icon: 'success',
@@ -716,7 +721,7 @@ function verifypayment(Payment,orders){
             $('#staticBackdrop').modal("hide");
             location.reload("/checkout");
 
-            // Update the coupon button and text
+        
             $("#cpn-btn").text(code).css('color', 'green');
             $("#selct").text('REMOVE').css('color', 'red');
         }

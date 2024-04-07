@@ -3,6 +3,7 @@ const categoryController = require("../controller/catagorycontroller");
 const productController = require("../controller/productcontroller");
 const offerController = require("../controller/offercontroller");
 const couponcontroller = require("../controller/couponcontroller");
+
 const express = require("express");
 const upload = require("../middlewares/upload");
 
@@ -75,10 +76,15 @@ adminRoute.delete(
   productController.deleteimage
 );
 
-adminRoute.get(
-  "/orders",adminAuth.isLogin,
-  adminController.orderlist
-  );
+adminRoute.get("/orderlist",
+adminController.orderlist);
+
+adminRoute.get('/orders', adminAuth.isLogin, adminController.orderDetails);
+
+  adminRoute.post(
+    "/orders",adminAuth.isLogin,
+    adminController.orderDetails
+    );
 
 adminRoute.patch(
   "/orderstatus",adminAuth.isLogin,

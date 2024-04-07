@@ -56,10 +56,26 @@ const securePassword = async (password) => {
   }
 };
 
+
+// referal code 
+
+function refcodegenarate(){
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+  const length = 8;
+  let referalcode = '';
+  for(let i=0;i<length;i++){
+    referalcode+= characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return referalcode;
+}
+
+
 //  verify registration
 
 const verifyRegister = async (req, res) => {
   try {
+
+    const referalcode = req.body.referalcode;
     const existUser = await User.findOne({ email: req.body.email });
     if (existUser && existUser.is_Verified) {
       const message = "Email already Registered";
@@ -70,25 +86,48 @@ const verifyRegister = async (req, res) => {
     } else {
       const confirmPassword = req.body.confirmPassword;
 
-      const spassword = await securePassword(req.body.password);
-
-      const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        mobile: req.body.mobile,
-        password: spassword,
-        confirmpassword: confirmPassword,
-      });
+    
 
       if (req.body.password !== confirmPassword) {
         return res.render("user/register", {
           message: "password do not match",
         });
       }
+     let referalby = null;
 
+     if(referalcode){
+      referalby = await User.findOne({referalcode});
+      if(!referalby){
+        res.render("user/register", { messages: { message: "Invalid refreal code" } });
+       }
+     }
+   
+const newuserrefral = refcodegenarate();
+const spassword = await securePassword(req.body.password);
+
+const user = new User({
+  name: req.body.name,
+  email: req.body.email,
+  mobile: req.body.mobile,
+  password: spassword,
+  confirmpassword: confirmPassword,
+  referalcode:newuserrefral,
+  referalby: referalby ? referalby._id : null,
+});
       const userdata = await user.save();
       req.session.email = req.body.email;
       await sendOtpVerificationMail(userdata, res);
+
+      if(referalby){
+        referalby.wallet +=100;
+        await referalby.save();
+        User.wallet+=50;
+        User.wallethistory.push({
+          amount: 50,
+          description: 'Amount credited for referel',
+          Date: new Date()
+        });
+      }
     }
   } catch (error) {
     console.log(error.message);
