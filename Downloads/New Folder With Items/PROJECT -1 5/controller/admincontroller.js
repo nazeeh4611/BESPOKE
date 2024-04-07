@@ -272,43 +272,78 @@ const salesReport = async(req,res)=>{
 }
 
 
-const filterSales = async (req,res)=>{
+const filterSales = async (req, res) => {
   try {
-const fromdate = req.body.fromdate ? new Date(req.body.fromdate) : null;
-fromdate.setHours(0,0,0,0);
-const todate = req.body.todate ? new Date(req.body.todate) : null;
-todate.setHours(23,59,59,999)
+    let fromdate, todate;
+    const currentDate = new Date();
 
+    const range = req.body.range;
+    switch (range) {
+      case 'daily':
+        fromdate = new Date(currentDate);
+        fromdate.setHours(0, 0, 0, 0);
+        todate = new Date(currentDate);
+        todate.setHours(23, 59, 59, 999);
+        break;
+        case 'weekly':
+          const currentDateCopy = new Date(currentDate); // Cloning the currentDate object
+          const firstDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() - currentDateCopy.getDay())); // Sunday
+          const lastDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() + 6)); // Saturday
+          fromdate = new Date(firstDayOfWeek);
+          fromdate.setHours(0, 0, 0, 0);
+          todate = new Date(lastDayOfWeek);
+          todate.setHours(23, 59, 59, 999);
+          break;
+        
+      case 'monthly':
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        fromdate = new Date(firstDayOfMonth);
+        fromdate.setHours(0, 0, 0, 0);
+        todate = new Date(lastDayOfMonth);
+        todate.setHours(23, 59, 59, 999);
+        break;
+      case 'yearly':
+        const firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1); // January 1st of the current year
+        const lastDayOfYear = new Date(currentDate.getFullYear() + 1, 0, 0); // December 31st of the current year
+        fromdate = new Date(firstDayOfYear);
+        fromdate.setHours(0, 0, 0, 0);
+        todate = new Date(lastDayOfYear);
+        todate.setHours(23, 59, 59, 999);
+        break;
+      case 'custom':
+        fromdate = req.body.fromdate ? new Date(req.body.fromdate) : null;
+        if (fromdate) fromdate.setHours(0, 0, 0, 0);
+        todate = req.body.todate ? new Date(req.body.todate) : null;
+        if (todate) todate.setHours(23, 59, 59, 999);
+        break;
+    }
 
-const currentDate = new Date();
+    const orderData = await Order.find({
+      Date: { $lt: todate || currentDate, $gt: fromdate || new Date(0) }, // Default to current date or epoch if dates are not provided
+      
+    })
+      .populate({
+        path: 'user',
+        model: 'User',
+      })
+      .populate({
+        path: 'product.productId',
+        model: 'Product',
+      })
+      .sort({ Date: -1 });
 
-
-if(fromdate && todate){
-  if(todate < fromdate){
-    let temp =  fromdate;
-     fromdate = todate 
-     todate  = temp;
-  }
-}else if(fromdate){
-  todate = currentDate
-}else if(todate){
-  fromdate = currentDate
-}
-const orderData = await Order.find({Date:{$lt:todate,$gt:fromdate},status:'delivered'}).populate({
-  path:"user",
-  model: 'User',
-}).populate({
-  path: 'product.productId',
-  model: 'Product',
-}).sort({Date:-1});
-   
-
-  res.render("admin/sales",{orderData})
+    res.render("admin/sales", { orderData });
 
   } catch (error) {
-    
+    console.log(error);
+    res.status(500).send("Internal Server Error"); // Send an error response
   }
 }
+
+
 
 module.exports = {
   adminLogin,

@@ -15,6 +15,24 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="/public/admin/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Make sure to include SweetAlert library and its CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Ensure you have included jQuery and Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Make sure to include SweetAlert library and its CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
     <!-- End layout styles -->
     
   </head>
@@ -439,93 +457,77 @@
           </div>
         </nav>
         <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="page-header">
-         
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                 
-                </ol>
-              </nav>
-            </div>
-            <h2>SALES REPORT</h2>
-            <div class="row">
-           
-           
-              <br>
-              <form method="post">
-                <div class="startDate">
-                    Starting Date: &nbsp; <input type="date" name="fromdate" id="dat" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white">                
-                    &nbsp;  Ending Date:   <input type="date" name="todate" id="date" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white">
-                </div>
-                <button type="submit">filter</button>
-            </form>
-              <table>
-                <thead>
-                  <tr>
-                    <th>OrderID</th>
-                    <th>Product-Details</th>
-                    <th>Date</th>
-                    <th>Payment-Method</th>
-                    <th>Status</th>
-                    <th>Total Amount</th>
-                    <th>Customer Name </th>
-                  </tr>
-                </thead>
-           <% if(orderData ) { %>
-           <% orderData.forEach((order)=> {
-            order.product.forEach((item) => {
-               
-             %>
-                      <tr>
-                        <td>
-                         <%= order._id %>
-                        </td>
-                        <td>
-                      
-                       <%=item.name %>
-                        </td>
-                        <td>
-                      <%= order.Date.toLocaleDateString('en-US', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: '2-digit',
-                        year: 'numeric'
-                      }).toLowerCase() %>
-                        </td>
-                        <td>
-                            <%= order.paymentMethod %>
-                        </td>
-                        <td>
-                            <%= order.status %>
-                        </td>
-                        <td>
-                          ₹<%= order.subtotal %>
-                        </td>
-                        <td>
-                            <%= order.user.name %>
-                        </td>
-                     
-                      </tr>
-                      <%}) %>
-                      <% }) %>
-                      <% }else{ %>
-                          <tr>
-                            <td colspan="5">Offer is not found</td>
-                          </tr>
-                          <% } %>
-
-
-                </tbody>
-              </table>
+        <!-- Your EJS template code remains mostly unchanged -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        </ol>
+      </nav>
+    </div>
+    <h2>SALES REPORT</h2>
+    <div class="row">
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" id="downloadDropdown" data-toggle="dropdown">DOWNLOAD</button>
+        <div class="dropdown-menu" aria-labelledby="downloadDropdown">
+            <a class="dropdown-item" href="#" onclick="downloadPDF('printThisDiv')" style="color: green; font-weight: 600;">Download as PDF</a>
+            <a class="dropdown-item" href="#" onclick="downloadExcel('printThisDiv')" style="color: green; font-weight: 600;">Download as Excel</a>
+        </div>
+    </div>
+      <form method="POST">
+        <div class="startDate">
+          Starting Date: &nbsp; <input type="date" name="fromdate" id="dat" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp; Ending Date: <input type="date" name="todate" id="date" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp;
+          <select name="range">
+            <option value="">select</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <button type="submit">Filter</button>
+      </form>
       
-      
-            </nav>
-                  
-                    </div>
-                  </div>
-                </div>
+        <% if(orderData && orderData.length > 0) { %>
+          <div id="printThisDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th>OrderID</th>
+                  <th>Product-Details</th>
+                  <th>Date</th>
+                  <th>Payment-Method</th>
+                  <th>Status</th>
+                  <th>Total Amount</th>
+                  <th>Customer Name</th>
+                </tr>
+              </thead>
+          <% orderData.forEach((order) => { %>
+            <% order.product.forEach((item) => { %>
+              <tr>
+                <td><%= order._id %></td>
+                <td><%= item.name %></td>
+                <td><%= order.Date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></td>
+                <td><%= order.paymentMethod %></td>
+                <td><%= order.status %></td>
+                <td>₹<%= order.subtotal %></td>
+                <td><%= order.user.name %></td>
+              </tr>
+            <% }); %>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="5">No orders found</td>
+          </tr>
+        <% } %>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+
               </div>
              
             </div>
@@ -546,6 +548,41 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+  function downloadPDF(divName) {
+      const printContents = document.getElementById(divName).innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+  }
+
+  function downloadExcel(divName) {
+      const table = document.getElementById(divName);
+      const rows = table.getElementsByTagName('tr');
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      for (const row of rows) {
+          const cells = row.getElementsByTagName('td');
+          const cellValues = [];
+          for (const cell of cells) {
+              cellValues.push(cell.textContent);
+          }
+          csvContent += cellValues.join(',') + '\n';
+      }
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'data.csv');
+      document.body.appendChild(link);
+
+      link.click();
+      document.body.removeChild(link);
+  }
+</script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>

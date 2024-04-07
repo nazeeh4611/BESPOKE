@@ -75,7 +75,8 @@ function refcodegenarate(){
 const verifyRegister = async (req, res) => {
   try {
 
-    const referalcode = req.body.referalcode;
+    const referalcode = req.body.refaralcode;
+    console.log("referal code ",referalcode)
     const existUser = await User.findOne({ email: req.body.email });
     if (existUser && existUser.is_Verified) {
       const message = "Email already Registered";
@@ -119,15 +120,23 @@ const user = new User({
       await sendOtpVerificationMail(userdata, res);
 
       if(referalby){
-        referalby.wallet +=100;
-        await referalby.save();
-        User.wallet+=50;
-        User.wallethistory.push({
-          amount: 50,
+        referalby.wallet += 100; 
+        referalby.wallethistory.push({
+          amount: 100,
           description: 'Amount credited for referel',
           Date: new Date()
+      });
+        await referalby.save(); 
+ 
+       
+        user.wallet += 50; 
+        user.wallethistory.push({
+            amount: 50,
+            description: 'Amount credited for referel',
+            Date: new Date()
         });
-      }
+    }
+    await user.save(); 
     }
   } catch (error) {
     console.log(error.message);

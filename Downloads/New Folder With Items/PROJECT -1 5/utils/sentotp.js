@@ -45,17 +45,13 @@ const sendOtpVerificationMail = async ({ email }, res) => {
 
     await transporter.sendMail(mailoption);
 
-    console.log("OTP send email successful");
-
+    console.log("OTP sent successfully to", email);
     res.redirect(`/otp?email=${email}`);
-    console.log("checkin");
-    
-
   } catch (error) {
-    console.log("error otp mail sending", error.message);
+    console.error("Error sending OTP email:", error);
+    res.status(500).send("Error sending OTP email. Please try again later.");
   }
 };
-
 module.exports = {
   transporter,
   sendOtpVerificationMail,
