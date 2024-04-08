@@ -13,23 +13,18 @@
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="/public/admin/css/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<link rel="stylesheet" href="/public/admin/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Make sure to include SweetAlert library and its CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<!-- Ensure you have included jQuery and Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-<!-- Make sure to include SweetAlert library and its CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
@@ -233,7 +228,7 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/orders">
+            <a class="nav-link" href="/admin/orderlist">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
@@ -241,11 +236,11 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="../../pages/icons/mdi.html">
+            <a class="nav-link" href="/admin/couponlist">
               <span class="menu-icon">
                 <i class="mdi mdi-contacts"></i>
               </span>
-              <span class="menu-title">Icons</span>
+              <span class="menu-title">Coupons</span>
             </a>
           </li>
           <li class="nav-item menu-items">
@@ -257,11 +252,12 @@
             </a>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
+            <a class="nav-link"
+              href="/admin/sales">
               <span class="menu-icon">
                 <i class="mdi mdi-file-document-box"></i>
               </span>
-              <span class="menu-title">Documentation</span>
+              <span class="menu-title">Sales</span>
             </a>
           </li>
         </ul>
@@ -457,7 +453,6 @@
           </div>
         </nav>
         <!-- partial -->
-        <!-- Your EJS template code remains mostly unchanged -->
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="page-header">
@@ -467,6 +462,12 @@
       </nav>
     </div>
     <h2>SALES REPORT</h2>
+    <div>
+      <p><span class="fw-bold ">total sales count:</span><%=overallData[0].totalSalesCount%></p>
+      <p><span class="fw-bold">Total Sales Amount:</span> ₹<%= overallData[0].totalOrderAmount %></p>  
+          <p><span class="fw-bold ">total discount amount:</span>:n/a</p>
+
+  </div>
     <div class="row">
       <div class="dropdown">
         <button type="button" class="btn btn-primary dropdown-toggle" id="downloadDropdown" data-toggle="dropdown">DOWNLOAD</button>
@@ -479,7 +480,7 @@
         <div class="startDate">
           Starting Date: &nbsp; <input type="date" name="fromdate" id="dat" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp; Ending Date: <input type="date" name="todate" id="date" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp;
           <select name="range">
-            <option value="">select</option>
+            <option disabled value="">select</option>
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
@@ -511,7 +512,7 @@
                 <td><%= item.name %></td>
                 <td><%= order.Date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></td>
                 <td><%= order.paymentMethod %></td>
-                <td><%= order.status %></td>
+                <td><%= item.status %></td>
                 <td>₹<%= order.subtotal %></td>
                 <td><%= order.user.name %></td>
               </tr>

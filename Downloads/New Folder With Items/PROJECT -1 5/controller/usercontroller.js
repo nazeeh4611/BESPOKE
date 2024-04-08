@@ -518,8 +518,23 @@ const loadshop = async (req, res) => {
       product => product.category && product.category.is_Listed
     );
      
-    const categories = await Category.find({});
+    
+    const categories = await Category.find({}).populate("offer"); 
+
+
    
+    
+    categories.forEach(category => {
+      if (category.offer && category.offer.length > 0) {
+          category.offer.forEach(offer => {
+              let percentage = offer.discount;
+              let discountedPrice = 3000 - (3000 * (percentage / 100));
+             
+          });
+      }
+  });
+  
+  
     const userIn = req.session.userId;
 
    
@@ -536,7 +551,6 @@ const searchProducts = async (req, res) => {
     const query = req.query.searchKeyword;
 
     if (!query || query.trim().length === 0) {
-      // If the search query is empty, return all listed and not deleted products
       const products = await Product.find({
         is_Deleted: false,
         is_Listed: true
@@ -548,20 +562,16 @@ const searchProducts = async (req, res) => {
       return res.render("user/shop", { products, categories, user: req.session.userId });
     }
 
-    // Construct the search regex to match names starting with the query letter
     const regex = new RegExp(`^${query}`, 'i');
 
-    // Find products that match the search query and meet the conditions
     const products = await Product.find({
       name: regex,
       is_Deleted: false,
       is_Listed: true
     }).populate("category");
 
-    // Filter out products whose names don't start with the query letter
     const filteredProducts = products.filter(product => product.name.toLowerCase().startsWith(query.toLowerCase()));
 
-    // Fetch all categories
     const categories = await Category.find({});
 
     res.render("user/shop", { products: filteredProducts, categories, user: req.session.userId });

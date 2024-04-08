@@ -340,7 +340,7 @@
                             <% } else { %>
                               <div class="button-line-container">
                                 <button class="btn-lin fw-medium" id="cpn-bt" style="color: white; background-color: black; width: 80px; margin-bottom: 5px; border-radius: 4px; display:block;  background: linear-gradient(200deg, rgb(180, 173, 173), rgb(189, 180, 180)); " disabled >select</button>
-                                <p style="color: blue;">Shop for ₹<%= couponItem.criteriaamount-subtotal %>  more to apply offer</p>
+                                <p style="color: blue;">Shop for ₹<%= couponItem.criteriaamount-subtotal %>  more to apply coupon</p>
                                 <hr class="full-width-line">
                               </div>
                             <% } %>
@@ -570,7 +570,7 @@ const makePayment = () => {
       Swal.fire({
           icon:"error",
           title:"please select address and payment method before order",
-          confirmButtonText:true,
+          confirmButtonText:ok,
         })
         console.error("No address selected");
         return; 

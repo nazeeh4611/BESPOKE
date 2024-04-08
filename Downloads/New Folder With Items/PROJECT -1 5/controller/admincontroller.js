@@ -257,15 +257,27 @@ const orderdelivered = async(req,res)=>{
 
 const salesReport = async(req,res)=>{
   try {
-    const orderData = await Order.find({}).populate({
-      path:"user",
+    const orderData = await Order.find({ 'product.status': 'delivered' })
+    .populate({
+      path: 'user',
       model: 'User',
-    }).populate({
+    })
+    .populate({
       path: 'product.productId',
       model: 'Product',
-    }).sort({Date:-1});
-
-    res.render("admin/sales",{orderData})
+    })
+    .sort({ Date: -1 });
+    const overallData=await Order.aggregate([
+      { 
+          $group:{
+              _id:'',
+              totalSalesCount:{$sum:1},
+              totalOrderAmount:{$sum:'$subtotal'},
+          }
+      }
+  ])
+  console.log('overallData:',overallData);
+    res.render("admin/sales",{orderData,overallData})
   } catch (error) {
     console.log(error)
   }
@@ -277,6 +289,17 @@ const filterSales = async (req, res) => {
     let fromdate, todate;
     const currentDate = new Date();
 
+    const overallData=await Order.aggregate([
+      { 
+          $group:{
+              _id:'',
+              totalSalesCount:{$sum:1},
+              totalRevenue:{$sum:'$subTotal'},
+          }
+      }
+  ])
+  console.log('overallData:',overallData);
+
     const range = req.body.range;
     switch (range) {
       case 'daily':
@@ -286,9 +309,9 @@ const filterSales = async (req, res) => {
         todate.setHours(23, 59, 59, 999);
         break;
         case 'weekly':
-          const currentDateCopy = new Date(currentDate); // Cloning the currentDate object
-          const firstDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() - currentDateCopy.getDay())); // Sunday
-          const lastDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() + 6)); // Saturday
+          const currentDateCopy = new Date(currentDate); 
+          const firstDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() - currentDateCopy.getDay())); 
+          const lastDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() + 6)); 
           fromdate = new Date(firstDayOfWeek);
           fromdate.setHours(0, 0, 0, 0);
           todate = new Date(lastDayOfWeek);
@@ -306,8 +329,8 @@ const filterSales = async (req, res) => {
         todate.setHours(23, 59, 59, 999);
         break;
       case 'yearly':
-        const firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1); // January 1st of the current year
-        const lastDayOfYear = new Date(currentDate.getFullYear() + 1, 0, 0); // December 31st of the current year
+        const firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1); 
+        const lastDayOfYear = new Date(currentDate.getFullYear() + 1, 0, 0); 
         fromdate = new Date(firstDayOfYear);
         fromdate.setHours(0, 0, 0, 0);
         todate = new Date(lastDayOfYear);
@@ -322,7 +345,7 @@ const filterSales = async (req, res) => {
     }
 
     const orderData = await Order.find({
-      Date: { $lt: todate || currentDate, $gt: fromdate || new Date(0) }, // Default to current date or epoch if dates are not provided
+      Date: { $lt: todate || currentDate, $gt: fromdate || new Date(0) }, 
       
     })
       .populate({
@@ -335,11 +358,11 @@ const filterSales = async (req, res) => {
       })
       .sort({ Date: -1 });
 
-    res.render("admin/sales", { orderData });
+    res.render("admin/sales", { orderData,overallData });
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error"); // Send an error response
+    res.status(500).send("Internal Server Error"); 
   }
 }
 
