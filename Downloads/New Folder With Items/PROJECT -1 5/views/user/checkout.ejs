@@ -216,6 +216,7 @@
                   <% }) %>
                 </table>
                 <% if(coupondiscount && subtotal > coupondiscount.criteriaamount) { %>
+                  <% if(subtotal < 1000){ %>
                 <table class="checkout-totals">
                  
                   <tbody>
@@ -225,7 +226,32 @@
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
-                      <td>Free shipping</td>
+                      <td>₹<%= shippingcharge %></td>
+
+                    </tr>
+                    <tr>
+                      <th>Coupon Discount</th>
+                      <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
+                    </tr>
+                    <tr>
+                      <th>TOTAL</th>
+                      <td> ₹<%= subtotal-coupondiscount.discountamount+shippingcharge  %></td>
+                      <input type="hidden" value="<%= subtotal-coupondiscount.discountamount%>" name="subtotal" id="subtotal">
+                    </tr>
+               
+                  </tbody>
+                </table>
+               <% }else{ %>
+                <table class="checkout-totals">
+                 
+                  <tbody>
+                    <tr>
+                      <th>SUBTOTAL</th>
+                      <td>₹<%= subtotal%></td>
+                    </tr>
+                    <tr>
+                      <th>SHIPPING</th>
+                      <td>Free Shipping</td>
                     </tr>
                     <tr>
                       <th>Coupon Discount</th>
@@ -238,28 +264,49 @@
                     </tr>
                
                   </tbody>
-                </table>
-                <% }else{ %>
-                  <table class="checkout-totals">
-                 
-                    <tbody>
-                      <tr>
-                        <th>SUBTOTAL</th>
-                        <td>₹<%= subtotal%></td>
-                      </tr>
-                      <tr>
-                        <th>SHIPPING</th>
-                        <td>Free shipping</td>
-                      </tr>
-                      <tr>
-                        <th>TOTAL</th>
-                        <td> ₹<%= subtotal%></td>
-                        <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
-                      </tr>
-                 
-                    </tbody>
-                  </table>
-                  <% } %>
+                </table> 
+                <% } %>
+                  <% }else{ %>
+                    <% if(subtotal < 1000){ %>
+                      <table class="checkout-totals">
+                       
+                        <tbody>
+                          <tr>
+                            <th>SUBTOTAL</th>
+                            <td>₹<%= subtotal%></td>
+                          </tr>
+                          <tr>
+                            <th>SHIPPING</th>
+                            <td>₹<%= shippingcharge %></td>
+                          </tr>
+                            <th>TOTAL</th>
+                            <td> ₹<%= subtotal+shippingcharge %></td>
+                          </tr>
+                     
+                        </tbody>
+                      </table>
+                     <% }else{ %>
+                      <table class="checkout-totals">
+                       
+                        <tbody>
+                          <tr>
+                            <th>SUBTOTAL</th>
+                            <td>₹<%= subtotal%></td>
+                          </tr>
+                          <tr>
+                            <th>SHIPPING</th>
+                            <td>Free Shipping</td>
+                          </tr>
+              
+                          <tr>
+                            <th>TOTAL</th>
+                            <td> ₹<%= subtotal %></td>
+                          </tr>
+                     
+                        </tbody>
+                      </table> 
+                      <% } %>
+                      <% } %>
               </div>
               <div class="checkout__payment-methods">
                 <div class="form-check">

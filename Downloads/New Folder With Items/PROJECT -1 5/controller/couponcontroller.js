@@ -26,10 +26,23 @@ const loadaddcoupon = async(req,res)=>{
 const addCoupon = async (req, res) => {
     try {
         const { CouponName, CouponCode, Discount, ExpireDate, Criteria } = req.body;
-        console.log(CouponName, "1", CouponCode, "2", Discount, "3","4", ExpireDate, "5", Criteria, "6");
+const currentDate = new Date().toLocaleDateString();
 
-        if (Discount > Criteria) {
-            res.render("admin/addcoupon", { messages: { message: "criteria amount must be greater than discount" } });
+console.log(currentDate,"innathe date")
+
+if (ExpireDate < currentDate) {
+    return res.render("admin/addcoupon", { messages: { message: "invalid expiredate" } });
+}
+
+if (await Coupon.findOne({ name: CouponName })) {
+    return res.render("admin/addcoupon", { messages: { message: "Coupon Name already existed" } });
+}
+if (await Coupon.findOne({ couponcode:CouponCode })) {
+    return res.render("admin/addcoupon", { messages: { message: "Coupon code already existed" } });
+}
+if (Discount > Criteria) {
+    return res.render("admin/addcoupon", { messages: { message: "criteria amount must be greater than discount" } });
+
         } else {
             const newCoupon = new Coupon({
                 name: CouponName,
@@ -39,7 +52,6 @@ const addCoupon = async (req, res) => {
                 criteriaamount: Criteria,
             });
             await newCoupon.save();
-            console.log("all are here", newCoupon);
             res.redirect("/admin/couponlist");
         }
     } catch (error) {

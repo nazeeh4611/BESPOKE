@@ -9,6 +9,7 @@ const { Long } = require("mongodb");
 const { session } = require("passport");
 const { success } = require("./authController");
 
+
 const cartopen = async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -270,7 +271,6 @@ const Loadcheckout = async (req, res) => {
       })
    subtotal = total;
     }
-
     const productId = req.body.productId;
     const productdata = await Product.findById(productId);
 
@@ -283,7 +283,8 @@ const Loadcheckout = async (req, res) => {
    
     
     
-  
+    let shippingcharge = 100;
+
     res.render("user/checkout", {
       cartdata: { cartdata, product: filteredProducts },
       addresses,
@@ -291,7 +292,7 @@ const Loadcheckout = async (req, res) => {
       coupon,
       coupondiscount: cartdata.coupondiscount,
       user, 
-      userIn
+      userIn,shippingcharge
     });
   } catch (error) {
     console.log(error.message);

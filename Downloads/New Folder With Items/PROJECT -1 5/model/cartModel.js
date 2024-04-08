@@ -39,6 +39,10 @@ const cartModel = new mongoose.Schema({
     type:mongoose.Types.ObjectId,
     ref:"coupon",
     default:null,
+  },
+  shippingcharge:{
+    type:Number,
+    default:100,
   }
 });
 
