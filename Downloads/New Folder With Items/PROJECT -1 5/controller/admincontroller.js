@@ -175,11 +175,12 @@ const orderstatus = async (req, res) => {
 
       const user = await User.findById(userId);
       if (user) {
-        user.wallet += product.price * product.quantity;
+        const returnedAmount = product.price * product.quantity;
+        user.wallet += returnedAmount;
 
         // Update wallet history
         user.wallethistory.push({
-          amount: product.price * product.quantity,
+          amount: returnedAmount,
           description: 'Amount credited for returned product',
           Date: new Date()
         });
@@ -196,6 +197,7 @@ const orderstatus = async (req, res) => {
     res.redirect("/admin/orders");
   }
 }
+
 
 
 
@@ -311,7 +313,7 @@ const filterSales = async (req, res) => {
         case 'weekly':
           const currentDateCopy = new Date(currentDate); 
           const firstDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() - currentDateCopy.getDay())); 
-          const lastDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() + 6)); 
+          const lastDayOfWeek = new Date(currentDateCopy.setDate(currentDateCopy.getDate() + 6)); // Saturday
           fromdate = new Date(firstDayOfWeek);
           fromdate.setHours(0, 0, 0, 0);
           todate = new Date(lastDayOfWeek);

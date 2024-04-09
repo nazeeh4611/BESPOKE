@@ -1,16 +1,24 @@
 const mongoose = require("mongoose");
 
+function refcodegenarate(){
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+  const length = 8;
+  let referalcode = '';
+  for(let i=0;i<length;i++){
+    referalcode+= characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return referalcode;
+}
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-
   email: {
     type: String,
     required: true,
   },
-
   mobile: {
     type: String,
     required: true,
@@ -70,13 +78,13 @@ const userSchema = new mongoose.Schema({
     ref:"User"
   }
 },
-  {timestamps:true});
+{ timestamps:true });
 
-  userSchema.pre('save',function(next){
-    if(!this.referalcode){
-      this.referalcode = refcodegenarate()
-    }
-    next();
-  });
+userSchema.pre('save', function(next){
+  if(!this.referalcode){
+    this.referalcode = refcodegenarate();
+  }
+  next();
+});
 
 module.exports = mongoose.model("User", userSchema);

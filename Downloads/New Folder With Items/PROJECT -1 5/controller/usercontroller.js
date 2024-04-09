@@ -524,15 +524,9 @@ const loadshop = async (req, res) => {
 
    
     
-    categories.forEach(category => {
-      if (category.offer && category.offer.length > 0) {
-          category.offer.forEach(offer => {
-              let percentage = offer.discount;
-              let discountedPrice = 3000 - (3000 * (percentage / 100));
-             
-          });
-      }
-  });
+   
+      
+
   
   
     const userIn = req.session.userId;
