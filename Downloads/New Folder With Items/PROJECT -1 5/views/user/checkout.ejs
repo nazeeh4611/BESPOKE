@@ -66,7 +66,6 @@
             <h4>BILLING DETAILS</h4>
             
             <h6>Select an existing address:</h6>
-             <a href="/addaddress">Select A address</a>
 
             <% if(addresses.address.length > 0 ){ %>
 
@@ -216,6 +215,7 @@
                   <% }) %>
                 </table>
                 <% if(coupondiscount && subtotal > coupondiscount.criteriaamount) { %>
+                  <%if(subtotal < 1000) { %>
                 <table class="checkout-totals">
                  
                   <tbody>
@@ -225,7 +225,7 @@
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
-                      <td>Free shipping</td>
+                      <td><%= shippingcharge %></td>
                     </tr>
                     <tr>
                       <th>Coupon Discount</th>
@@ -233,13 +233,39 @@
                     </tr>
                     <tr>
                       <th>TOTAL</th>
-                      <td> ₹<%= subtotal-coupondiscount.discountamount %></td>
-                      <input type="hidden" value="<%= subtotal-coupondiscount.discountamount%>" name="subtotal" id="subtotal">
+                      <td> ₹<%= subtotal-coupondiscount.discountamount+shippingcharge %></td>
+                      <input type="hidden" value="<%= subtotal-coupondiscount.discountamount+shippingcharge %>" name="subtotal" id="subtotal">
                     </tr>
                
                   </tbody>
                 </table>
                 <% }else{ %>
+                  <table class="checkout-totals">
+                 
+                    <tbody>
+                      <tr>
+                        <th>SUBTOTAL</th>
+                        <td>₹<%= subtotal%></td>
+                      </tr>
+                      <tr>
+                        <th>SHIPPING</th>
+                        <td>Free Shipping</td>
+                      </tr>
+                      <tr>
+                        <th>Coupon Discount</th>
+                        <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
+                      </tr>
+                      <tr>
+                        <th>TOTAL</th>
+                        <td> ₹<%= subtotal-coupondiscount.discountamount %></td>
+                        <input type="hidden" value="<%= subtotal-coupondiscount.discountamount %>" name="subtotal" id="subtotal">
+                      </tr>
+                 
+                    </tbody>
+                  </table>
+                  <% } %>
+                <% }else{ %>
+                  <% if(subtotal >= 1000){ %>
                   <table class="checkout-totals">
                  
                     <tbody>
@@ -259,34 +285,85 @@
                  
                     </tbody>
                   </table>
+                  <% }else { %>
+                    <table class="checkout-totals">
+                 
+                      <tbody>
+                        <tr>
+                          <th>SUBTOTAL</th>
+                          <td>₹<%= subtotal%></td>
+                        </tr>
+                        <tr>
+                          <th>SHIPPING</th>
+                          <td><%= shippingcharge %></td>
+                        </tr>
+                        <tr>
+                          <th>TOTAL</th>
+                          <td> ₹<%= subtotal + shippingcharge %></td>
+                          <input type="hidden" value="<%= subtotal + shippingcharge %>" name="subtotal" id="subtotal">
+                        </tr>
+                   
+                      </tbody>
+                    </table>
+
+                    <% } %>
                   <% } %>
               </div>
               <div class="checkout__payment-methods">
+                <% if(user.wallet >= subtotal) { %>
                 <div class="form-check">
-                  <% if(user.wallet >= subtotal) { %>
                   <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="wallet" value="WALLET" >
                   <label class="form-check-label" for="checkout_payment_method_1">
                     Wallet
-                   <% } %>
                   </label>
                 </div>
+                <% }else{ %>
+                  <div class="form-check">
+                    <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="wallet" value="WALLET" disabled>
+                    <label class="form-check-label" for="checkout_payment_method_1">
+                      Wallet
+                    </label>
+                  </div>
+                  <%  } %>
+                <% if(subtotal <= 1000){ %>
                 <div class="form-check">
-                  <% if(subtotal <= 1000){ %>
-                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="cashOnDelivery" value="CASH ON DELIVERY">
+                  <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="cashOnDelivery" value="CASH ON DELIVERY" >
                   <label class="form-check-label" for="checkout_payment_method_3">
                     Cash on delivery
                   </label>
-                  <% } %>
                 </div>
+                <% }else{ %>
+                  <div class="form-check">
+                    <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="cashOnDelivery" value="CASH ON DELIVERY" disabled>
+                    <label class="form-check-label" for="checkout_payment_method_3">
+                      Cash on delivery
+                    </label>
+                  </div>
+                  <% } %>
                 <div class="form-check">
                   <input class="form-check-input form-check-input_fill" type="radio" name="paymentMethod" id="razorpay" value="RAZORPAY">
                   <label class="form-check-label" for="checkout_payment_method_4">
                     Online
                   </label>
                 </div>
+               
+                 <% if(  subtotal > 1000 && user.wallet < subtotal){ %>
                 <div class="policy-text">
-                  Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
+                  For orders, we offer payment through a wallet system. This option is available only if the subtotal is less than the wallet balance. Additionally, cash on delivery is offered for orders up to 1000 rupees.and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
                 </div>
+                <% } else if(subtotal > 1000) { %>
+                  <div class="policy-text">
+                  Your personal data will be used to process your order, support your experience throughout this website,For orders, we offer payment through a cash on delivery system. This option is  only offered for orders up to 1000 rupees. and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
+                </div>
+                <% } else if(user.wallet < subtotal){ %>
+                  <div class="policy-text">
+                    Your personal data will be used to process your order, support your experience throughout this website,For orders, we offer payment through a wallet system. This option is available only if the subtotal is less than the wallet balance. and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
+                  </div>
+                  <% }else{ %>
+                    <div class="policy-text">
+                      Your personal data will be used to process your order, support your experience throughout this website,and for other purposes described in our <a href="./terms.html" target="_blank">privacy policy</a>.
+                    </div>
+                    <% } %>
                 <div class="mb-4 pb-4"></div>
                 <% if(coupon.length > 0) { %>
                   <% if(coupondiscount) { %>

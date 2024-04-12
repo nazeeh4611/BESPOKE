@@ -41,12 +41,11 @@ const addProduct = async (req, res) => {
     const productDatas = await products.findOne({name:req.body.productName });
     const Datas = await category.find({ is_Listed: 1 });
     if (productDatas) {
-  
     res.render('admin/addproduct',{productData: Datas,messages:{message:"Productname already existed"}})
     }
    
-    const { productName, description, quantity, categories, price } = req.body;
-
+    const { productName, description, quantity, categories, price,brand } = req.body;
+console.log("brand",brand);
     const filenames = [];
     const existcategory = await category.findOne({ name: categories });
    
@@ -76,6 +75,7 @@ const addProduct = async (req, res) => {
       Image: filenames,
       category: existcategory._id,
       date: new Date(),
+      brand:brand,
     });
 
     await newproduct.save();
@@ -110,8 +110,8 @@ const loadeditproduct = async (req, res) => {
 const editProduct = async (req, res) => {
   try {
     const id = req.body.id;
-    const { productName, description, quantity, categories, price } = req.body;
-
+    const { productName, description, quantity, categories, price, brand } = req.body;
+    console.log(brand, "brandiii");
     const Datas = await products.findOne({ _id: id });
     const productData = category.find({ is_Listed: 1 });
     const imageData = [];
@@ -144,15 +144,16 @@ const editProduct = async (req, res) => {
       name: categories,
       is_Listed: 1,
     });
-
+     console.log(selectcategory._id,"ijijijijijijijji")
     const updteProduct = await products.findByIdAndUpdate(
-      { _id: id },
+      id, // Pass the id directly
       {
         name: productName,
         description,
         quantity: quantity,
         price,
-        categories: selectcategory._id,
+        category: selectcategory._id,
+        brand: brand,
         $push: { Image: { $each: imageData } },
       },
 
@@ -166,6 +167,7 @@ const editProduct = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 const productListed = async (req, res) => {
   try {

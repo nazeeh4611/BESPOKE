@@ -27,7 +27,7 @@
   <![endif]-->
 
   <!-- Document Title -->
-  <title>BESPOKE&amp; E commerce Template</title>
+  <title>BESPOKE&amp; E commerce </title>
 
 </head>
 
@@ -823,8 +823,10 @@
                     </div>
                   <% } %>
                   <p class="pc__category"><%= products[i].category.name %></p>
+                  <p class="pc__brand " style="justify-content: center;"></p>
+
                   <h6 class="pc__title">
-                    <a href="./product1_simple.html"><%= products[i].name %></a>
+                    <a href="./product1_simple.html"><%= products[i].brand %> <%= products[i].name %></a>
                     <div class="product-card__price d-flex">
                       <% if (products[i].offer && products[i].offer.length > 0) { %>
                         <% let percentage = products[i].offer[0].discount; %>

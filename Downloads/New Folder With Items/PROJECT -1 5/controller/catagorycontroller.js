@@ -103,7 +103,8 @@ const deleteCategory = async (req, res) => {
   try {
     const id = req.query.id;
     console.log("suii", id);
-    await Categories.findByIdAndDelete({ _id: id });
+    await Categories.findByIdAndUpdate({ _id: id },
+      {is_Deleted:true});
     res.redirect("/admin/category");
   } catch (error) {
     console.log(error.message);

@@ -189,6 +189,7 @@
             </div>
             <!-- card right -->
             <div class="product-content">
+              <h4><%= data.brand %></h4>
               <h6 class="product-title">
                 <%= data.name %>
               </h6>
@@ -223,17 +224,17 @@
                   <% let percentage = offer.discount; %>
                   <% let discountedPrice = data.price - (data.price * (percentage / 100)); %>
                   <span class="money price"></span>
-                  <h3 style="color: green;"> <span class="current-price"><del style="color: #252525;">₹<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h3>
+                  <h4 style="color: green;"> <span class="current-price"><del style="color: #252525;">₹<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h4>
                   <% }) %>
                 <% } else { %>
-                  <span class="money price">₹<%= data.price.toFixed(2) %></span>
+                  <h4><span class="current-price">MRP ₹<%= data.price.toFixed(2) %></span></h4>
                 <% } %>
               
              
               </div>
 
               <div class="product-detail">
-                <h4>about this item: </h4>
+                <h5>About this item: </h5>
                 <p>
                   <%= data.description %>
                 </p>

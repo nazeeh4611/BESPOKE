@@ -339,7 +339,12 @@
           <div class="card-body">
             <h4 class="card-title"></h4>
             <p class="card-description"> Basic form elements </p>
-            <form class="forms-sample" method="post" enctype="multipart/form-data" name="productForm" onsubmit="return validateForm()">              
+            <form class="forms-sample" method="post" enctype="multipart/form-data" name="productForm" onsubmit="return validateForm()">   
+              <div class="form-group">
+                <label for="exampleInputName1">Brand</label>
+                <input type="text" class="form-control" name="brand" id="exampleInputName1" placeholder="BRAND NAME">
+                <div id="branderror" class="text-danger"></div>
+              </div>           
               <div class="form-group">
                 <label for="exampleInputName1">Product Name</label>
                 <input type="text" class="form-control" name="productName" id="exampleInputName1" placeholder="Product Name">
@@ -443,6 +448,7 @@
     <script>
       function validateForm() {
         // Reset error messages
+        document.getElementById("branderror").innerHTML = "";
         document.getElementById("productError").innerHTML = "";
         document.getElementById("productDescriptionError").innerHTML = "";
         document.getElementById("quantityError").innerHTML = "";
@@ -451,6 +457,7 @@
         document.getElementById("CategoryError").innerHTML = "";
     
         // Get form inputs
+        var brandname = document.forms["productForm"]["brand"].value.trim();
         var productName = document.forms["productForm"]["productName"].value.trim();
         var description = document.forms["productForm"]["description"].value.trim();
         var quantity = document.forms["productForm"]["quantity"].value.trim();
@@ -461,6 +468,12 @@
         // Flag to track if there are any errors
         var hasError = false;
     
+
+      // vaidate brand name
+       if(brandname === ""){
+        document.getElementById("branderror").innerHTML = "Brand name required";
+        hasError = true;
+       }
         // Validate product name
         if (productName === "") {
           document.getElementById("productError").innerHTML = "Product name is required";

@@ -465,8 +465,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% if (Data.length> 0) { %>
+                  <% if (Data.length> 0 ) { %>
                     <% for (let i=0; i < Data.length; i++) { %>
+                    <% if(Data[i].is_Deleted == false){ %>
                       <tr>
                         <td>
                           <%= Data[i].name %>
@@ -506,6 +507,7 @@
                           </div>
                         </td>
                       </tr>
+                      <% } %>
                       <% } %>
                         <% } else { %>
                           <tr>

@@ -30,6 +30,10 @@ const productsModel = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  brand:{
+    type:String,
+    required:true,
+  },
   date: {
     type: Number,
     required: true,

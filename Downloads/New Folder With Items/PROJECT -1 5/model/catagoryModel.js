@@ -13,6 +13,10 @@ const CategoryModel = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  is_Deleted:{
+    type:Boolean,
+    default:false,
+  },
   offer:[{
     type:mongoose.Types.ObjectId,
     ref:"offer"
