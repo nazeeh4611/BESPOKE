@@ -195,19 +195,10 @@
                     <tr>
                       <td>
                         <%= product.name %> X   <%=product.quantity %>
-                
                       </td>
                       <td>
                         ₹ <%=product.total %>
-                      </td>
-                    </tr>
-                    <tr>
-                    
-                      <td>
-                    
-                       </td>
-                      <td>
-                        ₹29.90
+                        <input type="hidden" value="<%= product.total %>" name="total" id="total">
                       </td>
                     </tr>
                   </tbody>
@@ -230,6 +221,8 @@
                     <tr>
                       <th>Coupon Discount</th>
                       <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
+                      <input type="hidden" value="<%= coupondiscount.discountamount %>" name="Discount" id="Discount">
+
                     </tr>
                     <tr>
                       <th>TOTAL</th>
@@ -254,6 +247,7 @@
                       <tr>
                         <th>Coupon Discount</th>
                         <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
+                        <input type="hidden" value="<%= coupondiscount.discountamount %>" name="Discount" id="Discount">
                       </tr>
                       <tr>
                         <th>TOTAL</th>
@@ -654,8 +648,10 @@ const makePayment = () => {
         console.error("No address selected");
         return; 
     }
-  let subtotal = document.getElementById("subtotal").value;;
-  console.log(subtotal);
+  let subtotal = document.getElementById("subtotal").value;
+  let Discount = document.getElementById('Discount').value;
+  let total = document.getElementById('total').value;
+  console.log(total,"total")
     if(!subtotal){
       console.error("subtotal not found");
       return;
@@ -669,7 +665,10 @@ const makePayment = () => {
         dataType: "json",
         data: JSON.stringify({ paymentMethod: paymentMethod.value,
         addressId:addressId.value,
-        subtotal:subtotal }),
+        subtotal:subtotal,
+        Discount:Discount,
+        total:total,
+         }),
         success: function (response) {
   
     if (response && response.success) {

@@ -73,7 +73,10 @@
         //     type:String,
         //     required:true,
         // },
-    
+       coupondiscount:{
+        type:Number,
+        default:0,
+       },
     })
 
 

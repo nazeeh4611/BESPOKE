@@ -17,8 +17,8 @@ const OrderPlace = async (req, res) => {
     try {
         const userId = req.session.userId;
 
-        const { addressId, paymentMethod,subtotal} = req.body;
-
+        const { addressId, paymentMethod,subtotal,Discount,total} = req.body;
+console.log("total",total)
 console.log(paymentMethod,"here")
 
         const cartdata = await Cart.findOne({ user: userId });
@@ -78,6 +78,10 @@ console.log(paymentMethod,"here")
             Date: Date.now(),
             expiredate: expireDate,
         });
+
+        await Order.updateOne(
+            {$inc:{coupondiscount:Discount}}
+        );
 
         const saveOrder = await NewOrder.save();
         const orderId = saveOrder._id;

@@ -30,9 +30,9 @@ const currentDate = new Date().toLocaleDateString();
 
 console.log(currentDate,"innathe date")
 
-if (ExpireDate < currentDate) {
-    return res.render("admin/addcoupon", { messages: { message: "invalid expiredate" } });
-}
+// if (ExpireDate < currentDate) {
+//     return res.render("admin/addcoupon", { messages: { message: "invalid expiredate" } });
+// }
 
 if (await Coupon.findOne({ name: CouponName })) {
     return res.render("admin/addcoupon", { messages: { message: "Coupon Name already existed" } });
@@ -122,18 +122,18 @@ const applycoupon = async(req,res)=>{
 
     console.log(coupondata);
 
-    exists = coupondata.useduser.includes(userId);
-    console.log(exists,"existing coupon");
+    // exists = coupondata.useduser.includes(userId);
+    // console.log(exists,"existing coupon");
 
 
-   if(exists || !exists){
+//    if(exists || !exists){
    const cartUser = await Cart.findOne({user:userId});
     console.log(cartUser);
    
    if(cartUser&&cartUser.coupondiscount == null){
     await Coupon.findByIdAndUpdate(
         {_id:couponId},
-        {$push:{useduser:userId}}
+        // {$push:{useduser:userId}}
     )
   
    const cartcoupon = await Cart.findOneAndUpdate(
@@ -147,7 +147,7 @@ const applycoupon = async(req,res)=>{
     console.log(res.json,"already apllied");
    }
 
-}
+    // }
     } catch (error) {
         console.log(error);
     }
@@ -160,7 +160,7 @@ const RemoveCoupon = async(req,res)=>{
       
          const userId = req.session.userId;
        console.log("userId",userId);
-         const coupondata = await Coupon.findOneAndUpdate({_id:couponId},{$pull:{useduser:userId}});
+        //  const coupondata = await Coupon.findOneAndUpdate({_id:couponId},{$pull:{useduser:userId}});
          const cartdata = await Cart.findOneAndUpdate({user:userId},{$set:{coupondiscount:null}});
          res.json({success:true});
          console.log(coupondata,"coupondata");

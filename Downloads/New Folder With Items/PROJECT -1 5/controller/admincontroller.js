@@ -508,9 +508,11 @@ const salesReport = async(req,res)=>{
               _id:'',
               totalSalesCount:{$sum:1},
               totalOrderAmount:{$sum:'$subtotal'},
+              totalDiscount:{$sum:'$coupondiscount'}
           }
       }
   ])
+  
   console.log('overallData:',overallData);
     res.render("admin/sales",{orderData,overallData})
   } catch (error) {

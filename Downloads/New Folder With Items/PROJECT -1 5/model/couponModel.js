@@ -22,11 +22,11 @@ const CouponSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    useduser:{
-        type:Array,
-        ref:'User',
-        default:[],
-    }
+    // useduser:{
+    //     type:Array,
+    //     ref:'User',
+    //     default:[],
+    // }
 });
 
 module.exports = mongoose.model('coupon',CouponSchema);
