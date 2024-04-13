@@ -52,7 +52,240 @@ const verifyAdminLogin = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    res.render("admin/adminhome");
+
+   const countUser = User.countDocuments();
+   const countCategory = Category.countDocuments();
+   const countProduct = Product.countDocuments();
+   const countOrder = Order.countDocuments();
+
+  const ProductList = await Product.find({is_Listed:true});
+  const CategoryList = await Category.find({is_Listed:1});
+  const OrderList = await Order.find({status:"delivered"});
+
+  const dailysales = await Order.find({status:"delivered"})
+  .sort({Date:-1}).limit(3);
+ 
+// total order count
+const overallData = await Order.aggregate([
+  { 
+      $group:{
+          _id:'',
+          totalSalesCount:{$sum:1},
+          totalOrderAmount:{$sum:'$subtotal'},
+      }
+  }
+])
+
+// weekly sales
+  const weeklySales = await Order.aggregate([
+  {
+    $match:{
+      Date:{
+        $gte:new Date(new Date().setDate(new Date().getDate()-7))
+      },
+    },
+  },
+  {$group:{_id:"$_id",subtotal:{$sum:"$subtotal"}}},
+  ]);
+
+  // weekly Erarnings
+  const weeklyEarnings = weeklySales.reduce(
+    (sum,order)=>sum+order.subtotal,
+    0
+  );
+
+
+  // monthly sales 
+  const monthlySales = await Order.aggregate([
+    {
+    $match:{
+      Date:{
+        $gte:new Date(new Date().setMonth(new Date().getMonth()-1))
+      },
+    },
+  },
+  {$group:{_id:{$month:"$Date"},
+  subtotal:{$sum:"$subtotal"},
+},
+},
+  ]);
+
+  // monthly Earnings
+  const monthlyEarnings = monthlySales.reduce(
+    (sum,order)=>sum+order.subtotal,
+    0
+  );
+
+  // monthly userdata
+  const monthlyUserData = await User.aggregate([
+    {
+      $match:{
+        createdAt:{
+          $gte:new Date(new Date().setMonth(new Date().getMonth()-1))
+        },
+      },
+    },
+    {$group:{_id:"$_id",count:{$sum:1}}}
+  ]);
+
+let totalCount = 0;
+monthlyUserData.forEach(userData => {
+  totalCount += userData.count;
+});
+
+  //  monthly orderdata
+
+  const monthlyOrderData = await Order.aggregate([
+    {
+      $match:{
+        Date:{
+          $gte:new Date(new Date().setMonth(new Date().getMonth()-1))
+        },
+      },
+    },
+    {$group:{_id:{$month:"$Date"},count:{$sum:1}}}
+  ]);
+
+  // yearly sales 
+
+  const yearlySales = await Order.aggregate([
+    {
+      $match:{
+        Date:{
+          $gte:new Date(new Date().setFullYear(new Date().getFullYear()-1))
+        },
+      },
+    },
+    {$group:{_id:"$_id",subtotal:{$sum:"$subtotal"}}},
+  ]);
+
+  // yearly Earnings
+  const yearlyEarnings = yearlySales.reduce(
+    (sum,order)=>sum+order.subtotal,
+    0
+  );
+
+  // top selling product
+ const topProduct = await Order.aggregate([
+  {$unwind:"$product"},
+  {
+    $group:{
+  _id:"$product.productId",
+  name:{$first:"$product.name"},
+  brand:{$first:"$product.brand"},
+  category:{$first:"$product.category"},
+  count:{$sum:1},
+  },
+},
+{$sort:{count:-1}},
+{ $limit: 3 }
+ ])
+
+
+ const topSellingProduct = topProduct.map(item => ({
+  name: item.name,
+  count: item.count
+}));
+console.log(topSellingProduct,"topselling product")
+
+console.log(topSellingProduct, "topselling product");
+
+
+
+
+//  top selling category
+const topCategory = await Order.aggregate([
+  { $unwind: "$product" },
+  {
+      $group: {
+          _id: "$product.category",
+          category: { $first: "$product.category" },
+          count: { $sum: 1 }
+      },
+  },
+  {
+      $lookup: {
+          from: "categories",
+          localField: "_id",
+          foreignField: "_id",
+          as: "categoryDetails"
+      }
+  },
+  { $sort: { count: -1 } },
+  {
+      $project: {
+          _id: 0,
+          category: "$categoryDetails.name",
+          count: 1,
+      },
+  },
+  { $limit: 3 },
+]);
+const topSellingCategory = topCategory.map(item => ({
+  category: item.category[0],
+  count: item.count
+}));
+
+
+
+// topSellingBrand
+
+const topBrand = await Order.aggregate([
+  { $unwind: "$product" },
+  {
+    $group: {
+      _id: "$product.brand",
+      brand: { $first: "$product.brand" },
+      count: { $sum: 1 },
+    },
+  },
+  { $sort: { count: -1 } },
+  { $limit: 3 }
+]);
+
+const topSellingBrand = topBrand.map(item => ({
+  brand: item.brand,
+  count: item.count
+}));
+// total revenue
+
+const totalRevenue = await Order.aggregate([
+  {
+    $match: { status: "placed" }
+  },
+  {
+    $unwind: "$product" 
+  },
+  {
+    $match: { "product.status": "delivered" }
+  },
+  {
+    $group: {
+      _id: null,
+      total: { $sum: "$product.price" } 
+    }
+  }
+]);
+const totalValue = totalRevenue[0].total;
+
+console.log(totalValue);
+
+    res.render("admin/adminhome",{
+      dailysales,
+      weeklySales,
+      weeklyEarnings,
+      monthlySales,
+      monthlyEarnings,
+      totalCount,
+      monthlyOrderData,
+      yearlySales,
+      yearlyEarnings,
+      topSellingProduct,
+      topSellingCategory,
+      topSellingBrand,
+      totalValue,
+      overallData
+    });
   } catch (error) {
     console.log(error.message);
   }

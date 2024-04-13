@@ -72,7 +72,8 @@ const AddToCart = async (req, res) => {
 
     const productId = req.body.productId;
     const productdata = await Product.findById(productId);
-   
+
+    console.log("productData",productdata.brand)
     if (!productdata || productdata.quantity === 0) {
       return res.json({
         success: false,
@@ -127,7 +128,10 @@ const AddToCart = async (req, res) => {
               name: productdata.name,
               price: productdata.price,
               quantity: 1,
-              total:  productdata.price,
+              brand:productdata.brand,
+              category:productdata.category,
+              total:productdata.price,
+            
             },
           },
         },

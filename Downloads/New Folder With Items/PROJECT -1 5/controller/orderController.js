@@ -56,10 +56,10 @@ console.log(paymentMethod,"here")
         }
 
         const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
-
         const products = cartdata.product;
         const orderStatus = paymentMethod=== "CASH ON DELIVERY" ? "placed" : "pending";
 
+         
         const NewOrder = new Order({
             deliveryDetails:addressObject,
             user: userdata._id,
@@ -70,6 +70,7 @@ console.log(paymentMethod,"here")
                 name: product.name,
                 price: product.price,
                 category:product.category,
+                brand:product.brand,
                 quantity: product.quantity,
             })),
             subtotal: subtotal,

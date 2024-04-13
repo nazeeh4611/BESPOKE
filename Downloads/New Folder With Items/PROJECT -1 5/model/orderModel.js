@@ -34,6 +34,15 @@
             type: Number,
             required: true,
           },
+          category:{
+            type:mongoose.Types.ObjectId,
+            ref:"Category",
+            required:true,
+          },
+          brand:{
+            type:String,     
+            required:true,
+          },
           status:{
             type:String,
             default:"placed",

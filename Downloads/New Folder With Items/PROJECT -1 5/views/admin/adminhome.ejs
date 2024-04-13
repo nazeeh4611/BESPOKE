@@ -396,7 +396,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹12.34</h3>
+                        <h3 class="mb-0">₹<%= totalValue %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -416,7 +416,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">17</h3>
+                        <h3 class="mb-0"> <%=overallData[0].totalSalesCount %> </h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
                       </div>
                     </div>
@@ -436,7 +436,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">12</h3>
+                        <h3 class="mb-0"><%= totalCount %></h3>
                         <p class="text-danger ml-2 mb-0 font-weight-medium">-2.4%</p>
                       </div>
                     </div>
@@ -456,7 +456,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹31.53</h3>
+                        <h3 class="mb-0">₹</h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -466,7 +466,7 @@
                       </div>
                     </div>
                   </div>
-                  <h6 class="text-muted font-weight-normal">Expense current</h6>
+                  <h6 class="text-muted font-weight-normal"></h6>
                 </div>
               </div>
             </div>
@@ -496,7 +496,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹12.34</h3>
+                        <h3 class="mb-0">₹<%= weeklyEarnings %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -516,7 +516,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹12.34</h3>
+                        <h3 class="mb-0">₹<%= monthlyEarnings %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -536,7 +536,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹12.34</h3>
+                        <h3 class="mb-0">₹<%= yearlyEarnings %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -553,49 +553,47 @@
           </div>
           <div class="row">
             <canvas id="chart" width="300" height="200"></canvas>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var ctx = document.getElementById('chart').getContext('2d');
-                    var data = {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Adjusted labels to show only six months
-                        datasets: [{
-                            label: 'Men Sales',
-                            data: [120, 190, 300, 500, 200, 300], // Adjusted data for six months
-                            backgroundColor: 'rgba(0, 0, 255, 0.5)', // Blue color for men sales
-                            borderColor: 'rgba(0, 0, 255, 1)', // Blue color for men sales
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Women Sales',
-                            data: [150, 220, 350, 450, 250, 350], // Adjusted data for six months
-                            backgroundColor: 'rgba(255, 192, 203, 0.5)', // Pink color for women sales
-                            borderColor: 'rgba(255, 192, 203, 1)', // Pink color for women sales
-                            borderWidth: 1
-                        }]
-                    };
-                    var options = {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    };
-                    var chart = new Chart(ctx, {
-                        type: 'bar',
-                        data: data,
-                        options: options
-                    });
-                });
-            </script>
-            <style>
-                #chart {
-                    max-width: 700px;
-                    max-height: 600px;
-                    border: 1px solid black;
-                }
-            </style>
         </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var ctx = document.getElementById('chart').getContext('2d');
+        
+                var categoryLabels = [];
+                var categoryCounts = [];
+        
+                <% topSellingCategory.forEach(category => { %>
+                    categoryLabels.push('<%= category.category %>'); // Push category name to labels array
+                    categoryCounts.push(<%= category.count %>); // Push category count to data array
+                <% }) %>
+        
+                var data = {
+                    labels: categoryLabels, // Use category names as labels
+                    datasets: [{
+                        label: 'Category Sales',
+                        data: categoryCounts, // Use category counts as data
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)', // Blue color for category sales
+                        borderColor: 'rgba(54, 162, 235, 1)', // Blue color for category sales
+                        borderWidth: 1
+                    }]
+                };
+        
+                var options = {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                };
+        
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+            });
+        </script>
+        
         
         
         
@@ -607,7 +605,11 @@
                   <div class="row">
                     <div class="col-8 col-sm-12 col-xl-8 my-auto">
                       <div class="d-flex d-sm-block d-md-flex align-items-center">
-                        <h5 class="mb-0">ejfnefjb3</h5>
+                        <h5 class="mb-0"> 
+                          <% topSellingProduct.forEach((product, index) => { %>
+                            <%= index + 1 %>. <%= product.name %> : <span style="color:  rgb(0, 207, 0);"><%= product.count %></span><br>
+                          <% }) %>
+                        </h5>                        
                       </div>
                       <h6 class="text-muted font-weight-normal"></h6>
                     </div>
@@ -644,7 +646,32 @@
                   <div class="row">
                     <div class="col-8 col-sm-12 col-xl-8 my-auto">
                       <div class="d-flex d-sm-block d-md-flex align-items-center">
-                       ii
+                        <h5>
+                          <% topSellingBrand.forEach((brand, index) => { %>
+                            <%= index + 1 %>. <%= brand.brand %> : <span style="color: rgb(0, 207, 0);"><%= brand.count %></span><br>
+                          <% }) %>
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                      <i class="icon-lg mdi mdi-monitor text-success ml-auto"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Top Category</h5>
+                  <div class="row">
+                    <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                      <div class="d-flex d-sm-block d-md-flex align-items-center">
+                        <h5>
+                          <% topSellingCategory.forEach((category, index) => { %>
+                            <%= index + 1 %>. <%= category.category %> : <span style="color: rgb(0, 207, 0);"><%= category.count %></span><br>
+                          <% }) %>
+                        </h5>
                       </div>
                     </div>
                     <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
