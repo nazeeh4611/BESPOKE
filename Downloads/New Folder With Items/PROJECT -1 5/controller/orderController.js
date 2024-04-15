@@ -17,9 +17,9 @@ const OrderPlace = async (req, res) => {
     try {
         const userId = req.session.userId;
 
-        const { addressId, paymentMethod,subtotal,Discount,total} = req.body;
-console.log("total",total)
-console.log(paymentMethod,"here")
+        const { addressId, paymentMethod,subtotal,discount} = req.body;
+
+console.log(discount,"here")
 
         const cartdata = await Cart.findOne({ user: userId });
 
@@ -72,18 +72,20 @@ console.log(paymentMethod,"here")
                 category:product.category,
                 brand:product.brand,
                 quantity: product.quantity,
+                status:orderStatus,
+
             })),
             subtotal: subtotal,
             status: orderStatus,
             Date: Date.now(),
             expiredate: expireDate,
         });
-
         await Order.updateOne(
-            {$inc:{coupondiscount:Discount}}
+            {$inc:{coupondiscount:discount}}
         );
-
         const saveOrder = await NewOrder.save();
+       
+
         const orderId = saveOrder._id;
         const totalamount = saveOrder.subtotal;
 

@@ -235,6 +235,7 @@ const Loadcheckout = async (req, res) => {
     
     const user = await User.findOne({_id:userIn});
     const address = await Address.findOne({ user: userIn });
+    console.log("user",user.wallet)
     const cartdata = await Cart.findOne({ user: userIn }).populate({
       path: 'product.productId',
       model: 'Product',
@@ -258,9 +259,10 @@ const Loadcheckout = async (req, res) => {
 
     // Calculate subtotal
     let subtotal = 0;
-    let total = 0;
+    let total = 0
     if (cartdata && cartdata.product) {
-      cartdata.product.forEach((product) => {
+      cartdata.product.forEach((product)=>{
+       
         if (product.productId && product.productId.price) {
           if (product.productId.offer && product.productId.offer.length > 0) {
             let offer = product.productId.offer[0].discount;
@@ -269,25 +271,10 @@ const Loadcheckout = async (req, res) => {
             total += product.productId.price * product.quantity;
           }
         }
-      });
-      subtotal = total;
+       
+      })
+   subtotal = total;
     }
-
-    // Apply coupon discount
-    let discountPerProduct = 0;
-    if (cartdata.coupondiscount && cartdata.coupondiscount.discountamount) {
-      // Calculate discount per product
-      discountPerProduct = cartdata.coupondiscount.discountamount / cartdata.product.length;
-
-      // Apply discount to each product
-      cartdata.product.forEach((product) => {
-        product.total -= discountPerProduct; // Subtract discount from product total
-      });
-
-      // Adjust subtotal after applying discounts
-      subtotal -= cartdata.coupondiscount.discountamount;
-    }
-
     const productId = req.body.productId;
     const productdata = await Product.findById(productId);
 
@@ -299,7 +286,7 @@ const Loadcheckout = async (req, res) => {
     const coupon = await Coupon.find({});
    
     
-    console.log(subtotal,"subtotal")
+    
     let shippingcharge = 100;
 
     res.render("user/checkout", {
@@ -315,8 +302,7 @@ const Loadcheckout = async (req, res) => {
     console.log(error.message);
     res.status(500).send("Internal Server Error");
   }
-};
-
+}
 
 
 

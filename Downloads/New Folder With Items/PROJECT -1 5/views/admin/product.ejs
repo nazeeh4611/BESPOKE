@@ -35,6 +35,44 @@
   }
 
   th,
+  .active {
+  color: white;
+}
+select {
+  padding: 1px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Style for buttons */
+button {
+  padding: 1px 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-1 {
+  background-color: #2f971a;
+  color: #fff;
+}
+
+.btn-2 {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.btn-3 {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.btn-4 {
+  background-color: #f39c12;
+  color: #fff;
+}
   td {
     padding: 8px;
     border: 1px solid #505050;
@@ -51,7 +89,7 @@
   .btn-2,
   .btn-3,
   .btn-4 {
-    padding: 2px 8px;
+    padding: 1px 2px;
     margin: 2px;
     cursor: pointer;
     border: none;
@@ -462,6 +500,20 @@
             <div class="row">
               <a href="/admin/addproduct"><button class="btn-7">Add Product</button></a>
               <h2>Product List</h2>
+
+
+              <form action="/admin/products" method="GET">
+                <select name="category">
+                  <option value="">All Categories</option>
+                  <% for(let i=0; i<categories.length; i++) { %>
+                    <option value="<%= categories[i]._id %>"><%= categories[i].name %></option>
+                  <% } %>
+                </select>
+                <button type="submit">Filter</button>
+              </form>
+            <br>
+            <br>
+
               <table>
                 <thead>
                   <tr>
@@ -469,75 +521,113 @@
                     <th>Product Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Category</th>
                     <th></th>
                     <th>Offer</th>
-                    <th>Action </th>
-
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% if(Products.length>0) { %>
-                    <% for(let i=0;i< Products.length;i++) {%>
-                      <% if(Products[i].is_Deleted == false ){ %>
+                  <% if(Products.length > 0) { %>
+                    <% for(let i=0; i<Products.length; i++) { %>
                       <tr>
                         <td>
                           <img src="/productImage/<%= Products[i].Image[0] %>" width="50px" height="35px" alt="">
                         </td>
+                        <td><%= Products[i].name %></td>
+                        <td>₹<%= Products[i].price %></td>
+                        <td><%= Products[i].quantity %></td>
+                        <td><%= Products[i].category.name %></td>
                         <td>
-                          <%= Products[i].name %>
-                        </td>
-                        <td>
-                          ₹<%= Products[i].price %>
-                        </td>
-                        <td>
-                          <%= Products[i].quantity %>
-                        </td>
-                        <td>
-                          <button class="btn-1"><a
-                              href="/admin/editproduct?productId=<%= Products[i]._id %>">Edit</a></button>
-                          <button class="btn-2"><a href="/admin/deleteproduct?id=<%= Products[i]._id %>">Delete</a></button>
+                          <button class="btn-1">
+                            <a href="/admin/editproduct?productId=<%= Products[i]._id %>">Edit</a>
+                          </button>
+                          <button class="btn-2">
+                            <a href="/admin/deleteproduct?id=<%= Products[i]._id %>">Delete</a>
+                          </button>
                         </td>
                         <td>
                           <% if(Products[i].offer[0]) { %>
-                           
-                              <button class="btn-2" style="color: #fff;" onclick="removeoffer('<%= Products[i].offer[0]._id %>','<%=Products[i]._id %>')"><a
-                                 >Remove </a></button>
-                                 <%}else{ %>
-                                  <button type="button" style="color: #fff;background-color: #2f971a;" class="btn-1" onclick="modalshow('<%= Products[i]._id %>')">
-                                    Select
-                                  </button>
-                                   
-                                      <% } %>
-                                     
+                            <button class="btn-2" style="color: #fff;" onclick="removeoffer('<%= Products[i].offer[0]._id %>','<%=Products[i]._id %>')">
+                              <a>Remove</a>
+                            </button>
+                          <% } else { %>
+                            <button type="button" style="color: #fff;background-color: #2f971a;" class="btn-1" onclick="modalshow('<%= Products[i]._id %>')">
+                              Select
+                            </button>
+                          <% } %>
                         </td>
                         <td>
-                          <% if(Products[i].is_Listed==false) { %>
+                          <% if(Products[i].is_Listed == false) { %>
                             <form action="/admin/Listproduct" method="post">
                               <input type="hidden" name="id" value="<%= Products[i]._id %>">
                               <button type="submit" class="btn-3">
                                 <i>List</i>
                               </button>
                             </form>
-                            <% }else{ %>
-                              <form action="/admin/Unlistproduct" method="post">
-                                <input type="hidden" name="id" value="<%= Products[i]._id%>">
-                                <button type="submit" class="btn-4">
-                                  <i>Unlist</i>
-                                </button>
-                              </form>
-                              <% } %>
+                          <% } else { %>
+                            <form action="/admin/Unlistproduct" method="post">
+                              <input type="hidden" name="id" value="<%= Products[i]._id %>">
+                              <button type="submit" class="btn-4">
+                                <i>Unlist</i>
+                              </button>
+                            </form>
+                          <% } %>
                         </td>
                       </tr>
-                      <% } %>
-                      <% } %>
-                        <% }else{ %>
-                          <tr>
-                            <td colspan="5">Product is not found</td>
-                          </tr>
-                          <% } %>
+                    <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="8">No products found</td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
-      
+           <br>
+           <br>
+           <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
+            <a href="?page=<%= prevpage %>" class="btn-link d-inline-flex align-items-center">
+              <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
+              <span class="fw-medium">PREV</span>
+            </a>
+            <ul class="pagination mb-0">
+              <% let maxPagesToShow = 4; %>
+              <% let startPage = Math.max(1, currentpage - Math.floor(maxPagesToShow / 2)); %>
+              <% let endPage = Math.min(totalpages, startPage + maxPagesToShow - 1); %>
+              <% if (startPage > 1) { %>
+                <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=1">1</a></li>
+                <% if (startPage > 2) { %>
+                  <li class="page-item">...</li>
+                <% } %>
+              <% } %>
+              <% for (let j = startPage; j <= endPage; j++) { %>
+                <li class="page-item"><a class="btn-link px-1 mx-2 <%= j === currentpage ? 'active' : '' %>" href="?page=<%= j %>"><%= j %></a></li>
+              <% } %>
+              <% if (endPage < totalpages) { %>
+                <% if (endPage < totalpages - 1) { %>
+                  <li class="page-item">...</li>
+                <% } %>
+                <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=<%= totalpages %>"><%= totalpages %></a></li>
+              <% } %>
+            </ul>
+            <a href="?page=<%= nextpage %>" class="btn-link d-inline-flex align-items-center">
+              <span class="fw-medium me-1">NEXT</span>
+              <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
+            </a>
+          </nav>
+          
+          
+
+
+
+
+
+
+
+
+
+
+
               <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">

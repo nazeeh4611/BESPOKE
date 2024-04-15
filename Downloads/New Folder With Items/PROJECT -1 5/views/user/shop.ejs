@@ -30,7 +30,24 @@
   <title>BESPOKE&amp; E commerce </title>
 
 </head>
+<style>
+    .active {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+}
+/* Style for select box */
+.selecti{
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  background-color: #fff;
+  width: 200px; 
+}
 
+
+
+
+</style>
 <body>
   <svg class="d-none">
     <symbol id="icon_nav" viewBox="0 0 25 18">
@@ -767,8 +784,16 @@
               <option value="8">Date, new to old</option>
             </select>
           </form>
-
+        
           <div class="shop-asc__seprator mx-3 bg-light d-none d-lg-block"></div>
+          <form id="categoryForm" action="/shop" method="GET">
+            <select id="categorySelect" name="category" class="selecti">
+              <option value="">All Categories</option>
+              <% categories.forEach(category => { %>
+                <option value="<%= category._id %>" <%= (category._id.toString() === req.query.category) ? 'selected' : '' %>><%= category.name %></option>
+              <% }) %>
+            </select>
+          </form>
           <!-- 
           <div class="col-size align-items-center order-1 d-none d-lg-flex">
             <span class="text-uppercase fw-medium me-2">View</span>
@@ -779,95 +804,129 @@
         </div><!-- /.shop-acs -->
       </div><!-- /.d-flex justify-content-between -->
 
-      <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
-        <% if (products.length > 0 ) { %>
-          <% for (let i = 0; i < products.length; i++) { %>
-            <div class="product-card-wrapper">
-              <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                <div class="pc__img-wrapper">
-                  <div class="swiper-container background-img js-swiper-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" data-settings="{&quot;resizeObserver&quot;: true}">
-                    <div class="swiper-wrapper">
-                      <div class="swiper-slide" style="width: 350px;">
-                        <a href="/productdetail?id=<%= products[i]._id %>">
-                          <img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img">
-                        </a>
-                        <% if (products[i].offer && products[i].offer.length > 0) { %>
-                        <div class="product-label bg-red text-white right-0 top-0 left-auto mt-2 mx-2">- <%= products[i].offer[0].discount %>%</div>
-                        <% } %>
-                      </div>
-                    </div>
-                    <span class="pc__img-prev">
-                      <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_prev_sm"></use>
-                      </svg>
-                    </span>
-                    <span class="pc__img-next">
-                      <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_next_sm"></use>
-                      </svg>
-                    </span>
-                  </div>
-                  <% if (products[i].quantity > 0) { %>
-                    <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" onclick="addToCart('<%= products[i]._id %>')" title="Add To Cart">Add To Cart</button>
-                  <% } %>
-                </div>
-      
-                <div class="pc__info position-relative">
-                  <% if (products[i].quantity == 0) { %>
-                    <div class="meta-item">
-                      <span style="color: red; font-size:medium; font-weight: 500;">Out of stock!</span>
-                    </div>
-                  <% } else if (products[i].quantity < 6) { %>
-                    <div class="meta-item">
-                      <span style="color: red; font-size:medium; font-weight: 500;"><%= products[i].quantity %> item left!</span>
-                    </div>
-                  <% } %>
-                  <p class="pc__category"><%= products[i].category.name %></p>
-                  <p class="pc__brand " style="justify-content: center;"></p>
 
-                  <h6 class="pc__title">
-                    <a href="./product1_simple.html"><%= products[i].brand %> <%= products[i].name %></a>
-                    <div class="product-card__price d-flex">
-                      <% if (products[i].offer && products[i].offer.length > 0) { %>
-                        <% let percentage = products[i].offer[0].discount; %>
-                        <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
-                        <span class="money price"><del>₹<%= products[i].price.toFixed(2) %></del>&nbsp;₹<%= discountedPrice.toFixed(2) %></span>
-                      <% } else { %>
-                        <span class="money price">₹<%= products[i].price.toFixed(2) %></span>
-                      <% } %>
-                    <%  categories.forEach(category => { %>
-                       <%  if (products[i].category.offer && products[i].category.offer.length > 0) { %>
-                        <% let percentage = products[i].category.offer[0].discount; %>
-                        <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
-                        <span class="money price"><del>$<%= products[i].price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %>
-                          <% } %> 
-                          <% }) %>
-                    </div>
-                  </h6>
-                  <div class="product-card__review d-flex align-items-center">
-                    <div class="reviews-group d-flex">
-                      <% for (let j = 0; j < 5; j++) { %>
-                        <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                          <use href="#icon_star"></use>
-                        </svg>
-                      <% } %>
-                    </div>
-                    <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
-                  </div>
-                  <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist" onclick="addToWishlist('<%= products[i]._id %>')">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart"></use>
-                    </svg>
-                  </button>
+
+
+<div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
+  <% if (products.length > 0) { %>
+    <% for (let i = 0; i < products.length; i++) { %>
+      <div class="product-card-wrapper">
+        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+          <div class="pc__img-wrapper">
+            <div class="swiper-container background-img js-swiper-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" data-settings="{&quot;resizeObserver&quot;: true}">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" style="width: 350px;">
+                  <a href="/productdetail?id=<%= products[i]._id %>">
+                    <img loading="lazy" src="uploadImg/<%= products[i].Image[0] %>" width="450" height="545" alt="Cropped Faux leather Jacket" class="pc__img">
+                  </a>
+                  <% if (products[i].offer && products[i].offer.length > 0) { %>
+                  <div class="product-label bg-red text-white right-0 top-0 left-auto mt-2 mx-2">- <%= products[i].offer[0].discount %>%</div>
+                  <% } %>
                 </div>
               </div>
+              <span class="pc__img-prev">
+                <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_prev_sm"></use>
+                </svg>
+              </span>
+              <span class="pc__img-next">
+                <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_next_sm"></use>
+                </svg>
+              </span>
             </div>
-          <% } %>
-        <% } else { %>
-          <h3>Product not found</h3>
-        <% } %>
+            <% if (products[i].quantity > 0) { %>
+              <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" onclick="addToCart('<%= products[i]._id %>')" title="Add To Cart">Add To Cart</button>
+            <% } %>
+          </div>
+
+          <div class="pc__info position-relative">
+            <% if (products[i].quantity == 0) { %>
+              <div class="meta-item">
+                <span style="color: red; font-size:medium; font-weight: 500;">Out of stock!</span>
+              </div>
+            <% } else if (products[i].quantity < 6) { %>
+              <div class="meta-item">
+                <span style="color: red; font-size:medium; font-weight: 500;"><%= products[i].quantity %> item left!</span>
+              </div>
+            <% } %>
+            <p class="pc__category"><%= products[i].category.name %></p>
+            <p class="pc__brand " style="justify-content: center;"></p>
+
+            <h6 class="pc__title">
+              <a href="./product1_simple.html"><%= products[i].brand %> <%= products[i].name %></a>
+              <div class="product-card__price d-flex">
+                <% if (products[i].offer && products[i].offer.length > 0) { %>
+                  <% let percentage = products[i].offer[0].discount; %>
+                  <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
+                  <span class="money price"><del>₹<%= products[i].price.toFixed(2) %></del>&nbsp;₹<%= discountedPrice.toFixed(2) %></span>
+                <% } else { %>
+                  <span class="money price">₹<%= products[i].price.toFixed(2) %></span>
+                <% } %>
+                <% categories.forEach(category => { %>
+                  <% if (products[i].category.offer && products[i].category.offer.length > 0) { %>
+                    <% let percentage = products[i].category.offer[0].discount; %>
+                    <% let discountedPrice = products[i].price - (products[i].price * (percentage / 100)); %>
+                    <span class="money price"><del>$<%= products[i].price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %>
+                  <% } %> 
+                <% }) %>
+              </div>
+            </h6>
+            <div class="product-card__review d-flex align-items-center">
+              <div class="reviews-group d-flex">
+                <% for (let j = 0; j < 5; j++) { %>
+                  <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_star"></use>
+                  </svg>
+                <% } %>
+              </div>
+              <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
+            </div>
+            <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist" onclick="addToWishlist('<%= products[i]._id %>')">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <use href="#icon_heart"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-      
+    <% } %>
+  <% } else { %>
+    <!-- If no products found -->
+    <h3>Product not found</h3>
+  <% } %>
+</div>
+
+      <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
+        <a href="?page=<%= prevpage %>" class="btn-link d-inline-flex align-items-center">
+          <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
+          <span class="fw-medium">PREV</span>
+        </a>
+        <ul class="pagination mb-0">
+          <% let maxPagesToShow = 4; %>
+          <% let startPage = Math.max(1, currentpage - Math.floor(maxPagesToShow / 2)); %>
+          <% let endPage = Math.min(totalpages, startPage + maxPagesToShow - 1); %>
+          <% if (startPage > 1) { %>
+            <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=1">1</a></li>
+            <% if (startPage > 2) { %>
+              <li class="page-item">...</li>
+            <% } %>
+          <% } %>
+          <% for (let j = startPage; j <= endPage; j++) { %>
+            <li class="page-item"><a class="btn-link px-1 mx-2 <%= j === currentpage ? 'active' : '' %>" href="?page=<%= j %>"><%= j %></a></li>
+          <% } %>
+          <% if (endPage < totalpages) { %>
+            <% if (endPage < totalpages - 1) { %>
+              <li class="page-item">...</li>
+            <% } %>
+            <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=<%= totalpages %>"><%= totalpages %></a></li>
+          <% } %>
+        </ul>
+        <a href="?page=<%= nextpage %>" class="btn-link d-inline-flex align-items-center">
+          <span class="fw-medium me-1">NEXT</span>
+          <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
+        </a>
+      </nav>  
       </div>
       <!-- /.products-grid row -->
 
@@ -910,6 +969,12 @@
 
   <!-- Footer Scripts -->
   <script src="/public/js/theme.js"></script>
+  <script>
+    document.getElementById('categorySelect').addEventListener('change', function() {
+  document.getElementById('categoryForm').submit();
+});
+
+  </script>
  <script>
   document.getElementById('sortForm').addEventListener('submit', function(event) {
     event.preventDefault(); 

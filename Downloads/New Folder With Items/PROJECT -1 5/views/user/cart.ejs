@@ -186,6 +186,7 @@
                     <div class="sticky-content">
                         <div class="shopping-cart__totals" id="subtotal">
                             <h3>Cart Totals</h3>
+                            <% if(subtotal< 1000){ %>
                             <table class="cart-totals">
 
                                 <tbody>
@@ -196,20 +197,38 @@
                                     </tr>
                                     <tr>
                                         <th>Shipping</th>
-                                      
-                                    </tr>
-                                    <tr>
-                                        <th>VAT</th>
-                                     
+                                          <td>100</td>
                                     </tr>
                                     <tr>
                                         <th>Total</th>
-                                        <td>₹<%= total %>
+                                        <td>₹<%= total+100 %>
                                        
                                     </tr>
                                 </tbody>
 
                             </table>
+                            <% } else { %>
+                                <table class="cart-totals">
+
+                                    <tbody>
+                                        <tr>
+                                            <th>Subtotal</th>
+                                            <td>₹<%= subtotal %>
+                                            </td> 
+                                        </tr>
+                                        <tr>
+                                            <th>Shipping</th>
+                                              <td>Free Shipping</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <td>₹<%= total %>
+                                           
+                                        </tr>
+                                    </tbody>
+    
+                                </table>
+                                <% } %>
                         </div>
                         <div class="mobile_fixed-btn_wrapper">
                         

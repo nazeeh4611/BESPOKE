@@ -457,11 +457,12 @@ const userLogout = async (req, res) => {
 const loadshop = async (req, res) => {
   try {
     let query = { is_Listed: true, is_Deleted: false };
+    const category = req.query.category;
 
-    const category  = req.query.category;
-    
-
-   
+    // Apply category filter if it exists
+    if (category) {
+      query.category = category;
+    }
 
     let sortOption = {};
     switch (req.query.sort) {
@@ -507,6 +508,13 @@ const loadshop = async (req, res) => {
       query.name = { $regex: searchQuery, $options: "i" };
     }
 
+    const offers = await Offer.find({});
+    let page = 1;
+    if (req.query.page) {
+      page = parseInt(req.query.page);
+    }
+    const limit = 9;
+    
     const productDetails = await Product.find(query)
       .populate({
         path: "category",
@@ -514,29 +522,36 @@ const loadshop = async (req, res) => {
       })
       .populate("offer")
       .sort(sortOption);
-    const products = productDetails.filter(
+
+    const filteredProducts = productDetails.filter(
       product => product.category && product.category.is_Listed
     );
-     
-    
-    const categories = await Category.find({}).populate("offer"); 
 
+    const count = filteredProducts.length;
+    const products = filteredProducts
+      .slice((page - 1) * limit, page * limit);
 
-   
-    
-   
-      
+    const categories = await Category.find({ is_Listed: true }).populate("offer");
 
-  
-  
     const userIn = req.session.userId;
 
-   
-    res.render("user/shop", { products, categories,user: req.session.userId, userIn });
+    res.render("user/shop", {
+      products,
+      categories,
+      user: req.session.userId,
+      userIn,
+      totalpages: Math.ceil(count / limit),
+      currentpage: page,
+      nextpage: page + 1 <= Math.ceil(count / limit) ? page + 1 : 1,
+      prevpage: page - 1 >= 1 ? page - 1 : 1,
+      req
+    });
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
 
 
 

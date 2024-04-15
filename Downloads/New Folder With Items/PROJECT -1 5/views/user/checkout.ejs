@@ -198,7 +198,6 @@
                       </td>
                       <td>
                         ₹ <%=product.total %>
-                        <input type="hidden" value="<%= product.total %>" name="total" id="total">
                       </td>
                     </tr>
                   </tbody>
@@ -221,7 +220,7 @@
                     <tr>
                       <th>Coupon Discount</th>
                       <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
-                      <input type="hidden" value="<%= coupondiscount.discountamount %>" name="Discount" id="Discount">
+                      <input type="hidden" value="<%= coupondiscount.discountamount  %>" name="discount" id="discount">
 
                     </tr>
                     <tr>
@@ -247,7 +246,8 @@
                       <tr>
                         <th>Coupon Discount</th>
                         <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
-                        <input type="hidden" value="<%= coupondiscount.discountamount %>" name="Discount" id="Discount">
+                        <input type="hidden" value="<%= coupondiscount.discountamount  %>" name="discount" id="discount">
+
                       </tr>
                       <tr>
                         <th>TOTAL</th>
@@ -270,6 +270,8 @@
                       <tr>
                         <th>SHIPPING</th>
                         <td>Free shipping</td>
+                        <input type="hidden" value="0" name="discount" id="discount">
+
                       </tr>
                       <tr>
                         <th>TOTAL</th>
@@ -290,6 +292,8 @@
                         <tr>
                           <th>SHIPPING</th>
                           <td><%= shippingcharge %></td>
+                          <input type="hidden" value="0" name="discount" id="discount">
+
                         </tr>
                         <tr>
                           <th>TOTAL</th>
@@ -627,17 +631,19 @@ $('#saveAndProceedBtn').on('click', async function(e) {
 
 
 // Define your AJAX call
+
 const makePayment = () => {
     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
     if (!paymentMethod) {
       Swal.fire({
           icon:"error",
           title:"please select address and payment method before order",
-          confirmButtonText:true,
+          confirmButtonText:"ok",
         })
         console.error("No payment method selected");
         return; 
     }
+    console.log("1")
     const addressId = document.querySelector('input[name="addressId"]:checked');
     if (!addressId) {addressId
       Swal.fire({
@@ -645,18 +651,21 @@ const makePayment = () => {
           title:"please select address and payment method before order",
           confirmButtonText:true,
         })
+        console.log("12")
+
         console.error("No address selected");
         return; 
     }
   let subtotal = document.getElementById("subtotal").value;
-  let Discount = document.getElementById('Discount').value;
-  let total = document.getElementById('total').value;
-  console.log(total,"total")
+  console.log(subtotal);
     if(!subtotal){
       console.error("subtotal not found");
       return;
     }
-   
+    console.log("1")
+
+   const discount = document.getElementById('discount').value;
+   console.log(discount,"dis")
 
     $.ajax({
         url: "/checkout",
@@ -666,9 +675,7 @@ const makePayment = () => {
         data: JSON.stringify({ paymentMethod: paymentMethod.value,
         addressId:addressId.value,
         subtotal:subtotal,
-        Discount:Discount,
-        total:total,
-         }),
+         discount:discount }),
         success: function (response) {
   
     if (response && response.success) {

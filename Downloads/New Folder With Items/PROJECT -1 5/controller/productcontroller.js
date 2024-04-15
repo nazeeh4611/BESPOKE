@@ -12,14 +12,33 @@ const Product = require("../model/productModel");
 // load products page
 const loadProduct = async (req, res) => {
   try {
-
-    const offers = await Offer.find({})
-    const Products = await products.find({});
-    res.render("admin/product", { Products,offers});
+    const offers = await Offer.find({});
+    let page = 1;
+    if (req.query.page) {
+      page = parseInt(req.query.page); // Convert to integer
+    }
+    const limit = 5;
+    let query = {}; // Initialize an empty query object
+    if (req.query.category) {
+      query['category'] = req.query.category; // Add category filter to the query
+    }
+    const Products = await products.find(query).populate('category').limit(limit * 1).skip((page - 1) * limit).exec();
+    const count = await products.find(query).countDocuments();
+    const categories = await category.find({});
+    res.render("admin/product", {
+      Products,
+      offers,
+      categories,
+      totalpages: Math.ceil(count / limit),
+      currentpage: page,
+      nextpage: page + 1 <= Math.ceil(count / limit)? page+1 : 1,
+      prevpage: page - 1 >= 1 ? page - 1 : 1 
+    });
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 // load adding product page
 const loadAddProduct = async (req, res) => {

@@ -642,7 +642,9 @@ function modal(productId,status,orderId) {
   function shipmentUpdate(status, orderId, proid) {
     console.log("the status here", status)
     console.log(status, "1", orderId, "2", proid, "3")
-    if (status == "placed") {
+    if(status == "pending"){
+      $('#modaldiscription').text('Are you Sure Update Status to placed')    
+    }else if (status == "placed") {
       $('#modaldiscription').text('Are you Sure Update Status to Shipped')
     } else if (status == 'shipped') {
       $('#modaldiscription').text('Are you Sure Update Status to out for delivery')
