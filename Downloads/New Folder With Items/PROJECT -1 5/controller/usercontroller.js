@@ -656,8 +656,21 @@ const errorpage = async(req,res)=>{
   }
 }
 
+const aboutpage = async(req,res)=>{
+  try {
+    res.render("user/about")
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
-
+const contactpage = async(req,res)=>{
+  try {
+    res.render("user/contact")
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 
 module.exports = {
@@ -686,4 +699,6 @@ module.exports = {
   searchProducts,
   ProductDetail,
   errorpage,
+  aboutpage,
+  contactpage
 };

@@ -34,6 +34,7 @@ adminRoute.get(
 adminRoute.get("/list",  categoryController.Listed);
 adminRoute.get("/unlist",  categoryController.UnListed);
 adminRoute.get("/products",adminAuth.isLogin,productController.loadProduct);
+
 adminRoute.get(
   "/addproduct",adminAuth.isLogin,
   productController.loadAddProduct
@@ -41,7 +42,7 @@ adminRoute.get(
 
 adminRoute.post(
   "/addproduct",adminAuth.isLogin,
-  upload.upload.array("image", 4), 
+  upload.uploadSingle,
   productController.addProduct
 );
 adminRoute.get(
@@ -49,12 +50,12 @@ adminRoute.get(
 
   productController.loadeditproduct
 );
-adminRoute.post(
-  "/editproduct",
+// adminRoute.post(
+//   "/editproduct",
 
-  upload.upload.array("image", 4),
-  productController.editProduct
-);
+//   upload.upload.array("image", 4),
+//   productController.editProduct
+// );
 adminRoute.post(
   "/listproduct",
 

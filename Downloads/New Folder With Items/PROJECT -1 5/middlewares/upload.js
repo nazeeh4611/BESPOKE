@@ -1,19 +1,25 @@
-const path = require("path");
-const multer = require("multer");
-const sharp = require("sharp");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+const multer=require("multer")
+const path=require("path")
+
+const storageSingle = multer.diskStorage({
+  destination: function(req, file, cb) {
     cb(null, path.join(__dirname, "../public", "uploadImg"));
   },
-  filename: (req, file, cb) => {
-    const name = Date.now() + "_" + file.originalname;
-    cb(null, name);
-  },
+  filename: function(req, file, cb) {
+      const name = Date.now() + "-" + file.originalname;
+      cb(null, name);
+  }
 });
+console.log("single storage", storageSingle);
 
-const upload = multer({ storage: storage });
+const uploadSingle = multer({
+  storage: storageSingle,
+  limits: {
+      fileSize: 1024 * 1024 * 20,
+  },
+}).array('productImage', 4);
 
-module.exports = {
-  upload,
-};
+console.log("uploads,",uploadSingle);
+
+module.exports={uploadSingle}

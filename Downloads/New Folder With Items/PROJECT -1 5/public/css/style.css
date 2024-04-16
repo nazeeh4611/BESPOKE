@@ -6538,7 +6538,7 @@
     --content-space: 1.875rem; }
   #brand-name{
     color: rgb(189, 139, 13);
-    padding-left: 30%;
+    padding-left: 35%;
   }
   @media (max-width: 768px) {
     #brand-name{

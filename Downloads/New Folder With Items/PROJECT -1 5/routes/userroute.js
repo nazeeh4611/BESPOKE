@@ -30,6 +30,14 @@ userRoute.get("/", userController.loadHome);
 
 // load error page
 userRoute.get("/404",userController.errorpage);
+
+// load about page
+userRoute.get("/about",userController.aboutpage)
+
+// load contact page 
+
+userRoute.get("/contact",userController.contactpage)
+
 // load and verify register
 userRoute.get("/register", userAuth.isLogout, userController.userRegister);
 userRoute.post("/register", userController.verifyRegister);
