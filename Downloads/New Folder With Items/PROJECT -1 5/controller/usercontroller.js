@@ -458,7 +458,6 @@ const loadshop = async (req, res) => {
   try {
     let query = { is_Listed: true, is_Deleted: false };
     const category = req.query.category;
-
     // Apply category filter if it exists
     if (category) {
       query.category = category;
@@ -503,19 +502,25 @@ const loadshop = async (req, res) => {
         break;
     }
 
-    if (req.query.searchKeyword) {
-      const searchQuery = req.query.searchKeyword;
-      query.name = { $regex: searchQuery, $options: "i" };
-    }
-
     const offers = await Offer.find({});
-    let page = 1;
-    if (req.query.page) {
-      page = parseInt(req.query.page);
-    }
+ 
+    let page = req.query.page ? parseInt(req.query.page) : 1;
     const limit = 9;
-    
-    const productDetails = await Product.find(query)
+
+    let search = req.query.search || '';
+        if(req.query.search){
+      search = req.query.search
+      console.log(search,"here")
+    };
+
+    const productDetails = await Product.find({
+      ...query,
+      $or: [
+        { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { brand: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { description: { $regex: '.*' + search + '.*', $options: 'i' } },
+      ]
+    })
       .populate({
         path: "category",
         model: "Category",
@@ -523,12 +528,13 @@ const loadshop = async (req, res) => {
       .populate("offer")
       .sort(sortOption);
 
-    const filteredProducts = productDetails.filter(
-      product => product.category && product.category.is_Listed
-    );
-
-    const count = filteredProducts.length;
-    const products = filteredProducts
+   
+      const filteredProducts = productDetails.filter(
+        product => product.category && product.category.is_Listed
+      );
+  
+      const count = filteredProducts.length;
+      const products = filteredProducts
       .slice((page - 1) * limit, page * limit);
 
     const categories = await Category.find({ is_Listed: true }).populate("offer");
@@ -550,6 +556,7 @@ const loadshop = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 
 
@@ -648,6 +655,7 @@ const errorpage = async(req,res)=>{
     console.log(error);
   }
 }
+
 
 
 

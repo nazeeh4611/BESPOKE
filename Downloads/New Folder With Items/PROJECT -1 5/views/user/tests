@@ -1,103 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice</title>
-    <style>
-    body {
-    font-family: Arial, sans-serif;
-    padding: 2rem;
+
+function sortPrice(val) {
+
+    var queryString = window.location.search;
+
+    var params = new URLSearchParams(queryString);
+    params.delete('sort');
+
+    params.append('sort', val);
+
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+
+    window.location.href = newUrl;
 }
 
-.invoice-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+function searchValue(val){
+
+    console.log(val,'insdievalll')
+
+    var queryString = window.location.search;
+
+    var params = new URLSearchParams(queryString);
+    params.delete('search');
+
+    params.append('search',val);
+
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+
+    window.location.href = newUrl;
 }
 
-.invoice-title {
-    text-align: center;
-    margin-bottom: 1rem;
+
+function pagination(val){
+
+    var queryString = window.location.search;
+
+    var params = new URLSearchParams(queryString);
+    params.delete('pagination');
+
+    params.append('pagination',val);
+
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+
+    window.location.href = newUrl;
+
 }
 
-.invoice-details {
-    margin-bottom: 1rem;
+ 
+--------------------------------------              --------------------------------------              --------------------------------------
+
+
+
+
+
+
+function sortPrice(val) {
+    var queryString = window.location.search;
+    var params = new URLSearchParams(queryString);
+    params.delete('sort');
+    params.append('sort', val);
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+    window.location.href = newUrl;
 }
 
-.item-table {
-    width: 100%;
-    border-collapse: collapse;
+function searchValue(val) {
+    var queryString = window.location.search;
+    var params = new URLSearchParams(queryString);
+    params.delete('search');
+    params.append('search', val);
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+    window.location.href = newUrl;
 }
 
-.item-table th,
-.item-table td {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    text-align: left;
+function pagination(val) {
+    var queryString = window.location.search;
+    var params = new URLSearchParams(queryString);
+    params.delete('pagination');
+    params.append('pagination', val);
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+    window.location.href = newUrl;
 }
 
-.tax-summary {
-    margin-top: 2rem;
+function filterByCategory(categoryId) {
+    var queryString = window.location.search;
+    var params = new URLSearchParams(queryString);
+    params.set('category', categoryId);
+    var newQueryString = params.toString();
+    var newUrl = `/shopPage?${newQueryString}`;
+    window.location.href = newUrl;
 }
-    </style>
-</head>
-<body>
-    <div class="invoice-container">
-        <h1 class="invoice-title">Tax Invoice</h1>
-        <div class="invoice-details">
-            <p><strong>Seller/Consignor:</strong> RELIANCE RETAIL LIMITED</p>
-            <p><strong>GSTIN:</strong> 29AABCR1718E1ZL</p>
-            <p><strong>Recipient Address:</strong> nazeeh, ayurcare clinic, Koottumuchi, ayurcare clinic, AJIO</p>
-            <p><strong>Mobile No.:</strong> 9207904611</p>
-            <p><strong>Place Of Supply:</strong> KER</p>
-            <p><strong>Mode Of Payment:</strong> COD</p>
-            <p><strong>AWB Number:</strong> 195041108606876</p>
-            <p><strong>For:</strong> RELIANCE RETAIL LTD</p>
-        </div>
-        <table class="item-table">
-            <thead>
-                <tr>
-                    <th>HSN Code</th>
-                    <th>Item</th>
-                    <th>Unit</th>
-                    <th>Qty</th>
-                    <th>MRP(Rs.)</th>
-                    <th>Price(Rs.)</th>
-                    <th>Disc.</th>
-                    <th>Net Price</th>
-                    <th>Tax(Rs.)</th>
-                    <th>Amt.(Rs.)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Add rows for each item -->
-                <tr>
-                    <td>62052000</td>
-                    <td>Heathered Slim Fit Shirt with Welt Pockets</td>
-                    <td>White</td>
-                    <td>38</td>
-                    <td>441134896001</td>
-                    <td>1.0</td>
-                    <td>1299.0</td>
-                    <td>615.97</td>
-                    <td>195.34</td>
-                    <td>420.63</td>
-                </tr>
-                <!-- Add more rows here -->
-            </tbody>
-        </table>
-        <div class="tax-summary">
-            <h2>Tax Summary</h2>
-            <p><strong>CGST:</strong> 0.00</p>
-            <p><strong>SGST/UTGST:</strong> 0.00</p>
-            <p><strong>IGST:</strong> 39.17</p>
-            <p><strong>Total Tax:</strong> 39.17</p>
-            <p><strong>Total Invoice Value:</strong> 779.99</p>
-        </div>
-    </div>
-</body>
-</html>
