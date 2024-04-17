@@ -480,7 +480,7 @@
         <div class="startDate">
           Starting Date: &nbsp; <input type="date" name="fromdate" id="dat" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp; Ending Date: <input type="date" name="todate" id="date" style="background-color: #fff; border: none ; color: #000000; padding-top: 3px; border-color: white"> &nbsp;
           <select name="range">
-            <option disabled value="">select</option>
+            <option disabled selected value="">select</option>
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
@@ -524,36 +524,7 @@
           </tr>
         <% } %>
       </table>
-      <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
-        <a href="?page=<%= prevpage %>" class="btn-link d-inline-flex align-items-center">
-          <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
-          <span class="fw-medium">PREV</span>
-        </a>
-        <ul class="pagination mb-0">
-          <% let maxPagesToShow = 4; %>
-          <% let startPage = Math.max(1, currentpage - Math.floor(maxPagesToShow / 2)); %>
-          <% let endPage = Math.min(totalpages, startPage + maxPagesToShow - 1); %>
-          <% if (startPage > 1) { %>
-            <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=1">1</a></li>
-            <% if (startPage > 2) { %>
-              <li class="page-item">...</li>
-            <% } %>
-          <% } %>
-          <% for (let j = startPage; j <= endPage; j++) { %>
-            <li class="page-item"><a class="btn-link px-1 mx-2 <%= j === currentpage ? 'active' : '' %>" href="?page=<%= j %>"><%= j %></a></li>
-          <% } %>
-          <% if (endPage < totalpages) { %>
-            <% if (endPage < totalpages - 1) { %>
-              <li class="page-item">...</li>
-            <% } %>
-            <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=<%= totalpages %>"><%= totalpages %></a></li>
-          <% } %>
-        </ul>
-        <a href="?page=<%= nextpage %>" class="btn-link d-inline-flex align-items-center">
-          <span class="fw-medium me-1">NEXT</span>
-          <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
-        </a>
-      </nav>
+    
     </div>
     </div>
     </div>

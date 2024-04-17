@@ -7,6 +7,10 @@ const Cart = require("../model/cartModel");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { ok } = require("assert");
+const path = require("path");
+const puppeteer = require("puppeteer")
+const ejs = require("ejs")
+const fs = require("fs")
 var instance = new Razorpay({
   key_id: 'rzp_test_5mTjMS04uhfKer',
   key_secret:process.env.RAZORPAY_SECRET,
@@ -234,6 +238,40 @@ const orderview = async(req,res)=>{
     }
 }
 
+const invoiceDownload = async(req,res)=>{
+    try {
+        const orderId = req.query.orderId;
+    console.log(orderId,"orderId");
+        const order = await Order.findById({_id:orderId}).populate(
+            "product.productId",
+           )
+
+           console.log(order,"order")
+           const date = new Date();
+           const datas = {
+            order:order,
+            date,
+           }
+const filepath = path.resolve(__dirname,"../views/user/invoice.ejs");
+const html = fs.readFileSync(filepath).toString();
+const invoiceData = ejs.render(html,datas);
+const browser = await puppeteer.launch({ headless: true });
+const page = await browser.newPage();
+await page.setContent(invoiceData,{waitUntil:"networkidle0"});
+const pdfBytes = await page.pdf({format:"Letter"});
+await browser.close();
+res.setHeader("Content-Type","application/pdf");
+res.setHeader(
+    "Content-Disposition",
+    "attachment; filename = BESPOKE-INVOICE.pdf"
+);
+res.send(pdfBytes)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("error in genarate invoice")
+    }
+}
+
 const ordercancel = async(req,res)=>{
     try {
        const userId = req.session.userId;
@@ -366,4 +404,5 @@ returnOrder,
 resonsend,
 orderrazor,
 verifypayment,
+invoiceDownload,
 }

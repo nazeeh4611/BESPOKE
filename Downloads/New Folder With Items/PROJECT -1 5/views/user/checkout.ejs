@@ -714,8 +714,8 @@ const makePayment = () => {
         "amount": orders.amount,
         "currency": "INR",
         "name": "BESPOKESHOPPING",
-        "description": "Test Transaction",
-        "image": "https://example.com/your_logo",
+        "description": "Ecommerce Transaction",
+        "image": "/public/images/logo.jpg",
         "order_id": orders.id,
         "handler": function (response) {
             verifypayment(response, orders);
@@ -729,7 +729,7 @@ const makePayment = () => {
             "address": "Razorpay Corporate Office"
         },
         "theme": {
-            "color": "#3399cc"
+            "color": "#000000"
         }
     };
     var rzp1 = new Razorpay(options);
@@ -864,7 +864,7 @@ function removecoupon(id){
   <script src="js/theme.js"></script>
 
 
-
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

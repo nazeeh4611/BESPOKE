@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -514,7 +515,7 @@ button {
             <br>
             <br>
 
-              <table>
+              <table id="dataTable">
                 <thead>
                   <tr>
                     <th>Image</th>
@@ -585,36 +586,7 @@ button {
               </table>
            <br>
            <br>
-           <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
-            <a href="?page=<%= prevpage %>" class="btn-link d-inline-flex align-items-center">
-              <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
-              <span class="fw-medium">PREV</span>
-            </a>
-            <ul class="pagination mb-0">
-              <% let maxPagesToShow = 4; %>
-              <% let startPage = Math.max(1, currentpage - Math.floor(maxPagesToShow / 2)); %>
-              <% let endPage = Math.min(totalpages, startPage + maxPagesToShow - 1); %>
-              <% if (startPage > 1) { %>
-                <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=1">1</a></li>
-                <% if (startPage > 2) { %>
-                  <li class="page-item">...</li>
-                <% } %>
-              <% } %>
-              <% for (let j = startPage; j <= endPage; j++) { %>
-                <li class="page-item"><a class="btn-link px-1 mx-2 <%= j === currentpage ? 'active' : '' %>" href="?page=<%= j %>"><%= j %></a></li>
-              <% } %>
-              <% if (endPage < totalpages) { %>
-                <% if (endPage < totalpages - 1) { %>
-                  <li class="page-item">...</li>
-                <% } %>
-                <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="?page=<%= totalpages %>"><%= totalpages %></a></li>
-              <% } %>
-            </ul>
-            <a href="?page=<%= nextpage %>" class="btn-link d-inline-flex align-items-center">
-              <span class="fw-medium me-1">NEXT</span>
-              <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
-            </a>
-          </nav>
+          
           
           
 
@@ -703,7 +675,13 @@ button {
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+      $(document).ready(function() {
+          $('#dataTable').DataTable();
+      });
+      </script>
+      
     <script>
       function modalshow(proid){
        console.log("id may here",proid);

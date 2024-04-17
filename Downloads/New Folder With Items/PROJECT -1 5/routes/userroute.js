@@ -145,7 +145,9 @@ userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 userRoute.post("/return",ordercontroller.returnOrder);
 userRoute.get("/getReason",ordercontroller.resonsend);
 
+// download invoice
 
+userRoute.get("/invoice",ordercontroller.invoiceDownload);
 // coupon
 
 userRoute.post('/applycoupon',couponcontroller.applycoupon)

@@ -99,7 +99,7 @@ background-color: transparent;
             <div class="checkout-form">
                 <div class="billing-info__wrapper">
                   
-                    <div class="row">
+                   <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-12">
                               
@@ -127,8 +127,10 @@ background-color: transparent;
                                     <p> <strong>Product Name : </strong><%= value.name %></p>
                                     <p><strong>Price :  </strong>₹<%= value.price %></p>
                                     <p><strong>Qty</strong> : <%= value.quantity %></h6>
-                                    <p><strong>Total</strong> :  <span>₹</span></p>
-                                  
+                                    <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity %> </span></p>
+                                    <a href="/invoice?orderId=<%= orderdata._id %>" target="_blank">
+                                      <span>download invoice</span>
+                                    </a>
                                 </div>
                                 <%}) %>
                              <% } %>

@@ -336,7 +336,7 @@
           <div class="card-body">
             <h4 class="card-title"></h4>
             <p class="card-description"> Add Offer Details </p>
-            <form class="forms-sample" method="post" >              
+            <form class="forms-sample" method="post" name="couponForm" onsubmit="return validateForm()">
               <div class="form-group">
                 <label for="exampleInputName1">Coupon-Name</label>
                 <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name">
@@ -362,8 +362,8 @@
                 <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria">
                 <div id="CriteriaError" class="text-danger"></div>
               </div>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
-              <button class="btn btn-dark"><a href="">Cancel</a></button>
+              <button onclick="validateForm()" class="btn btn-primary mr-2">Submit</button>
+              <button class="btn btn-dark"><a href="/admin/couponlist">Cancel</a></button>
               <% if (typeof messages !== 'undefined' && messages.message) { %>
                 <h5 style="color: red;">
                   <%= messages.message %>
@@ -382,7 +382,56 @@
 
 
 
-
+    <script>
+      function validateForm() {
+        var couponName = document.forms["couponForm"]["CouponName"].value;
+        var couponCode = document.forms["couponForm"]["CouponCode"].value;
+        var discount = document.forms["couponForm"]["Discount"].value;
+        var expireDate = document.forms["couponForm"]["ExpireDate"].value;
+        var criteria = document.forms["couponForm"]["Criteria"].value;
+        var isValid = true;
+    
+        if (couponName == "") {
+          document.getElementById("CoupenNameError").innerHTML = "<span style='color: red;'>Coupon Name is required</span>";
+          isValid = false;
+        } else {
+          document.getElementById("CoupenNameError").innerHTML = "";
+        }
+    
+        if (couponCode == "") {
+          document.getElementById("CoupenCodeError").innerHTML = "<span style='color: red;'>Coupon Code is required</span>";
+          isValid = false;
+        } else {
+          document.getElementById("CoupenCodeError").innerHTML = "";
+        }
+    
+        if (discount == "") {
+          document.getElementById("DiscountError").innerHTML = "<span style='color: red;'>Discount is required</span>";
+          isValid = false;
+        } else {
+          document.getElementById("DiscountError").innerHTML = "";
+        }
+    
+        if (expireDate == "") {
+          document.getElementById("ExpireDateError").innerHTML = "<span style='color: red;'>Expire Date is required</span>";
+          isValid = false;
+        } else {
+          document.getElementById("ExpireDateError").innerHTML = "";
+        }
+    
+        if (criteria == "") {
+          document.getElementById("CriteriaError").innerHTML = "<span style='color: red;'>Criteria Amount is required</span>";
+          isValid = false;
+        } else {
+          document.getElementById("CriteriaError").innerHTML = "";
+        }
+    
+        return isValid; // Return false if any validation fails
+      }
+    </script>
+    
+    
+    
 
 
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>

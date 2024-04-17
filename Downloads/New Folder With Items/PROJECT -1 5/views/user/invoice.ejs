@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Soiree Beauty Invoice</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.invoice-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 0px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+.invoice-details {
+    margin-bottom: 20px;
+}
+
+.services-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.services-table th,
+.services-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.services-table th {
+    background-color: #000000;
+    color: #fff;
+}
+
+.services-table td {
+    background-color: #ffffff;
+}
+
+.total-amount {
+    font-weight: bold;
+}
+
+.payment-details {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+#img {
+    width: 29%;
+   margin-left: 70%;
+}
+#qr{
+  width: 10%;
+  margin-top: -7;
+}
+
+.head {
+    background-color: #444;
+}
+
+.invoice-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.invoice-container a:hover {
+    text-decoration: underline;
+}
+
+</style>
+<body>
+    <div class="invoice-container">
+<img src="/public/images/logo.jpg" id="img" alt=""> 
+<img id="qr" src="/public/images/qr.jpg" alt="QR Code">
+
+<div class="payment-details"></div>
+<div class="invoice-details">
+            <p>Address: 1556 BUCKLEY LANE KANSAS CITY, MO</p>
+            <p>Website: <a href="soireebeauty.site.com">soireebeauty.site.com</a></p>
+            <p>Phone: (415) 413-0703</p>
+            <p>Invoice to: Jane Doe</p>
+            <p>Invoice no: 2023001</p>
+            <p>Date: 10/03/20XX</p>
+        </div>
+        <table class="services-table">
+            <thead class="head">
+                <tr>
+                    <th class="th">SERVICE</th>
+                    <th class="th">QTY</th>
+                    <th class="th">PRICE</th>
+                    <th class="th">TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Haircut & Style</td>
+                    <td>1</td>
+                    <td>$100</td>
+                    <td>$100</td>
+                </tr>
+                <tr>
+                    <td>Color Treatment</td>
+                    <td>1</td>
+                    <td>$200</td>
+                    <td>$200</td>
+                </tr>
+                <tr>
+                    <td>Manicure & Pedicure</td>
+                    <td>1</td>
+                    <td>$100</td>
+                    <td>$100</td>
+                </tr>
+                <tr>
+                    <td>Spa Facial</td>
+                    <td>1</td>
+                    <td>$300</td>
+                    <td>$300</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Subtotal:</td>
+                    <td>$700</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Tax (@X%):</td>
+                    <td>$10</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="total-amount">Total Amount Due:</td>
+                    <td class="total-amount">$710</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="payment-details">
+            <p>Payment to: Patricia Johnson</p>
+            <p>Bank 1</p>
+            <p>Bank Code: 12345678889</p>
+            <p>Terms & Conditions: Payment is due upon completion of services unless otherwise agreed upon in writing.</p>
+            <p>Thank you for choosing Soiree Beauty! We appreciate your business.</p>
+        </div>
+    </div>
+</body>
+</html>

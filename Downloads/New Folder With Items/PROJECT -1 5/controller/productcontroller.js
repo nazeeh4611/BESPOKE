@@ -13,26 +13,18 @@ const Product = require("../model/productModel");
 const loadProduct = async (req, res) => {
   try {
     const offers = await Offer.find({});
-    let page = 1;
-    if (req.query.page) {
-      page = parseInt(req.query.page); // Convert to integer
-    }
-    const limit = 5;
+  
+   
     let query = {}; // Initialize an empty query object
     if (req.query.category) {
       query['category'] = req.query.category; // Add category filter to the query
     }
-    const Products = await products.find(query).populate('category').limit(limit * 1).skip((page - 1) * limit).exec();
-    const count = await products.find(query).countDocuments();
+    const Products = await products.find(query).populate('category')
     const categories = await category.find({});
     res.render("admin/product", {
       Products,
       offers,
-      categories,
-      totalpages: Math.ceil(count / limit),
-      currentpage: page,
-      nextpage: page + 1 <= Math.ceil(count / limit)? page+1 : 1,
-      prevpage: page - 1 >= 1 ? page - 1 : 1 
+      categories
     });
   } catch (error) {
     console.log(error.message);

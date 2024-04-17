@@ -30,9 +30,9 @@ const currentDate = new Date().toLocaleDateString();
 
 console.log(currentDate,"innathe date")
 
-// if (ExpireDate < currentDate) {
-//     return res.render("admin/addcoupon", { messages: { message: "invalid expiredate" } });
-// }
+if (ExpireDate < currentDate) {
+    return res.render("admin/addcoupon", { messages: { message: "invalid expiredate" } });
+}
 
 if (await Coupon.findOne({ name: CouponName })) {
     return res.render("admin/addcoupon", { messages: { message: "Coupon Name already existed" } });
@@ -56,7 +56,6 @@ if (Discount > Criteria) {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Internal Server Error");
     }
 };
 
