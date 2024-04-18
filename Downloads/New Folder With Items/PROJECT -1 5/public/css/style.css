@@ -6692,6 +6692,15 @@
   
   .minh-240 {
     min-height: 16rem; }
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #000000;
+      border-radius: 0px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgb(255, 255, 255);
+  }
   
   .rect-circle {
     width: 100%;

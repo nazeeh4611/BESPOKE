@@ -127,11 +127,11 @@ background-color: transparent;
                                     <p> <strong>Product Name : </strong><%= value.name %></p>
                                     <p><strong>Price :  </strong>₹<%= value.price %></p>
                                     <p><strong>Qty</strong> : <%= value.quantity %></h6>
-                                    <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity %> </span></p>
-                                    <a href="/invoice?orderId=<%= orderdata._id %>" target="_blank">
-                                      <span>download invoice</span>
-                                    </a>
-                                </div>
+                                      <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity %> </span></p>
+                                    
+                                      <a href="/invoice?orderId=<%= orderdata._id %>&productId=<%= value._id %>" target="_blank">  <span style="color: rgb(106, 106, 192); font-size: small; font-weight: 600;">download invoice &#128196;</span>
+                                      </a>
+                                  </div>
                                 <%}) %>
                              <% } %>
                             </div>
@@ -439,5 +439,12 @@ background-color: transparent;
     // Rest of your document.ready function...
 </script>
 
+
+
+<script>
+  function invoice(){
+    
+  }
+</script>
   
 <%- include("../layouts/userpartials/footer.ejs") %>

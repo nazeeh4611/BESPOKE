@@ -8,6 +8,7 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { ok } = require("assert");
 const path = require("path");
+const { ObjectId } = require('mongodb');
 const puppeteer = require("puppeteer")
 const ejs = require("ejs")
 const fs = require("fs")
@@ -230,47 +231,88 @@ const orderview = async(req,res)=>{
   orderdata.product.forEach((value)=>{
 
   })
-
-  
-    res.render("user/orderview",{orderdata,userData,userId});
+ res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
         console.log(error)
-    }
-}
 
-const invoiceDownload = async(req,res)=>{
+
+
+    }}
+    const invoiceDownload = async (req, res) => {
     try {
-        const orderId = req.query.orderId;
-    console.log(orderId,"orderId");
-        const order = await Order.findById({_id:orderId}).populate(
-            "product.productId",
-           )
+        let orderId = req.query.orderId;
+        let productId = req.query.productId;
+        console.log("product",productId)
+        console.log(orderId, "orderId");
+        const orderData = await Order.findOne({ _id: orderId })
+        .populate('user') // populate the user field
+        .populate('product.productId'); 
 
-           console.log(order,"order")
-           const date = new Date();
-           const datas = {
-            order:order,
+let  order = orderData ;
+let product ;
+orderData.product.forEach((prod) => {
+    // Convert the product's _id to a string for comparison
+    let a = prod._id.toString();
+    
+    // Check if the current product's ID matches the provided productId
+    if (a === productId) {
+        // Log the name of the product since it matches the provided productId
+        console.log(prod.name, "the product name here");
+        product = prod
+    }
+});
+
+
+// Extract product names from the order
+
+
+        const date = new Date();
+        const datas = {
+            order: order,
             date,
-           }
-const filepath = path.resolve(__dirname,"../views/user/invoice.ejs");
-const html = fs.readFileSync(filepath).toString();
-const invoiceData = ejs.render(html,datas);
-const browser = await puppeteer.launch({ headless: true });
-const page = await browser.newPage();
-await page.setContent(invoiceData,{waitUntil:"networkidle0"});
-const pdfBytes = await page.pdf({format:"Letter"});
-await browser.close();
-res.setHeader("Content-Type","application/pdf");
-res.setHeader(
-    "Content-Disposition",
-    "attachment; filename = BESPOKE-INVOICE.pdf"
-);
-res.send(pdfBytes)
+            product,
+            // Add the base URL for the images
+            baseUrl: 'http://' + req.headers.host
+        };
+
+        const filepath = path.resolve(__dirname, "../views/user/invoice.ejs");
+        const htmlTemplate = fs.readFileSync(filepath, 'utf-8');
+        const invoiceHtml = ejs.render(htmlTemplate, datas);
+
+        // Replace image URLs with base64 encoded images in the HTML
+        const updatedHtml = invoiceHtml.replace(/src="\/public\/images\/([^"]*)"/g, (match, src) => {
+            const imageFile = fs.readFileSync(path.resolve(__dirname, '../public/images', src));
+            const base64Image = imageFile.toString('base64');
+            return `src="data:image/jpg;base64,${base64Image}"`;
+        });
+
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+
+        // Set the HTML content of the page
+        await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
+
+        // Generate PDF
+        const pdfBytes = await page.pdf({ format: "Letter" });
+        await browser.close();
+
+        // Set response headers and send PDF
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename = BESPOKE-INVOICE.pdf"
+        );
+        res.send(pdfBytes);
+                // res.render("user/invoice",{order})
+
     } catch (error) {
         console.log(error.message);
-        res.status(500).send("error in genarate invoice")
+        res.status(500).send("error in generate invoice");
     }
 }
+
+
+
 
 const ordercancel = async(req,res)=>{
     try {
