@@ -12,6 +12,7 @@ const { ObjectId } = require('mongodb');
 const puppeteer = require("puppeteer")
 const ejs = require("ejs")
 const fs = require("fs")
+const numberToWords = require('number-to-words');
 var instance = new Razorpay({
   key_id: 'rzp_test_5mTjMS04uhfKer',
   key_secret:process.env.RAZORPAY_SECRET,
@@ -262,7 +263,9 @@ orderData.product.forEach((prod) => {
     }
 });
 
-
+let totalPrice = product.price * product.quantity;
+let totalPriceInWords = numberToWords.toWords(totalPrice);
+console.log(totalPriceInWords,"price")
 // Extract product names from the order
 
 
@@ -271,6 +274,7 @@ orderData.product.forEach((prod) => {
             order: order,
             date,
             product,
+            totalPriceInWords,
             // Add the base URL for the images
             baseUrl: 'http://' + req.headers.host
         };
