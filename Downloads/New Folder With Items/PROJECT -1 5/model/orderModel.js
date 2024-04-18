@@ -50,6 +50,10 @@
         reason:{
           type:String,
         },
+        coupondiscount:{
+          type:Number,
+          default:0,
+        },
         },
       ],
 
@@ -73,7 +77,7 @@
         //     type:String,
         //     required:true,
         // },
-       coupondiscount:{
+       discount:{
         type:Number,
         default:0,
        },

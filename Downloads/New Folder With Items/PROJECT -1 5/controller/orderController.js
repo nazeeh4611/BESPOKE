@@ -23,9 +23,9 @@ const OrderPlace = async (req, res) => {
     try {
         const userId = req.session.userId;
 
-        const { addressId, paymentMethod,subtotal,discount} = req.body;
+        const { addressId, paymentMethod,subtotal,discount,discountamount} = req.body;
 
-console.log(discount,"here")
+        console.log(discountamount," coupon dis here")
 
         const cartdata = await Cart.findOne({ user: userId });
 
@@ -79,6 +79,7 @@ console.log(discount,"here")
                 brand:product.brand,
                 quantity: product.quantity,
                 status:orderStatus,
+                coupondiscount:discountamount,
 
             })),
             subtotal: subtotal,
@@ -235,80 +236,76 @@ const orderview = async(req,res)=>{
  res.render("user/orderview",{orderdata,userData,userId});
     } catch (error) {
         console.log(error)
-
-
-
     }}
+
+
     const invoiceDownload = async (req, res) => {
-    try {
-        let orderId = req.query.orderId;
-        let productId = req.query.productId;
-        console.log("product",productId)
-        console.log(orderId, "orderId");
-        const orderData = await Order.findOne({ _id: orderId })
-        .populate('user') // populate the user field
-        .populate('product.productId'); 
-
-let  order = orderData ;
-let product ;
-orderData.product.forEach((prod) => {
-    // Convert the product's _id to a string for comparison
-    let a = prod._id.toString();
+        try {
+            let orderId = req.query.orderId;
+            let productId = req.query.productId;
+          
+            const orderData = await Order.findOne({ _id: orderId })
+                .populate('user')
+                .populate('product.productId'); 
     
-    // Check if the current product's ID matches the provided productId
-    if (a === productId) {
-        // Log the name of the product since it matches the provided productId
-        console.log(prod.name, "the product name here");
-        product = prod
-    }
-});
+            let order = orderData;
+            let product;
+    
+            orderData.product.forEach((prod) => {
+                let a = prod._id.toString();
+                if (a === productId) {
+                    product = prod;
+                }
+            });
+    
+            let totalPrice, totalPriceInWords;
+            if (product.coupondiscount > 0) {
+                totalPrice = product.price * product.quantity - product.coupondiscount;
+                totalPriceInWords = numberToWords.toWords(totalPrice) + " rupees ";
+            } else {
+                totalPrice = product.price * product.quantity;
+                totalPriceInWords = numberToWords.toWords(totalPrice) + " rupees ";
+            }
+    
+            const paisa = Math.round((totalPrice - Math.floor(totalPrice)) * 100);
+            totalPriceInWords += (paisa > 0 ? "and " + numberToWords.toWords(paisa) + " paisa " : "only");
+    
+        // const date = new Date();
+        // const datas = {
+        //     order: order,
+        //     date,
+        //     product,
+        //     totalPriceInWords,
+        //     baseUrl: 'http://' + req.headers.host
+        // };
 
-let totalPrice = product.price * product.quantity;
-let totalPriceInWords = numberToWords.toWords(totalPrice);
-console.log(totalPriceInWords,"price")
-// Extract product names from the order
+        // const filepath = path.resolve(__dirname, "../views/user/invoice.ejs");
+        // const htmlTemplate = fs.readFileSync(filepath, 'utf-8');
+        // const invoiceHtml = ejs.render(htmlTemplate, datas);
 
+        // const updatedHtml = invoiceHtml.replace(/src="\/public\/images\/([^"]*)"/g, (match, src) => {
+        //     const imageFile = fs.readFileSync(path.resolve(__dirname, '../public/images', src));
+        //     const base64Image = imageFile.toString('base64');
+        //     return `src="data:image/jpg;base64,${base64Image}"`;
+        // });
 
-        const date = new Date();
-        const datas = {
-            order: order,
-            date,
-            product,
-            totalPriceInWords,
-            // Add the base URL for the images
-            baseUrl: 'http://' + req.headers.host
-        };
+        // const browser = await puppeteer.launch({ headless: true });
+        // const page = await browser.newPage();
 
-        const filepath = path.resolve(__dirname, "../views/user/invoice.ejs");
-        const htmlTemplate = fs.readFileSync(filepath, 'utf-8');
-        const invoiceHtml = ejs.render(htmlTemplate, datas);
+        // await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
 
-        // Replace image URLs with base64 encoded images in the HTML
-        const updatedHtml = invoiceHtml.replace(/src="\/public\/images\/([^"]*)"/g, (match, src) => {
-            const imageFile = fs.readFileSync(path.resolve(__dirname, '../public/images', src));
-            const base64Image = imageFile.toString('base64');
-            return `src="data:image/jpg;base64,${base64Image}"`;
-        });
+        // const pdfBytes = await page.pdf({ format: "Letter" });
+        // await browser.close();
 
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-
-        // Set the HTML content of the page
-        await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
-
-        // Generate PDF
-        const pdfBytes = await page.pdf({ format: "Letter" });
-        await browser.close();
-
-        // Set response headers and send PDF
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader(
-            "Content-Disposition",
-            "attachment; filename = BESPOKE-INVOICE.pdf"
-        );
-        res.send(pdfBytes);
-                // res.render("user/invoice",{order})
-
+      
+        // res.setHeader("Content-Type", "application/pdf");
+        // res.setHeader(
+        //     "Content-Disposition",
+        //     "attachment; filename = BESPOKE-INVOICE.pdf"
+        // );
+        // res.send(pdfBytes);
+res.render("user/invoice",{product,order,
+    totalPriceInWords,})
     } catch (error) {
         console.log(error.message);
         res.status(500).send("error in generate invoice");

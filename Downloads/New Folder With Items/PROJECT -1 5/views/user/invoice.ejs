@@ -4,7 +4,7 @@
     <title>So</title>
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
-<style>
+<!-- <style>
   body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -12,15 +12,7 @@
     background-color: #ffffff;
 }
 
-.invoice-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ffffff;
-    border-radius: 0px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgb(255, 255, 255);
-}
+
 
 .invoice-details {
     margin-bottom: 20px;
@@ -44,7 +36,7 @@
     text-align: left;
     border: 1px solid #000000;
     padding: 15px;
-    background-color: #ff0000;
+    background-color: #ffffff;
     color: #000000;
 }
 
@@ -67,9 +59,11 @@
     width: 29%;
     margin-left: 70%;
 }
-#qr{
+#qr {
     width: 10%;
-    margin-top: -7%;
+    margin: 0 auto; /* Center the image horizontally */
+    display: block; /* Ensures the margin auto works */
+    /* Remove margin-top: -7%; if you want to center vertically */
 }
 
 .head {
@@ -85,28 +79,107 @@
     text-decoration: underline;
 }
 
+</style> -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        line-height: 1.5;
+    }
+    .invoice-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ffffff;
+        border-radius: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+    #img {
+        width: 29%;
+        margin-left: 70%;
+    }
+    .invoice-details {
+        margin-bottom: 20px;
+    }
+    .services-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .services-table td, .services-table th {
+        padding: 10px;
+        border: 1px solid #000000;
+        text-align: left;
+    }
+    .services-table th {
+        background-color: #ffffff;
+        color: #000000;
+    }
+    .total-amount {
+        font-weight: bold;
+    }
+    .payment-details {
+        margin-top: 20px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+    }
+    #qr {
+        width: 10%;
+        display: block;
+        margin: 0 auto;
+    }
+    .head {
+        background-color: #444;
+    }
+    .invoice-container a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .invoice-container a:hover {
+        text-decoration: underline;
+    }
+    .admin {
+        line-height: 1.5;
+    }
+    .invoice-container p {
+        margin: .1rem 0; /* Adjust the margin to reduce space between paragraphs */
+    }
 </style>
+
+
 <body>
     <div class="invoice-container">
-        <img src="/public/images/logo.jpg" id="img" alt=""> 
-        <img id="qr" src="/public/images/qr.jpg" alt="QR Code">
-
+      <table class="services-table">
+        <th style="display: flex; align-items: center;">
+            <div>
+                <img src="/public/images/logo.jpg" id="img" alt="">
+                <img id="qr" src="/public/images/qr.jpg" alt="QR Code">
+            </div>
+            <div>
+                <p>Address: Kinfra Techno Industrial Park<br>
+                    Thenhipalam, Kerala ·9207904611</p>
+                <p>Website: <a href="bespoke.online">bespoke.online</a></p>
+                <p>email: bespokeshopping07@gmail.com</p>
+                <p>Phone:9207904611</p>
+                <p>Invoice to: <%= order.user.name %> </p>
+                <p>Invoice no: 2023001</p>
+                <p>Date: <%= order.Date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    });
+                %></p>
+            </div>
+        </th>
+      </table>
+              
         <div class="payment-details"></div>
-        <div class="invoice-details">
-            <p>Address: Kinfra Techno Industrial Park
-                Thenhipalam, Kerala ·9207904611</p>
-            <p>Website: <a href="bespoke.online">bespoke.online</a></p>
-            <p>email : bespokeshopping07@gmail.com</p>
-            <p>Phone: 9207904611</p>
-            <p>Invoice to: <%= order.user.name %> </p>
-            <p>Invoice no: 2023001</p>
-            <p>Date: <%= order.Date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              });
-              %></p>
-        </div>
+      
+           
+
        
         <table class="services-table">
        
@@ -119,6 +192,7 @@
                     <th>Item Details</th>
                     <th>Item Qty</th>
                     <th>PRICE(RS)</th>
+                    <th>Discount(RS)</th>
                     <th>TOTAL</th>
                 </tr>
             </thead>
@@ -127,36 +201,45 @@
                     <td><%= product.name %></td>
                     <td><%= product.quantity %></td>
                     <td><%= product.price %></td>
-                    <td><%= product.price * product.quantity %></td>
+                    <td><%= product.coupondiscount.toFixed(2) %></td>
+                    <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3">Subtotal:</td>
-                    <td><%= product.price * product.quantity %></td>
+                    <td colspan="4">Subtotal:</td>
+                    <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
                 </tr>
                 <tr>
-                    <td colspan="3">Tax (@X%):</td>
+                    <td colspan="4">Tax (@X%):</td>
                     <td>0</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="total-amount">Total</td>
-                    <td><b><%= product.price * product.quantity %></b></td>
+                    <td colspan="4" class="total-amount">Total</td>
+                    <td><b>₹<%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></b></td>
                     </tr>
             </tfoot>
         </table>
-        <p style="color: black;font-size: medium;font-weight: 400;"><b>Total in words: <%= totalPriceInWords %></b></p>
-        <div class="payment-details">
-            <% order.deliveryDetails.forEach((address)=>{ %>
-                <p>Recipient Address: <%= address.fname %></p>
-                <p><%= address.mobile %></p>
-                <p><%= address.email %></p>
-                <p><%= address.address %></p>
-                <p><%= address.city %>, <%= address.pin %> </p>
-           <% }) %>
+        <p style="color: black;font-size: medium;font-weight: 400;"><b>Total in words: <%= totalPriceInWords %> only </b></p>
+            <table class="services-table">
+                <th>
+                    <% order.deliveryDetails.forEach((address)=>{ %>
+                        <p>Recipient Address: <%= address.fname %></p>
+                        <p><%= address.mobile %></p>
+                        <p><%= address.email %></p>
+                        <p><%= address.address %></p>
+                        <p><%= address.city %>, <%= address.pin %> </p>
+                   <% }) %>
+                </th>
+               
+            </table>
+           
+           <table class="services-table">
+            <th>1. Products being sent under this invoice are for personal consumption of the customer and not for re-sale or commercial purposes.</th>
+           </table>
            <p>Terms & Conditions: Payment is due upon completion of services unless otherwise agreed upon in writing.</p>
            <p>Thank yss.</p>
-        </div>
+  
     </div>
 </body>
 

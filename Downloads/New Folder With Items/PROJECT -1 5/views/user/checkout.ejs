@@ -191,18 +191,23 @@
                   <tbody>
                     
                     <% cartdata.product.forEach((product)=>{ %>
-                  
-                    <tr>
-                      <td>
-                        <%= product.name %> X   <%=product.quantity %>
-                      </td>
-                      <td>
-                        ₹ <%=product.total %>
-                      </td>
-                    </tr>
+                      <tr>
+                        <td>
+                          <%= product.name %> X <%= product.quantity %>
+                        </td>
+                        <td>
+                          <% if(coupondiscount) { %>
+                            ₹ <%= product.total - (product.total * coupondiscount.discountamount / subtotal).toFixed(2) %>
+                            <input type="hidden" id="discountamount" value=" <%= (product.total * coupondiscount.discountamount / subtotal) %>">
+                          <% } else { %>
+                            ₹ <%= product.total %>
+                          <% } %>
+                        </td>
+                      </tr>
+                    <% }) %>
+                    
                   </tbody>
                 
-                  <% }) %>
                 </table>
                 <% if(coupondiscount && subtotal > coupondiscount.criteriaamount) { %>
                   <%if(subtotal < 1000) { %>
@@ -663,7 +668,8 @@ const makePayment = () => {
       return;
     }
     console.log("1")
-
+  let discountamount = document.getElementById('discountamount').value
+  console.log(discountamount,"the doscount of total")
    const discount = document.getElementById('discount').value;
    console.log(discount,"dis")
 
@@ -675,7 +681,8 @@ const makePayment = () => {
         data: JSON.stringify({ paymentMethod: paymentMethod.value,
         addressId:addressId.value,
         subtotal:subtotal,
-         discount:discount }),
+         discount:discount,
+        discountamount:discountamount }),
         success: function (response) {
   
     if (response && response.success) {
