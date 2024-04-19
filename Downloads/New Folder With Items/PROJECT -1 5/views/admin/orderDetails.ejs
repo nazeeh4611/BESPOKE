@@ -464,10 +464,12 @@
                   <thead>
                     <tr>
                    
-                      <th>Order ID</th>
+                      <th>Product ID</th>
                       <th>Product Name</th>
                       <th>Price</th>
                       <th>Qty</th>
+                      <th>cpn-dis</th>
+                      <th>Total</th>
                       <th>PaymentMethod</th>
                       <th>Status</th>
                       <th class="action-column">Actions</th>
@@ -480,7 +482,7 @@
                         <% Orders.product.forEach((product) => { %>
                           <tr>
                             <td>
-                           <%= product._id %> 
+                           <%= product._id.toString().substring(product._id.toString().length - 6) %> 
                           </td>
                           <td>
                             <%= product.name %>
@@ -491,6 +493,8 @@
                           <td>
                             <%= product.quantity %>
                           </td>
+                          <td><%= product.coupondiscount.toFixed(2) %></td>
+                          <td><%= (product.price*product.quantity)-product.coupondiscount.toFixed(2) %></td>
                             <td>
                               <%= Orders.paymentMethod %>
                             </td>
@@ -500,8 +504,8 @@
                             <td>
                               <% if(product.status == "delivered"){ %>
                              <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Delivered</button>
-                              <% }else if(product.status == "returned"){ %>
-                                <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Returned</button>
+                              <% }else if(product.status == "refunded"){ %>
+                                <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Refunded</button>
                                 <% } else if(product.status == "cancelled"){ %>
                                   <button  style="color: rgb(255, 255, 255);background-color: transparent;border-radius: 4px; border: none;">Cancelled</button>
                                   <% } else if(product.status == "waiting for approval"){ %>
@@ -511,7 +515,7 @@
                                   <% } %>
                             </td>
                             <td>
-                              <% if(product.status == "waiting for approval" && product.status !== "returned"){ %>
+                              <% if(product.status == "waiting for approval" && product.status !== "refunded"){ %>
                                 <button onclick="modal('<%= product._id%>','<%= product.status %>',' <%= Orders._id %>')" style="color: rgb(0, 0, 0);background-color: rgb(255, 230, 0);border-radius: 4px; border: none;">Request</button>
                                 <% } %>
                             </td>

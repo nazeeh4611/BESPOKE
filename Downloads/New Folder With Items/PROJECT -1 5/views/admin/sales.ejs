@@ -465,7 +465,7 @@
     <div>
       <p><span class="fw-bold ">total sales count:</span><%=overallData[0].totalSalesCount%></p>
       <p><span class="fw-bold">Total Sales Amount:</span> ₹<%= overallData[0].totalOrderAmount %></p>  
-          <p><span class="fw-bold ">total discount amount:</span>:n/a</p>
+          <p><span class="fw-bold ">total discount amount:</span>₹<%= overallData[0].totalDiscount %></p>
 
   </div>
     <div class="row">
@@ -497,8 +497,11 @@
               <thead>
                 <tr>
                   <th>OrderID</th>
-                  <th>Product-Details</th>
                   <th>Date</th>
+                  <th>Product-Details</th>
+                  <th>quantity</th>
+                  <th>price</th>
+                  <th>cpn-dis</th>
                   <th>Payment-Method</th>
                   <th>Status</th>
                   <th>Total Amount</th>
@@ -508,12 +511,15 @@
           <% orderData.forEach((order) => { %>
             <% order.product.forEach((item) => { %>
               <tr>
-                <td><%= order._id %></td>
-                <td><%= item.name %></td>
+                <td><%= order._id.toString().substring(order._id.toString().length - 6) %></td>
                 <td><%= order.Date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></td>
+                <td><%= item.name %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.price %></td>
+                <td><%= order.discount %></td>
                 <td><%= order.paymentMethod %></td>
                 <td><%= item.status %></td>
-                <td>₹<%= order.subtotal %></td>
+                <td>₹<%= order.subtotal-order.discount %></td>
                 <td><%= order.user.name %></td>
               </tr>
             <% }); %>

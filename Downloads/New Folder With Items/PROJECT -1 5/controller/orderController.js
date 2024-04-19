@@ -24,6 +24,7 @@ const OrderPlace = async (req, res) => {
         const userId = req.session.userId;
 
         const { addressId, paymentMethod,subtotal,discount,discountamount} = req.body;
+        console.log(discount,"order discount")
 
         console.log(discountamount," coupon dis here")
 
@@ -86,10 +87,9 @@ const OrderPlace = async (req, res) => {
             status: orderStatus,
             Date: Date.now(),
             expiredate: expireDate,
+            discount:discount
         });
-        await Order.updateOne(
-            {$inc:{coupondiscount:discount}}
-        );
+    
         const saveOrder = await NewOrder.save();
        
 
@@ -270,42 +270,42 @@ const orderview = async(req,res)=>{
             const paisa = Math.round((totalPrice - Math.floor(totalPrice)) * 100);
             totalPriceInWords += (paisa > 0 ? "and " + numberToWords.toWords(paisa) + " paisa " : "only");
     
-        // const date = new Date();
-        // const datas = {
-        //     order: order,
-        //     date,
-        //     product,
-        //     totalPriceInWords,
-        //     baseUrl: 'http://' + req.headers.host
-        // };
+        const date = new Date();
+        const datas = {
+            order: order,
+            date,
+            product,
+            totalPriceInWords,
+            baseUrl: 'http://' + req.headers.host
+        };
 
-        // const filepath = path.resolve(__dirname, "../views/user/invoice.ejs");
-        // const htmlTemplate = fs.readFileSync(filepath, 'utf-8');
-        // const invoiceHtml = ejs.render(htmlTemplate, datas);
+        const filepath = path.resolve(__dirname, "../views/user/invoice.ejs");
+        const htmlTemplate = fs.readFileSync(filepath, 'utf-8');
+        const invoiceHtml = ejs.render(htmlTemplate, datas);
 
-        // const updatedHtml = invoiceHtml.replace(/src="\/public\/images\/([^"]*)"/g, (match, src) => {
-        //     const imageFile = fs.readFileSync(path.resolve(__dirname, '../public/images', src));
-        //     const base64Image = imageFile.toString('base64');
-        //     return `src="data:image/jpg;base64,${base64Image}"`;
-        // });
+        const updatedHtml = invoiceHtml.replace(/src="\/public\/images\/([^"]*)"/g, (match, src) => {
+            const imageFile = fs.readFileSync(path.resolve(__dirname, '../public/images', src));
+            const base64Image = imageFile.toString('base64');
+            return `src="data:image/jpg;base64,${base64Image}"`;
+        });
 
-        // const browser = await puppeteer.launch({ headless: true });
-        // const page = await browser.newPage();
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
 
-        // await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
+        await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
 
-        // const pdfBytes = await page.pdf({ format: "Letter" });
-        // await browser.close();
+        const pdfBytes = await page.pdf({ format: "Letter" });
+        await browser.close();
 
       
-        // res.setHeader("Content-Type", "application/pdf");
-        // res.setHeader(
-        //     "Content-Disposition",
-        //     "attachment; filename = BESPOKE-INVOICE.pdf"
-        // );
-        // res.send(pdfBytes);
-res.render("user/invoice",{product,order,
-    totalPriceInWords,})
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename = BESPOKE-INVOICE.pdf"
+        );
+        res.send(pdfBytes);
+// res.render("user/invoice",{product,order,
+//     totalPriceInWords,})
     } catch (error) {
         console.log(error.message);
         res.status(500).send("error in generate invoice");

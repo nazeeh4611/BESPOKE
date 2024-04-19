@@ -71,7 +71,7 @@ const adminDashboard = async (req, res) => {
           _id: "",
           totalSalesCount: { $sum: 1 },
           totalOrderAmount: { $sum: "$subtotal" },
-          totalDiscount:{$sum:'$coupondiscount'},
+          totalDiscount:{$sum:'$discount'},
         },
       },
     ]);
@@ -381,12 +381,12 @@ const orderstatus = async (req, res) => {
       order.product[productIndex].status = 'delivered';
     } else if (product.status === 'waiting for approval') {
       console.log("Product status: waiting for approval");
-      order.product[productIndex].status = 'returned';
+      order.product[productIndex].status = 'refunded';
       order.product[productIndex].reason = '';
 
       const user = await User.findById(userId);
       if (user) {
-        const returnedAmount = product.price * product.quantity;
+        const returnedAmount = product.price * product.quantity-product.coupondiscount;
         user.wallet += returnedAmount;
 
         // Update wallet history
@@ -491,13 +491,21 @@ const salesReport = async (req, res) => {
       .exec();
     const count = await Order.find({ 'product.status': 'delivered' }).countDocuments();
     const overallData = await Order.aggregate([
+    
+      {
+        $match: {
+          'product.status': 'delivered'
+        }
+      },
+     
       {
         $group: {
-          _id: '',
-          totalSalesCount: { $sum: 1 },
-          totalOrderAmount: { $sum: '$subtotal' },
-        },
-      },
+          _id: "",  
+          totalSalesCount: { $sum: 1 }, 
+          totalOrderAmount: { $sum: '$subtotal' }, 
+          totalDiscount: { $sum: '$discount' } 
+        }
+      }
     ]);
     console.log('overallData:', overallData);
     res.render('admin/sales', {
@@ -525,6 +533,7 @@ const filterSales = async (req, res) => {
           $group:{
               _id:'',
               totalSalesCount:{$sum:1},
+              totalDiscount:{$sum:"$discount"},
               totalRevenue:{$sum:'$subTotal'},
           }
       }
