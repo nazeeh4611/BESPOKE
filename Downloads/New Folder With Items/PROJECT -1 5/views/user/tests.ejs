@@ -15,8 +15,6 @@
   <link rel="stylesheet" href="/admiin/vendors/flag-icon-css/css/flag-icon.min.css">
   <link rel="stylesheet" href="/admin/vendors/owl-carousel-2/owl.carousel.min.css">
   <link rel="stylesheet" href="/admin/vendors/owl-carousel-2/owl.theme.default.min.css">
-  <link href="/public/cropperjs/cropper.css" rel="stylesheet">
-
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <!-- endinject -->
@@ -24,8 +22,6 @@
   <link rel="stylesheet" href="/public/admin/css/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="/admin/images/favicon.png" />
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 </head>
 
 <body>
@@ -377,120 +373,42 @@
                 <div id="priceError" class="text-danger"></div>
               </div>
 
-              <div class="container">
-                <table class="image-table">
-                    <tr>
-                        <td>
-                          
-                            <div class="card text-center mb-3" style="width: 18rem;">
-                              <div class="card-body">
-                                <h5 class="card-title">Image one</h5>
-                                <div class="close-icon" onclick="ImageDelete('<%= Datas.Image[0] %>', '<%= Datas._id %>','one');">&times;
-                              </div>
-                              <label for="image1" class="form-label " >
-                                  <img id="one" src="/productImage/<%= Datas.Image[0] %>" alt="" style="width: 200px;">
-                              </label>
-                              <input type="file" class="form-control" id="image1" name="productImage"
-                                  style="display: none;" onchange="updateImage('image1', 'one')">
-                                  <button type="button" class="btn btn-success" onclick="document.getElementById('image1').click();">Upload Image</button>  
-                              </div>
-                            </div>
 
-                        </td>
-                        <td>                                 
-                                  <div class="card text-center mb-3" style="width: 18rem;">
-                                  <div class="card-body">
-                                    <h5 class="card-title">Image two</h5>
-                                    <div class="close-icon" onclick="ImageDelete('<%= Datas.Image[1] %>', '<%= Datas._id %>','two');">&times;
-                                  </div>
-                                  <label for="image2" class="form-label">
-                                      <img id="two" src="/productImage/<%= Datas.Image[1] %>" alt="" style="width: 200px;">
-                                  </label>
-                                  <input type="file" class="form-control" id="image2" name="productImage"
-                                      style="display: none;" onchange="updateImage('image2', 'two')" >
-                                      <button type="button" class="btn btn-success" onclick="document.getElementById('image2').click();">Upload Image</button>  
-                                  </div>
-                                  </div>
-                        </td>
-                        <td>
-                          <div class="card text-center mb-3" style="width: 18rem;">
-                              <div class="card-body">
-                                <h5 class="card-title">Image three</h5>
-                                <div class="close-icon" onclick="ImageDelete('<%= Datas.Image[2] %>', '<%= Datas._id %>','three');">&times;
-                              </div>
-                              <label for="image3" class="form-label " >
-                                  <img id="three" src="/productImage/<%= Datas.Image[2] %>" alt="" style="width: 200px;">
-                              </label>
-                              <input type="file" class="form-control" id="image3" name="productImage"
-                                  style="display: none;" onchange="updateImage('image3', 'three')" >
-                                  <button type="button" class="btn btn-success" onclick="document.getElementById('image3').click();">Upload Image</button>  
-                              </div>
-                            </div>
-                        </td>
-                        <td>
-                          <div class="card text-center mb-3" style="width: 18rem;">
-                              <div class="card-body">
-                                <h5 class="card-title">Image Four</h5>
-                                <div class="close-icon" onclick="ImageDelete('<%= Datas.Image[3] %>', '<%= Datas._id %>','four');">&times;
-                              </div>
-                              <label for="image3" class="form-label " >
-                                  <img id="four" src="/productImage/<%= Datas.Image[3] %>" alt="" style="width: 200px;">
-                              </label>
-                              <input type="file" class="form-control" id="image4" name="productImage"
-                                  style="display: none;" onchange="updateImage('image4', 'four')" >
-                                  <button type="button" class="btn btn-success" onclick="document.getElementById('image4').click();">Upload Image</button>  
-                              </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+              <div class="form-group">
+                <label>File upload</label>
+                <% if(Datas.Image && Array.isArray(Datas.Image) && Datas.Image.length > 0) { %>
+                    <% for(let i=0;i < Datas.Image.length;i++) { %>
+                        <div class="image-container" id="pdtImage_<%= i %>">
+                            <img src="/productImage/<%= Datas.Image[i] %>" alt="product Image" width="100" height="100">
+                            <button style="background-color: red;" onclick="deleteImage(event,'<%= Datas.Image[i] %>', '<%= Datas._id %>', '<%= i %>')">Delete</button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p>No Images Available</p>
+                <% } %>
+                <div id="inputBoxContainer" style="display: none;">
+                  
+                    <div class="mb-3" id="hiddenInputBox" style="display: none;">
+                        <input type="file" name="image" class="form-control bg-dark text-white file-upload-info" placeholder="Upload Image" style="margin-top: 5%;" multiple>
+                    </div>
+                </div>
             </div>
-            <input type="hidden" name="productId" id="ProductId" value="<%=Datas._id %>">
-
-            <% if (Array.isArray(productData)) { %>
-              <% productData.forEach(product => { %>
-                  <option value="<%= product.name %>">
+            
+            
+              <div class="form-group">
+                <label for="exampleInputCity1">Category</label>
+                <select class="form-control" name="categories" id="exampleInputCity1">
+                  <option value="">Select Category</option>
+                  <% productData.forEach(product=> { %>
+                    <option value="<%= product.name %>">
                       <%= product.name %>
-                  </option>
-              <% }); %>
-          <% } else { %>
-              <p>Error: `productData` is not an array or is undefined.</p>
-              <!-- Handle the error case here -->
-          <% } %>
-          
-            <div class="form-group">
-              <label for="exampleInputCity1">Category</label>
-              <select class="form-control" name="categories" id="exampleInputCity1">
-                <option value="">Select Category</option>
-               <% for(let i = 0 ; i< productData.length ; i++) { %>
-                  <option value="<%= productData[i].name %>">
-                    <%= productData[i].name %>
-                  </option>
-            <% } %>
-              </select>
-            </div>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
             </form>
-
-            <div class="modal fade" id="staticBackdropAddSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                      <div class="modal-body">
-                          <div class="mb-3 row">
-                              <div class="col-sm-10">
-                                  <div class="d-flex flex-wrap">
-                                      <h4 class="text-success">New Product Added Successfully</h4>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="modal-footer d-flex justify-content-center">
-                          <a href="" data-bs-toggle="modal"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button></a>
-                      </div>
-                  </div>
-              </div>
-          </div>
             <% if(typeof message !="undefined" ) { %>
               <p style="color: red;">
                 <%=message%>
@@ -500,243 +418,36 @@
         </div>
       </div>
 
-
-
-      <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0 m-0">
-                    <img id="imageToCrop" src="" alt="Crop this image"
-                        style="width: 400px; height: 400px;">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary"
-                        id="cropImageBtn">Crop</button>
-                </div>
-            </div>
-        </div>
-        </div>
-    
-        <script src="/public/cropperjs/cropper.js"></script>
-
-   <script>
-            let currentInputId, currentPreviewId, cropper;
-
-let croppedImages = {};
-var oldimageUrl = []
-let originalFileNames = {};
-
-
-document.addEventListener("DOMContentLoaded", function () {
-document.getElementById('image1').addEventListener('change', function () { prepareImageForCropping('image1', 'preview1'); });
-document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'preview2'); });
-document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'preview3'); });
-document.getElementById('image4').addEventListener('change', function () { prepareImageForCropping('image4', 'preview4'); });
-document.getElementById('cropImageBtn').addEventListener('click', function () {
-  performCropping();
-});
-
-$('#imageCropModal').on('shown.bs.modal', function () {
-  let image = document.getElementById('imageToCrop');
- cropper = new Cropper(image, {
-      aspectRatio: 1,
-      viewMode: 1,
-      dragMode: "move",
-      minContainerWidth: 300,
-      minContainerHeight: 300,
-      minCropBoxWidth: 300,
-      minCropBoxHeight:300,
-      minCanvasHeight: 300,
-      minCanvasWidth: 300,
-
-  });
-});
-
-
-
-$('#imageCropModal').on('hidden.bs.modal', function () {
-  if (cropper) {
-      cropper.destroy();
-      cropper = null;
-  }
-});
-});
-
-function prepareImageForCropping(inputId, previewId) {
-currentInputId = inputId;
-currentPreviewId = previewId;
-const input = document.getElementById(inputId);
-const file = input.files[0];
-originalFileNames[inputId] = file.name;
-
-const reader = new FileReader();
-reader.onload = function (e) {
-  document.getElementById('imageToCrop').src = e.target.result;
-  $('#imageCropModal').modal('show');
-};
-reader.readAsDataURL(file);
-}
-
-
-function performCropping() {
-    if (!cropper) {
-        console.error("Cropper is not initialized.");
-        return;
-    }
-    cropper.getCroppedCanvas().toBlob((blob) => {
-        // Check if the preview element exists
-        const preview = document.getElementById(currentPreviewId);
-        if (!preview) {
-            console.error(`Element with ID '${currentPreviewId}' not found.`);
-            return;
-        }
-
-        // Update the preview image's src
-        preview.src = URL.createObjectURL(blob);
-
-        // Store the cropped image in the croppedImages object
-        croppedImages[currentInputId] = blob;
-
-        // Hide the cropping modal
-        $('#imageCropModal').modal('hide');
-    }, 'image/png');
-}
-
-
-
-
-
-function prepareImageForCropping(inputId, previewId) {
-    currentInputId = inputId;
-    currentPreviewId = previewId;
-    const input = document.getElementById(inputId);
-    const file = input.files[0];
-    originalFileNames[inputId] = file.name;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        document.getElementById('imageToCrop').src = e.target.result;
-        $('#imageCropModal').modal('show');
-    };
-    reader.readAsDataURL(file);
-}
-
-
-function performCropping() {
-    if (!cropper) {
-        console.error("Cropper is not initialized.");
-        return;
-    }
-    cropper.getCroppedCanvas().toBlob((blob) => {
-
-        const preview = document.getElementById(currentPreviewId);
-        preview.src = URL.createObjectURL(blob);
-
-        croppedImages[currentInputId] = blob;
-
-
-        $('#imageCropModal').modal('hide');
-    }, 'image/png')
-
-
-}
-
-
-   </script>
-        <script>
-       function ImageDelete(file, id, index) {
-    console.log("file:", file, "id:", id);
-    console.log("Product ID:", id);
-    console.log("File name:", file);
-
-    fetch('/admin/deleteimage', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ img: file, prdtid: id })
-    })
-    .then(response => response.json())
-    .then(res => {
-        if (res.success) {
-            console.log("Image deleted successfully");
-            const previewElement = document.getElementById(index);
-            if (previewElement) {
-                previewElement.src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
-            } else {
-                console.error(`Element with ID '${index}' not found`);
-            }
-        }
-    })
-    .catch(err => {
-        console.error('Error deleting image:', err);
-    });
-}
-
-          </script>
-          
-
 <script>
-    function updateImage(inputId, previewId) {
-    var input = document.getElementById(inputId);
-    var preview = document.getElementById(previewId);
-    
-    // Verify that the input and preview elements exist
-    if (!input || !preview) {
-        console.error(`Elements with IDs '${inputId}' or '${previewId}' not found.`);
-        return;
-    }
+ async function deleteImage(event, img, prdtid, index) {
+    event.preventDefault();
 
-    const oldUrl = preview.src;
-    console.log(oldUrl,"lll")
-    const segments = oldUrl.split('/');
-    console.log(segments,"segments")
-    const filename = segments[segments.length - 1];
-    console.log(filename,"filenae")
-    console.log(filename);
+    try {
+        await fetch("/admin/deleteimage", {
+            method: "DELETE",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ img, prdtid }),
+        });
 
-    // Store the old image URL
-    oldimageUrl.push(filename);
+     
+        const imageContainer = document.getElementById(`pdtImage_${index}`);
+        if (imageContainer) {
+            imageContainer.remove();
+        }
 
-    // Check if there is a file selected in the input
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            // Set the preview image's src to the loaded data URL
-            console.log("ivade etthi")
-            preview.src = e.target.result;
-            console.log("ivade etthiyilla")
-        };
-        // Read the file as a data URL
-        reader.readAsDataURL(input.files[0]);
+      
+        document.getElementById('inputBoxContainer').style.display = 'block';
+        
+      
+        const hiddenInputBox = document.getElementById('hiddenInputBox');
+        const clonedInputBox = hiddenInputBox.cloneNode(true);
+        clonedInputBox.style.display = 'block';
+        document.getElementById('inputBoxContainer').appendChild(clonedInputBox);
+    } catch (error) {
+        console.log("Error", error);
     }
 }
-
- 
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</script>
 
            
 
@@ -798,40 +509,7 @@ function performCropping() {
         </script>
 
 
-<!-- <script>
-    function deleteImage(file,id) {
-      console.log("file:",file,"id:",id)
-    const productIdElement = document.getElementById('ProductId');
-    
-  
-    const id = productIdElement.value;
 
-
-    fetch('/admin/deleteimage', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ preview, filename, id })
-    })
-    .then(response => response.json())
-    .then(res => {
-        if (res.success) {
-            console.log('Image deleted successfully');
-            
-            // Only set properties if the elements exist
-            if (previewElement && inputElement) {
-                inputElement.value = '';
-                previewElement.src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
-            }
-        }
-    })
-    .catch(err => {
-        console.log('Error deleting image:', err);
-    });
-}
-
-</script> -->
      
 
           <!-- partial -->
