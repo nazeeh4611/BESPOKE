@@ -663,22 +663,19 @@ const makePayment = () => {
           title:"please select address and payment method before order",
           confirmButtonText:true,
         })
-        console.log("12")
 
         console.error("No address selected");
         return; 
     }
+
   let subtotal = document.getElementById("subtotal").value;
-  console.log(subtotal);
-    if(!subtotal){
-      console.error("subtotal not found");
-      return;
-    }
-    console.log("1")
-  let discountamount = document.getElementById('discountamount').value
-  console.log(discountamount,"the doscount of total")
-   const discount = document.getElementById('discount').value;
-   console.log(discount,"dis")
+
+  let discountamount = document.getElementById('discountamount');
+    discountamount = discountamount ? discountamount.value : 0;
+    console.log("liii");
+    
+    let discount = document.getElementById('discount');
+    discount = discount ? discount.value : 0;
 
     $.ajax({
         url: "/checkout",

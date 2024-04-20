@@ -64,7 +64,7 @@ const OrderPlace = async (req, res) => {
 
         const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
         const products = cartdata.product;
-        const orderStatus = paymentMethod=== "CASH ON DELIVERY" ? "placed" : "pending";
+        const orderStatus = paymentMethod=== "CASH ON DELIVERY" ||paymentMethod === "WALLET" ? "placed" : "pending";
 
          
         const NewOrder = new Order({
@@ -208,17 +208,49 @@ const OrderPlaced = async(req,res)=>{
     }
 }
 
-const orderlist = async(req,res)=>{
+const orderlist = async (req, res) => {
     try {
-        
         const userId = req.session.userId;
-        const userData =  await User.findOne({_id:userId});
-        const  Orders  = await Order.find({user:userId}).sort({Date:-1});
-         res.render("user/orderlist",{userId,userData,Orders})
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const limit = 10;
+        const userData = await User.findOne({ _id: userId });
+
+        // Calculate the number of documents to skip based on the current page
+        const skip = (page - 1) * limit;
+
+        // Query the orders with pagination and sorting
+        const Orders = await Order.find({ user: userId })
+            .sort({ date: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // Get the total count of orders for pagination calculation
+        const totalOrders = await Order.countDocuments({ user: userId });
+
+        // Calculate total pages
+        const totalPages = Math.ceil(totalOrders / limit);
+
+        // Calculate starting index for order numbers on the current page
+        const startIndex = (page - 1) * limit;
+
+        // Render the template with the required data
+        res.render('user/orderlist', {
+            userId,
+            userData,
+            Orders,
+            totalPages,
+            currentPage: page,
+            nextPage: page < totalPages ? page + 1 : totalPages,
+            prevPage: page > 1 ? page - 1 : 1,
+            startIndex: startIndex,  // Add this line to pass the startIndex to the template
+            req
+        });
     } catch (error) {
-        console.log(error);
+        console.error('Error fetching orders:', error);
+        res.status(500).send('An error occurred while fetching orders.');
     }
-}
+};
+
 
 
 const orderview = async(req,res)=>{
@@ -418,17 +450,18 @@ console.log(order,"o")
 }
 
 
-const orderrazor = async (req, res) => {
+const repay = async (req, res) => {
     try {
         const { orderId, totalamount } = req.body;
+        console.log("orderId",orderId,"total",totalamount)
         const orders = await instance.orders.create({
             amount: totalamount * 100, 
-            currency: "USD",
+            currency: "INR",
             receipt: "" + orderId,
         });
 
        
-        razorpay(orders);
+       
 
         return res.json({ success: true, orders });
     } catch (error) {
@@ -445,7 +478,7 @@ orderview,
 ordercancel,
 returnOrder,
 resonsend,
-orderrazor,
+repay,
 verifypayment,
 invoiceDownload,
 }

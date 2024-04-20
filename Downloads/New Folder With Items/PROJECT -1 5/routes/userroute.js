@@ -137,7 +137,7 @@ userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 userRoute.get('/checkout',cartcontroller.Loadcheckout)
 userRoute.post("/checkout",ordercontroller.OrderPlace)
 userRoute.post("/verifypayment",ordercontroller.verifypayment);
-userRoute.post("/pay",ordercontroller.orderrazor);
+userRoute.post("/repay",ordercontroller.repay);
 userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
 userRoute.get('/orders',ordercontroller.orderlist);
 userRoute.get("/view",ordercontroller.orderview);

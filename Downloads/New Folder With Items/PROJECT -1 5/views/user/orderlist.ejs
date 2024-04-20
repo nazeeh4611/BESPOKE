@@ -1,5 +1,10 @@
 <%- include("../layouts/userpartials/header.ejs") %>
-
+<style>
+      .active {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+}
+</style>
 <main>
   <div class="mb-4 pb-4"></div>
   <section class="my-account container">
@@ -33,33 +38,36 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <% Orders.forEach((order,index)=>{ %>
+                        <% Orders.forEach((order, index) => { %>
                           <tr>
-                              <td><%= index + 1 %></td>
-                              <td>#<%= order.id.substring(order.id.length - 6) %></td>                              <% if(order.Date) { %>
+                              <td><%= startIndex + index + 1 %></td>  <!-- Adjusted index calculation -->
+                              <td>#<%= order.id.substring(order.id.length - 6) %></td>
+                              <% if (order.Date) { %>
                               <td><%= order.Date.toISOString().substring(0, 10) %></td>
-                              <% }else{ %>
+                              <% } else { %>
                               <td>N/A</td>
                               <% } %>
-                              <% if(order.status == "pending"){ %>
-                              <td><button style="color: rgb(71, 150, 7); border: none; background-color: transparent;">try again </button></td>
-                              <% }else{ %>
-                                <td><%= order.status %></td>
-                                <% } %>
-                              <td>$<%= order.subtotal %></td>
-                              <% if(order.status == "pending"){ %>
-                                <td style="color: red;">Failed</td>
-                                <% }else{ %>
-                                  <td><%= order.paymentMethod %></td>
-                                  <% } %>
-                            
+                              <% if (order.status === 'pending') { %>
                               <td>
-                                
-                                  <a href="/view?id=<%=order._id %>"><button style="width: 141px;" class="btin btn-primar">View Order</button></a>
-                              
+                                  <button onclick="repay('<%= order._id %>', '<%= order.subtotal %>')" style="color: rgb(71, 150, 7); border: none; background-color: rgb(0, 175, 0); color: white; border-radius: 9px;">pay</button>
+                              </td>
+                              <% } else { %>
+                              <td><%= order.status %></td>
+                              <% } %>
+                              <td>$<%= order.subtotal %></td>
+                              <% if (order.status === 'pending') { %>
+                              <td style="color: red;">Failed</td>
+                              <% } else { %>
+                              <td><%= order.paymentMethod %></td>
+                              <% } %>
+                              <td>
+                                  
+                                    <a href="/view?id=<%=order._id %>"><button style="width: 141px;" class="btin btn-primar">View Order</button></a>
+                          
                               </td>
                           </tr>
-                          <% }) %>
+                      <% }) %>
+                      
                           <% } else { %>
                           <tr>
                               <td colspan="7">ORDERS NOT FOUND</td>
@@ -67,8 +75,36 @@
                           <% } %>
                       </tbody>
                   </table>
+
+                  <nav class="pagination-container" style="display: flex; justify-content: center; width: 100%;">
+                    <ul class="pagination">
+                        <% if (currentPage > 1) { %>
+                            <li class="page-item">
+                                <a href="?page=<%= currentPage - 1 %>" class="page-link">Prev</a>
+                            </li>
+                        <% } %>
+                
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                            </li>
+                        <% } %>
+                
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                                <a href="?page=<%= currentPage + 1 %>" class="page-link">Next</a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+                
+                
               </div>
+              
           </div>
+       
+    </div>
+</div>
       </div>
       <!-- Button trigger modal -->
 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -123,8 +159,82 @@
       flex: 0 0 auto;
       width: 100%; }
 </style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
-  
+  function repay(orderId,totalamount){
+     console.log("orderid, and , subtotal getting",orderId,totalamount)
+    $.ajax({
+      url:"/repay",
+      method:"POST",
+      data:{
+        orderId:orderId,
+        totalamount:totalamount
+      },
+      success:(response)=>{
+        if(response.success){
+          razorpay(response.orders);
+        }
+      }
+    })
+  }
+  function razorpay(orders) {
+    console.log("checkpoint:1");
+    var options = {
+        "key": "rzp_test_5mTjMS04uhfKer",
+        "amount": orders.amount,
+        "currency": "INR",
+        "name": "BESPOKESHOPPING",
+        "description": "Ecommerce Transaction",
+        "image": "/public/images/logo.jpg",
+        "order_id": orders.id,
+        "handler": function (response) {
+            verifypayment(response, orders);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#000000"
+        }
+    };
+    console.log("checkpoint 2")
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+function verifypayment(Payment,orders){
+  $.ajax({
+    url:"/verifypayment",
+    method:'POST',
+    data:{
+      Payment,
+      orders,
+    },
+     success: function (response) {
+            console.log("ajax verify payment response", response);
+            if (response.success) {
+              let orderId = response.orderId
+              console.log("the order id may her for the razo pay and ::", orderId)
+              window.location.href = `/ordercomplete?id=${orderId}`
+            } else if (response.onlineSuccess) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Payment has done',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            }
+          }
+        });
+      
+      }
+
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

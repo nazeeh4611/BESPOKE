@@ -46,16 +46,16 @@ adminRoute.post(
   productController.addProduct
 );
 adminRoute.get(
-  "/editproduct",adminAuth.isLogin,
+  "/editproduct",
 
   productController.loadeditproduct
 );
-// adminRoute.post(
-//   "/editproduct",
+adminRoute.post(
+  "/editproduct",
 
-//   upload.upload.array("image", 4),
-//   productController.editProduct
-// );
+  upload.uploadSingle,
+  productController.editProduct
+);
 adminRoute.post(
   "/listproduct",
 

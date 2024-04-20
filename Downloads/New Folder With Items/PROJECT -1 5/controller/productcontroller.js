@@ -56,7 +56,6 @@ const addProduct = async (req, res) => {
     }
    
     const { productName, description, quantity, categories, price,brand } = req.body;
-console.log("brand",brand);
     const filenames = [];
     const existcategory = await category.findOne({ name: categories });
    
@@ -104,6 +103,7 @@ const loadeditproduct = async (req, res) => {
       res.status(400).send("Invalid productId");
     }
     const productData = await category.find({ is_Listed: 1 });
+
     const Datas = await products.findOne({ _id: id });
 
     if (!Datas) {
@@ -122,19 +122,26 @@ const editProduct = async (req, res) => {
   try {
     const id = req.body.id;
     const { productName, description, quantity, categories, price, brand } = req.body;
-    console.log(brand, "brandiii");
     const Datas = await products.findOne({ _id: id });
-    const productData = category.find({ is_Listed: 1 });
+    const productData = category.findOne({ is_Listed: 1 });
+
+
+
+
+
+
+
     const imageData = [];
     if (req.files) {
-      const existedImagecount = (await products.findById(id)).Image.length;
 
+      const existedImagecount = (await products.findById(id)).Image.length;
+      console.log(existedImagecount,"op")
       if (existedImagecount + req.files.length !== 4) {
-        return res.render("admin/editproduct", {
-          message: "4 images is enough",
-          productData,
-          Datas,
-        });
+        // return res.render("admin/editproduct", {
+        //   message: "4 images is enough",
+        //   productData,
+        //   Datas,
+        // });
       } else {
         for (let i = 0; i < req.files.length; i++) {
           const resizedpath = path.join(
@@ -155,7 +162,6 @@ const editProduct = async (req, res) => {
       name: categories,
       is_Listed: 1,
     });
-     console.log(selectcategory._id,"ijijijijijijijji")
     const updteProduct = await products.findByIdAndUpdate(
       id, // Pass the id directly
       {
@@ -221,6 +227,8 @@ const deleteProduct = async (req, res) => {
 const deleteimage = async (req, res) => {
   try {
     const { img, prdtid } = req.body;
+
+    console.log(img,prdtid,"here")
     if (!prdtid) {
       res.status(400).send({ success: false, error: "product is required" });
     }
