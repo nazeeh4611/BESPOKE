@@ -561,80 +561,25 @@ function prepareImageForCropping(inputId, previewId) {
 
 function performCropping() {
   if (!cropper) {
-      console.error("Cropper is not initialized.");
-      return;
+    console.error("Cropper is not initialized.");
+    return;
   }
+
   cropper.getCroppedCanvas().toBlob((blob) => {
+    const preview = document.getElementById(currentPreviewId);
+    // Update the preview image source to the cropped image
+    preview.src = URL.createObjectURL(blob);
 
-      const preview = document.getElementById(currentPreviewId);
-      preview.src = URL.createObjectURL(blob);
+    // Store the cropped image blob in the croppedImages object
+    croppedImages[currentInputId] = blob;
 
-      croppedImages[currentInputId] = blob;
-
-
-      $('#imageCropModal').modal('hide');
-  
-  }, 'image/png')
-
-
+    // Hide the modal
+    $('#imageCropModal').modal('hide');
+  }, 'image/png');
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
 
-  // const form = document.querySelector('form')
-  const submitBtn=document.getElementById('submitBtn')
-  submitBtn.addEventListener('click', function (e) {
-      e.preventDefault()
-      console.log("helloooo");
-      const productName = document.getElementById('productName').value
-      const category = document.getElementById('productCategory').value
-      const price = document.getElementById('productPrice').value
-      const description = document.getElementById('productDescription').value
-      const quantity = document.getElementById('productQuantity').value
-      const brand=document.getElementById('brandName').value
-      const image1 = document.getElementById('image1').files[0]
-      const image2 = document.getElementById('image2').files[0]
-      const image3 = document.getElementById('image3').files[0]
-      const image4 = document.getElementById('image4').files[0]
-      console.log("image 1",image1);
-
-      const formData = new FormData();
-      formData.append('productName', productName)
-      formData.append('productCategory', category)
-      formData.append('productPrice', price)
-      formData.append('productDescription', description)
-      formData.append('productQuantity', quantity)
-      formData.append('brandName',brand)
-      Object.keys(croppedImages).forEach(key => {
-          const originalFileName = originalFileNames[key];
-          formData.append(`productImage`, croppedImages[key],originalFileName);
-      });
-
-      console.log(formData);
-      console.log("hello .....,...>>>>>>");
-      axios.post('/admin/addProducts', formData, {
-          headers: {
-              'Content-type': "multipart/form-data"
-          }
-      }).then((res) => {
-          if (res.data===true) {
-              window.location.href = '/admin/allProducts'
-          }else{
-              Swal.fire({
-                  icon: "error",
-                  title: "Existing Name Cannot Be Added",
-                  text: "",
-                  footer: ''
-                  });
-          }
-
-      }).catch((err) => {
-          console.log('error', err);
-      });
-
-  })
-})
 </script>
 
 <script>

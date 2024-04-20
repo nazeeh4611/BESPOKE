@@ -36,7 +36,7 @@ adminRoute.get("/unlist",  categoryController.UnListed);
 adminRoute.get("/products",adminAuth.isLogin,productController.loadProduct);
 
 adminRoute.get(
-  "/addproduct",adminAuth.isLogin,
+  "/addproduct",
   productController.loadAddProduct
 );
 

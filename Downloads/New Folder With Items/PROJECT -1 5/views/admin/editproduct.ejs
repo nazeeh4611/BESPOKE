@@ -472,25 +472,6 @@
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
             </form>
-
-            <div class="modal fade" id="staticBackdropAddSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                      <div class="modal-body">
-                          <div class="mb-3 row">
-                              <div class="col-sm-10">
-                                  <div class="d-flex flex-wrap">
-                                      <h4 class="text-success">New Product Added Successfully</h4>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="modal-footer d-flex justify-content-center">
-                          <a href="" data-bs-toggle="modal"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button></a>
-                      </div>
-                  </div>
-              </div>
-          </div>
             <% if(typeof message !="undefined" ) { %>
               <p style="color: red;">
                 <%=message%>
@@ -535,12 +516,14 @@ let originalFileNames = {};
 
 
 document.addEventListener("DOMContentLoaded", function () {
-document.getElementById('image1').addEventListener('change', function () { prepareImageForCropping('image1', 'preview1'); });
-document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'preview2'); });
-document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'preview3'); });
-document.getElementById('image4').addEventListener('change', function () { prepareImageForCropping('image4', 'preview4'); });
+document.getElementById('image1').addEventListener('change', function () { prepareImageForCropping('image1', 'one'); });
+document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'two'); });
+document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'three'); });
+document.getElementById('image4').addEventListener('change', function () { prepareImageForCropping('image4', 'four'); });
 document.getElementById('cropImageBtn').addEventListener('click', function () {
+  console.log("button clicked")
   performCropping();
+
 });
 
 $('#imageCropModal').on('shown.bs.modal', function () {
@@ -586,12 +569,15 @@ reader.readAsDataURL(file);
 
 
 function performCropping() {
+  console.log("function works")
     if (!cropper) {
         console.error("Cropper is not initialized.");
         return;
     }
     cropper.getCroppedCanvas().toBlob((blob) => {
         // Check if the preview element exists
+        console.log("function works second")
+
         const preview = document.getElementById(currentPreviewId);
         if (!preview) {
             console.error(`Element with ID '${currentPreviewId}' not found.`);
@@ -599,6 +585,8 @@ function performCropping() {
         }
 
         // Update the preview image's src
+        console.log("function works three")
+
         preview.src = URL.createObjectURL(blob);
 
         // Store the cropped image in the croppedImages object
