@@ -506,7 +506,7 @@ button {
               <form action="/admin/products" method="GET">
                 <select name="category">
                   <option value="">All Categories</option>
-                  <% for(let i=0; i<categories.length; i++) { %>
+                  <% for(let i=0; i< categories.length; i++) { %>
                     <option value="<%= categories[i]._id %>"><%= categories[i].name %></option>
                   <% } %>
                 </select>
@@ -530,7 +530,7 @@ button {
                 </thead>
                 <tbody>
                   <% if(Products.length > 0) { %>
-                    <% for(let i=0; i<Products.length; i++) { %>
+                    <% for(let i=0; i< Products.length; i++) { %>
                       <tr>
                         <td>
                           <img src="/productImage/<%= Products[i].Image[0] %>" width="50px" height="35px" alt="">

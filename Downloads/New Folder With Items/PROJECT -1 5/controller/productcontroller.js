@@ -15,14 +15,15 @@ const loadProduct = async (req, res) => {
     const offers = await Offer.find({});
   
    
-    let query = {}; // Initialize an empty query object
+    let query = {}; 
     if (req.query.category) {
-      query['category'] = req.query.category; // Add category filter to the query
+      query['category'] = req.query.category; 
     }
     const Products = await products.find(query).populate('category')
     const categories = await category.find({});
+    const filteredProducts = Products.filter(product=>product.is_Deleted==false);
     res.render("admin/product", {
-      Products,
+      Products:filteredProducts,
       offers,
       categories
     });
@@ -210,6 +211,7 @@ const productUnlist = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const id = req.query.id;
+    console.log(id,"id")
     await products.updateOne(
       { _id: id },
       {$set:{is_Deleted:true}},

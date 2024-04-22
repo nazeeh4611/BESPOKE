@@ -429,10 +429,7 @@ const returnOrder = async (req, res) => {
 const resonsend = async(req,res)=>{
     try {
         const productId = req.query.productId;
-        console.log("ivade ethhi",productId)
         const orderId = req.body.orderId
-        console.log("ivade ethhi",productId)
-        console.log("ivade ethhi",orderId)
         const order = await Order.findOne({ 'product._id': productId });
           
 console.log(order,"o")

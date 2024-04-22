@@ -59,7 +59,7 @@ const cartopen = async (req, res) => {
      
       });
      
-      let discount = discountPercentage;
+      let discount =(1 - discountPercentage / 100);
       console.log(discount,"discount")
       subtotal = total;
    
@@ -89,9 +89,34 @@ const AddToCart = async (req, res) => {
     }
 
     const productId = req.body.productId;
-    const productdata = await Product.findById(productId);
+    const productdata = await Product.findById(productId).populate({
+      path: 'category',
+      model: 'Category',
+      populate: {
+        path: 'offer',
+        model: 'offer'
+      }
+    })
+    .populate({
+      path: 'offer',
+      model: 'offer'
+    });
 
-    console.log("productData",productdata.brand)
+    let productDiscount = null;
+    if (productdata.offer && productdata.offer.length > 0) {
+      productDiscount = productdata.offer[0].discount;
+    }
+    
+    let categoryDiscount = null;
+    if (productdata.category && productdata.category.offer && productdata.category.offer.length > 0) {
+      categoryDiscount = productdata.category.offer[0].discount;
+    }
+    
+    discountPercentage = Math.max(productDiscount !== null ? productDiscount : 0, categoryDiscount !== null ? categoryDiscount : 0);
+    
+
+
+    console.log("productData",discountPercentage)
     if (!productdata || productdata.quantity === 0) {
       return res.json({
         success: false,
@@ -120,6 +145,9 @@ const AddToCart = async (req, res) => {
         });
       }
     }
+    if(discountPercentage){
+      let price = (productdata.price*(1 - discountPercentage / 100));
+      console.log(price)
     if (existProduct) {
       const updatedCart = await Cart.findOneAndUpdate(
         {
@@ -128,14 +156,54 @@ const AddToCart = async (req, res) => {
         },
         {
           $inc: { "product.$.quantity": 1 
-               , "product.$.total": productdata.price,
+               , "product.$.total":price,
              
             },
         },
         { new: true }
       );
       return res.json({ success: true, stock: true, updatedCart });
-    } else {
+  
+  }else {
+      const cartData = await Cart.findOneAndUpdate(
+        { user: userId },
+        {
+          $set: { user: userId },
+          $push: {
+            product: {
+              productId: productId, 
+              name: productdata.name,
+              price: productdata.price,
+              quantity: 1,
+              brand:productdata.brand,
+              category:productdata.category,
+              total:price,
+            
+            },
+          },
+        },
+        { upsert: true, new: true }
+      );
+      return res.json({ success: true, stock: true, cartData });
+    }
+  }else{
+    if (existProduct) {
+      const updatedCart = await Cart.findOneAndUpdate(
+        {
+          user: userId,
+          "product.productId": productId,
+        },
+        {
+          $inc: { "product.$.quantity": 1 
+               , "product.$.total":productdata.price,
+             
+            },
+        },
+        { new: true }
+      );
+      return res.json({ success: true, stock: true, updatedCart });
+  
+  }else {
       const cartData = await Cart.findOneAndUpdate(
         { user: userId },
         {
@@ -156,6 +224,7 @@ const AddToCart = async (req, res) => {
         { upsert: true, new: true }
       );
       return res.json({ success: true, stock: true, cartData });
+      }
     }
   } catch (error) {
     console.log(error.message);
@@ -279,18 +348,31 @@ const Loadcheckout = async (req, res) => {
     let subtotal = 0;
     let total = 0
     if (cartdata && cartdata.product) {
+      let discountPercentage = 0
+
       cartdata.product.forEach((product)=>{
        
-        if (product.productId && product.productId.price) {
+          let productDiscount = null;
           if (product.productId.offer && product.productId.offer.length > 0) {
-            let offer = product.productId.offer[0].discount;
-            total += (product.productId.price - (product.productId.price * offer / 100)) * product.quantity;
+            productDiscount = product.productId.offer[0].discount;
+          }
+          
+          let categoryDiscount = null;
+          if (product.productId.category && product.productId.category.offer && product.productId.category.offer.length > 0) {
+            categoryDiscount = product.productId.category.offer[0].discount;
+          }
+          
+          discountPercentage = Math.max(productDiscount !== null ? productDiscount : 0, categoryDiscount !== null ? categoryDiscount : 0);
+          
+        console.log(discountPercentage,"discount")
+        if(discountPercentage){
+            total += (product.productId.price *(1 - discountPercentage / 100) ) * product.quantity;
           } else {
             total += product.productId.price * product.quantity;
           }
-        }
+        })
        
-      })
+      
    subtotal = total;
     }
     const productId = req.body.productId;

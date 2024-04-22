@@ -128,7 +128,7 @@
 
                                                 <% if (discount > 0) { %>
                                                     <span class="shopping-cart__product-price">
-                                                        ₹<%=(product.productId.price * (1 - discount / 100)).toFixed(2) %>
+                                                        ₹<%=(product.productId.price * discount).toFixed(2) %>
                                                     </span>
                                                     </span>
                                                 <% } else { %>
@@ -151,7 +151,7 @@
                                             </td>
                                             <td>
                                                 <% if (discount > 0) { %>
-                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * (product.productId.price * (1 - discount / 100)).toFixed(2) %>
+                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * (product.productId.price * discount ).toFixed(2) %>
                                                          %></span>
                                                          <% } else{ %>
                                                             <span class="shopping-cart__subtotal">₹<%= product.quantity * product.productId.price.toFixed(2) %>
