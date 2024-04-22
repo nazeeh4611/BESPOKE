@@ -333,102 +333,124 @@
       <!-- partial -->
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"></h4>
-            <p class="card-description"> Add Offer Details </p>
-            <form class="forms-sample" method="post" name="couponForm" onsubmit="return validateForm()">
-              <div class="form-group">
-                <label for="exampleInputName1">Coupon-Name</label>
-                <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name">
-                <div id="CoupenNameError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputName1">Coupon-Code</label>
-                <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code">
-                <div id="CoupenCodeError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="Discount">Discount</label>
-                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
-                <div id="DiscountError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="expiredate">Expire Date</label>
-                <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date">
-                <div id="ExpireDate" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="Discount">Criteria Amount</label>
-                <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria">
-                <div id="CriteriaError" class="text-danger"></div>
-              </div>
-              <button onclick="validateForm()" class="btn btn-primary mr-2">Submit</button>
-              <button class="btn btn-dark"><a href="/admin/couponlist">Cancel</a></button>
-              <% if (typeof messages !== 'undefined' && messages.message) { %>
-                <h5 style="color: red;">
-                  <%= messages.message %>
-                </h5>
-              <% } %>
-                <h3 class="mb-3">
-                
-                </h3>
-           
-            </form>
-             </div>
+            <div class="card-body">
+                <h4 class="card-title"></h4>
+                <p class="card-description">Add Offer Details</p>
+                <form class="forms-sample" method="post" name="couponForm" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Coupon Name</label>
+                        <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Coupon Name">
+                        <div id="CoupenNameError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName1">Coupon Code</label>
+                        <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code">
+                        <div id="CoupenCodeError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Discount">Discount</label>
+                        <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
+                        <div id="DiscountError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ExpireDate">Expire Date</label>
+                        <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date">
+                        <div id="ExpireDateError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Criteria">Criteria Amount</label>
+                        <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria">
+                        <div id="CriteriaError" class="text-danger"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <button type="button" class="btn btn-dark" onclick="window.location.href='/admin/couponlist';">Cancel</button>
+    
+                    <% if (typeof messages !== 'undefined' && messages.message) { %>
+                        <h5 style="color: red;">
+                            <%= messages.message %>
+                        </h5>
+                    <% } %>
+                </form>
+            </div>
         </div>
-      </div>
+    </div>
+    
+
+    
     
     </div>
 
 
 
     <script>
-      function validateForm() {
-        var couponName = document.forms["couponForm"]["CouponName"].value;
-        var couponCode = document.forms["couponForm"]["CouponCode"].value;
-        var discount = document.forms["couponForm"]["Discount"].value;
-        var expireDate = document.forms["couponForm"]["ExpireDate"].value;
-        var criteria = document.forms["couponForm"]["Criteria"].value;
-        var isValid = true;
-    
-        if (couponName == "") {
-          document.getElementById("CoupenNameError").innerHTML = "<span style='color: red;'>Coupon Name is required</span>";
-          isValid = false;
-        } else {
-          document.getElementById("CoupenNameError").innerHTML = "";
-        }
-    
-        if (couponCode == "") {
-          document.getElementById("CoupenCodeError").innerHTML = "<span style='color: red;'>Coupon Code is required</span>";
-          isValid = false;
-        } else {
-          document.getElementById("CoupenCodeError").innerHTML = "";
-        }
-    
-        if (discount == "") {
-          document.getElementById("DiscountError").innerHTML = "<span style='color: red;'>Discount is required</span>";
-          isValid = false;
-        } else {
-          document.getElementById("DiscountError").innerHTML = "";
-        }
-    
-        if (expireDate == "") {
-          document.getElementById("ExpireDateError").innerHTML = "<span style='color: red;'>Expire Date is required</span>";
-          isValid = false;
-        } else {
-          document.getElementById("ExpireDateError").innerHTML = "";
-        }
-    
-        if (criteria == "") {
-          document.getElementById("CriteriaError").innerHTML = "<span style='color: red;'>Criteria Amount is required</span>";
-          isValid = false;
-        } else {
-          document.getElementById("CriteriaError").innerHTML = "";
-        }
-    
-        return isValid; // Return false if any validation fails
-      }
-    </script>
+  function validateForm(event) {
+    // Prevent form submission to handle validation
+    event.preventDefault();
+
+    let isValid = true;
+
+    // Clear previous error messages
+    document.querySelectorAll('.text-danger').forEach(function(errorDiv) {
+        errorDiv.innerText = '';
+    });
+
+    // Validate Coupon Name
+    const couponNameInput = document.querySelector('[name="CouponName"]');
+    if (!couponNameInput.value.trim()) {
+        isValid = false;
+        document.querySelector('#CoupenNameError').innerText = 'Coupon Name is required';
+    }
+
+    // Validate Coupon Code
+    const couponCodeInput = document.querySelector('[name="CouponCode"]');
+    if (!couponCodeInput.value.trim()) {
+        isValid = false;
+        document.querySelector('#CoupenCodeError').innerText = 'Coupon Code is required';
+    }
+
+    // Validate Discount
+    const discountInput = document.querySelector('[name="Discount"]');
+    const discount = parseFloat(discountInput.value);
+    if (isNaN(discount) || discount < 0 || discount > 100) {
+        isValid = false;
+        document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 100';
+    }
+
+    // Validate Criteria Amount
+    const criteriaInput = document.querySelector('[name="Criteria"]');
+    const criteria = parseFloat(criteriaInput.value);
+    if (isNaN(criteria) || criteria <= 0) {
+        isValid = false;
+        document.querySelector('#CriteriaError').innerText = 'Criteria must be a positive number';
+    }
+
+    // Validate that Criteria is greater than Discount
+    if (criteria <= discount) {
+        isValid = false;
+        document.querySelector('#CriteriaError').innerText = 'Criteria must be greater than Discount';
+    }
+
+    // Validate Expire Date
+    const expireDateInput = document.querySelector('[name="ExpireDate"]');
+    const expireDate = new Date(expireDateInput.value);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Normalize current date to the start of the day
+
+    if (!expireDateInput.value.trim() || expireDate <= currentDate) {
+        isValid = false;
+        document.querySelector('#ExpireDateError').innerText = 'Expire Date must be a future date';
+    }
+
+    // Submit the form if validation passes
+    if (isValid) {
+        document.forms['couponForm'].submit();
+    }
+}
+
+// Attach the function to the form's submit event
+document.querySelector('form[name="couponForm"]').addEventListener('submit', validateForm);
+
+      </script>
     
     
     

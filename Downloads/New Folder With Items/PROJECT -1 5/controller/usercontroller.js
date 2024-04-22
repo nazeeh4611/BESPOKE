@@ -458,104 +458,84 @@ const loadshop = async (req, res) => {
   try {
     let query = { is_Listed: true, is_Deleted: false };
     const category = req.query.category;
-    // Apply category filter if it exists
+    
     if (category) {
       query.category = category;
     }
 
     let sortOption = {};
     switch (req.query.sort) {
-      case "1":
-        // Featured
-        sortOption = {};
-        break;
-      case "2":
-        // Best selling
-        sortOption = {};
-        break;
-      case "3":
-        // Alphabetically, A-Z
+      case "3": // Alphabetically, A-Z
         sortOption = { name: 1 };
         break;
-      case "4":
-        // Alphabetically, Z-A
+      case "4": // Alphabetically, Z-A
         sortOption = { name: -1 };
         break;
-      case "5":
-        // Price, low to high
+      case "5": // Price, low to high
         sortOption = { price: 1 };
         break;
-      case "6":
-        // Price, high to low
+      case "6": // Price, high to low
         sortOption = { price: -1 };
         break;
-      case "7":
-        // Date, old to new
+      case "7": // Date, old to new
         sortOption = { date: 1 };
         break;
-      case "8":
-        // Date, new to old
+      case "8": // Date, new to old
         sortOption = { date: -1 };
         break;
       default:
-        // Default Sorting
+        // Default sorting
         break;
     }
 
-    const offers = await Offer.find({});
- 
     let page = req.query.page ? parseInt(req.query.page) : 1;
     const limit = 9;
-
-    let search = req.query.search || '';
-        if(req.query.search){
-      search = req.query.search
-      console.log(search,"here")
-    };
-
-    const productDetails = await Product.find({
+    
+    const search = req.query.search || '';
+    const products = await Product.find({
       ...query,
       $or: [
-        { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { brand: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { description: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } },
+        { brand: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
       ]
     })
-      .populate({
-        path: "category",
-        model: "Category",
-      })
-      .populate("offer")
-      .sort(sortOption);
+    .populate({
+      path: 'category',
+      model: 'Category',
+      populate: {
+        path: 'offer',
+        model: 'offer'
+      }
+    })
+    .populate({
+      path: 'offer',
+      model: 'offer'
+    })
+    .sort(sortOption);
 
-   
-      const filteredProducts = productDetails.filter(
-        product => product.category && product.category.is_Listed
-      );
-  
-      const count = filteredProducts.length;
-      const products = filteredProducts
-      .slice((page - 1) * limit, page * limit);
+    const count = products.length;
+    const paginatedProducts = products.slice((page - 1) * limit, page * limit);
+    
+    const categories = await Category.find({ is_Listed: true })
+      .populate('offer');
 
-    const categories = await Category.find({ is_Listed: true }).populate("offer");
-
-    const userIn = req.session.userId;
-
-    res.render("user/shop", {
-      products,
+    res.render('user/shop', {
+      products: paginatedProducts,
       categories,
       user: req.session.userId,
-      userIn,
       totalpages: Math.ceil(count / limit),
       currentpage: page,
-      nextpage: page + 1 <= Math.ceil(count / limit) ? page + 1 : 1,
-      prevpage: page - 1 >= 1 ? page - 1 : 1,
+      nextpage: page + 1 <= Math.ceil(count / limit) ? page + 1 : page,
+      prevpage: page - 1 >= 1 ? page - 1 : page,
       req
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
+    res.status(500).send('Internal server error');
   }
 };
+
 
 
 

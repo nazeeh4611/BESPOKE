@@ -333,121 +333,108 @@
       <!-- partial -->
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"></h4>
-            <p class="card-description"> Add Offer Details </p>
-            <form class="forms-sample" method="post" >              
-              <div class="form-group">
-                <label for="exampleInputName1">Offer-Name</label>
-                <input type="text" class="form-control" name="offerName" id="exampleInputName1" placeholder="Offer Name">
-                <div id="offerError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="Discount">Discount</label>
-                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
-                <div id="DiscountError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="startingdate">Starting Date</label>
-                <input type="date" class="form-control" name="startingDate" id="exampleInputEmail3"
-                  placeholder="Starting Date">
-                <div id="startingDateError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="expiredate">Expire Date</label>
-                <input type="date" class="form-control" name="endingDate" id="endingDate" placeholder="Expire Date">
-                <div id="endingDate" class="text-danger"></div>
-              </div>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
-              <button class="btn btn-dark"><a href="">Cancel</a></button>
-              <% if (typeof messages !== 'undefined' && messages.message) { %>
-                <h3 class="mb-3">
-                  <%= messages.message %>
-                </h3>
-              <% }%>
-            </form>
-             </div>
+            <div class="card-body">
+                <h4 class="card-title"></h4>
+                <p class="card-description">Add Offer Details</p>
+                <form class="forms-sample" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Offer Name</label>
+                        <input type="text" class="form-control" name="offerName" id="exampleInputName1" placeholder="Offer Name">
+                        <div id="offerError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Discount">Discount</label>
+                        <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount">
+                        <div id="DiscountError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startingDate">Starting Date</label>
+                        <input type="date" class="form-control" name="startingDate" id="startingDate" placeholder="Starting Date">
+                        <div id="startingDateError" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endingDate">Expire Date</label>
+                        <input type="date" class="form-control" name="endingDate" id="endingDate" placeholder="Expire Date">
+                        <div id="endingDateError" class="text-danger"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <button type="button" class="btn btn-dark" onclick="window.location.href='/cancel';">Cancel</button>
+    
+                    <% if (typeof messages !== 'undefined' && messages.message) { %>
+                        <h3 class="mb-3">
+                            <%= messages.message %>
+                        </h3>
+                    <% } %>
+                </form>
+            </div>
         </div>
-      </div>
+    </div>
+    
+
+    
     
     </div>
 
 
 
 
-
-<!-- 
     <script>
-      function validateForm() {
-        // Reset error messages
-        document.getElementById("productError").innerHTML = "";
-        document.getElementById("productDescriptionError").innerHTML = "";
-        document.getElementById("quantityError").innerHTML = "";
-        document.getElementById("priceError").innerHTML = "";
-        document.getElementById("ImageError").innerHTML = "";
-        document.getElementById("CategoryError").innerHTML = "";
-    
-        // Get form inputs
-        var productName = document.forms["productForm"]["productName"].value.trim();
-        var description = document.forms["productForm"]["description"].value.trim();
-        var quantity = document.forms["productForm"]["quantity"].value.trim();
-        var price = document.forms["productForm"]["price"].value.trim();
-        var image = document.forms["productForm"]["image"].value.trim();
-        var category = document.forms["productForm"]["categories"].value.trim();
-    
-        // Flag to track if there are any errors
-        var hasError = false;
-    
-        // Validate product name
-        if (productName === "") {
-          document.getElementById("productError").innerHTML = "Product name is required";
-          hasError = true;
-        }
-    
-        // Validate description
-        if (description === "") {
-          document.getElementById("productDescriptionError").innerHTML = "Description is required";
-          hasError = true;
-        }
-    
-        // Validate quantity
-        if (quantity === "") {
-          document.getElementById("quantityError").innerHTML = "Quantity is required";
-          hasError = true;
-        } else if (isNaN(quantity)) {
-          document.getElementById("quantityError").innerHTML = "Quantity must be a  number";
-          hasError = true;
-        }
-    
-        // Validate price
-        if (price === "") {
-          document.getElementById("priceError").innerHTML = "Price is required";
-          hasError = true;
-        } else if (isNaN(price) || price <= 0) {
-          document.getElementById("priceError").innerHTML = "Price must be a positive number";
-          hasError = true;
-        }
-    
-        // Validate image
-        if (image === "") {
-          document.getElementById("ImageError").innerHTML = "Image is required";
-          hasError = true;
-        }
-    
-        // Validate category
-        if (category === "") {
-          document.getElementById("CategoryError").innerHTML = "Select Category";
-          hasError = true;
-        }
-    
-        // If there are errors, prevent form submission
-        if (hasError) {
-          return false;
-        }
-        return true;
+      function validateForm(event) {
+          let isValid = true;
+  
+          // Clear previous error messages
+          document.querySelectorAll('.text-danger').forEach(function(errorDiv) {
+              errorDiv.innerText = '';
+          });
+  
+          // Validate Offer Name
+          const offerNameInput = document.querySelector('#exampleInputName1');
+          if (!offerNameInput.value.trim()) {
+              isValid = false;
+              document.querySelector('#offerError').innerText = 'Offer Name is required';
+          }
+  
+          // Validate Discount
+          const discountInput = document.querySelector('#Discount');
+          const discount = parseFloat(discountInput.value);
+          if (isNaN(discount) || discount < 0 || discount > 100) {
+              isValid = false;
+              document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 100';
+          }
+  
+          // Validate Starting Date
+          const startingDateInput = document.querySelector('#startingDate');
+          if (!startingDateInput.value.trim()) {
+              isValid = false;
+              document.querySelector('#startingDateError').innerText = 'Starting Date is required';
+          }
+  
+          // Validate Expire Date
+          const endingDateInput = document.querySelector('#endingDate');
+          if (!endingDateInput.value.trim()) {
+              isValid = false;
+              document.querySelector('#endingDateError').innerText = 'Expire Date is required';
+          }
+  
+          // Check that starting date is before expire date
+          const startingDate = new Date(startingDateInput.value);
+          const endingDate = new Date(endingDateInput.value);
+          if (startingDate >= endingDate) {
+              isValid = false;
+              document.querySelector('#endingDateError').innerText = 'Expire Date must be later than Starting Date';
+          }
+  
+          // Prevent form submission if validation fails
+          if (!isValid) {
+              event.preventDefault();
+          }
+  
+          return isValid;
       }
-
-    </script> -->
+  
+      // Attach the function to the form submission event
+      document.querySelector('.forms-sample').addEventListener('submit', validateForm);
+  </script>
 
 
 

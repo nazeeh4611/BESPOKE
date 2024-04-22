@@ -528,16 +528,23 @@ const filterSales = async (req, res) => {
     let fromdate, todate;
     const currentDate = new Date();
 
-    const overallData=await Order.aggregate([
-      { 
-          $group:{
-              _id:'',
-              totalSalesCount:{$sum:1},
-              totalDiscount:{$sum:"$discount"},
-              totalRevenue:{$sum:'$subTotal'},
-          }
+    const overallData = await Order.aggregate([
+    
+      {
+        $match: {
+          'product.status': 'delivered'
+        }
+      },
+     
+      {
+        $group: {
+          _id: "",  
+          totalSalesCount: { $sum: 1 }, 
+          totalOrderAmount: { $sum: '$subtotal' }, 
+          totalDiscount: { $sum: '$discount' } 
+        }
       }
-  ])
+    ]);
   console.log('overallData:',overallData);
 
     const range = req.body.range;

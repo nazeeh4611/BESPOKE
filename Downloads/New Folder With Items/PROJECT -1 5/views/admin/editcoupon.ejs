@@ -333,51 +333,120 @@
       <!-- partial -->
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"></h4>
-            <p class="card-description"> Edit Coupon Details </p>
-            <form class="forms-sample" method="post" >              
-              <div class="form-group">
-                <input type="hidden"  name="couponId" id="" value="<%= coupon.id %>">
-                <label for="exampleInputName1">Coupon-Name</label>
-                <input type="text" class="form-control" name="CouponName" id="exampleInputName1" placeholder="Couponr Name" value="<%= coupon.name %>">
-                <div id="CoupenNameError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputName1">Coupon-Code</label>
-                <input type="text" class="form-control" name="CouponCode" id="exampleInputName1" placeholder="Coupon Code" value="<%= coupon.couponcode %>">
-                <div id="CoupenCodeError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="Discount">Discount</label>
-                <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount" value="<%= coupon.discountamount %>">
-                <div id="DiscountError" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="expiredate">Expire Date</label>
-                <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date" value="<%= coupon.expiredate %>">
-                <div id="ExpireDate" class="text-danger"></div>
-              </div>
-              <div class="form-group">
-                <label for="Discount">Criteria Amount</label>
-                <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria" value="<%= coupon.criteriaamount %>">
-                <div id="CriteriaError" class="text-danger"></div>
-              </div>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
-              <button class="btn btn-dark"><a href="">Cancel</a></button>
-              <% if (typeof messages !== 'undefined' && messages.message) { %>
-                <h5 style="color: red;">
-                  <%= messages.message %>
-                </h5>
-              <% } %>
-                <h3 class="mb-3">
-                
-                </h3>
-           
-            </form>
-             </div>
+            <div class="card-body">
+                <h4 class="card-title">Edit Coupon Details</h4>
+                <p class="card-description">Edit the details of the coupon below</p>
+                <form class="forms-sample" method="post" onsubmit="return validateEditCouponForm()">
+                    <input type="hidden" name="couponId" value="<%= coupon.id %>">
+    
+                    <div class="form-group">
+                      <label for="CouponName">Coupon Name</label>
+                      <input type="text" class="form-control" disabled name="CouponName" id="CouponName" placeholder="Coupon Name" value="<%= coupon.name %>" style="background-color: #000000;">
+                      <div id="CouponNameError" class="text-danger"></div>
+                  </div>
+    
+                    <div class="form-group">
+                        <label for="CouponCode">Coupon Code</label>
+                        <input type="text" class="form-control" disabled name="CouponCode" id="CouponCode" placeholder="Coupon Code" value="<%= coupon.couponcode %>" style="background-color: #000000;">
+                        <div id="CouponCodeError" class="text-danger"></div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="Discount">Discount</label>
+                        <input type="number" class="form-control" name="Discount" id="Discount" placeholder="Discount" value="<%= coupon.discountamount %>">
+                        <div id="DiscountError" class="text-danger"></div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="ExpireDate">Expire Date</label>
+                        <input type="date" class="form-control" name="ExpireDate" id="ExpireDate" placeholder="Expire Date" value="<%= coupon.expiredate %>">
+                        <div id="ExpireDateError" class="text-danger"></div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="Criteria">Criteria Amount</label>
+                        <input type="number" class="form-control" name="Criteria" id="Criteria" placeholder="Criteria" value="<%= coupon.criteriaamount %>">
+                        <div id="CriteriaError" class="text-danger"></div>
+                    </div>
+    
+                    <button type="submit" id="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a href="/coupon-list" class="btn btn-dark">Cancel</a>
+    
+                    <% if (typeof messages !== 'undefined' && messages.message) { %>
+                        <h5 style="color: red;">
+                            <%= messages.message %>
+                        </h5>
+                    <% } %>
+                </form>
+            </div>
         </div>
-      </div>
+    </div>
+    
+    <script>
+    function validateEditCouponForm() {
+        // Get form fields
+        const couponName = document.getElementById('CouponName').value;
+        const couponCode = document.getElementById('CouponCode').value;
+        const discount = parseFloat(document.getElementById('Discount').value);
+        const expireDate = document.getElementById('ExpireDate').value;
+        const criteria = parseFloat(document.getElementById('Criteria').value);
+    
+        // Get current date
+        const currentDate = new Date();
+        const expireDateObj = new Date(expireDate);
+    
+        // Clear any previous error messages
+        document.getElementById('CouponNameError').innerText = '';
+        document.getElementById('CouponCodeError').innerText = '';
+        document.getElementById('DiscountError').innerText = '';
+        document.getElementById('ExpireDateError').innerText = '';
+        document.getElementById('CriteriaError').innerText = '';
+    
+        let isValid = true;
+    
+        // Validate coupon name
+        if (!couponName) {
+            document.getElementById('CouponNameError').innerText = 'Coupon name is required.';
+            isValid = false;
+        }
+    
+        // Validate coupon code
+        if (!couponCode) {
+            document.getElementById('CouponCodeError').innerText = 'Coupon code is required.';
+            isValid = false;
+        }
+    
+        // Validate discount
+        if (isNaN(discount) || discount <= 0) {
+            document.getElementById('DiscountError').innerText = 'Valid discount amount is required.';
+            isValid = false;
+        }
+    
+        // Validate expiration date
+        if (isNaN(expireDateObj.getTime()) || expireDateObj <= currentDate) {
+            document.getElementById('ExpireDateError').innerText = 'Expire date must be a future date.';
+            isValid = false;
+        }
+    
+        // Validate criteria
+        if (isNaN(criteria) || criteria <= 0) {
+            document.getElementById('CriteriaError').innerText = 'Valid criteria amount is required.';
+            isValid = false;
+        }
+    
+        // Check discount is less than criteria
+        if (discount >= criteria) {
+            document.getElementById('DiscountError').innerText = 'Discount must be less than criteria amount.';
+            isValid = false;
+        }
+    
+        return isValid;
+    }
+    </script>
+    
+    
+
+ 
     
     </div>
 
@@ -385,7 +454,7 @@
 
 
 
-
+  
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

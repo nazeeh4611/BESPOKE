@@ -52,7 +52,7 @@ const addProduct = async (req, res) => {
     const productDatas = await products.findOne({name:req.body.productName });
     const Datas = await category.find({ is_Listed: 1 });
     if (productDatas) {
-    res.render('admin/addproduct',{productData: Datas,messages:{message:"Productname already existed"}})
+      return res.render("admin/addproduct", { productData: Datas, messages: { message: "Productname already existed" } });
     }
    
     const { productName, description, quantity, categories, price,brand } = req.body;
@@ -111,7 +111,7 @@ const loadeditproduct = async (req, res) => {
     }
 
     const messages = {};
-    res.render("admin/editproduct", { productData, Datas, messages });
+    res.render("admin/editproduct", { productData:productData, Datas, messages });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Internal server error");
@@ -122,17 +122,18 @@ const editProduct = async (req, res) => {
   try {
     const id = req.body.id;
     const { productName, description, quantity, categories, price, brand } = req.body;
-    console.log(brand, "brandiii");
+
     const Datas = await products.findOne({ _id: id });
-    const productData = category.find({ is_Listed: 1 });
+    const productData = await category.find({ is_Listed: 1 });    
+    console.log(productData,"productSata");
     const imageData = [];
     if (req.files) {
-      console.log("files",req.files)
+   
       const existedImagecount = (await products.findById(id)).Image.length;
 
       if (existedImagecount + req.files.length !== 4) {
         return res.render("admin/editproduct", {
-          message: "4 images is enough",
+          message: "4 images needed",
           productData,
           Datas,
         });
