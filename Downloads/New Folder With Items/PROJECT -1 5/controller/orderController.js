@@ -165,7 +165,7 @@ const verifypayment = async(req,res)=>{
         const { productId, quantity } = Data;
         await Product.findByIdAndUpdate(
           { _id: productId },
-          { $inc: { quantity: -quantity } },
+          { $inc: { quantity: -cartdata.quantity } },
           {$set:{status:"placed"}},
         );
       }
@@ -180,6 +180,12 @@ const verifypayment = async(req,res)=>{
   const cartdata = await Cart.findOne({user:userId})
   const orderId = await NewOrder._id;
   const DeleteCartItem = await Cart.deleteOne({_id:cartdata._id });
+  for (const cartProduct of cartdata.product) {
+    await Product.findOneAndUpdate(
+        { _id: cartProduct.productId },
+        { $inc: { quantity: -cartProduct.quantity } }
+    );
+}
   res.json({orderId,success:true});
     } catch (error) {
         
@@ -215,25 +221,21 @@ const orderlist = async (req, res) => {
         const limit = 10;
         const userData = await User.findOne({ _id: userId });
 
-        // Calculate the number of documents to skip based on the current page
         const skip = (page - 1) * limit;
 
-        // Query the orders with pagination and sorting
-        const Orders = await Order.find({ user: userId })
-            .sort({ date: -1 })
-            .skip(skip)
-            .limit(limit);
+     
+         const Orders = await Order.find({ user: userId })
+         .sort({ Date: -1 }) 
+         .skip(skip)
+         .limit(limit);
 
-        // Get the total count of orders for pagination calculation
+
         const totalOrders = await Order.countDocuments({ user: userId });
 
-        // Calculate total pages
         const totalPages = Math.ceil(totalOrders / limit);
 
-        // Calculate starting index for order numbers on the current page
-        const startIndex = (page - 1) * limit;
+        const startIndex = (page -1) * limit;
 
-        // Render the template with the required data
         res.render('user/orderlist', {
             userId,
             userData,
@@ -242,7 +244,7 @@ const orderlist = async (req, res) => {
             currentPage: page,
             nextPage: page < totalPages ? page + 1 : totalPages,
             prevPage: page > 1 ? page - 1 : 1,
-            startIndex: startIndex,  // Add this line to pass the startIndex to the template
+            startIndex: startIndex,  
             req
         });
     } catch (error) {

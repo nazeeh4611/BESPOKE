@@ -516,7 +516,7 @@ const loadshop = async (req, res) => {
 
     const count = products.length;
     const paginatedProducts = products.slice((page - 1) * limit, page * limit);
-    
+    const UserIn = req.session.userId
     const categories = await Category.find({ is_Listed: true })
       .populate('offer');
 
@@ -528,7 +528,8 @@ const loadshop = async (req, res) => {
       currentpage: page,
       nextpage: page + 1 <= Math.ceil(count / limit) ? page + 1 : page,
       prevpage: page - 1 >= 1 ? page - 1 : page,
-      req
+      req,
+      UserIn,
     });
   } catch (error) {
     console.error(error.message);
@@ -590,11 +591,18 @@ const ProductDetail = async (req, res) => {
   try {
     const productId = req.query.id;
 
-    const productdata = await Product.findById({ _id: productId }).populate(
-      "category",
-    ).populate(
-      "offer"
-    );
+    const productdata = await Product.findById({ _id: productId }).populate({
+      path: 'category',
+      model: 'Category',
+      populate: {
+        path: 'offer',
+        model: 'offer'
+      }
+    })
+    .populate({
+      path: 'offer',
+      model: 'offer'
+    })
  
     const userIn = req.session.userId;
     const userId = req.session.userId;

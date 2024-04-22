@@ -146,15 +146,26 @@
             <div class="product-imgs">
               <div class="img-display" id="zoom-in">
                 <div class="img-showcase">
+                  <% let productDiscount = null; %>
+                <% if (data.offer && data.offer.length > 0) { %>
+                  <% productDiscount = data.offer[0].discount; %>
+                <% } %>
+                
+                <% let categoryDiscount = null; %>
+                <% if (data.category && data.category.offer && data.category.offer.length > 0) { %>
+                  <% categoryDiscount = data.category.offer[0].discount; %>
+                <% } %>
+                
+                <% let discountPercentage = Math.max(productDiscount || 0, categoryDiscount || 0); %>
                  
                   <% for (let i=0; i < data.Image.length; i++) { %>
                   
                     <img src="/public/uploadImg/<%= data.Image[i] %> " alt="shoe image">
-                   <% data.offer.forEach((offer)=>{ %>
+                    <% if (discountPercentage > 0) { %>
                     <div class="product-label sale-label">
-                      <span>-<%= offer.discount %>%</span>
+                      <span>-<%= discountPercentage %>%</span>
                     </div>
-                <% }) %>
+                <% } %>
                     
              
                 
@@ -217,19 +228,19 @@
 
               <div class="product-price">
                 <!-- <p class = "last-price">Old Price: <span>$257.00</span></p> -->
-                <% if (data.offer && data.offer.length > 0) { %>
-                <%   data.offer.forEach((offer)=>{  %>
-                  
-               
-                  <% let percentage = offer.discount; %>
-                  <% let discountedPrice = data.price - (data.price * (percentage / 100)); %>
-                  <span class="money price"></span>
-                  <h4 style="color: green;"> <span class="current-price"><del style="color: #252525;">₹<%= data.price.toFixed(2) %></del>&nbsp;$<%= discountedPrice.toFixed(2) %></span></h4>
-                  <% }) %>
+                <% if (discountPercentage > 0) { %>
+                  <div class="product-label sale-label">
+                    <span>-<%= discountPercentage %>%</span>
+                  </div>
+                  <h4 style="color: green;">
+                    <span class="current-price">
+                      <del style="color: #252525;">₹<%= data.price.toFixed(2) %></del>
+                      &nbsp;₹<%= (data.price * (1 - discountPercentage / 100)).toFixed(2) %>
+                    </span>
+                  </h4>
                 <% } else { %>
                   <h4><span class="current-price">MRP ₹<%= data.price.toFixed(2) %></span></h4>
                 <% } %>
-              
              
               </div>
 

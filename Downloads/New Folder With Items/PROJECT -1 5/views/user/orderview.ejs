@@ -107,7 +107,7 @@ background-color: transparent;
                               <% orderdata.product.forEach(value => { %>
                                
                                 <div class="return-details" class="col-md-12">
-                                  <% if(value.status !== 'cancelled' && value.status !== 'delivered' && value.status !== 'Return Approved' && value.status !== 'shipped' && value.status !== 'out for delivery' && value.status !== 'Waiting for Approval' && value.status !== 'pending' && value.status !== 'returned') { %>
+                                  <% if(value.status !== 'cancelled' && value.status !== 'delivered' && value.status !== 'Return Approved' && value.status !== 'shipped' && value.status !== 'out for delivery' && value.status !== 'Waiting for Approval' && value.status !== 'pending' && value.status !== 'refunded') { %>
                                  <p>Action :  <button id="cnl-btn"><u style="color: rgb(189, 0, 0);" onclick="cancelorder('<%= value._id %>')">cancel</u></p></a></button>
                                   <input type="hidden" id="cancelOrderId" name="orderId" value="<%= orderdata._id %>">
                                   <%}%>

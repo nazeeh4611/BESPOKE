@@ -124,13 +124,11 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <% if(product.productId.offer && product.productId.offer.length > 0){ 
-                                                    let offer = 0;
-                                                    offer = product.productId.offer[0].discount; 
-                                                    let discountedPrice = product.productId.price - (product.productId.price * (offer / 100)); %>
+                                            <td> 
+
+                                                <% if (discount > 0) { %>
                                                     <span class="shopping-cart__product-price">
-                                                        ₹<%= discountedPrice.toFixed(2) %>
+                                                        ₹<%=(product.productId.price * (1 - discount / 100)).toFixed(2) %>
                                                     </span>
                                                     </span>
                                                 <% } else { %>
@@ -152,8 +150,12 @@
                                                 </div><!-- .qty-control -->
                                             </td>
                                             <td>
-                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * product.productId.price.toFixed(2)
+                                                <% if (discount > 0) { %>
+                                                <span class="shopping-cart__subtotal">₹<%= product.quantity * (product.productId.price * (1 - discount / 100)).toFixed(2) %>
                                                          %></span>
+                                                         <% } else{ %>
+                                                            <span class="shopping-cart__subtotal">₹<%= product.quantity * product.productId.price.toFixed(2) %>
+                                                              <% } %>    
                                             </td>
                                             <td>
                                                 <a href="#" onclick="removecart('<%= product.productId._id %>')"
@@ -192,7 +194,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Subtotal</th>
-                                        <td>₹<%= subtotal %>
+                                        <td>₹<%= subtotal.toFixed(2) %>
                                         </td> 
                                     </tr>
                                     <tr>
@@ -201,7 +203,7 @@
                                     </tr>
                                     <tr>
                                         <th>Total</th>
-                                        <td>₹<%= total+100 %>
+                                        <td>₹<%= (total+100).toFixed(2) %>
                                        
                                     </tr>
                                 </tbody>
@@ -213,7 +215,7 @@
                                     <tbody>
                                         <tr>
                                             <th>Subtotal</th>
-                                            <td>₹<%= subtotal %>
+                                            <td>₹<%= subtotal.toFixed(2) %>
                                             </td> 
                                         </tr>
                                         <tr>
@@ -222,7 +224,7 @@
                                         </tr>
                                         <tr>
                                             <th>Total</th>
-                                            <td>₹<%= total %>
+                                            <td>₹<%= total.toFixed(2) %>
                                            
                                         </tr>
                                     </tbody>

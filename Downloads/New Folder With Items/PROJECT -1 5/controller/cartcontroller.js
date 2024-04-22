@@ -24,20 +24,33 @@ const cartopen = async (req, res) => {
           { path: 'offer' },
         ],
       })
+      
 
       const filteredProducts = cartdata.product.filter(product => product.productId && product.productId.is_Listed); 
 
-      let subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
-   
-
-      let total = 0;
      
+      let total = 0;
+      let discountPercentage = 0
       cartdata.product.forEach((product) => {
+        let subtotal = filteredProducts.reduce((acc, val) => acc + val.total, 0);
+        let productDiscount = null;
+        if (product.productId.offer && product.productId.offer.length > 0) {
+          productDiscount = product.productId.offer[0].discount;
+        }
+        
+        let categoryDiscount = null;
+        if (product.productId.category && product.productId.category.offer && product.productId.category.offer.length > 0) {
+          categoryDiscount = product.productId.category.offer[0].discount;
+        }
+        
+        discountPercentage = Math.max(productDiscount !== null ? productDiscount : 0, categoryDiscount !== null ? categoryDiscount : 0);
+        
+  
         let offer = 0;
-        if(product.productId.offer && product.productId.offer.length > 0){
-          offer = product.productId.offer[0].discount; 
-
-          total += (product.productId.price-((product.productId.price*offer/100))*product.quantity)
+        if(discountPercentage){
+         
+          total += (product.productId.price * (1 - discountPercentage / 100)).toFixed(2)*product.quantity
+        
         }else{
           total += product.productId.price * product.quantity;
         }
@@ -45,8 +58,13 @@ const cartopen = async (req, res) => {
        
      
       });
+     
+      let discount = discountPercentage;
+      console.log(discount,"discount")
       subtotal = total;
-      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, total, user: req.session.userId });
+   
+        
+      res.render("user/cart", { cartdata: {cartdata, product: filteredProducts }, subtotal, total, user: req.session.userId,discount });
     } else {
       res.redirect("/login");
     }
@@ -328,9 +346,6 @@ let filter ;
     }
    const cartdata = filter;
       const filteredProducts = wishlistdata.product.filter(product => product.productId.is_Listed);
-
-
-
       res.render("user/wishlist",{ wishlistdata,user:req.session.userId,cartdata:{cartdata, product: filteredProducts }, })
     }  else{
       res.redirect('login')
