@@ -75,7 +75,7 @@ console.log("brand",brand);
         req.files[i].filename
       );
       await sharp(req.files[i].path)
-        .resize({ width: 150 }) // Resize the image to a width of 150px
+        .resize({ width: 150 }) 
         .toFile(imagepath);
       filenames.push(req.files[i].filename);
     }
@@ -105,8 +105,9 @@ const loadeditproduct = async (req, res) => {
       res.status(400).send("Invalid productId");
     }
     const productData = await category.find({ is_Listed: 1 });
-    const Datas = await products.findOne({ _id: id });
+    const Datas = await products.findOne({ _id: id }).populate('category');
 
+    console.log(Datas.category.name,"product dat")
     if (!Datas) {
       res.status(404).send("Product not found");
     }

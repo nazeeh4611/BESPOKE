@@ -466,12 +466,6 @@
       </nav>
     </div>
     <h2>SALES REPORT</h2>
-    <div>
-      <p><span class="fw-bold ">total sales count:</span><%=overallData[0].totalSalesCount%></p>
-      <p><span class="fw-bold">Total Sales Amount:</span> ₹<%= overallData[0].totalOrderAmount %></p>  
-          <p><span class="fw-bold ">total discount amount:</span>₹<%= overallData[0].totalDiscount %></p>
-
-  </div>
     <div class="row">
       <div class="dropdown">
         <button type="button" class="btn btn-primary dropdown-toggle" id="downloadDropdown" data-toggle="dropdown">DOWNLOAD</button>
@@ -497,6 +491,18 @@
       
         <% if(orderData && orderData.length > 0) { %>
           <div id="printThisDiv">
+            <br>
+            <div>
+              <table>
+                <th style="color: white;"> 
+                  <p><span class="fw-bold ">total sales count:</span><%=overallData[0].totalSalesCount%></p>
+                  <p><span class="fw-bold">Total Sales Amount:</span> ₹<%= overallData[0].totalOrderAmount %></p>  
+                      <p><span class="fw-bold ">total discount amount:</span>₹<%= overallData[0].totalDiscount %></p>
+                </th>
+              </table>
+              
+        
+          </div>
             <table id="datatable">
               <thead>
                 <tr>
@@ -573,6 +579,22 @@
       </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
+  function generateFileName(baseName) {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      // Create a timestamp string in the format "YYYYMMDD_HHMMSS"
+      const timestamp = `${year}${month}${day}_${hours}${minutes}${seconds}`;
+      
+      // Return the base name with the timestamp appended
+      return `${baseName}_${timestamp}`;
+  }
+
   function downloadPDF(divName) {
       const printContents = document.getElementById(divName).innerHTML;
       const originalContents = document.body.innerHTML;
@@ -585,7 +607,7 @@
       const table = document.getElementById(divName);
       const rows = table.getElementsByTagName('tr');
       let csvContent = "data:text/csv;charset=utf-8,";
-
+      
       for (const row of rows) {
           const cells = row.getElementsByTagName('td');
           const cellValues = [];
@@ -598,13 +620,17 @@
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'data.csv');
-      document.body.appendChild(link);
 
+      // Set the file name with the timestamp
+      const fileName = generateFileName('BESPOKE_ADMIN');
+      link.setAttribute('download', `${fileName}.csv`);
+      
+      document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
   }
 </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>

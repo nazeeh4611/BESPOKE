@@ -65,7 +65,7 @@ const OrderPlace = async (req, res) => {
         const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
         const products = cartdata.product;
         const orderStatus = paymentMethod=== "CASH ON DELIVERY" ||paymentMethod === "WALLET" ? "placed" : "pending";
-
+         console.log("status",orderStatus)
          
         const NewOrder = new Order({
             deliveryDetails:addressObject,
@@ -127,7 +127,7 @@ const OrderPlace = async (req, res) => {
                     wallethistory: {
                         description: 'Amount debited for paying the order',
                         amount: -subtotal,
-                        Date: new Date() // Assuming this is a debit
+                        Date: new Date() 
                     }
                 }
             }, { new: true });
@@ -172,10 +172,20 @@ const verifypayment = async(req,res)=>{
   }
 
   const NewOrder = await Order.findByIdAndUpdate(
-    {_id:Data.orders.receipt},
-    {$set:{status:'placed'}},
-  )
+    { _id: Data.orders.receipt },
+    {
+        $set: {
+            status: 'placed',
+            'product.$[].status': 'placed'
+        }
+    },
+    {
+        new: true 
+    }
+);
 
+console.log(NewOrder);
+  
 
   const cartdata = await Cart.findOne({user:userId})
   const orderId = await NewOrder._id;
@@ -186,6 +196,7 @@ const verifypayment = async(req,res)=>{
         { $inc: { quantity: -cartProduct.quantity } }
     );
 }
+
   res.json({orderId,success:true});
     } catch (error) {
         
@@ -354,18 +365,47 @@ const ordercancel = async(req,res)=>{
        const userId = req.session.userId;
        const orderId = req.body.orderId;
        const productId = req.body.productId;
-
-       console.log(userId,orderId,productId)
+       const prdtid = req.body.prdtid;
+       console.log(userId,orderId,productId,prdtid)
        const order = await Order.findById({_id:orderId});
        const productIndex = order.product.findIndex(item => item._id.toString() === productId);
-       console.log(productIndex,"productIndex")
       let data =  order.product[productIndex].status = 'cancelled';
+      let qnty = order.product[productIndex].quantity;
+      console.log(qnty,"quantiyt")
+      console.log(data,"data")
+      console.log(order.paymentMethod)
   console.log(data)
   if(data){
-    order.product[productIndex].status = 'cancelled';
-    await order.save(); // Save the updated order
+
+   const product = await Product.findByIdAndUpdate(
+    {_id:prdtid},
+    {$inc:{quantity:qnty}},
+    {new:true},
+    )
+       
+    console.log(product,"product")
+
+    if(order.paymentMethod == "RAZORPAY"){
+        await order.save();
+        res.json({success:true})
+        const userUpdateResult = await User.findByIdAndUpdate(
+            userId,
+            {
+                $inc: { wallet: order.product[productIndex].price },
+                $push: {
+                    wallethistory: {
+                        description: 'Amount Credited cancel Order',
+                        amount: order.product[productIndex].price,
+                        Date: new Date()
+                    }
+                }
+            },
+            { new: true } 
+        );
+    }else{
+    await order.save();
     res.json({success:true})
-   
+    }
   }else{
     res.json({
         success:false,
@@ -414,7 +454,7 @@ const returnOrder = async (req, res) => {
             console.log(order.product[productIndex].status,"status here after");
 
             order.product[productIndex].reason = reason;
-              console.log("ethitt", order.product[productIndex].reason);
+             
             await order.save(); 
 
             return res.json({ return:true });

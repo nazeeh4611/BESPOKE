@@ -23,14 +23,12 @@ const loadHome = async (req, res) => {
       model: "Product",
     });
 
-    // const filteredProducts = cartdata.product.filter(product => product.productId.is_Listed);
 
 
     const subtotal = cartdata?.product.reduce((acc, val) => acc + val.total, 0);
 
    
 
-    // res.render("user/home", { userIn, user: req.session.userId, cartdata: {cartdata, product: filteredProducts } });
     res.render("user/home", { userIn, user: req.session.userId, cartdata });
   } catch (error) {
     console.log(error.message);
@@ -553,7 +551,6 @@ const searchProducts = async (req, res) => {
         is_Listed: true
       }).populate("category");
 
-      // Fetch all categories
       const categories = await Category.find({});
 
       return res.render("user/shop", { products, categories, user: req.session.userId });

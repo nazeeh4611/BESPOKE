@@ -389,7 +389,6 @@ const orderstatus = async (req, res) => {
         const returnedAmount = product.price * product.quantity-product.coupondiscount;
         user.wallet += returnedAmount;
 
-        // Update wallet history
         user.wallethistory.push({
           amount: returnedAmount,
           description: 'Amount credited for returned product',

@@ -384,31 +384,31 @@
 
     <script>
   function validateForm(event) {
-    // Prevent form submission to handle validation
+   
     event.preventDefault();
 
     let isValid = true;
 
-    // Clear previous error messages
+   
     document.querySelectorAll('.text-danger').forEach(function(errorDiv) {
         errorDiv.innerText = '';
     });
 
-    // Validate Coupon Name
+   
     const couponNameInput = document.querySelector('[name="CouponName"]');
     if (!couponNameInput.value.trim()) {
         isValid = false;
         document.querySelector('#CoupenNameError').innerText = 'Coupon Name is required';
     }
 
-    // Validate Coupon Code
+   
     const couponCodeInput = document.querySelector('[name="CouponCode"]');
     if (!couponCodeInput.value.trim()) {
         isValid = false;
         document.querySelector('#CoupenCodeError').innerText = 'Coupon Code is required';
     }
 
-    // Validate Discount
+   
     const discountInput = document.querySelector('[name="Discount"]');
     const discount = parseFloat(discountInput.value);
     if (isNaN(discount) || discount < 0 || discount > 100) {
@@ -416,7 +416,7 @@
         document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 100';
     }
 
-    // Validate Criteria Amount
+   
     const criteriaInput = document.querySelector('[name="Criteria"]');
     const criteria = parseFloat(criteriaInput.value);
     if (isNaN(criteria) || criteria <= 0) {
@@ -424,30 +424,30 @@
         document.querySelector('#CriteriaError').innerText = 'Criteria must be a positive number';
     }
 
-    // Validate that Criteria is greater than Discount
+   
     if (criteria <= discount) {
         isValid = false;
         document.querySelector('#CriteriaError').innerText = 'Criteria must be greater than Discount';
     }
 
-    // Validate Expire Date
+   
     const expireDateInput = document.querySelector('[name="ExpireDate"]');
     const expireDate = new Date(expireDateInput.value);
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Normalize current date to the start of the day
+    currentDate.setHours(0, 0, 0, 0);
 
     if (!expireDateInput.value.trim() || expireDate <= currentDate) {
         isValid = false;
         document.querySelector('#ExpireDateError').innerText = 'Expire Date must be a future date';
     }
 
-    // Submit the form if validation passes
+  
     if (isValid) {
         document.forms['couponForm'].submit();
     }
 }
 
-// Attach the function to the form's submit event
+
 document.querySelector('form[name="couponForm"]').addEventListener('submit', validateForm);
 
       </script>

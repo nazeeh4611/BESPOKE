@@ -104,7 +104,7 @@
                           <% userid.wallethistory.forEach((wallet,index)=>{ %>
                               <tr>
                                   <td><%= index+1 %></td>
-                                  <td id="amount" style="color: <%= (wallet.description === 'Amount credited for returned product' || wallet.description === 'Amount credited for referel') ? 'green' : 'red' %>;"><%= wallet.amount.toFixed(2) %></td>
+                                  <td id="amount" style="color: <%= (wallet.description === 'Amount credited for returned product' || wallet.description === 'Amount credited for referel' ||  wallet.description === 'Amount Credited cancel Order') ? 'green' : 'red' %>;"><%= wallet.amount.toFixed(2) %></td>
                                   <td id="description"><%= wallet.description %></td>
                                   <td><%= wallet.Date ? wallet.Date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A' %></td>
                               </tr>

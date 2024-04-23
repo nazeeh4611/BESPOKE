@@ -447,20 +447,18 @@
             </div>
             <input type="hidden" name="productId" id="ProductId" value="<%=Datas._id %>">
 
-              <% productData.forEach(category => { %>
-                  <option value="<%= category.name %>">
-                      <%= category.name %>
-                  </option>
-              <% }); %>
+            
           
             <div class="form-group">
               <label for="exampleInputCity1">Category</label>
               <select class="form-control" name="categories" id="exampleInputCity1">
-                <option value="">Select Category</option>
+                <option selected disabled value=""><%= Datas.category.name %></option>
                <% for(let i = 0 ; i< productData.length ; i++) { %>
+                
                   <option value="<%= productData[i].name %>">
                     <%= productData[i].name %>
                   </option>
+                
             <% } %>
               </select>
             </div>

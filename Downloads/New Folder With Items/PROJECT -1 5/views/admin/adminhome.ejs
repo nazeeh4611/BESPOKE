@@ -396,7 +396,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹<%= totalValue %></h3>
+                        <!-- <h3 class="mb-0">₹<%= totalValue %></h3> -->
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -476,7 +476,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹12.34</h3>
+                        <h3 class="mb-0"><%= dailysales %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -486,7 +486,7 @@
                       </div>
                     </div>
                   </div>
-                  <h6 class="text-muted font-weight-normal">Daily Earning</h6>
+                  <h6 class="text-muted font-weight-normal">Daily Sales</h6>
                 </div>
               </div>
             </div>
@@ -496,7 +496,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹<%= weeklyEarnings %></h3>
+                        <h3 class="mb-0">₹<%= weeklyEarnings.toFixed(2) %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -536,7 +536,7 @@
                   <div class="row">
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
-                        <h3 class="mb-0">₹<%= yearlyEarnings %></h3>
+                        <h3 class="mb-0">₹<%= yearlyEarnings.toFixed(2) %></h3>
                         <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                       </div>
                     </div>
@@ -563,17 +563,17 @@
                 var categoryCounts = [];
         
                 <% topSellingCategory.forEach(category => { %>
-                    categoryLabels.push('<%= category.category %>'); // Push category name to labels array
-                    categoryCounts.push(<%= category.count %>); // Push category count to data array
+                    categoryLabels.push('<%= category.category %>');
+                    categoryCounts.push(<%= category.count %>);
                 <% }) %>
         
                 var data = {
-                    labels: categoryLabels, // Use category names as labels
+                    labels: categoryLabels, 
                     datasets: [{
                         label: 'Category Sales',
-                        data: categoryCounts, // Use category counts as data
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)', // Blue color for category sales
-                        borderColor: 'rgba(54, 162, 235, 1)', // Blue color for category sales
+                        data: categoryCounts, 
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)', 
+                        borderColor: 'rgba(54, 162, 235, 1)', 
                         borderWidth: 1
                     }]
                 };

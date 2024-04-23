@@ -382,19 +382,19 @@
       function validateForm(event) {
           let isValid = true;
   
-          // Clear previous error messages
+        
           document.querySelectorAll('.text-danger').forEach(function(errorDiv) {
               errorDiv.innerText = '';
           });
   
-          // Validate Offer Name
+         
           const offerNameInput = document.querySelector('#exampleInputName1');
           if (!offerNameInput.value.trim()) {
               isValid = false;
               document.querySelector('#offerError').innerText = 'Offer Name is required';
           }
   
-          // Validate Discount
+         
           const discountInput = document.querySelector('#Discount');
           const discount = parseFloat(discountInput.value);
           if (isNaN(discount) || discount < 0 || discount > 100) {
@@ -402,21 +402,21 @@
               document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 100';
           }
   
-          // Validate Starting Date
+         
           const startingDateInput = document.querySelector('#startingDate');
           if (!startingDateInput.value.trim()) {
               isValid = false;
               document.querySelector('#startingDateError').innerText = 'Starting Date is required';
           }
   
-          // Validate Expire Date
+          
           const endingDateInput = document.querySelector('#endingDate');
           if (!endingDateInput.value.trim()) {
               isValid = false;
               document.querySelector('#endingDateError').innerText = 'Expire Date is required';
           }
   
-          // Check that starting date is before expire date
+         
           const startingDate = new Date(startingDateInput.value);
           const endingDate = new Date(endingDateInput.value);
           if (startingDate >= endingDate) {
@@ -424,7 +424,7 @@
               document.querySelector('#endingDateError').innerText = 'Expire Date must be later than Starting Date';
           }
   
-          // Prevent form submission if validation fails
+        
           if (!isValid) {
               event.preventDefault();
           }
@@ -432,7 +432,7 @@
           return isValid;
       }
   
-      // Attach the function to the form submission event
+    
       document.querySelector('.forms-sample').addEventListener('submit', validateForm);
   </script>
 
