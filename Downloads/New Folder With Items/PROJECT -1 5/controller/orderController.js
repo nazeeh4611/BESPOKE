@@ -371,8 +371,6 @@ const ordercancel = async(req,res)=>{
        const productIndex = order.product.findIndex(item => item._id.toString() === productId);
       let data =  order.product[productIndex].status = 'cancelled';
       let qnty = order.product[productIndex].quantity;
-      console.log(qnty,"quantiyt")
-      console.log(data,"data")
       console.log(order.paymentMethod)
   console.log(data)
   if(data){
@@ -383,7 +381,6 @@ const ordercancel = async(req,res)=>{
     {new:true},
     )
        
-    console.log(product,"product")
 
     if(order.paymentMethod == "RAZORPAY"){
         await order.save();

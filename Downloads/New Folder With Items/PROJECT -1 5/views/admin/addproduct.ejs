@@ -337,106 +337,170 @@
       <!-- partial -->
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Product Form</h4>
-                <p class="card-description">Basic form elements</p>
-                <form class="forms-sample" method="post" enctype="multipart/form-data" name="productForm" onsubmit="validateForm(event)">
-                  <!-- Brand -->
-                    <div class="form-group">
-                        <label for="exampleInputName1">Brand</label>
-                        <input type="text" class="form-control" name="brand" id="exampleInputName1" placeholder="BRAND NAME">
-                        <div id="branderror" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Product Name -->
-                    <div class="form-group">
-                        <label for="exampleInputName1">Product Name</label>
-                        <input type="text" class="form-control" name="productName" id="exampleInputName1" placeholder="Product Name">
-                        <div id="productError" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Description -->
-                    <div class="form-group">
-                        <label for="exampleInputEmail3">Description</label>
-                        <input type="text" class="form-control" name="description" id="exampleInputEmail3" placeholder="Description">
-                        <div id="productDescriptionError" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Quantity -->
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" class="form-control" name="quantity" id="product_qty" placeholder="Quantity">
-                        <div id="quantityError" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Price -->
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" name="price" id="product_price" placeholder="Price">
-                        <div id="priceError" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Category -->
-                    <div class="form-group">
-                        <label for="exampleInputCity1">Category</label>
-                        <select class="form-control" name="categories" id="exampleInputCity1">
-                            <option value="">Select Category</option>
-                            <% productData.forEach(category => { %>
-                                <option value="<%= category.name %>">
-                                    <%= category.name %>
-                                </option>
-                            <% }) %>
-                        </select>
-                        <div id="CategoryError" class="text-danger"></div>
-                    </div>
-    
-                    <!-- Image Upload -->
-                    <div class="container">
-                      <table class="image-table">
-                          <tr>
-                              <% for (let i = 1; i <= 4; i++) { %>
-                              <td>
+          <div class="card-body">
+            <h4 class="card-title"></h4>
+            <p class="card-description"> Basic form elements </p>
+            <form class="forms-sample" method="post" enctype="multipart/form-data" name="productForm" onsubmit="return validateForm()">   
+              <div class="form-group">
+                <label for="exampleInputName1">Brand</label>
+                <input type="text" class="form-control" name="brand" id="brandName" placeholder="BRAND NAME">
+                <div id="branderror" class="text-danger"></div>
+              </div>           
+              <div class="form-group">
+                <label for="exampleInputName1">Product Name</label>
+                <input type="text" class="form-control" name="productName" id="productName" placeholder="Product Name">
+                <div id="productError" class="text-danger"></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail3">Description</label>
+                <input type="text" class="form-control" name="description" id="productDescription"
+                  placeholder="Description">
+                <div id="productDescriptionError" class="text-danger"></div>
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" name="quantity" id="productQuantity" placeholder="Quantity">
+                <div id="quantityError" class="text-danger"></div>
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" name="price" id="productPrice" placeholder="Price">
+                <div id="priceError" class="text-danger"></div>
+              </div>
+
+
+
+       
+                    <div class="container ">
+                        <table class="image-table">
+                            <tr>
+                                <td>
+                                  
+                                   
+                                    <div class="card text-center mb-3" style="width: 18rem;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Image One</h5>
+                                          <div class="close-icon" onclick="deleteImage('image1', 'preview1');">&times;
+                                        </div>
+                                        <label for="image1" class="form-label " >
+                                            <img id="preview1" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
+                                        </label>
+                                        <input type="file" class="form-control" id="image1" name="productImage"
+                                            style="display: none;">
+                                            <button type="button" class="btn btn-success" onclick="document.getElementById('image1').click();">Upload Image</button>  
+                                        </div>
+                                      </div>
+                                      
+
+                                </td>
+                                
+                                <td>
+                                   
+                                    
+                                    <div class="card text-center mb-3" style="width: 18rem;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Image Two</h5>
+                                          <div class="close-icon" onclick="deleteImage('image2', 'preview2');">&times;
+                                        </div>
+                                        <label for="image2" class="form-label">
+                                            <img id="preview2" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
+                                        </label>
+                                        <input type="file" class="form-control" id="image2" name="productImage"
+                                            style="display: none;">
+                                            <button type="button" class="btn btn-success" onclick="document.getElementById('image2').click();">Upload Image</button>  
+                                        </div>
+                                      </div>
+                                </td>
+                                <td>
+                                   
+                                    <div class="card text-center mb-3" style="width: 18rem;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Image Three</h5>
+                                          <div class="close-icon" onclick="deleteImage('image3', 'preview3');">&times;
+                                        </div>
+                                        <label for="image3" class="form-label " >
+                                            <img id="preview3" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
+                                        </label>
+                                        <input type="file" class="form-control" id="image3" name="productImage"
+                                            style="display: none;">
+                                            <button type="button" class="btn btn-success" onclick="document.getElementById('image3').click();">Upload Image</button>  
+                                        </div>
+                                      </div>
+                                </td>
+                                <td>
                                   <div class="card text-center mb-3" style="width: 18rem;">
                                       <div class="card-body">
-                                          <h5 class="card-title">Image <%= i %></h5>
-                                          <div class="close-icon" onclick="deleteImage('image<%= i %>', 'preview<%= i %>');">&times;</div>
-                                          <label for="image<%= i %>" class="form-label">
-                                              <img id="preview<%= i %>" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
+                                          <h5 class="card-title">Image Four</h5>
+                                          <div class="close-icon" onclick="deleteImage('image4', 'preview4');">&times;</div>
+                                          <label for="image4" class="form-label">
+                                              <img id="preview4" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
                                           </label>
-                                          <input type="file" class="form-control" id="image<%= i %>" name="productImage<%= i %>" style="display: none;">
-                                          <button type="button" class="btn btn-success" onclick="document.getElementById('image<%= i %>').click();">Upload Image</button>
-                                          <!-- Error message for each image input -->
-                                          <div id="imageError<%= i %>" class="text-danger"></div>
+                                          <input type="file" class="form-control" id="image4" name="productImage" style="display: none;">
+                                          <button type="button" class="btn btn-success" onclick="document.getElementById('image4').click();">Upload Image</button>
                                       </div>
                                   </div>
                               </td>
-                              <% } %>
-                          </tr>
-                      </table>
-                  </div>
-                  
-    
-                    <!-- Form Buttons -->
-                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                    <button class="btn btn-dark">
-                        <a href="/admin/products">Cancel</a>
-                    </button>
-                    <% if (typeof messages !== 'undefined' && messages.message) { %>
-                        <h5 style="color: red;">
-                            <%= messages.message %>
-                        </h5>
-                    <% } %>
-                </form>
-            </div>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body p-0 m-0">
+                                  <img id="imageToCrop" src="" alt="Crop this image"
+                                      style="width: 400px; height: 400px;">
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary"
+                                      data-bs-dismiss="modal">Cancel</button>
+                                  <button type="button" class="btn btn-primary"
+                                      id="cropImageBtn">Crop</button>
+                              </div>
+                          </div>
+                      </div>
+                      </div>
+            
+            
+            
+            
+            
+            
+              <div class="form-group">
+                <label for="exampleInputCity1">Category</label>
+                <select class="form-control" name="categories" id="exampleInputCity1">
+                  <option value="">Select Category</option>
+                  <% productData.forEach(productData=> { %>
+                    <option value="<%= productData.name %>" id="productCategory">
+                      <%= productData.name %>
+                    </option>
+                    <div id="CategoryError" class="text-danger"></div>
+                    <% }) %>
+                </select>
+                <div id="CategoryError" class="text-danger"></div>
+              </div>
+              <button type="submit" class="btn btn-primary mr-2" id="submitBtn">Submit</button>
+              <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
+              <% if (typeof messages !== 'undefined' && messages.message) { %>
+                <h5 style="color: red;">
+                  <%= messages.message %>
+                </h5>
+              <% } %>
+            </form>
+             </div>
         </div>
-    </div>
+      </div>
     
-    
     </div>
 
 
 
 
+<!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 <script src="/public/cropperjs/cropper.js"></script>
 <script>
   let currentInputId, currentPreviewId, cropper;
@@ -562,102 +626,187 @@ function deleteImage(inputId, previewId) {
           })(files[i]);
       }
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+// const form = document.querySelector('form')
+const submitBtn=document.getElementById('submitBtn')
+submitBtn.addEventListener('click', function (e) {
+    e.preventDefault()
+    console.log("helloooo");
+    const productName = document.getElementById('productName').value
+    const category = document.getElementById('productCategory').value
+    const price = document.getElementById('productPrice').value
+    const description = document.getElementById('productDescription').value
+    const quantity = document.getElementById('productQuantity').value
+    const brand=document.getElementById('brandName').value
+    const image1 = document.getElementById('image1').files[0]
+    const image2 = document.getElementById('image2').files[0]
+    const image3 = document.getElementById('image3').files[0]
+    const image4 = document.getElementById('image4').files[0]
+    console.log("image 1",image1);
+
+    const formData = new FormData();
+    formData.append('productName', productName)
+    formData.append('productCategory', category)
+    formData.append('productPrice', price)
+    formData.append('productDescription', description)
+    formData.append('productQuantity', quantity)
+    formData.append('brandName',brand)
+    Object.keys(croppedImages).forEach(key => {
+        const originalFileName = originalFileNames[key];
+        formData.append(`productImage`, croppedImages[key],originalFileName);
+    });
+
+    console.log(formData);
+    console.log("hello .....,...>>>>>>");
+    fetch('/admin/addproduct', {
+  method: 'POST',
+  body: formData,
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data === true) {
+      window.location.href = '/admin/products';
+    } else {
+      // Handle case where response data is not true
+      Swal.fire({
+        icon: 'error',
+        title: 'Existing Name Cannot Be Added',
+        text: '',
+        footer: ''
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'An error occurred',
+      text: error.message,
+      footer: ''
+    });
+  });
+
+
+
+})
+})
 </script>
 
+    <script>
+      function validateForm() {
+        // Reset error messages
+        document.getElementById("branderror").innerHTML = "";
+        document.getElementById("productError").innerHTML = "";
+        document.getElementById("productDescriptionError").innerHTML = "";
+        document.getElementById("quantityError").innerHTML = "";
+        document.getElementById("priceError").innerHTML = "";
+        document.getElementById("ImageError").innerHTML = "";
+        document.getElementById("CategoryError").innerHTML = "";
+    
+        // Get form inputs
+        var brandname = document.forms["productForm"]["brand"].value.trim();
+        var productName = document.forms["productForm"]["productName"].value.trim();
+        var description = document.forms["productForm"]["description"].value.trim();
+        var quantity = document.forms["productForm"]["quantity"].value.trim();
+        var price = document.forms["productForm"]["price"].value.trim();
+        var image = document.forms["productForm"]["image"].value.trim();
+        var category = document.forms["productForm"]["categories"].value.trim();
+    
+        // Flag to track if there are any errors
+        var hasError = false;
+    
 
+      // vaidate brand name
+       if(brandname === ""){
+        document.getElementById("branderror").innerHTML = "Brand name required";
+        hasError = true;
+       }
+        // Validate product name
+        if (productName === "") {
+          document.getElementById("productError").innerHTML = "Product name is required";
+          hasError = true;
+        }
+    
+        // Validate description
+        if (description === "") {
+          document.getElementById("productDescriptionError").innerHTML = "Description is required";
+          hasError = true;
+        }
+    
+        // Validate quantity
+        if (quantity === "") {
+          document.getElementById("quantityError").innerHTML = "Quantity is required";
+          hasError = true;
+        } else if (isNaN(quantity)) {
+          document.getElementById("quantityError").innerHTML = "Quantity must be a  number";
+          hasError = true;
+        }
+    
+        // Validate price
+        if (price === "") {
+          document.getElementById("priceError").innerHTML = "Price is required";
+          hasError = true;
+        } else if (isNaN(price) || price <= 0) {
+          document.getElementById("priceError").innerHTML = "Price must be a positive number";
+          hasError = true;
+        }
+    
+        // Validate image
+        if (image === "") {
+          document.getElementById("ImageError").innerHTML = "Image is required";
+          hasError = true;
+        }
+    
+        // Validate category
+        if (category === "") {
+          document.getElementById("CategoryError").innerHTML = "Select Category";
+          hasError = true;
+        }
+    
+        // If there are errors, prevent form submission
+        if (hasError) {
+          return false;
+        }
+        return true;
+      }
+
+    </script>
 
 
 
       
-<script>
-  function validateForm(event) {
-    event.preventDefault(); 
 
-    let formIsValid = true;
+            <!-- <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const fileInput = document.getElementById('productImage');
+              const imagePreviewContainer = document.getElementById('imagePreview');
 
-   
-    const brand = document.forms["productForm"]["brand"].value;
-    const productName = document.forms["productForm"]["productName"].value;
-    const description = document.forms["productForm"]["description"].value;
-    const quantity = document.forms["productForm"]["quantity"].value;
-    const price = document.forms["productForm"]["price"].value;
-    const category = document.forms["productForm"]["categories"].value;
-    
-    // Get error message elements
-    const brandError = document.getElementById("branderror");
-    const productError = document.getElementById("productError");
-    const descriptionError = document.getElementById("productDescriptionError");
-    const quantityError = document.getElementById("quantityError");
-    const priceError = document.getElementById("priceError");
-    const categoryError = document.getElementById("CategoryError");
+              fileInput.addEventListener('change', function () {
+                  imagePreviewContainer.innerHTML = "";
 
-    // Validate Brand
-    if (brand.trim() === "") {
-        brandError.textContent = "Brand is required";
-        formIsValid = false;
-    } else {
-        brandError.textContent = "";
-    }
+                  for (const file of fileInput.files) {
+                      const img = document.createElement('img');
+                      img.src = URL.createObjectURL(file);
+                      img.className = "img-sm img-thumbnail mr-2";
+                      img.alt = "preview";
+                      img.style.width = '80px';
+                      img.style.height = '80px'; 
+                      img.style.objectFit = 'cover'; 
+                      imagePreviewContainer.appendChild(img);
+                  }
+              });
+          });
 
-    // Validate Product Name
-    if (productName.trim() === "") {
-        productError.textContent = "Product Name is required";
-        formIsValid = false;
-    } else {
-        productError.textContent = "";
-    }
 
-    // Validate Description
-    if (description.trim() === "") {
-        descriptionError.textContent = "Description is required";
-        formIsValid = false;
-    } else {
-        descriptionError.textContent = "";
-    }
+        </script> -->
 
-    // Validate Quantity
-    if (quantity <= 0) {
-        quantityError.textContent = "Quantity must be greater than zero";
-        formIsValid = false;
-    } else {
-        quantityError.textContent = "";
-    }
-
-    // Validate Price
-    if (price <= 0) {
-        priceError.textContent = "Price must be greater than zero";
-        formIsValid = false;
-    } else {
-        priceError.textContent = "";
-    }
-
-    // Validate Category
-    if (category === "") {
-        categoryError.textContent = "Please select a category";
-        formIsValid = false;
-    } else {
-        categoryError.textContent = "";
-    }
-
-    // Validate Image Upload
-    let imageUploaded = false;
-    for (let i = 1; i <= 4; i++) {
-        const imageInput = document.getElementById(`image${i}`);
-        const imageError = document.getElementById(`imageError${i}`);
-        if (imageInput && imageInput.files.length > 0) {
-            imageUploaded = true;
-            imageError.textContent = "";
-        } else {
-            imageError.textContent = "Please upload an image";
-            formIsValid = false;
-        }
-    }
-    if (formIsValid) {
-        document.forms["productForm"].submit();
-    }
-}
-
-</script>
     <script src="/admin/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

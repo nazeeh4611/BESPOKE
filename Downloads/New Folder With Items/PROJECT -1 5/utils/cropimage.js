@@ -5,7 +5,7 @@ const uploadCroppedImage = async (req, res) => {
     try {
         // Access the uploaded file
         const file = req.file;
-
+          console.log("crop function",file)
         // Check if a file was uploaded
         if (!file) {
             return res.status(400).json({ error: 'No file uploaded' });

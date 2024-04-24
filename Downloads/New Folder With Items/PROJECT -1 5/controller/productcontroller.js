@@ -46,52 +46,65 @@ const loadAddProduct = async (req, res) => {
 // adding product
 
 const addProduct = async (req, res) => {
-
   try {
-    
-    
-    const productDatas = await products.findOne({name:req.body.productName });
-    const Datas = await category.find({ is_Listed: 1 });
-    if (productDatas) {
-      return res.render("admin/addproduct", { productData: Datas, messages: { message: "Productname already existed" } });
-    }
-   
-    const { productName, description, quantity, categories, price,brand } = req.body;
-console.log("brand",brand);
-    const filenames = [];
-    const existcategory = await category.findOne({ name: categories });
-   
+      // Extract form data
+      console.log('req.body:', req.body);
+console.log('req.files:', req.files);
+      const {productName,brandName,productDescription,productQuantity,productPrice,productCategory } = req.body;
+       console,log(productName,brandName,productDescription,productQuantity,productPrice,productCategory)
+       const productImage=req.files.filename
+       const imageFiles = req.files.map(file => file.filename);
+       console.log('Image File Names:', imageFiles);
+       const formdata = req.body.formdata;
+       console.log(formdata);
+      // Check if the product name already exists
+      const existingProduct = await products.findOne({ name: productName });
+      if (existingProduct) {
+          // Render error if product name already exists
+          return res.render("admin/addproduct", {
+              productData: await category.find({ is_Listed: 1 }),
+              messages: { message: "Product name already exists" }
+          });
+      }
 
-    if (!req.files || req.files.length !== 4) {
-      return res.render("admin/addproduct", {
-        message: "you need four photos",
-        productData: Datas,
+      // Handle file uploads
+      const files = req.files || [];
+      if (files.length !== 4) {
+          return res.render("admin/addproduct", {
+              productData: await category.find({ is_Listed: 1 }),
+              messages: { message: "You need to upload exactly four images" }
+          });
+      }
+
+      // Process image files and collect filenames
+      const filenames = files.map(file => file.filename);
+
+      // Find category
+      const existingCategory = await category.findOne({ name: productCategory });
+      if (!existingCategory) {
+          return res.render("admin/addproduct", {
+              productData: await category.find({ is_Listed: 1 }),
+              messages: { message: "Invalid category" }
+          });
+      }
+
+      // Create a new product
+      const newProduct = new products({
+          name: productName,
+          description:productDescription,
+          quantity:productQuantity,
+          price:productPrice,
+          brand:brandName,
+          Image: imageFiles,
+          category: existingCategory._id,
+          date: new Date(),
       });
-    }
-    for (let i = 0; i < req.files.length; i++) {
-      const imagepath = path.join(
-        __dirname,
-        "../public/productImage",
-        req.files[i].filename
-      );
-      await sharp(req.files[i].path)
-        .resize({ width: 150 }) 
-        .toFile(imagepath);
-      filenames.push(req.files[i].filename);
-    }
-    const newproduct = new products({
-      name: productName,
-      description,
-      quantity,
-      price,
-      Image: filenames,
-      category: existcategory._id,
-      date: new Date(),
-      brand:brand,
-    });
 
-    await newproduct.save();
-    res.redirect("/admin/products");
+      // Save the new product to the database
+      await newProduct.save();
+     let data = true
+     res.json(data)
+  
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Internal Server Error");
@@ -106,7 +119,7 @@ const loadeditproduct = async (req, res) => {
     }
     const productData = await category.find({ is_Listed: 1 });
     const Datas = await products.findOne({ _id: id }).populate('category');
-
+    console.log(Datas)
     console.log(Datas.category.name,"product dat")
     if (!Datas) {
       res.status(404).send("Product not found");
@@ -143,7 +156,7 @@ const editProduct = async (req, res) => {
         for (let i = 0; i < req.files.length; i++) {
           const resizedpath = path.join(
             __dirname,
-            "../public/productImage",
+            "../public/uploadImg",
             req.files[i].filename
           );
           await sharp(req.files[i].path)
