@@ -346,33 +346,33 @@
             <form class="forms-sample" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
               <div class="form-group">
                 <label for="exampleInputName1">Brand</label>
-                <input type="hidden" class="form-control" name="id" value="<%=Datas.id %>">
-                <input type="text" class="form-control" name="brand" id="brand"
+                <input type="hidden" class="form-control" name="ProductId" value="<%=Datas.id %>">
+                <input type="text" class="form-control" name="brand" id="productBrand"
                   placeholder="Brand Name" value="<%= Datas.brand %>">
                 <div id="brandError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="exampleInputName1">Product Name</label>
                 <input type="hidden" class="form-control" name="id" value="<%=Datas.id %>">
-                <input type="text" class="form-control" name="productName" id="exampleInputName1"
+                <input type="text" class="form-control" name="ProductName" id="exampleInputName1"
                   placeholder="Product Name" value="<%= Datas.name %>">
                 <div id="productError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="exampleInputEmail3">Description</label>
-                <input type="text" class="form-control" name="description" id="exampleInputEmail3"
+                <input type="text" class="form-control" name="description" id="ProductDescription"
                   placeholder="Description" value="<%= Datas.description %>">
                 <div id="productDescriptionError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="quantity">Quantity</label>
-                <input type="number" class="form-control" name="quantity" id="product_qty" placeholder="Quantity"
+                <input type="number" class="form-control" name="quantity" id="ProductQuantity" placeholder="Quantity"
                   value="<%= Datas.quantity %>">
                 <div id="quantityError" class="text-danger"></div>
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" name="price" id="product_price" placeholder="Price"
+                <input type="number" class="form-control" name="price" id="ProductPrice" placeholder="Price"
                   value="<%= Datas.price %>">
                 <div id="priceError" class="text-danger"></div>
               </div>
@@ -451,18 +451,18 @@
           
             <div class="form-group">
               <label for="exampleInputCity1">Category</label>
-              <select class="form-control" name="categories" id="exampleInputCity1">
+              <select class="form-control" name="Category" id="exampleInputCity1">
                 <option selected disabled value=""><%= Datas.category.name %></option>
                <% for(let i = 0 ; i< productData.length ; i++) { %>
                 
-                  <option value="<%= productData[i].name %>">
+                  <option value="<%= productData[i].name %>" id="ProductCategory">
                     <%= productData[i].name %>
                   </option>
                 
             <% } %>
               </select>
             </div>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <button type="submit" class="btn btn-primary mr-2" id="submitButton">Submit</button>
               <button class="btn btn-dark"><a href="/admin/products">Cancel</a></button>
             </form>
             <% if(typeof message !="undefined" ) { %>
@@ -513,6 +513,58 @@ document.getElementById('image1').addEventListener('change', function () { prepa
 document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'two'); });
 document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'three'); });
 document.getElementById('image4').addEventListener('change', function () { prepareImageForCropping('image4', 'four'); });
+console.log("image 1",document.getElementById('one').src);
+    console.log("image 2",document.getElementById('two').src);
+    console.log("image 3",document.getElementById('three').src);
+    console.log("image 4",document.getElementById('four').src);
+    const url1=document.getElementById('one').src
+    const url2=document.getElementById('two').src
+    const url3=document.getElementById('three').src
+    const url4=document.getElementById('four').src
+    
+
+    const url = "http://localhost:3009/productImage/";
+
+
+    if (url1.startsWith(url)) {
+        const diff = url1.substring(url.length);
+        console.log("Difference1:", diff);
+        if(!diff)
+        {
+            document.getElementById('one').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
+        }
+       
+    } 
+    
+    if (url2.startsWith(url)) {
+        const diff = url2.substring(url.length);
+        console.log("Difference2:", diff);
+        if(!diff)
+        {
+            document.getElementById('two').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
+        }
+       
+    } 
+
+    if (url3.startsWith(url)) {
+        const diff = url3.substring(url.length);
+        console.log("Difference3:", diff);
+        if(!diff)
+        {
+            document.getElementById('three').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
+        }
+       
+    } 
+    if (url3.startsWith(url)) {
+        const diff = url4.substring(url.length);
+        console.log("Difference4:", diff);
+        if(!diff)
+        {
+            document.getElementById('four').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
+        }
+       
+    } 
+
 document.getElementById('cropImageBtn').addEventListener('click', function () {
   console.log("button clicked")
   performCropping();
@@ -666,38 +718,101 @@ function performCropping() {
 
 <script>
     function updateImage(inputId, previewId) {
-    var input = document.getElementById(inputId);
-    var preview = document.getElementById(previewId);
-    
-    if (!input || !preview) {
-        console.error(`Elements with IDs '${inputId}' or '${previewId}' not found.`);
-        return;
-    }
+ console.log("inpu",inputId,"prv",previewId)
+var input = document.getElementById(inputId);
+var preview = document.getElementById(previewId);
+const oldurl = preview.src
+const segments = oldurl.split('/');
+const filename = segments[segments.length - 1];
+console.log(filename);
 
-    const oldUrl = preview.src;
-    console.log(oldUrl,"lll")
-    const segments = oldUrl.split('/');
-    console.log(segments,"segments")
-    const filename = segments[segments.length - 1];
-    console.log(filename,"filenae")
-    console.log(filename);
+oldimageUrl.push(filename)
 
-    oldimageUrl.push(filename);
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          
-            console.log("ivade etthi")
-            preview.src = e.target.result;
-            console.log("ivade etthiyilla")
-        };
-     
-        reader.readAsDataURL(input.files[0]);
-    }
+if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+}
 }
 
- 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Fetch all necessary inputs safely
+        const productId = document.getElementById('ProductId').value;
+        const productName = document.getElementById('exampleInputName1').value;
+        const category = document.getElementById('exampleInputCity1').value;
+        const price = document.getElementById('ProductPrice').value;
+        const productBrand = document.getElementById('productBrand').value;
+        const description = document.getElementById('ProductDescription').value;
+        const quantity = document.getElementById('ProductQuantity').value;
+        const image1 = document.getElementById('image1')?.files[0];
+        const image2 = document.getElementById('image2')?.files[0];
+        const image3 = document.getElementById('image3')?.files[0];
+        const image4 = document.getElementById('image4')?.files[0];
+         console.log(image1,image2,image3,image4)
+        // Check if all required elements are defined
+        if (!productId || !productName || !category || !price || !productBrand || !description || !quantity) {
+            console.error('Some required inputs are missing.');
+            return;
+        }
+
+        // Validate input values and format the form data
+        const formData = new FormData();
+        formData.append('productId', productId);
+        formData.append('productName', productName);
+        formData.append('productCategory', category);
+        formData.append('productPrice', price);
+        formData.append('productDescription', description);
+        formData.append('productQuantity', quantity);
+        formData.append('productBrand', productBrand);
+        formData.append('oldimageUrl', JSON.stringify(oldimageUrl))
+        Object.keys(croppedImages).forEach(key => {
+        const originalFileName = originalFileNames[key];
+        formData.append(`productImage`, croppedImages[key],originalFileName);
+    });
+
+        // Handling old image URL list
+        if (Array.isArray(oldimageUrl) && oldimageUrl.length > 0) {
+            formData.append('oldimageUrl', JSON.stringify(oldimageUrl));
+        }
+
+        // Append new images if they exist
+
+        // console.log("the image ivade kitti",image1,image2,image3,image4)
+        // if (image1) formData.append('productImage', image1, image1.name);
+        // if (image2) formData.append('productImage', image2, image2.name);
+        // if (image3) formData.append('productImage', image3, image3.name);
+        // if (image4) formData.append('productImage', image4, image4.name);
+
+// Make the fetch request to the server to update the product
+fetch('/admin/editproduct', {
+    method: 'POST',
+    body: formData,
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log('Product updated successfully');
+        // Redirect or show success message
+        window.location.href = '/admin/products';
+    } else {
+        console.error('Failed to update the product:', data.message);
+        // Show an error message to the user
+    }
+})
+.catch(error => {
+    console.error('Error updating the product:', error);
+    // Handle error case, possibly show an error message to the user
+});
+});
+});
+  
     </script>
 
 

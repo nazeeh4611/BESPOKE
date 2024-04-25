@@ -15,7 +15,7 @@ const productsModel = new mongoose.Schema({
     ref:"offer",
   }],
   Image: {
-    type: [String],
+    type: Array,
     required: true,
   },
   price: {
