@@ -414,21 +414,29 @@ const loadwishlist = async(req,res)=>{
       const wishlistdata = await wishlist.findOne({ user: userId }).populate({
         path: "product.productId",
         model: "Product",
+        match: { is_Listed: true }  
       });
-   
-    const cartdatas = await Cart.findOne({ user: userId }).populate({
-      path: "product.productId",
-      model: "Product",
-    });
+      
+      const cartdatas = await Cart.findOne({ user: userId }).populate({
+        path: "product.productId",
+        model: "Product",
+        match: { is_Listed: true }  
+      });
 
+
+      console.log(cartdatas,"the wishlist data")
 
 let filter ;
     if(cartdatas){
-     filter = cartdatas.product.filter(product => product.productId.is_Listed);
+     filter = cartdatas
     }
+
    const cartdata = filter;
-      const filteredProducts = wishlistdata.product.filter(product => product.productId.is_Listed);
-      res.render("user/wishlist",{ wishlistdata,user:req.session.userId,cartdata:{cartdata, product: filteredProducts }, })
+   let filteredProducts;
+  
+     filteredProducts = wishlistdata
+
+      res.render("user/wishlist",{ wishlistdata,user:req.session.userId,cartdatas})
     }  else{
       res.redirect('login')
     }
