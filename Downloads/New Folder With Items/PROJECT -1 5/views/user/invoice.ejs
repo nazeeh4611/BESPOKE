@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BESPOKE INVOICE</title>
+</head>
+<link rel="stylesheet" href="/public/css/style.css">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        line-height: 1.5;
+    }
+    .invoice-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ffffff;
+        border-radius: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+    #img {
+        width: 53%;
+        margin-left: 46%;
+        margin-bottom: 40%;
+    }
+    .invoice-details {
+        margin-bottom: 20px;
+    }
+    .services-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .services-table td, .services-table th {
+        padding: 10px;
+        border: 1px solid #000000;
+        text-align: left;
+    }
+    .services-table th {
+        background-color: #ffffff;
+        color: #000000;
+    }
+    .total-amount {
+        font-weight: bold;
+    }
+    .payment-details {
+        margin-top: 20px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+    }
+    #qr {
+        width: 10%;
+        display: block;
+        margin: 0 auto;
+    }
+    .head {
+        background-color: #444;
+    }
+    .invoice-container a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .invoice-container a:hover {
+        text-decoration: underline;
+    }
+    .admin {
+        line-height: 1.5;
+    }
+    .invoice-container p {
+        margin: .1rem 0; /* Adjust the margin to reduce space between paragraphs */
+    }
+    .hed{
+        width: 100%;
+      border: #000000;
+        margin-top: 10px;
+        border: 1px solid #000000;
+        
+    }
+  .thh {
+        background-color: #ffffff;
+        color: #000000;
+        /* padding: 9px; */
+        font-size: smaller;
+        font-weight: 100
+        ;
+       margin-top: 30%;
+    
+    }
+    .th{
+    font-size: small;
+    width: 50%;
+    font-weight: 200;
+    text-align: left;
+    }
+</style>
+
+
+<body>
+    <div class="invoice-container">
+      <table class="hed">
+        <th class="th" style="">   
+          
+                <p>Address: Kinfra Techno Park
+                           Thenhipalam, Kerala,673634</p>
+                <p>Website: <a href="bespoke.online">bespoke.online</a></p>
+                <p>email  : bespokeshopping07@gmail.com</p>
+                <p>Phone  :9207904611</p>
+            <p>Invoice to : <%= order.user.name %> </p>
+            <p>Invoice no : 2023001</p>
+                <p>Date   : <%= order.Date.toLocaleDateString('en-US', {
+                    year  : 'numeric',
+                    month : 'long',
+                    day   : 'numeric',
+                    });
+                %></p>
+          
+        </th>
+        <!-- <th>
+            <img id="qr" src="/public/images/qr.jpg" alt="QR Code">
+        </th> -->
+        <th class="thh">
+            <img src="/public/images/logo.jpg" id="img" alt="">
+        </th>
+      </table>
+              
+        <div class="payment-details"></div>
+      
+           
+
+       
+        <table class="services-table">
+       
+            <thead class="">
+                <div style="background-color: #000000;">
+  
+                    <p style="color: rgb(0, 0, 0);">ORDER : #<%= order._id.toString().substring(order._id.toString().length - 6) %> <span style="padding-left: 50%;">Mode Of Payment : <%= order.paymentMethod %></span></p>
+                </div>
+                <tr class="head">
+                    <th>Item Details</th>
+                    <th>Item Qty</th>
+                    <th>PRICE(RS)</th>
+                    <th>Unit Price</th>
+                    <th>Discount(RS)</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= product.name %></td>
+                    <td><%= product.quantity %></td>
+                    <td><%= product.price %></td>
+                    <td><%= product.price * product.quantity %></td>
+                    <td><%= product.coupondiscount.toFixed(2) %></td>
+                    <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">Subtotal:</td>
+                    <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                </tr>
+                <tr>
+                    <td colspan="5">Tax (@X%):</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="total-amount">Total</td>
+                    <td><b>₹<%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></b></td>
+                    </tr>
+            </tfoot>
+        </table>
+        <p style="color: black;font-size: medium;font-weight: 400;"><b>Total in words: <%= totalPriceInWords %> only </b></p>
+            <table class="services-table">
+                <th style="font-weight: 400;">
+                   
+                    <% order.deliveryDetails.forEach((address)=>{ %>
+                        <p>Recipient Address: <%= address.fname %></p>
+                        <p><%= address.mobile %></p>
+                        <p><%= address.email %></p>
+                        <p><%= address.address %></p>
+                        <p><%= address.city %>, <%= address.pin %> </p>
+                   <% }) %>
+                
+                </th>
+               
+            </table>
+           
+           <table class="services-table">
+            <th>1. Products being sent under this invoice are for personal consumption of the customer and not for re-sale or commercial purposes.</th>
+           </table>
+           <p><b>Reg Address:</b> <br>
+            Karnataka-560034
+            CIN No. U52609KA2017PTC100306
+            Konde Products &Services Private Limited, No. 744, 1st Floor, 80 Feet Road, Koramangala, 4th Block, Bengaluru.</p>
+            <div class="payment-details"></div>
+           <p>If you have any questions, feel free to call customer care at +91 80 6156 1999  or mail to bespokeshopping07@gmail.com </p>
+  
+    </div>
+</body>
+
+</html>
