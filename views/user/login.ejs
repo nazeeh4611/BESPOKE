@@ -13,22 +13,26 @@
 
         </li>
 
-        <div class="mb-4 pb-4"></div>
-        <button class="btn btn-primare w-80 text-uppercase mb-3">
-          <!-- Adjusted width to 100% and added margin-bottom -->
-          <a href="/auth/google">
-            <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg"
-              alt="Google Logo" class="icon">
-            <span class="text">continue with Google</span>
-          </a>
-        </button>
-        <div class="mb-4 pb-4"></div>
       </ul>
       <div class="tab-content pt-2" id="login_register_tab_content">
         <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
           <div class="login-form">
+       
+              <!-- Adjusted width to 100% and added margin-bottom -->
+              
+
             <form name="login-form" class="needs-validation" novalidate="" method="post">
-              <div class="form-floating mb-3">
+
+            
+              <div class="form-floating mb-4 col-6">
+                <button style="width: 200%; border:none; height: 35px;"><a href="/auth/google">
+                  <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg"
+                    alt="Google Logo" class="icon">
+                  <span class="text">continue with Google</span>
+                </a></button>  
+                      </div>
+                <div class="form-floating mb-3">
+    
                 <input name="email" type="email" class="form-control form-control_gray" id="customerNameEmailInput1"
                   placeholder="Email address *" required="">
                 <label for="customerNameEmailInput1">Email address *</label>

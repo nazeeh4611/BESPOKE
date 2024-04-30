@@ -195,22 +195,24 @@
                                 <%= product.name %> X <%= product.quantity %>
                             </td>
                             <td>
-                                <% if (coupondiscount) { %>
-                                    <!-- Calculate the equal discount for each product -->
-                                    <% let productReduction = coupondiscount.discountamount / cartdata.product.length; %>
-                
-                                    <!-- Calculate the discounted total for the product -->
-                                    <% let discountedProductTotal = product.total - productReduction; %>
-                                    
-                                    <!-- Display the discounted product total -->
-                                    ₹ <%= discountedProductTotal.toFixed(2) %>
-                
-                                    <!-- Pass the product reduction value to an input box -->
-                                    <input type="hidden" id="discountamount" value="<%= productReduction.toFixed(2) %>">
-                                <% } else { %>
-                                    ₹ <%= product.total %>
-                                <% } %>
-                            </td>
+                              <% if (coupondiscount) { %>
+                                  <!-- Calculate the discount amount based on the percentage -->
+                                  <% let discountPercentage = coupondiscount.discountamount; %>
+                                  <% let discountAmount = (discountPercentage / 100) * subtotal; %>
+                          
+                                  <!-- Calculate the discounted total for the product -->
+                                  <% let discountedProductTotal = product.total - (product.total * discountPercentage / 100); %>
+                          
+                                  <!-- Display the discounted product total -->
+                                  ₹ <%= discountedProductTotal.toFixed(2) %>
+                          
+                                  <!-- Pass the discount amount to an input box -->
+                                  <input type="hidden" id="discountamount" value="<%= discountAmount.toFixed(2) %>">
+                              <% } else { %>
+                                  ₹ <%= product.total %>
+                              <% } %>
+                          </td>
+                          
                         </tr>
                     <% }) %>
                 </tbody>
@@ -223,23 +225,26 @@
                   <tbody>
                     <tr>
                       <th>SUBTOTAL</th>
-                      <td>₹<%= subtotal%></td>
-                    </tr>
+                      <td>₹<%= subtotal - discountAmount %></td>
+                      <input type="hidden" value="<%= subtotal - discountAmount %>" name="subtotal" id="subtotal">
+                  </tr>
                     <tr>
                       <th>SHIPPING</th>
                       <td><%= shippingcharge %></td>
                     </tr>
                     <tr>
                       <th>Coupon Discount</th>
-                      <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
-                      <input type="hidden" value="<%= coupondiscount.discountamount  %>" name="discount" id="discount">
-
-                    </tr>
-                    <tr>
+                      <td style="color: green;">₹<%= discountAmount.toFixed(2) %></td>
+                      <input type="hidden" value="<%= discountAmount.toFixed(2) %>" name="discount" id="discount">
+                  </tr>
+                  
+                  <tr>
                       <th>TOTAL</th>
-                      <td> ₹<%= subtotal-coupondiscount.discountamount+shippingcharge %></td>
-                      <input type="hidden" value="<%= subtotal-coupondiscount.discountamount+shippingcharge %>" name="subtotal" id="subtotal">
-                    </tr>
+                      <td>₹<%= subtotal - discountAmount + shippingcharge %></td>
+                      <input type="hidden" value="<%= subtotal - discountAmount + shippingcharge %>" name="total" id="total">
+                  </tr>
+                  
+                  
                
                   </tbody>
                 </table>
@@ -247,25 +252,28 @@
                   <table class="checkout-totals">
                  
                     <tbody>
-                      <tr>
+                     <tr>
                         <th>SUBTOTAL</th>
-                        <td>₹<%= subtotal%></td>
-                      </tr>
+                        <td>₹<%= subtotal - discountAmount %></td>
+                        <input type="hidden" value="<%= subtotal - discountAmount %>" name="subtotal" id="subtotal">
+                    </tr>
                       <tr>
                         <th>SHIPPING</th>
                         <td>Free Shipping</td>
                       </tr>
                       <tr>
                         <th>Coupon Discount</th>
-                        <td style="color: green;">₹<%=coupondiscount.discountamount %></td>
-                        <input type="hidden" value="<%= coupondiscount.discountamount  %>" name="discount" id="discount">
-
-                      </tr>
-                      <tr>
+                        <td style="color: green;">₹<%= discountAmount.toFixed(2) %></td>
+                        <input type="hidden" value="<%= discountAmount.toFixed(2) %>" name="discount" id="discount">
+                    </tr>
+                    
+                    <tr>
                         <th>TOTAL</th>
-                        <td> ₹<%= subtotal-coupondiscount.discountamount %></td>
-                        <input type="hidden" value="<%= subtotal-coupondiscount.discountamount %>" name="subtotal" id="subtotal">
-                      </tr>
+                        <td>₹<%= subtotal - discountAmount + shippingcharge %></td>
+                        <input type="hidden" value="<%= subtotal - discountAmount + shippingcharge %>" name="total" id="total">
+                    </tr>
+                    
+                    
                  
                     </tbody>
                   </table>
