@@ -334,7 +334,10 @@ const orderview = async(req,res)=>{
             return `src="data:image/jpg;base64,${base64Image}"`;
         });
 
-        const browser = await puppeteer.launch({ headless: true });
+        const browser = await puppeteer.launch({ 
+            headless: "new",
+            executablePath: '/snap/bin/chromium',
+        });
         const page = await browser.newPage();
 
         await page.setContent(updatedHtml, { waitUntil: "networkidle0" });
