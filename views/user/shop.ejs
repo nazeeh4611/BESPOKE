@@ -35,7 +35,6 @@
   color: rgb(255, 255, 255);
   background-color: rgb(0, 0, 0);
 }
-/* Style for select box */
 .selecti{
   padding: 5px;
   font-size: 16px;
@@ -43,12 +42,65 @@
   background-color: #fff;
   width: 200px; 
 }
-#inp{
-  padding: 0px 60px 0px 0px;
-}
 
+  
+    /* General styles */
+    #searchForm {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    
+    /* Flex container for input and button */
+    #searchForm > div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
 
+    /* Input styling */
+    #inp {
+        padding: 5px;
+        padding-left: 30px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 35px; /* Set the height of the input */
+    }
 
+    /* Button styling */
+    input[type="button"] {
+        padding: 5px;
+        box-sizing: border-box;
+        width: auto; /* Allow the button width to adjust based on content */
+        height: 35px; /* Set the height of the button */
+        margin-left: 10px; /* Add margin to separate the button from the input */
+    }
+
+    /* Media queries for responsive text */
+    @media (max-width: 480px) {
+        /* Adjust text font size for smaller screens */
+        #inp {
+            font-size: 14px; /* Adjust as desired */
+        }
+
+        /* Adjust button text size */
+        input[type="button"] {
+            font-size: 14px; /* Adjust as desired */
+            margin-left: 5px;
+        }
+    }
+
+    /* Media queries for larger screens */
+    @media (min-width: 481px) and (max-width: 768px) {
+        /* Adjust text font size for medium screens */
+        #inp {
+            font-size: 16px; /* Adjust as desired */
+        }
+
+        /* Adjust button text size */
+        input[type="button"] {
+            font-size: 16px; /* Adjust as desired */
+        }
+    }
 </style>
 <body>
   <svg class="d-none">
@@ -612,14 +664,14 @@
           
         </div><!-- /.header-tools__item hover-container -->
 
-        <form id="searchForm">
-          <div style="position: relative;">
-              <input type="text" name="search" id="inp" placeholder="Search BESPOKE" style="padding-left: 30px;">
+        <form id="searchForm" style="display: flex; flex-direction: row; align-items: center; width: 100%; max-width: 500px; margin: auto;">
+          <div style="position: relative; flex-grow: 1;">
+              <input type="text" name="search" id="inp" placeholder="Search BESPOKE" style="padding-left: 30px; width: 100%;">
               <svg style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M13.837 12.823a7.328 7.328 0 0 0 1.33-4.228 7.421 7.421 0 1 0-7.421 7.42 7.328 7.328 0 0 0 4.228-1.33l3.523 3.523a.937.937 0 1 0 1.325-1.326l-3.985-3.987zM1.562 7.421a5.86 5.86 0 0 1 5.859-5.86 5.86 5.86 0 0 1 5.859 5.86 5.86 5.86 0 0 1-5.859 5.859 5.86 5.86 0 0 1-5.859-5.859z"></path>
               </svg>
-              <input type="button" value="Search" onclick="searchValue()">
           </div>
+          <input type="button" value="Search" onclick="searchValue()" style="flex-grow: 0;">
       </form>
       
     

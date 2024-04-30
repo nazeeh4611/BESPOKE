@@ -195,137 +195,88 @@
                                 <%= product.name %> X <%= product.quantity %>
                             </td>
                             <td>
-                              <% if (coupondiscount) { %>
-                                  <!-- Calculate the discount amount based on the percentage -->
-                                  <% let discountPercentage = coupondiscount.discountamount; %>
-                                  <% let discountAmount = (discountPercentage / 100) * subtotal; %>
-                          
-                                  <!-- Calculate the discounted total for the product -->
-                                  <% let discountedProductTotal = product.total - (product.total * discountPercentage / 100); %>
-                          
-                                  <!-- Display the discounted product total -->
-                                  ₹ <%= discountedProductTotal.toFixed(2) %>
-                          
-                                  <!-- Pass the discount amount to an input box -->
-                                  <input type="hidden" id="discountamount" value="<%= discountAmount.toFixed(2) %>">
-                              <% } else { %>
-                                  ₹ <%= product.total %>
-                              <% } %>
-                          </td>
-                          
+                                <% if (coupondiscount) { %>
+                                    <% let discountPercentage = coupondiscount.discountamount; %>
+                                    
+                                   
+                                    <% let productDiscountAmount = (discountPercentage / 100) * product.total; %>
+                                    
+                                    <% console.log(productDiscountAmount) %>
+                                    <% let discountedProductTotal = product.total - productDiscountAmount; %>
+                                    
+                                   
+                                    ₹ <%= discountedProductTotal.toFixed(2) %>
+                                    
+                                    <input type="hidden" id="discountamount" value="<%= productDiscountAmount.toFixed(2) %>">
+                                <% } else { %>
+                                    ₹ <%= product.total %>
+                                <% } %>
+                            </td>
                         </tr>
                     <% }) %>
                 </tbody>
                 
+                
                 </table>
-                <% if(coupondiscount && subtotal > coupondiscount.criteriaamount) { %>
-                  <%if(subtotal < 1000) { %>
-                <table class="checkout-totals">
-                 
-                  <tbody>
-                    <tr>
-                      <th>SUBTOTAL</th>
-                      <td>₹<%= subtotal - discountAmount %></td>
-                      <input type="hidden" value="<%= subtotal - discountAmount %>" name="subtotal" id="subtotal">
-                  </tr>
-                    <tr>
-                      <th>SHIPPING</th>
-                      <td><%= shippingcharge %></td>
-                    </tr>
-                    <tr>
-                      <th>Coupon Discount</th>
-                      <td style="color: green;">₹<%= discountAmount.toFixed(2) %></td>
-                      <input type="hidden" value="<%= discountAmount.toFixed(2) %>" name="discount" id="discount">
-                  </tr>
+                <% if (coupondiscount && subtotal >= coupondiscount.criteriaamount) { %>
+                  <% 
+                    // Calculate the discount amount
+                    var discountRate = coupondiscount.discountamount / 100;
+                    var discountAmount = subtotal * discountRate;
+                    
+                    // Calculate the new subtotal after applying the discount
+                    var newSubtotal = subtotal - discountAmount;
+                    
+                    // Calculate the total amount
+                    var total = newSubtotal + shippingcharge;
+                  %>
                   
-                  <tr>
-                      <th>TOTAL</th>
-                      <td>₹<%= subtotal - discountAmount + shippingcharge %></td>
-                      <input type="hidden" value="<%= subtotal - discountAmount + shippingcharge %>" name="total" id="total">
-                  </tr>
-                  
-                  
-               
-                  </tbody>
-                </table>
-                <% }else{ %>
                   <table class="checkout-totals">
-                 
                     <tbody>
-                     <tr>
+                      <tr>
                         <th>SUBTOTAL</th>
-                        <td>₹<%= subtotal - discountAmount %></td>
-                        <input type="hidden" value="<%= subtotal - discountAmount %>" name="subtotal" id="subtotal">
-                    </tr>
+                        <td>₹<%= subtotal %></td>
+                      </tr>
                       <tr>
                         <th>SHIPPING</th>
-                        <td>Free Shipping</td>
+                        <td><%= shippingcharge %></td>
                       </tr>
                       <tr>
                         <th>Coupon Discount</th>
                         <td style="color: green;">₹<%= discountAmount.toFixed(2) %></td>
                         <input type="hidden" value="<%= discountAmount.toFixed(2) %>" name="discount" id="discount">
-                    </tr>
-                    
-                    <tr>
+                      </tr>
+                      <tr>
                         <th>TOTAL</th>
-                        <td>₹<%= subtotal - discountAmount + shippingcharge %></td>
-                        <input type="hidden" value="<%= subtotal - discountAmount + shippingcharge %>" name="total" id="total">
-                    </tr>
-                    
-                    
-                 
+                        <td>₹<%= total.toFixed(2) %></td>
+                        <input type="hidden" value="<%= total.toFixed(2) %>" name="subtotal" id="subtotal">
+
+                      </tr>
                     </tbody>
                   </table>
-                  <% } %>
-                <% }else{ %>
-                  <% if(subtotal >= 1000){ %>
+                  
+                <% } else { %>
                   <table class="checkout-totals">
-                 
                     <tbody>
                       <tr>
                         <th>SUBTOTAL</th>
-                        <td>₹<%= subtotal%></td>
+                        <td>₹<%= subtotal %></td>
+                        <input type="hidden" value="<%= subtotal %>" name="subtotal" id="subtotal">
                       </tr>
                       <tr>
                         <th>SHIPPING</th>
                         <td>Free shipping</td>
                         <input type="hidden" value="0" name="discount" id="discount">
-
                       </tr>
                       <tr>
                         <th>TOTAL</th>
-                        <td> ₹<%= subtotal%></td>
-                        <input type="hidden" value="<%= subtotal%>" name="subtotal" id="subtotal">
+                        <td>₹<%= subtotal %></td>
+                        <input type="hidden" value="<%= subtotal %>" name="total" id="total">
                       </tr>
-                 
                     </tbody>
                   </table>
-                  <% }else { %>
-                    <table class="checkout-totals">
-                 
-                      <tbody>
-                        <tr>
-                          <th>SUBTOTAL</th>
-                          <td>₹<%= subtotal%></td>
-                        </tr>
-                        <tr>
-                          <th>SHIPPING</th>
-                          <td><%= shippingcharge %></td>
-                          <input type="hidden" value="0" name="discount" id="discount">
-
-                        </tr>
-                        <tr>
-                          <th>TOTAL</th>
-                          <td> ₹<%= subtotal + shippingcharge %></td>
-                          <input type="hidden" value="<%= subtotal + shippingcharge %>" name="subtotal" id="subtotal">
-                        </tr>
-                   
-                      </tbody>
-                    </table>
-
-                    <% } %>
-                  <% } %>
+                <% } %>
+                
               </div>
               <div class="checkout__payment-methods">
                 <% if(user.wallet >= subtotal) { %>

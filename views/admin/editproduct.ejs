@@ -573,18 +573,18 @@ document.getElementById('cropImageBtn').addEventListener('click', function () {
 
 $('#imageCropModal').on('shown.bs.modal', function () {
   let image = document.getElementById('imageToCrop');
- cropper = new Cropper(image, {
-      aspectRatio: 1,
-      viewMode: 1,
-      dragMode: "move",
-      minContainerWidth: 300,
-      minContainerHeight: 300,
-      minCropBoxWidth: 300,
-      minCropBoxHeight:300,
-      minCanvasHeight: 300,
-      minCanvasWidth: 300,
+  cropper = new Cropper(image, {
+        aspectRatio: null,
+        viewMode: 1,
+        dragMode: 'move',
+        minContainerWidth: 300,
+        minContainerHeight: 300,
+        minCropBoxWidth: 300,
+        minCropBoxHeight: 300,
+        minCanvasHeight: 300,
+        minCanvasWidth: 300,
+    });
 
-  });
 });
 
 
