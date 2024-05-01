@@ -156,7 +156,9 @@
                     <td><%= product.price * product.quantity %></td>
                     <% if((product.price * product.quantity)>product.coupondiscount){ %>
                     <td><%= product.coupondiscount.toFixed(2) %></td>
-                    <% } %>
+                    <% }else{ %>
+                        <td>0</td>
+                        <% } %>
                     <% if((product.price * product.quantity)>product.coupondiscount){ %>
                     <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
                     <% }else { %>
@@ -167,7 +169,11 @@
             <tfoot>
                 <tr>
                     <td colspan="5">Subtotal:</td>
-                    <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                    <% if((product.price * product.quantity)>product.coupondiscount){ %>
+                        <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                        <% }else { %>
+                            <td><%= product.price * product.quantity %></td>
+                        <% } %>
                 </tr>
                 <tr>
                     <td colspan="5">Tax (@X%):</td>
@@ -175,7 +181,11 @@
                 </tr>
                 <tr>
                     <td colspan="5" class="total-amount">Total</td>
-                    <td><b>₹<%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></b></td>
+                    <% if((product.price * product.quantity)>product.coupondiscount){ %>
+                        <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                        <% }else { %>
+                            <td><%= product.price * product.quantity %></td>
+                        <% } %>
                     </tr>
             </tfoot>
         </table>
