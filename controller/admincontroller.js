@@ -383,7 +383,12 @@ const orderstatus = async (req, res) => {
 
       const user = await User.findById(userId);
       if (user) {
-        const returnedAmount = product.price * product.quantity-product.coupondiscount;
+        let returnedAmount;
+        if((product.price * product.quantity)>product.coupondiscount){
+        returnedAmount = product.price * product.quantity-product.coupondiscount;
+        }else{
+          returnedAmount = product.price * product.quantity
+        }
         user.wallet += returnedAmount;
 
         user.wallethistory.push({
