@@ -188,8 +188,10 @@
                         <% } %>
                     </tr>
             </tfoot>
-        </table>
+        </table> 
+        <% if((product.price * product.quantity)>product.coupondiscount){ %>
         <p style="color: black;font-size: medium;font-weight: 400;"><b>Total in words: <%= totalPriceInWords %> only </b></p>
+        <% } %>
             <table class="services-table">
                 <th style="font-weight: 400;">
                    
