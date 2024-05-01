@@ -154,8 +154,14 @@
                     <td><%= product.quantity %></td>
                     <td><%= product.price %></td>
                     <td><%= product.price * product.quantity %></td>
+                    <% if((product.price * product.quantity)>product.coupondiscount){ %>
                     <td><%= product.coupondiscount.toFixed(2) %></td>
+                    <% } %>
+                    <% if((product.price * product.quantity)>product.coupondiscount){ %>
                     <td><%= product.price * product.quantity-product.coupondiscount.toFixed(2) %></td>
+                    <% }else { %>
+                        <td><%= product.price * product.quantity %></td>
+                    <% } %>
                 </tr>
             </tbody>
             <tfoot>

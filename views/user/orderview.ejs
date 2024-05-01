@@ -127,7 +127,14 @@ background-color: transparent;
                                     <p> <strong>Product Name : </strong><%= value.name %></p>
                                     <p><strong>Price :  </strong>₹<%= value.price %></p>
                                     <p><strong>Qty</strong> : <%= value.quantity %></h6>
-                                      <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity %> </span></p>
+                                      <% if((value.price * value.quantity)>value.coupondiscount){ %>
+                                    <p>coupon discount : <strong><%= value.coupondiscount %></strong></p>
+                                    <% } %>
+                                    <% if((value.price * value.quantity)>value.coupondiscount){ %>
+                                      <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity - value.coupondiscount %> </span></p>
+                                      <% }else { %>
+                                        <p><strong>Total</strong> : <span>₹<%= value.price * value.quantity %> </span></p>
+                                        <% } %>
                                     <% if( value.status == "delivered"){ %>
                                       <a href="/invoice?orderId=<%= orderdata._id %>&productId=<%= value._id %>" target="_blank">  <span style="color: rgb(106, 106, 192); font-size: small; font-weight: 600;">download invoice &#128196;</span>
                                       </a>
