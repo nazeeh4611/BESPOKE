@@ -342,6 +342,9 @@
                     <% } %>
                   </tbody>
                 </table>
+                <% if(Orders) { %>
+                  <button style="color: white; border: none; background-color: transparent;" onclick="addressmodal()"><u>view delivery address</u></button>
+                  <% } %>
               </div>
             </div>
             
@@ -393,6 +396,50 @@
                 </div>
             </div>
               
+
+
+
+            <div class="modal fade" id="addressmodal" style="" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" >
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Delivery Address</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                      <table>
+                        <%  Orders.deliveryDetails.forEach((address)=>{ %>
+                        <tbody>
+                       
+                          First Name : <%= address.fname %>
+                          <br>
+                          Last Name : <%=  address.lname %>
+                          <br>
+                          City :  <%=  address.city %>
+                          <br>
+                            Address :  <%=  address.address %>
+                            <br>
+                              Phone : <%=  address.mobile %>
+                              <br>
+                             Email : <%=  address.email %>
+                             <br>
+                            PIN : <%=  address.pin %>
+                       
+                        </tbody>
+                          <% }) %>
+                      </table>
+                        
+                      
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         
+                                          
+                        
+                      </div>
+                  </div>
+              </div>
+          </div>
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
@@ -420,10 +467,17 @@
 <!-- Include Bootstrap JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
 
+function addressmodal() {
+    console.log("hi");
+  
+    $('#addressmodal').modal('show');
+}
+
+</script>
 <script>
 function modal(productId,status,orderId) {
-  console.log("hiii",productId,status,orderId)
  
     // Assuming you're using jQuery for AJAX requests
     $.ajax({

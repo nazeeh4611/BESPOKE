@@ -324,7 +324,7 @@ const BlockUser = async (req, res) => {
 
 const orderlist = async(req,res)=>{
   try {
-    const Orders = await Order.find().sort({Date:-1});
+    const Orders = await Order.find().sort({Date:-1}).populate();
     res.render("admin/orderlist",{Orders});
   } catch (error) {
    console.log(error)
@@ -340,7 +340,13 @@ const orderDetails = async(req,res)=>{
     const orderId = req.query.id;
     console.log(orderId,"orderId")
     const Orders = await Order.findOne({_id:orderId}).sort({Date:-1});
-    res.render("admin/orderDetails",{Orders});
+    let address;
+    Orders.deliveryDetails.forEach((address)=>{
+      address = address;
+    })
+
+    console.log(Orders.deliveryDetails,"the order")
+    res.render("admin/orderDetails",{Orders,address});
   } catch (error) {
     console.log(error)
   }
