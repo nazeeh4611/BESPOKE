@@ -63,13 +63,13 @@ const editCategory = async (req, res) => {
 
 const editedCategory = async (req, res) => {
   try {
-    const id = req.body.categoryid;
+    const categoryid = req.body.categoryid;
     const name = req.body.categoryName;
     const description = req.body.categoryDescription;
 
     const existingCategory = await Categories.findOne({ name: name });
 
-    if (existingCategory && existingCategory._id.toString() !== id) {
+    if (existingCategory && existingCategory._id.toString() !== categoryid) {
       return res.render("admin/editcategory", {
         category: {},
         messages: { message: "This category already exists" },
@@ -77,7 +77,7 @@ const editedCategory = async (req, res) => {
     }
 
     const updatedCategory = await Categories.findByIdAndUpdate(
-      id,
+      categoryid,
       {
         name: name,
         description: description,
@@ -101,9 +101,8 @@ const editedCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const id = req.query.id;
-    console.log("suii", id);
-    await Categories.findByIdAndUpdate({ _id: id },
+    const categoryid = req.query.id;
+    await Categories.findByIdAndUpdate({ _id: categoryid },
       {is_Deleted:true});
     res.redirect("/admin/category");
   } catch (error) {

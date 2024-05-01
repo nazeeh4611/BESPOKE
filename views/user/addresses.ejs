@@ -209,7 +209,7 @@ function deleteAddress(id) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: id }),
+        body: JSON.stringify({ addressid: id }),
     })
     .then(response => {
         if (!response.ok) {

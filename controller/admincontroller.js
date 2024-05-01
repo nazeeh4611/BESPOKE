@@ -349,18 +349,16 @@ const orderDetails = async(req,res)=>{
 const orderstatus = async (req, res) => {
   try {
     const userId = req.session.userId;
-    const { orderId, id } = req.body;
-
-    console.log("reached", orderId)
+    const { orderId, productid } = req.body;
+   console.log(productid,"problem")
     const order = await Order.findOne({ _id: orderId });
-    console.log("rrrrrrr", order)
 
     if (!order) {
       console.log("Order not found");
       return res.redirect("/admin/orders");
     }
 
-    const productIndex = order.product.findIndex(item => item._id.toString() === id);
+    const productIndex = order.product.findIndex(item => item._id.toString() === productid);
     console.log(productIndex, "index")
 
     if (productIndex === -1) {
@@ -369,7 +367,6 @@ const orderstatus = async (req, res) => {
 
     const product = order.product[productIndex];
 
-    console.log("poooooo")
 
     if (product.status === 'pending') {
       order.product[productIndex].status = 'placed';
@@ -417,12 +414,12 @@ const orderstatus = async (req, res) => {
 
 const ordercancel = async(req,res)=>{
   try {
-    const id = req.query.id;
- const orders = await Order.findById({_id:id});
+    const orderid = req.query.id;
+ const orders = await Order.findById({_id:orderid});
 
  if(orders){
   await Order.findByIdAndUpdate(
-    {_id:id},
+    {_id:orderid},
     {$set:{status:'cancelled'}},
   )
  }
@@ -435,20 +432,20 @@ const ordercancel = async(req,res)=>{
 
 const orderdelivered = async(req,res)=>{
   try {
-    const id = req.query.id;
+    const orderid = req.query.id;
      const userId = req.session.userId;
-    const orders = await Order.findById({_id:id});
+    const orders = await Order.findById({_id:orderid});
 
 
     if(orders.status == 'placed'){
       await Order.findByIdAndUpdate(
-        {_id:id},
+        {_id:orderid},
         {$set:{status:'delivered'}},
       )
     }
     if(orders.status == 'waiting for approvel'){
       await Order.findByIdAndUpdate(
-        {_id:id},
+        {_id:orderid},
         {$set:{status:'Return Approved'}}
       )
       await User.findByIdAndUpdate(

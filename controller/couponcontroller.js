@@ -58,11 +58,9 @@ if (await Coupon.findOne({ couponcode:CouponCode })) {
 
 const editcoupon = async (req,res)=>{
     try {
-        const id = req.query._id;
-        console.log("id vannal aayii",id)
+        const couponid = req.query._id;
       
-        const coupon = await Coupon.findOne({_id:id});
-        console.log("finded data",coupon);
+        const coupon = await Coupon.findOne({_id:couponid});
         res.render("admin/editcoupon",{coupon})
     } catch (error) {
         
@@ -71,13 +69,12 @@ const editcoupon = async (req,res)=>{
 
 const editedcoupon = async(req,res)=>{
     try {
-        const id = req.body.couponId;
-        console.log(id,"id may here")
+        const couponid = req.body.couponId;
         const { CouponName, CouponCode, Discount, ExpireDate, Criteria } = req.body;
 
       
        const updateCoupon = await Coupon.findByIdAndUpdate(
-        {_id:id},
+        {_id:couponid},
         {  name: CouponName,
             discountamount: Discount,
             couponcode: CouponCode,
@@ -93,10 +90,10 @@ const editedcoupon = async(req,res)=>{
 
 const deleteCoupon = async(req,res)=>{
     try {
-        const id = req.query._id;
+        const couponid = req.query._id;
        
       const after =  await Coupon.findByIdAndDelete(
-            {_id:id},
+            {_id:couponid},
          );
     res.redirect("/admin/couponlist")
     } catch (error) {
@@ -108,15 +105,12 @@ const deleteCoupon = async(req,res)=>{
 const applycoupon = async(req,res)=>{
     try {
         const userId = req.session.userId;
-        console.log(userId,"userId here");
+     
     const couponId = req.body.id; 
-    console.log("couponid here",couponId);
 
     const currentDate = new Date();
-     console.log("current ",currentDate);
     const coupondata = await Coupon.findOne({_id:couponId,expiredate:{$gt:currentDate}})
 
-    console.log(coupondata);
 
     // exists = coupondata.useduser.includes(userId);
     // console.log(exists,"existing coupon");
@@ -124,7 +118,6 @@ const applycoupon = async(req,res)=>{
 
 //    if(exists || !exists){
    const cartUser = await Cart.findOne({user:userId});
-    console.log(cartUser);
    
    if(cartUser&&cartUser.coupondiscount == null){
     await Coupon.findByIdAndUpdate(
@@ -152,15 +145,12 @@ const applycoupon = async(req,res)=>{
 const RemoveCoupon = async(req,res)=>{
     try {
         const couponId = req.body.couponId;
-        console.log("coupon id here",couponId);
       
          const userId = req.session.userId;
-       console.log("userId",userId);
         //  const coupondata = await Coupon.findOneAndUpdate({_id:couponId},{$pull:{useduser:userId}});
          const cartdata = await Cart.findOneAndUpdate({user:userId},{$set:{coupondiscount:null}});
          res.json({success:true});
-         console.log(coupondata,"coupondata");
-         console.log(cartdata,"cartdata");
+   
         
   
     } catch (error) {

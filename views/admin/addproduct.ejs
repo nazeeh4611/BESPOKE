@@ -24,7 +24,11 @@
   <!-- End layout styles -->
   <link rel="shortcut icon" href="/admin/images/favicon.png" />
 </head>
-
+<style>
+  .error {
+    color: red;
+}
+</style>
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_sidebar.html -->
@@ -387,6 +391,7 @@
                                         </label>
                                         <input type="file" class="form-control" id="image1" name="productImage"
                                             style="display: none;">
+                                            <span id="image1Error" class="error"></span>
                                             <button type="button" class="btn btn-success" onclick="document.getElementById('image1').click();">Upload Image</button>  
                                         </div>
                                       </div>
@@ -407,6 +412,7 @@
                                         </label>
                                         <input type="file" class="form-control" id="image2" name="productImage"
                                             style="display: none;">
+                                            <span id="image2Error" class="error"></span>
                                             <button type="button" class="btn btn-success" onclick="document.getElementById('image2').click();">Upload Image</button>  
                                         </div>
                                       </div>
@@ -423,6 +429,7 @@
                                         </label>
                                         <input type="file" class="form-control" id="image3" name="productImage"
                                             style="display: none;">
+                                            <span id="image3Error" class="error"></span>
                                             <button type="button" class="btn btn-success" onclick="document.getElementById('image3').click();">Upload Image</button>  
                                         </div>
                                       </div>
@@ -436,6 +443,7 @@
                                               <img id="preview4" src="https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg" alt="" style="width: 200px;">
                                           </label>
                                           <input type="file" class="form-control" id="image4" name="productImage" style="display: none;">
+                                          <span id="image4Error" class="error"></span>
                                           <button type="button" class="btn btn-success" onclick="document.getElementById('image4').click();">Upload Image</button>
                                       </div>
                                   </div>
@@ -503,6 +511,8 @@
 
 <!-- ////////////////////////////////////////////////////////////////////////////////////////// -->
 <script src="/public/cropperjs/cropper.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 <script>
   let currentInputId, currentPreviewId, cropper;
 let croppedImages = {};
@@ -676,21 +686,15 @@ submitBtn.addEventListener('click', function (e) {
     } else {
       // Handle case where response data is not true
       Swal.fire({
-        icon: 'error',
-        title: 'Existing Name Cannot Be Added',
-        text: '',
-        footer: ''
-      });
+            icon: 'error',
+            title: 'ERROR OCCURED',
+            text: data.message.error,
+            footer: ''
+        });
     }
   })
   .catch(error => {
-    console.error('Error:', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'An error occurred',
-      text: error.message,
-      footer: ''
-    });
+    validateForm();
   });
 
 
@@ -699,85 +703,104 @@ submitBtn.addEventListener('click', function (e) {
 })
 </script>
 
-    <script>
-      function validateForm() {
-        // Reset error messages
-        document.getElementById("branderror").innerHTML = "";
-        document.getElementById("productError").innerHTML = "";
-        document.getElementById("productDescriptionError").innerHTML = "";
-        document.getElementById("quantityError").innerHTML = "";
-        document.getElementById("priceError").innerHTML = "";
-        document.getElementById("ImageError").innerHTML = "";
-        document.getElementById("CategoryError").innerHTML = "";
-    
-        // Get form inputs
-        var brandname = document.forms["productForm"]["brand"].value.trim();
-        var productName = document.forms["productForm"]["productName"].value.trim();
-        var description = document.forms["productForm"]["description"].value.trim();
-        var quantity = document.forms["productForm"]["quantity"].value.trim();
-        var price = document.forms["productForm"]["price"].value.trim();
-        var image = document.forms["productForm"]["image"].value.trim();
-        var category = document.forms["productForm"]["categories"].value.trim();
-    
-        // Flag to track if there are any errors
-        var hasError = false;
-    
+<script>
+  function validateForm() {
+    // Validate brand name
+    const brandName = document.getElementById('brandName').value;
+    if (!brandName) {
+        document.getElementById('branderror').innerText = 'Brand name is required.';
+        return false;
+    } else {
+        document.getElementById('branderror').innerText = '';
+    }
 
-      // vaidate brand name
-       if(brandname === ""){
-        document.getElementById("branderror").innerHTML = "Brand name required";
-        hasError = true;
-       }
-        // Validate product name
-        if (productName === "") {
-          document.getElementById("productError").innerHTML = "Product name is required";
-          hasError = true;
-        }
-    
-        // Validate description
-        if (description === "") {
-          document.getElementById("productDescriptionError").innerHTML = "Description is required";
-          hasError = true;
-        }
-    
-        // Validate quantity
-        if (quantity === "") {
-          document.getElementById("quantityError").innerHTML = "Quantity is required";
-          hasError = true;
-        } else if (isNaN(quantity)) {
-          document.getElementById("quantityError").innerHTML = "Quantity must be a  number";
-          hasError = true;
-        }
-    
-        // Validate price
-        if (price === "") {
-          document.getElementById("priceError").innerHTML = "Price is required";
-          hasError = true;
-        } else if (isNaN(price) || price <= 0) {
-          document.getElementById("priceError").innerHTML = "Price must be a positive number";
-          hasError = true;
-        }
-    
-        // Validate image
-        if (image === "") {
-          document.getElementById("ImageError").innerHTML = "Image is required";
-          hasError = true;
-        }
-    
-        // Validate category
-        if (category === "") {
-          document.getElementById("CategoryError").innerHTML = "Select Category";
-          hasError = true;
-        }
-    
-        // If there are errors, prevent form submission
-        if (hasError) {
-          return false;
-        }
-        return true;
-      }
+    // Validate product name
+    const productName = document.getElementById('productName').value;
+    if (!productName) {
+        document.getElementById('productError').innerText = 'Product name is required.';
+        return false;
+    } else {
+        document.getElementById('productError').innerText = '';
+    }
 
-    </script>
+    // Validate description
+    const description = document.getElementById('productDescription').value;
+    if (!description) {
+        document.getElementById('productDescriptionError').innerText = 'Description is required.';
+        return false;
+    } else {
+        document.getElementById('productDescriptionError').innerText = '';
+    }
+
+    // Validate quantity
+    const quantity = document.getElementById('productQuantity').value;
+    if (quantity <= 0) {
+        document.getElementById('quantityError').innerText = 'Quantity must be greater than 0.';
+        return false;
+    } else {
+        document.getElementById('quantityError').innerText = '';
+    }
+
+    // Validate price
+    const price = document.getElementById('productPrice').value;
+    if (price <= 0) {
+        document.getElementById('priceError').innerText = 'Price must be greater than 0.';
+        return false;
+    } else {
+        document.getElementById('priceError').innerText = '';
+    }
+
+    // Validate category
+    const category = document.getElementById('exampleInputCity1').value;
+    if (!category) {
+        document.getElementById('CategoryError').innerText = 'Category is required.';
+        return false;
+    } else {
+        document.getElementById('CategoryError').innerText = '';
+    }
+
+    // Validate images
+    // Validation for Image One
+    const imageOneInput = document.getElementById('image1');
+if (!imageOneInput.files || imageOneInput.files.length === 0) {
+    document.getElementById('image1Error').innerText = 'Please upload Image One.';
+    return false;
+} else {
+    document.getElementById('image1Error').innerText = '';
+}
+
+// Validation for Image Two
+const imageTwoInput = document.getElementById('image2');
+if (!imageTwoInput.files || imageTwoInput.files.length === 0) {
+    document.getElementById('image2Error').innerText = 'Please upload Image Two.';
+    return false;
+} else {
+    document.getElementById('image2Error').innerText = '';
+}
+
+// Validation for Image Three
+const imageThreeInput = document.getElementById('image3');
+if (!imageThreeInput.files || imageThreeInput.files.length === 0) {
+    document.getElementById('image3Error').innerText = 'Please upload Image Three.';
+    return false;
+} else {
+    document.getElementById('image3Error').innerText = '';
+}
+
+// Validation for Image Four
+const imageFourInput = document.getElementById('image4');
+if (!imageFourInput.files || imageFourInput.files.length === 0) {
+    document.getElementById('image4Error').innerText = 'Please upload Image Four.';
+    return false;
+} else {
+    document.getElementById('image4Error').innerText = '';
+}
+
+    // If all validations pass, return true to allow the form to be submitted
+    return true;
+}
+
+</script>
 
 
 

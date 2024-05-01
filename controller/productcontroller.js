@@ -48,28 +48,31 @@ const loadAddProduct = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
       console.log('req.body:', req.body);
-console.log('req.files:', req.files);
       const {productName,brandName,productDescription,productQuantity,productPrice,productCategory } = req.body;
-       console,log(productName,brandName,productDescription,productQuantity,productPrice,productCategory)
        const productImage=req.files.filename
        const imageFiles = req.files.map(file => file.filename);
-       console.log('Image File Names:', imageFiles);
        const formdata = req.body.formdata;
-       console.log(formdata);
       const existingProduct = await products.findOne({ name: productName });
       if (existingProduct) {
-          return res.render("admin/addproduct", {
-              productData: await category.find({ is_Listed: 1 }),
-              messages: { message: "Product name already exists" }
-          });
+        let data = false
+         return res.json({
+          data: data, 
+          message: {
+              error: "Product Name Already Exist",
+          }
+      });
       }
 
       const files = req.files || [];
       if (files.length !== 4) {
-          return res.render("admin/addproduct", {
-              productData: await category.find({ is_Listed: 1 }),
-              messages: { message: "You need to upload exactly four images" }
-          });
+        let data = false
+        return res.json({
+         data: data, 
+         message: {
+             error: "You need to upload exactly four images",
+         }
+     });
+         
       }
 
       const filenames = files.map(file => file.filename);
@@ -218,7 +221,7 @@ const deleteimage = async (req, res) => {
   try {
     const { img, prdtid } = req.body;
     if (!prdtid) {
-      res.status(400).send({ success: false, error: "product is required" });
+      return res.status(400).send({ success: false, error: "product is required" });
     }
 
     const validproductId = mongoose.Types.ObjectId.isValid(prdtid);
@@ -228,7 +231,7 @@ const deleteimage = async (req, res) => {
         .send({ success: false, error: "invalid productId" });
     }
     if (!img) {
-      res.status(400).send({ message: false, error: "image is required" });
+      return res.status(400).send({ message: false, error: "image is required" });
     }
 
     fs.unlink(path.join(__dirname, "../public/productImage", img), () => {});

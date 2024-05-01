@@ -210,15 +210,15 @@ console.log(NewOrder);
 const OrderPlaced = async(req,res)=>{
     try {
     
-        const id =req.query.id;
+        const orderId =req.query.id;
 
         const userId = req.session.userId;
          const date = new Date();
 
         const userData = await User.findOne({_id:userId});
-        const order = await Order.findOne({_id:id});
+        const order = await Order.findOne({_id:orderId});
    
-        res.render("user/ordercomplete" ,{order:order,date,orderId:id})
+        res.render("user/ordercomplete" ,{order:order,date,orderId:orderId})
 
     } catch (error) {
         console.log(error);
@@ -268,11 +268,11 @@ const orderlist = async (req, res) => {
 
 const orderview = async(req,res)=>{
     try {
-    const id = req.query.id;
+    const orderId = req.query.id;
    
     const userId = req.session.userId;
     const userData = await User.findOne({_id:userId});
-    const orderdata = await Order.findById({_id:id}).populate(
+    const orderdata = await Order.findById({_id:orderId}).populate(
      "product.productId",
     )
   orderdata.product.forEach((value)=>{
@@ -424,9 +424,6 @@ const returnOrder = async (req, res) => {
         const reason = req.body.Reason;
         const { orderId, productId } = req.body; 
 
-        console.log("orderId",orderId)
-        console.log("productId",productId)
-        console.log("reason",reason)
 
         if (!orderId || !productId) {
             return res.status(400).json({ error: "orderId and productId are required" });
@@ -492,7 +489,6 @@ console.log(order,"o")
 const repay = async (req, res) => {
     try {
         const { orderId, totalamount } = req.body;
-        console.log("orderId",orderId,"total",totalamount)
         const orders = await instance.orders.create({
             amount: totalamount * 100, 
             currency: "INR",

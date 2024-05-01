@@ -456,12 +456,11 @@
     </script>
     <script>
       function removeoffer(id,catid){
-        console.log("id gert",id,"ll",catid);
          $.ajax({
           url:"/admin/removecategoryoffer",
           method:"DELETE",
           contentType:"application/json",
-          data:JSON.stringify({id:id,catid:catid}),
+          data:JSON.stringify({offerId:id,catid:catid}),
           success:function(response){
             if(response.success){
               Swal.fire({

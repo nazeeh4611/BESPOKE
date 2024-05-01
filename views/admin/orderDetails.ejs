@@ -474,7 +474,7 @@ function modal(productId,status,orderId) {
             'content-Type': 'application/json'
           },
           body: JSON.stringify({
-            id: proid,
+            productid: proid,
             orderId: orderId.trim() // Trim the orderId value
           })
         })
@@ -503,7 +503,7 @@ function modal(productId,status,orderId) {
           'content-Type':'application/json'
         },
         body:JSON.stringify({
-          id:proid,
+          productid:proid,
           orderId:orderId.trim()
         })
       })

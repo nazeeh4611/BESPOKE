@@ -80,10 +80,8 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
 
   const editoffer = async(req,res)=>{
     try {
-      const id = req.query._id;
-      console.log(id,"id")
-      const offer = await Offer.findOne({_id:id});
-      console.log("offer name ",offer.name)
+      const offerid = req.query._id;
+      const offer = await Offer.findOne({_id:offerid});
      res.render("admin/editoffer",{offer})
     } catch (error) {
       console.log(error)
@@ -92,11 +90,10 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
 
   const editedoffer = async(req,res)=>{
     try {
-      const id = req.body.offerId;
-      console.log("offer is",id)
+      const offerid = req.body.offerId;
       const {offerName,Discount,startingDate,endingDate} = req.body;
       const edit = await Offer.findByIdAndUpdate(
-        {_id:id},
+        {_id:offerid},
         {
           name:offerName,
           discount:Discount,
@@ -111,17 +108,7 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
     }
   }
 
-// const deleteoffer = async(req,res)=>{
-//   try {
-//     const id = req.query.id;
-//    await Offer.findByIdAndDelete(
-//     {_id:id},
-//    );
-//    res.redirect("/admin/offerlist")
-//   } catch (error) {
-    
-//   }
-// }
+
 
   const applyProductOffer = async(req,res)=>{
     try {
@@ -141,10 +128,11 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
    const removeProductOffer = async(req,res)=>{
     try {
       const productId = req.body.proid;
-      const id = req.body.id;
+      const offerid = req.body.offerid ;
+      console.log(offerid,"offer")
       const offers = await Product.findByIdAndUpdate(
          {_id:productId},
-        {$pull:{offer:id}},
+        {$pull:{offer: offerid}},
         {new:true},
       );
    
@@ -157,7 +145,6 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
   const applyCategoryOffer = async(req,res)=>{
     try {
      const {offerId,catid} = req.body;
-     console.log("1",offerId,"2",catid);
      const offers = await Category.findByIdAndUpdate(
       {_id:catid},
       {$set:{offer:offerId}},
@@ -171,11 +158,11 @@ const offerdata = await Offer.findOne({name:req.body.offerName});
 
    const removeCategoryOffer = async(req,res)=>{
     try {
-      const {catid,id} = req.body;
+      const {catid,offerId} = req.body;
      
       const offers = await Category.findByIdAndUpdate(
          {_id:catid},
-        {$pull:{offer:id}},
+        {$pull:{offer:offerId}},
         {new:true},
       );
       res.json({success:true})

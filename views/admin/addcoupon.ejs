@@ -257,7 +257,7 @@
     const discount = parseFloat(discountInput.value);
     if (isNaN(discount) || discount < 0 || discount > 100) {
         isValid = false;
-        document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 100';
+        document.querySelector('#DiscountError').innerText = 'Discount must be a number between 0 and 50, max discount 50%';
     }
 
    

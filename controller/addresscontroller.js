@@ -101,13 +101,13 @@ const editAddress = async (req, res) => {
 
 const deleteAddress = async (req, res) => {
     try {
-        const { id } = req.body;
+        const { addressid } = req.body;
       
         
 
         const userAddress = await Address.updateOne(
             { user: req.session.userId },
-            { $pull: { address: { _id: id } } },
+            { $pull: { address: { _id: addressid } } },
             { new: true }
         );
 
