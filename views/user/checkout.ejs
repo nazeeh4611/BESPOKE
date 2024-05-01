@@ -189,32 +189,33 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <% 
+                      
+                        let subtotal = cartdata.product.reduce((sum, product) => sum + product.total, 0);
+                        
+                        let totalDiscountAmount = coupondiscount ? (coupondiscount.discountamount / 100) * subtotal : 0;
+                
+                        let discountPerProduct = totalDiscountAmount / cartdata.product.length;
+                    %>
+                    
                     <% cartdata.product.forEach((product) => { %>
                         <tr>
                             <td>
                                 <%= product.name %> X <%= product.quantity %>
                             </td>
                             <td>
-                                <% if (coupondiscount) { %>
-                                    <% let discountPercentage = coupondiscount.discountamount; %>
-                                    
-                                   
-                                    <% let productDiscountAmount = (discountPercentage / 100) * product.total; %>
-                                    
-                                    <% console.log(productDiscountAmount) %>
-                                    <% let discountedProductTotal = product.total - productDiscountAmount; %>
-                                    
-                                   
-                                    ₹ <%= discountedProductTotal.toFixed(2) %>
-                                    
-                                    <input type="hidden" id="discountamount" value="<%= productDiscountAmount.toFixed(2) %>">
-                                <% } else { %>
-                                    ₹ <%= product.total %>
-                                <% } %>
+                                <% 
+                                    // Calculate the discounted product total
+                                    let discountedProductTotal = product.total - discountPerProduct;
+                                %>
+                                ₹ <%= discountedProductTotal.toFixed(2) %>
+                                
+                                <input type="hidden" id="discountamount" value="<%= discountPerProduct.toFixed(2) %>">
                             </td>
                         </tr>
                     <% }) %>
                 </tbody>
+                
                 
                 
                 </table>
@@ -372,9 +373,9 @@
                       <div class="col-md-12">
                         <div class="col-md-12">
                           <div class="return-details" class="col-md-12">
-                            <p style="color: green;"><strong style="color: #000000;"><%= couponItem.name %></strong>&nbsp;you save ₹<%= couponItem.discountamount %></p>
+                            <p style="color: green;"><strong style="color: #000000;"><%= couponItem.name %></strong>&nbsp;<%= couponItem.discountamount %>% off</p>
                             <p>use this code : <u style="color:rgb(0, 0, 0);"><%= couponItem.couponcode %></u></p>
-                            <p>Get ₹<%= couponItem.discountamount %> Off on <u>₹<%= couponItem.criteriaamount %></u> and Above</p>
+                            <p>Get <%= couponItem.discountamount %>% Off on <u>₹<%= couponItem.criteriaamount %></u> and Above</p>
                             <p>Expire on <%= couponItem.expiredate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toLowerCase() %></p>
                             <% if(subtotal >= couponItem.criteriaamount) { %>
                                 <div class="button-line-container">
@@ -630,10 +631,12 @@ const makePayment = () => {
   let subtotal = document.getElementById("subtotal").value;
 
   let discountamount = document.getElementById('discountamount');
+  console.log(discountamount,"the discountamount")
     discountamount = discountamount ? discountamount.value : 0;
     console.log("liii");
     
     let discount = document.getElementById('discount');
+    console.log(discount,"the discount")
     discount = discount ? discount.value : 0;
 
     $.ajax({
