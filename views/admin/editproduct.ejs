@@ -523,7 +523,7 @@ console.log("image 1",document.getElementById('one').src);
     const url4=document.getElementById('four').src
     
 
-    const url = "http://localhost:3009/productImage/";
+    const url = "http://localhost:3009/uploadImg/";
 
 
     if (url1.startsWith(url)) {
@@ -758,6 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
          console.log(image1,image2,image3,image4)
         // Check if all required elements are defined
         if (!productId || !productName || !category || !price || !productBrand || !description || !quantity) {
+          validateForm();
             console.error('Some required inputs are missing.');
             return;
         }
@@ -774,7 +775,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('oldimageUrl', JSON.stringify(oldimageUrl))
         Object.keys(croppedImages).forEach(key => {
         const originalFileName = originalFileNames[key];
-        formData.append(`productImage`, croppedImages[key],originalFileName);
+        formData.append(`uploadImg`, croppedImages[key],originalFileName);
     });
 
         // Handling old image URL list
@@ -817,7 +818,96 @@ fetch('/admin/editproduct', {
 
 
 
+<script>
+  function validateForm() {
+    // Validate brand name
+    const brandInput = document.getElementById('productBrand');
+    const brandError = document.getElementById('brandError');
+    if (!brandInput.value) {
+        brandError.innerText = 'Brand name is required.';
+        return false;
+    } else {
+        brandError.innerText = '';
+    }
 
+    // Validate product name
+    const productNameInput = document.getElementById('exampleInputName1');
+    const productError = document.getElementById('productError');
+    if (!productNameInput.value) {
+        productError.innerText = 'Product name is required.';
+        return false;
+    } else {
+        productError.innerText = '';
+    }
+
+    // Validate description
+    const descriptionInput = document.getElementById('ProductDescription');
+    const descriptionError = document.getElementById('productDescriptionError');
+    if (!descriptionInput.value) {
+        descriptionError.innerText = 'Description is required.';
+        return false;
+    } else {
+        descriptionError.innerText = '';
+    }
+
+    // Validate quantity
+    const quantityInput = document.getElementById('ProductQuantity');
+    const quantityError = document.getElementById('quantityError');
+    const quantity = parseFloat(quantityInput.value);
+    if (isNaN(quantity) || quantity <= 0) {
+        quantityError.innerText = 'Quantity must be a positive number.';
+        return false;
+    } else {
+        quantityError.innerText = '';
+    }
+
+    // Validate price
+    const priceInput = document.getElementById('ProductPrice');
+    const priceError = document.getElementById('priceError');
+    const price = parseFloat(priceInput.value);
+    if (isNaN(price) || price <= 0) {
+        priceError.innerText = 'Price must be a positive number.';
+        return false;
+    } else {
+        priceError.innerText = '';
+    }
+
+    // Validate category
+    const categoryInput = document.getElementById('exampleInputCity1');
+    const categoryError = document.getElementById('CategoryError');
+    if (!categoryInput.value) {
+        categoryError.innerText = 'Category is required.';
+        return false;
+    } else {
+        categoryError.innerText = '';
+    }
+
+    // Validate images
+    // Create a helper function for image validation
+    function validateImage(imageInputId, errorElementId, errorMessage) {
+        const imageInput = document.getElementById(imageInputId);
+        const errorElement = document.getElementById(errorElementId);
+        if (!imageInput.files || imageInput.files.length === 0) {
+            errorElement.innerText = errorMessage;
+            return false;
+        } else {
+            errorElement.innerText = '';
+        }
+        return true;
+    }
+
+    const imageValidations = [
+        validateImage('image1', 'image1Error', 'Please upload Image One.'),
+        validateImage('image2', 'image2Error', 'Please upload Image Two.'),
+        validateImage('image3', 'image3Error', 'Please upload Image Three.'),
+        validateImage('image4', 'image4Error', 'Please upload Image Four.'),
+    ];
+
+    // If all validations pass, return true to allow the form to be submitted
+    return imageValidations.every(validation => validation);
+}
+
+</script>
 
 
 
@@ -833,117 +923,7 @@ fetch('/admin/editproduct', {
 
            
 
-    
-<script>
-  function validateForm() {
-    let formIsValid = true;
 
-    // Get form elements
-    const brand = document.getElementById("brand").value;
-    const productName = document.getElementById("exampleInputName1").value;
-    const description = document.getElementById("exampleInputEmail3").value;
-    const quantity = document.getElementById("product_qty").value;
-    const price = document.getElementById("product_price").value;
-    const category = document.getElementById("exampleInputCity1").value;
-
-    // Get error message elements
-    const brandError = document.getElementById("brandError");
-    const productError = document.getElementById("productError");
-    const descriptionError = document.getElementById("productDescriptionError");
-    const quantityError = document.getElementById("quantityError");
-    const priceError = document.getElementById("priceError");
-    const categoryError = document.getElementById("categoryError");
-
-    // Validate brand
-    if (brand.trim() === "") {
-        brandError.textContent = "Brand is required.";
-        formIsValid = false;
-    } else {
-        brandError.textContent = "";
-    }
-
-    // Validate product name
-    if (productName.trim() === "") {
-        productError.textContent = "Product name is required.";
-        formIsValid = false;
-    } else {
-        productError.textContent = "";
-    }
-
-    // Validate description
-    if (description.trim() === "") {
-        descriptionError.textContent = "Description is required.";
-        formIsValid = false;
-    } else {
-        descriptionError.textContent = "";
-    }
-
-    // Validate quantity
-    if (quantity.trim() === "" || isNaN(quantity) || quantity <= 0) {
-        quantityError.textContent = "Valid quantity is required.";
-        formIsValid = false;
-    } else {
-        quantityError.textContent = "";
-    }
-
-    // Validate price
-    if (price.trim() === "" || isNaN(price) || price <= 0) {
-        priceError.textContent = "Valid price is required.";
-        formIsValid = false;
-    } else {
-        priceError.textContent = "";
-    }
-
-    // Validate category
-    if (category.trim() === "") {
-        categoryError.textContent = "Category is required.";
-        formIsValid = false;
-    } else {
-        categoryError.textContent = "";
-    }
-
-    // Validate each image input
-    const image1 = document.getElementById("image1").value;
-    const image1Error = document.getElementById("imageError1");
-    if (image1.trim() === "") {
-        image1Error.textContent = "Image 1 is required.";
-        formIsValid = false;
-    } else {
-        image1Error.textContent = "";
-    }
-
-    const image2 = document.getElementById("image2").value;
-    const image2Error = document.getElementById("imageError2");
-    if (image2.trim() === "") {
-        image2Error.textContent = "Image 2 is required.";
-        formIsValid = false;
-    } else {
-        image2Error.textContent = "";
-    }
-
-    const image3 = document.getElementById("image3").value;
-    const image3Error = document.getElementById("imageError3");
-    if (image3.trim() === "") {
-        image3Error.textContent = "Image 3 is required.";
-        formIsValid = false;
-    } else {
-        image3Error.textContent = "";
-    }
-
-    const image4 = document.getElementById("image4").value;
-    const image4Error = document.getElementById("imageError4");
-    if (image4.trim() === "") {
-        image4Error.textContent = "Image 4 is required.";
-        formIsValid = false;
-    } else {
-        image4Error.textContent = "";
-    }
-
-    // Return form validity status
-    return formIsValid;
-}
-
-</script>
      
 
           <!-- partial -->

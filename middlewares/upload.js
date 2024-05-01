@@ -11,8 +11,7 @@ const storageSingle = multer.diskStorage({
       cb(null, name);
   }
 });
-console.log("single storage", storageSingle);
-
+console.log("hos")
 const uploadSingle = multer({
   storage: storageSingle,
   limits: {

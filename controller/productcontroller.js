@@ -135,7 +135,7 @@ const editProduct = async (req, res) => {
   console.log(productId,"id")
     // Retrieve new image files from request
     const newImageFiles = req.files.map(file => file.filename);
-
+    console.log("new image ",newImageFiles)
     // Find the category
     const selectCategory = await category.findOne({
       name: productCategory,
