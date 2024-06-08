@@ -23,11 +23,11 @@ adminRoute.get("/block",adminController.BlockUser);
 
 adminRoute.get("/category",adminAuth.isLogin,categoryController.loadCategory);
 adminRoute.get("/addcategory",adminAuth.isLogin,categoryController.addCategory);
-adminRoute.post("/addcategory", categoryController.newCategory);
-adminRoute.get("/editcategory", categoryController.editCategory);
-adminRoute.post("/editcategory", categoryController.editedCategory);
+adminRoute.post("/addcategory",adminAuth.isLogin,categoryController.newCategory);
+adminRoute.get("/editcategory", adminAuth.isLogin,categoryController.editCategory);
+adminRoute.post("/editcategory",adminAuth.isLogin, categoryController.editedCategory);
 adminRoute.get(
-  "/deletecategory",
+  "/deletecategory",adminAuth.isLogin,
  
   categoryController.deleteCategory
 );
@@ -36,7 +36,7 @@ adminRoute.get("/unlist",  categoryController.UnListed);
 adminRoute.get("/products",adminAuth.isLogin,productController.loadProduct);
 
 adminRoute.get(
-  "/addproduct",
+  "/addproduct",adminAuth.isLogin,
   productController.loadAddProduct
 );
 
@@ -46,12 +46,12 @@ adminRoute.post(
   productController.addProduct
 );
 adminRoute.get(
-  "/editproduct",
+  "/editproduct",adminAuth.isLogin,
 
   productController.loadeditproduct
 );
 adminRoute.post(
-  "/editproduct",
+  "/editproduct",adminAuth.isLogin,
 
   upload.uploadSingle,
   productController.editProduct
@@ -77,7 +77,7 @@ adminRoute.delete(
   productController.deleteimage
 );
 
-adminRoute.get("/orderlist",
+adminRoute.get("/orderlist",adminAuth.isLogin,
 adminController.orderlist);
 
 adminRoute.get('/orders', adminAuth.isLogin, adminController.orderDetails);
@@ -103,17 +103,17 @@ adminRoute.get(
 );
 
 adminRoute.get(
-  "/offerlist",
+  "/offerlist",adminAuth.isLogin,
   offerController.offeropen
 );
 
 adminRoute.get(
-  "/addoffer",
+  "/addoffer",adminAuth.isLogin,
   offerController.loadaddoffer
   );
 
   adminRoute.post(
-    "/addoffer",
+    "/addoffer",adminAuth.isLogin,
     offerController.addoffer
   );
 
@@ -128,12 +128,12 @@ adminRoute.get(
   );
 
   adminRoute.get(
-    "/editoffer",
+    "/editoffer",adminAuth.isLogin,
     offerController.editoffer
   );
 
   adminRoute.post(
-    "/editoffer",
+    "/editoffer",adminAuth.isLogin,
     offerController.editedoffer
   );
 
@@ -163,17 +163,17 @@ adminRoute.get(
   );
 
   adminRoute.get(
-    "/couponlist",
+    "/couponlist",adminAuth.isLogin,
   couponcontroller.loadCoupon
   );
 
   adminRoute.get(
-    "/addcoupon",
+    "/addcoupon",adminAuth.isLogin,
     couponcontroller.loadaddcoupon
   );
 
   adminRoute.post(
-    "/addcoupon",
+    "/addcoupon",adminAuth.isLogin,
     couponcontroller.addCoupon
   );
   
@@ -192,12 +192,12 @@ adminRoute.get(
     couponcontroller.deleteCoupon
   ); 
   adminRoute.get(
-    "/sales",
+    "/sales",adminAuth.isLogin,
     adminController.salesReport
   );
 
   adminRoute.post(
-    "/sales",
+    "/sales",adminAuth.isLogin,
     adminController.filterSales
   );
 

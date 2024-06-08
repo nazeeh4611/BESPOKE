@@ -134,13 +134,13 @@ userRoute.delete('/deleteaddress',addresscontroller.deleteAddress);
 
 
 //  load checkout & orders 
-userRoute.get('/checkout',cartcontroller.Loadcheckout)
-userRoute.post("/checkout",ordercontroller.OrderPlace)
-userRoute.post("/verifypayment",ordercontroller.verifypayment);
+userRoute.get('/checkout', userAuth.isLogin,cartcontroller.Loadcheckout)
+userRoute.post("/checkout", userAuth.isLogin,ordercontroller.OrderPlace)
+userRoute.post("/verifypayment", userAuth.isLogin,ordercontroller.verifypayment);
 userRoute.post("/repay",ordercontroller.repay);
-userRoute.get('/ordercomplete',ordercontroller.OrderPlaced);
-userRoute.get('/orders',ordercontroller.orderlist);
-userRoute.get("/view",ordercontroller.orderview);
+userRoute.get('/ordercomplete', userAuth.isLogin,ordercontroller.OrderPlaced);
+userRoute.get('/orders', userAuth.isLogin,ordercontroller.orderlist);
+userRoute.get("/view", userAuth.isLogin,ordercontroller.orderview);
 userRoute.patch("/cancelorder",ordercontroller.ordercancel);
 userRoute.post("/return",ordercontroller.returnOrder);
 userRoute.get("/getReason",ordercontroller.resonsend);

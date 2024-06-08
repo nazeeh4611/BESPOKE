@@ -605,7 +605,7 @@ const filterSales = async (req, res) => {
       .populate({
         path: 'user',
         model: 'User',
-      })
+      })                        
       .populate({
         path: 'product.productId',
         model: 'Product',

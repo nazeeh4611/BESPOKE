@@ -190,39 +190,31 @@
                   </thead>
                   <tbody>
                     <% 
-                        // Calculate the subtotal and total discount amount
                         let subtotal = cartdata.product.reduce((sum, product) => sum + product.total, 0);
                         let totalDiscountAmount = coupondiscount ? (coupondiscount.discountamount / 100) * subtotal : 0;
                 
-                        // Initialize variables for discount distribution
                         let discountPerProduct = totalDiscountAmount / cartdata.product.length;
                         let remainingDiscount = totalDiscountAmount;
                         let adjustedDiscounts = [];
                         let totalEligibleProducts = 0;
                         
-                        // Identify products eligible for discount and count them
                         cartdata.product.forEach((product) => {
                             if (product.total >= discountPerProduct) {
                                 totalEligibleProducts++;
                             }
                         });
                         
-                        // Calculate adjusted discounts
                         cartdata.product.forEach((product) => {
                             let adjustedDiscount = 0;
                             if (product.total >= discountPerProduct) {
-                                // Calculate the discount per eligible product
                                 adjustedDiscount = remainingDiscount / totalEligibleProducts;
-                                // Ensure discount does not exceed product total
                                 adjustedDiscount = Math.min(adjustedDiscount, product.total);
                                 
-                                // Subtract the applied discount from the remaining discount
                                 remainingDiscount -= adjustedDiscount;
                                 totalEligibleProducts--; // Decrease count of eligible products
                                 
                                 adjustedDiscounts.push(adjustedDiscount);
                             } else {
-                                // If product total is less than discountPerProduct, no discount is applied
                                 adjustedDiscounts.push(0);
                             }
                         });
@@ -236,10 +228,8 @@
                             </td>
                             <td>
                                 <% 
-                                    // Retrieve the adjusted discount for the current product
                                     let adjustedDiscount = adjustedDiscounts[index];
                                     
-                                    // Calculate the discounted product total
                                     let discountedProductTotal = product.total - adjustedDiscount;
                                 %>
                                 ₹ <%= discountedProductTotal.toFixed(2) %>
@@ -259,14 +249,11 @@
                 </table>
                 <% if (coupondiscount && subtotal >= coupondiscount.criteriaamount) { %>
                   <% 
-                    // Calculate the discount amount
                     var discountRate = coupondiscount.discountamount / 100;
                     var discountAmount = subtotal * discountRate;
                     
-                    // Calculate the new subtotal after applying the discount
                     var newSubtotal = subtotal - discountAmount;
                     
-                    // Calculate the total amount
                     var total = newSubtotal + shippingcharge;
                   %>
                   
