@@ -36,7 +36,7 @@ app.use("/", userRoute);
 const adminRoute = require("./routes/adminroute");
 app.use("/admin", adminRoute);
 
-const port = 3009;
+const port = 3007;
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Server running on http://localhost:${port}/admin/`);
